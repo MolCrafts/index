@@ -12,6 +12,6 @@ export default defineConfig({
         },
     },
     output: {
-        assetPrefix: "/molcrafts_index/"
+        assetPrefix: "/index/"
     }
 });
