@@ -11,4 +11,7 @@ export default defineConfig({
             index: './src/main.tsx',
         },
     },
+    output: {
+        assetPrefix: "/molcrafts_index/"
+    }
 });
