@@ -10,8 +10,5 @@ export default defineConfig({
         entry: {
             index: './src/main.tsx',
         },
-    },
-    output: {
-        assetPrefix: "/dist/"
     }
 });
