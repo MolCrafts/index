@@ -6,14 +6,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import image from "../assets/growth.png";
-import image3 from "../assets/reflecting.png";
-import image4 from "../assets/looking-ahead.png";
+import logo_molpot from "../assets/molpot.png";
+import logo_molvis from "../assets/molvis.png";
+import logo_molpy from "../assets/molpy.png";
 
 interface FeatureProps {
 	title: string;
 	description: string;
 	image: string;
+	link: string;
 	hcolor: string;
 }
 
@@ -21,19 +22,22 @@ const features: FeatureProps[] = [
 	{
 		title: "py",
 		description: "A fundamental package for molecular system",
-		image: image4,
+		image: logo_molpy,
+		link: "https://molpy.molcrafts.org",
 		hcolor: "#03a3d7",
 	},
 	{
 		title: "pot",
 		description: "One-stop solution for molecular forcefield training",
-		image: image3,
+		image: logo_molpot,
+		link: "https://molpot.molcrafts.org",
 		hcolor: "#34D399",
 	},
 	{
 		title: "vis",
 		description: "An interactive molecule visualization library",
-		image: image,
+		image: logo_molvis,
+		link: "https://molvis.molcrafts.org",
 		hcolor: "#AAA3CE",
 	},
 ];
@@ -66,10 +70,10 @@ export const Features = () => {
 			</div>
 
 			<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-				{features.map(({ title, description, image, hcolor }: FeatureProps) => (
+				{features.map(({ title, description, image, link, hcolor }: FeatureProps) => (
 					<Card key={title}>
 						<CardHeader>
-							<CardTitle title={title} hcolor={hcolor} />
+							<CardTitle title={title} hcolor={hcolor} link={link}/>
 						</CardHeader>
 
 						<CardContent>{description}</CardContent>

@@ -4,7 +4,10 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export const Hero = () => {
 	return (
-		<section className="w-full h-screen flex items-center justify-center overflow-hidden">
+		<section
+			id="hero"
+			className="w-full h-screen flex items-center justify-center overflow-hidden"
+		>
 			<div className="text-center space-y-6">
 				<main className="text-12xl md:text-6xl font-bold">
 					<h1 className="inline text-14xl md:text-8xl">
@@ -41,6 +44,8 @@ export const Hero = () => {
 					</a>
 				</div>
 			</div>
+
+			<div className="shadow" />
 		</section>
 	);
 };

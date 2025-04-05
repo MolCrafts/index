@@ -25,8 +25,8 @@ interface RouteProps {
 
 const routeList: RouteProps[] = [
   {
-    href: "#ecosystem",
-    label: "EcoSystem",
+    href: "#features",
+    label: "Ecosystem",
   },
   {
     href: "#about",
@@ -44,10 +44,10 @@ export const Navbar = () => {
             <a
               rel="noreferrer noopener"
               href="/"
-              className="ml-2 font-bold text-xl flex"
+              className="ml-2 font-bold text-2xl flex items-center space-x-2"
             >
               <LogoIcon />
-              MolCrafts
+              <span>MolCrafts</span>
             </a>
           </NavigationMenuItem>
 
