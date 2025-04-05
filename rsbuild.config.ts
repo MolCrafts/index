@@ -12,6 +12,6 @@ export default defineConfig({
         },
     },
     output: {
-        assetPrefix: "/index/"
+        assetPrefix: "/dist/"
     }
 });
