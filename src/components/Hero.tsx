@@ -9,14 +9,14 @@ export const Hero = () => {
 			className="w-full h-screen flex items-center justify-center overflow-hidden"
 		>
 			<div className="text-center space-y-6">
-				<main className="text-12xl md:text-6xl font-bold">
-					<h1 className="inline text-14xl md:text-8xl">
+				<main className="font-bold text-4xl sm:text-2xl">
+					<h1 className="inline text-7xl sm:text-8xl">
 						<span className="inline bg-gradient-to-r from-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">
 							MolCrafts
 						</span>
 					</h1>
 					<br />
-					<h2 className="inline">
+					<h2 className="inline text-5xl md:text-5xl sm:text-2xl">
 						<span className="inline bg-gradient-to-r from-[#34D399] via-[#10B981] to-[#059669] text-transparent bg-clip-text">
 							Seamless Molecular Sciences toolbox
 						</span>
