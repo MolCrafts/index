@@ -1,0 +1,24 @@
+# biome.toml
+# ────────────
+# Tell Biome this is the root config
+root = true
+
+# Global formatter settings
+[formatter]
+# Maximum line width before wrapping
+line_width = 100
+# Use spaces, not tabs
+indent_style = "space"
+# Number of spaces per indentation level
+indent_size = 2
+# Enforce double-quotes for strings
+quote_style = "double"
+# Always emit semicolons
+semi_colons = true
+
+# Language-specific overrides (optional)
+[language.javascript]
+parser = "babel"
+
+[language.typescript]
+parser = "typescript"

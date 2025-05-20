@@ -2,6 +2,38 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  background-color: hsl(var(--background));
+  background-image: 
+    radial-gradient(circle at 50% 0%, 
+      hsl(var(--primary) / 0.05), 
+      transparent 70%),
+    radial-gradient(circle at 50% 100%,
+      hsl(var(--primary) / 0.05),
+      transparent 70%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0.2;
+  background-image: 
+    radial-gradient(circle at 10% 10%, hsl(var(--primary) / 2%), transparent 35%),
+    radial-gradient(circle at 90% 30%, hsl(var(--primary) / 2%), transparent 35%),
+    radial-gradient(circle at 60% 50%, hsl(var(--primary) / 1%), transparent 55%),
+    radial-gradient(circle at 20% 70%, hsl(var(--primary) / 2%), transparent 40%),
+    radial-gradient(circle at 80% 90%, hsl(var(--primary) / 2%), transparent 35%);
+  filter: blur(70px);
+  pointer-events: none;
+}
+
 /* HeroCards background shadow */
 .shadow {
   position: absolute;
@@ -63,4 +95,364 @@ html {
       right: 100px;
     }
   }
+}
+
+/* Consistent spacing system */
+.space-section {
+  padding: 4rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .space-section {
+    padding: 5rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .space-section {
+    padding: 6rem 3rem;
+  }
+}
+
+/* Global smooth section transitions */
+section {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  background-color: transparent;
+  overflow: visible;
+}
+
+section::before {
+  content: '';
+  position: absolute;
+  top: -150px;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, 
+    rgba(var(--background-rgb), 0), 
+    rgba(var(--background-rgb), 0.01) 20%,
+    rgba(var(--background-rgb), 0.03) 40%,
+    rgba(var(--background-rgb), 0.06) 60%,
+    rgba(var(--background-rgb), 0.1) 80%,
+    rgba(var(--background-rgb), 0.15)
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Improved global background */
+:root {
+  --background-rgb: 255, 255, 255;
+}
+
+.dark {
+  --background-rgb: 20, 14, 4;
+}
+
+/* Enhanced gradient backgrounds with invisible transitions */
+.gradient-bg-1, .gradient-bg-2 {
+  position: relative;
+  background: transparent;
+  overflow: visible;
+}
+
+.gradient-bg-1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 30%, hsl(var(--primary) / 4%), transparent 60%),
+    radial-gradient(circle at 70% 70%, hsl(var(--primary) / 3%), transparent 50%);
+  opacity: 0.3;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+.gradient-bg-2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 70% 30%, hsl(var(--primary) / 4%), transparent 60%),
+    radial-gradient(circle at 30% 70%, hsl(var(--primary) / 3%), transparent 50%);
+  opacity: 0.3;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+/* Remove the explicit connecting gradients that created visible lines */
+.gradient-bg-1::after, .gradient-bg-2::after {
+  display: none;
+}
+
+/* Enhanced gradients for text */
+.gradient-text-primary {
+  @apply bg-gradient-to-r from-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text;
+}
+
+.gradient-text-secondary {
+  @apply bg-gradient-to-r from-[#34D399] via-[#10B981] to-[#059669] text-transparent bg-clip-text;
+}
+
+.gradient-text-accent {
+  @apply bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#1d4ed8] text-transparent bg-clip-text;
+}
+
+/* Glass effect for cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-card {
+  background: rgba(20, 20, 20, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Custom animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Scroll fade effect */
+.scroll-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-fade.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image hover effects */
+.image-zoom-effect {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.image-zoom-effect img {
+  transition: transform 0.4s ease;
+}
+
+.image-zoom-effect:hover img {
+  transform: scale(1.05);
+}
+
+/* Button hover effects */
+.btn-hover-effect {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: all 0.4s ease;
+}
+
+.btn-hover-effect:hover::before {
+  left: 100%;
+}
+
+.dark .btn-hover-effect::before {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* Improved accessibility for focus states */
+.focus-ring {
+  @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-background;
+}
+
+/* Lazy loading placeholder */
+.lazy-placeholder {
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background-size: 200% 100%;
+  animation: shine 1.5s linear infinite;
+}
+
+.dark .lazy-placeholder {
+  background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+/* Improved blob animation for better background effects */
+.blob-animation {
+  position: absolute;
+  width: 600px; 
+  height: 600px;
+  filter: blur(120px);
+  opacity: 0.07;
+  z-index: -2;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  background: hsl(var(--primary));
+  animation: blob-morph 25s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+.dark .blob-animation {
+  opacity: 0.05;
+}
+
+@keyframes blob-morph {
+  0% {
+    border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+    transform: translate(50px, -50px) scale(1.1) rotate(120deg);
+  }
+  66% {
+    border-radius: 70% 30% 50% 50% / 30% 50% 60% 70%;
+    transform: translate(-20px, 30px) scale(0.9) rotate(240deg);
+  }
+  100% {
+    border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+    transform: translate(0, 0) scale(1) rotate(360deg);
+  }
+}
+
+/* New molecular-inspired background elements */
+.molecule-blob {
+  position: absolute;
+  width: 400px; 
+  height: 400px;
+  filter: blur(80px);
+  opacity: 0.06;
+  z-index: -2;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  background: hsl(var(--primary) / 50%);
+  animation: molecule-morph 20s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+.dark .molecule-blob {
+  opacity: 0.04;
+  background: #34D399;
+}
+
+.molecular-glow {
+  position: absolute;
+  filter: blur(60px);
+  opacity: 0.04;
+  z-index: -2;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--primary) / 60%),
+    hsl(var(--primary) / 30%) 40%,
+    transparent 70%
+  );
+  animation: molecular-pulse 15s ease-in-out infinite alternate;
+}
+
+.dark .molecular-glow {
+  opacity: 0.03;
+  background: radial-gradient(
+    circle at center,
+    #34D399,
+    #10B981 40%,
+    transparent 70%
+  );
+}
+
+@keyframes molecule-morph {
+  0% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    border-radius: 65% 35% 55% 45% / 40% 60% 40% 60%;
+    transform: translate(30px, -20px) scale(0.9) rotate(90deg);
+  }
+  50% {
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+    transform: translate(-20px, 40px) scale(1.1) rotate(180deg);
+  }
+  75% {
+    border-radius: 55% 45% 70% 30% / 45% 55% 45% 55%;
+    transform: translate(20px, 10px) scale(0.95) rotate(270deg);
+  }
+  100% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    transform: translate(0, 0) scale(1) rotate(360deg);
+  }
+}
+
+@keyframes molecular-pulse {
+  0% {
+    opacity: 0.02;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.05;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.02;
+    transform: scale(1);
+  }
+}
+
+/* Global force transparency for any canvas elements and containers */
+canvas,
+[class*='three'],
+.molecule-visualization-container,
+.molecule-container,
+.molecule-canvas {
+  background-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  z-index: 50 !important;
+}
+
+/* Remove any border, shadow or background from all canvas parents */
+canvas,
+canvas:before,
+canvas:after,
+canvas + *,
+canvas > *,
+canvas ~ *,
+canvas * {
+  background-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix for the scroll-to-top button to ensure it's always visible */
+.fixed.bottom-12.right-12 {
+  z-index: 1000 !important;
 }
