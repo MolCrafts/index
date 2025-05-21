@@ -87,12 +87,51 @@ export const Footer = () => {
 						</div>
 					</div>
 				</motion.div>
-				
+
 				<motion.div 
 					className="flex flex-col gap-2"
 					initial={{ opacity: 0 }}
 					whileInView={{ opacity: 1 }}
 					transition={{ delay: 0.3, duration: 0.7 }}
+					viewport={{ once: true }}
+				>
+					<h3 className="font-bold text-lg">Documentation</h3>
+					<div className="space-y-2">
+						<div>
+							<motion.a
+								href="/docs/molpy"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-blue-600 dark:text-blue-400">MolPy</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/docs/molplot"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-green-600 dark:text-green-400">MolPlot</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/docs/molvis"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-purple-600 dark:text-purple-400">MolVis</span>
+							</motion.a>
+						</div>
+					</div>
+				</motion.div>
+				
+				<motion.div 
+					className="flex flex-col gap-2"
+					initial={{ opacity: 0 }}
+					whileInView={{ opacity: 1 }}
+					transition={{ delay: 0.4, duration: 0.7 }}
 					viewport={{ once: true }}
 				>
 					<h3 className="font-bold text-lg">Newsletter</h3>

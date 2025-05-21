@@ -35,6 +35,22 @@ const routeList: RouteProps[] = [
   }
 ];
 
+// Documentation links
+const docsRoutes: RouteProps[] = [
+  {
+    href: "/docs/molpy",
+    label: "MolPy",
+  },
+  {
+    href: "/docs/molplot",
+    label: "MolPlot",
+  },
+  {
+    href: "/docs/molvis",
+    label: "MolVis",
+  },
+];
+
 // Animacje dla elementów nawigacji
 const navItemVariants = {
   hidden: { y: -10, opacity: 0 },
@@ -109,6 +125,27 @@ export const Navbar = () => {
                       {label}
                     </motion.a>
                   ))}
+                  
+                  <h3 className="text-sm uppercase text-muted-foreground mt-4 font-medium">
+                    Documentation
+                  </h3>
+                  
+                  {docsRoutes.map(({ href, label }: RouteProps, i) => (
+                    <motion.a
+                      rel="noreferrer noopener"
+                      key={label}
+                      href={href}
+                      onClick={() => setIsOpen(false)}
+                      className={buttonVariants({ variant: "ghost" })}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: (routeList.length + i) * 0.1 }}
+                      whileHover={{ x: 5 }}
+                    >
+                      {label}
+                    </motion.a>
+                  ))}
+                  
                   <motion.a
                     rel="noreferrer noopener"
                     href="https://github.com/MolCrafts"
@@ -118,7 +155,7 @@ export const Navbar = () => {
                     })}`}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: routeList.length * 0.1 }}
+                    transition={{ delay: (routeList.length + docsRoutes.length) * 0.1 }}
                   >
                     <GitHubLogoIcon className="mr-2 w-5 h-5" />
                     Github
@@ -152,6 +189,38 @@ export const Navbar = () => {
                 {route.label}
               </motion.a>
             ))}
+            
+            <div className="relative group">
+              <motion.a
+                href="#"
+                className={`text-[17px] ${buttonVariants({
+                  variant: "ghost",
+                })}`}
+                variants={navItemVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: routeList.length * 0.1 }}
+                whileHover={{ y: -2 }}
+              >
+                Documentation
+              </motion.a>
+              
+              <div className="absolute left-0 hidden pt-2 group-hover:block">
+                <div className="bg-background border rounded-md shadow-lg py-1 min-w-32">
+                  {docsRoutes.map((route: RouteProps, i) => (
+                    <motion.a
+                      rel="noreferrer noopener"
+                      href={route.href}
+                      key={i}
+                      className="block px-4 py-2 text-sm hover:bg-muted"
+                      whileHover={{ x: 5 }}
+                    >
+                      {route.label}
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+            </div>
           </motion.nav>
 
           <motion.div 
