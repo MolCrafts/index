@@ -1,14 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MoleculeViewer, MoleculeType } from './molecules/MoleculeViewer';
-
-// Lista molekuł do losowego wyświetlania podczas ładowania
-const loadingMolecules: MoleculeType[] = [
-  'methanol',
-  'caffeine',
-  'penicillin',
-  'carbonDioxide'
-];
+import { LogoIcon } from './Icons';
 
 interface LoadingScreenProps {
   isLoading: boolean;
@@ -21,18 +13,15 @@ export const LoadingScreen = ({
   text = 'Loading...', 
   color = 'hsl(var(--primary))' 
 }: LoadingScreenProps) => {
-  const [molecule, setMolecule] = useState<MoleculeType>(
-    loadingMolecules[Math.floor(Math.random() * loadingMolecules.length)]
-  );
+  const [dotCount, setDotCount] = useState(0);
   
-  // Zmiana molekuły co 2 sekundy podczas ładowania
+  // Animacja kropek ładowania
   useEffect(() => {
     if (!isLoading) return;
     
     const interval = setInterval(() => {
-      const newMolecule = loadingMolecules[Math.floor(Math.random() * loadingMolecules.length)];
-      setMolecule(newMolecule);
-    }, 2000);
+      setDotCount((prev) => (prev + 1) % 4);
+    }, 500);
     
     return () => clearInterval(interval);
   }, [isLoading]);
@@ -45,34 +34,78 @@ export const LoadingScreen = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 flex flex-col items-center justify-center z-50 loading-screen-backdrop"
+          className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-background/90 backdrop-blur-sm"
         >
-          <div className="loading-molecule-container">
-            {/* Pulsujący element w tle */}
-            <div className="loading-pulse"></div>
+          <div className="relative">
+            {/* Pulsujące koło w tle */}
+            <motion.div
+              className="absolute inset-0 rounded-full bg-primary/10"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                repeatType: "reverse" 
+              }}
+              style={{ 
+                width: '120px', 
+                height: '120px',
+                left: '-35px',
+                top: '-35px'
+              }}
+            />
             
             {/* Dodatkowy pulsujący element z przesunięciem czasowym */}
             <motion.div
-              className="loading-pulse"
-              animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.2, 0.6] }}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-            ></motion.div>
-            
-            {/* Molekuła */}
-            <MoleculeViewer 
-              moleculeType={molecule} 
-              autoRotate={true}
-              enableZoom={false}
+              className="absolute inset-0 rounded-full bg-primary/5"
+              animate={{ 
+                scale: [1, 1.5, 1], 
+                opacity: [0.2, 0.4, 0.2] 
+              }}
+              transition={{ 
+                duration: 3,
+                repeat: Infinity, 
+                repeatType: "reverse",
+                delay: 0.5
+              }}
+              style={{ 
+                width: '150px', 
+                height: '150px',
+                left: '-50px',
+                top: '-50px'
+              }}
             />
+            
+            {/* Logo bez obracania */}
+            <motion.div
+              animate={{ 
+                scale: [0.95, 1.05, 0.95]
+              }}
+              transition={{ 
+                scale: {
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }
+              }}
+              style={{ width: '50px', height: '50px' }}
+            >
+              <LogoIcon />
+            </motion.div>
           </div>
           
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl font-medium mt-8 tracking-wide"
+            className="text-xl font-medium mt-8 tracking-wide flex items-center"
           >
-            {text}
+            <span>{text}</span>
+            <span className="w-12 text-left ml-1">
+              {'.'.repeat(dotCount)}
+            </span>
           </motion.div>
           
           {/* Animowane kropki */}
