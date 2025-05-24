@@ -4,6 +4,7 @@ import { buttonVariants } from "./ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { fadeIn, slideUp, buttonHover } from "../lib/animations";
 import { useEffect } from "react";
+import { MoleculeFlash } from "./molecules/MoleculeFlash";
 
 export const Hero = () => {
 	// Inicjalizacja animacji po załadowaniu strony
@@ -42,6 +43,108 @@ export const Hero = () => {
 			<div className="molecular-glow" style={{ top: '30%', left: '50%', width: '300px', height: '300px' }} />
 			<div className="molecular-glow" style={{ top: '60%', left: '30%', width: '200px', height: '200px', animationDelay: '3s' }} />
 			<div className="molecular-glow" style={{ top: '20%', right: '20%', width: '250px', height: '250px', animationDelay: '5s' }} />
+			
+			{/* Zoptymalizowane molekuły z lepszymi animacjami */}
+			<MoleculeFlash 
+				width="20vw" 
+				height="20vw" 
+				top="5%" 
+				left="7%" 
+				interval={5500} 
+				zIndex={3}
+				opacity={0.7}
+				scale={0.95}
+				initialDelay={300}
+				avoidMolecules={['cocaine', 'caffeine']}
+			/>
+			<MoleculeFlash 
+				width="16vw" 
+				height="16vw" 
+				top="10%" 
+				right="6%" 
+				interval={6800} 
+				zIndex={2}
+				opacity={0.65}
+				scale={0.9}
+				initialDelay={800}
+				avoidMolecules={['methanol', 'formicAcid']}
+			/>
+			<MoleculeFlash 
+				width="18vw" 
+				height="18vw" 
+				bottom="8%" 
+				left="9%" 
+				interval={6200} 
+				zIndex={4}
+				opacity={0.7}
+				scale={0.93}
+				initialDelay={1100}
+				avoidMolecules={['nitrobenzene', 'penicillin']}
+			/>
+			<MoleculeFlash 
+				width="17vw" 
+				height="17vw" 
+				bottom="11%" 
+				right="8%" 
+				interval={5200} 
+				zIndex={3}
+				opacity={0.75}
+				scale={0.95}
+				initialDelay={500}
+				avoidMolecules={['nitricAcid', 'carbonMonoxide']}
+			/>
+			<MoleculeFlash 
+				width="14vw" 
+				height="14vw" 
+				top="7%" 
+				left="38%" 
+				interval={7500} 
+				zIndex={2}
+				opacity={0.6}
+				scale={0.85}
+				initialDelay={1500}
+				hideOnMobile={true}
+				avoidMolecules={['carbonDioxide', 'caffeine']}
+			/>
+			<MoleculeFlash 
+				width="15vw" 
+				height="15vw" 
+				bottom="6%" 
+				right="40%" 
+				interval={7100} 
+				zIndex={2}
+				opacity={0.65}
+				scale={0.87}
+				initialDelay={1900}
+				hideOnMobile={true}
+				avoidMolecules={['carbonDioxide', 'methanol']}
+			/>
+			
+			{/* Zredukowana liczba molekuł dla lepszej wydajności */}
+			<MoleculeFlash 
+				width="16vw" 
+				height="16vw" 
+				top="40%" 
+				left="5%" 
+				interval={6700} 
+				zIndex={2}
+				opacity={0.68}
+				scale={0.9}
+				initialDelay={700}
+				avoidMolecules={['penicillin', 'nitricAcid']}
+			/>
+			<MoleculeFlash 
+				width="15vw" 
+				height="15vw" 
+				top="33%" 
+				right="4%" 
+				interval={5800} 
+				zIndex={3}
+				opacity={0.63}
+				scale={0.88}
+				initialDelay={1200}
+				avoidMolecules={['methanol', 'nitrobenzene']}
+			/>
 			
 			<motion.div 
 				className="text-center space-y-6 mb-8 z-10 max-w-3xl px-4"

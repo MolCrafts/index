@@ -145,10 +145,12 @@ section::before {
 /* Improved global background */
 :root {
   --background-rgb: 255, 255, 255;
+  --primary-rgb: 31, 192, 241; /* Corresponds to the #1fc0f1 color from gradient-text-primary */
 }
 
 .dark {
   --background-rgb: 20, 14, 4;
+  --primary-rgb: 3, 163, 215; /* Corresponds to the #03a3d7 color from gradient-text-primary */
 }
 
 /* Enhanced gradient backgrounds with invisible transitions */
@@ -455,4 +457,52 @@ canvas * {
 /* Fix for the scroll-to-top button to ensure it's always visible */
 .fixed.bottom-12.right-12 {
   z-index: 1000 !important;
+}
+
+/* Molecule Flash Animations */
+.molecule-flash-container {
+  filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.1));
+  transition: all 1.5s ease;
+  opacity: 0.8;
+  mix-blend-mode: normal;
+  position: absolute;
+  /* Ensure molecules are fully visible within container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+
+.molecule-flash-container canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.dark .molecule-flash-container {
+  filter: drop-shadow(0 0 10px rgba(var(--primary-rgb), 0.15));
+  opacity: 0.9;
+  mix-blend-mode: screen;
+}
+
+/* Responsive adjustments for molecules */
+@media (max-width: 1024px) {
+  .molecule-flash-container {
+    transform: scale(0.75);
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .molecule-flash-container {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .molecule-flash-container {
+    transform: scale(0.45);
+    opacity: 0.5;
+  }
 }
