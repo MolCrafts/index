@@ -4,7 +4,7 @@ import { buttonVariants } from "./ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { fadeIn, slideUp, buttonHover } from "../lib/animations";
 import { useEffect } from "react";
-import { MoleculeFlash } from "./MoleculeFlash";
+import { MoleculeFlash } from "./molecules/MoleculeFlash";
 
 export const Hero = () => {
 	// Inicjalizacja animacji po załadowaniu strony
@@ -44,119 +44,106 @@ export const Hero = () => {
 			<div className="molecular-glow" style={{ top: '60%', left: '30%', width: '200px', height: '200px', animationDelay: '3s' }} />
 			<div className="molecular-glow" style={{ top: '20%', right: '20%', width: '250px', height: '250px', animationDelay: '5s' }} />
 			
-			{/* Randomly scattered molecules across the hero section */}
+			{/* Zoptymalizowane molekuły z lepszymi animacjami */}
 			<MoleculeFlash 
-				width="19vw" 
-				height="19vw" 
-				top="7%" 
-				left="6%" 
-				interval={5100} 
+				width="20vw" 
+				height="20vw" 
+				top="5%" 
+				left="7%" 
+				interval={5500} 
 				zIndex={3}
-				opacity={0.68}
-				scale={0.93}
+				opacity={0.7}
+				scale={0.95}
+				initialDelay={300}
 				avoidMolecules={['cocaine', 'caffeine']}
 			/>
 			<MoleculeFlash 
-				width="14.5vw" 
-				height="14.5vw" 
-				top="12%" 
-				right="8%" 
-				interval={6200} 
+				width="16vw" 
+				height="16vw" 
+				top="10%" 
+				right="6%" 
+				interval={6800} 
 				zIndex={2}
-				opacity={0.55}
-				scale={0.85}
+				opacity={0.65}
+				scale={0.9}
+				initialDelay={800}
 				avoidMolecules={['methanol', 'formicAcid']}
 			/>
 			<MoleculeFlash 
-				width="17.2vw" 
-				height="17.2vw" 
-				bottom="7%" 
-				left="11%" 
-				interval={5700} 
+				width="18vw" 
+				height="18vw" 
+				bottom="8%" 
+				left="9%" 
+				interval={6200} 
 				zIndex={4}
-				opacity={0.63}
-				scale={0.88}
+				opacity={0.7}
+				scale={0.93}
+				initialDelay={1100}
 				avoidMolecules={['nitrobenzene', 'penicillin']}
 			/>
 			<MoleculeFlash 
-				width="15.7vw" 
-				height="15.7vw" 
-				bottom="13%" 
-				right="9%" 
-				interval={4900} 
+				width="17vw" 
+				height="17vw" 
+				bottom="11%" 
+				right="8%" 
+				interval={5200} 
 				zIndex={3}
-				opacity={0.72}
-				scale={0.92}
+				opacity={0.75}
+				scale={0.95}
+				initialDelay={500}
 				avoidMolecules={['nitricAcid', 'carbonMonoxide']}
 			/>
 			<MoleculeFlash 
-				width="13.8vw" 
-				height="13.8vw" 
-				top="3%" 
-				left="37%" 
-				interval={7200} 
+				width="14vw" 
+				height="14vw" 
+				top="7%" 
+				left="38%" 
+				interval={7500} 
 				zIndex={2}
-				opacity={0.52}
-				scale={0.78}
+				opacity={0.6}
+				scale={0.85}
+				initialDelay={1500}
 				hideOnMobile={true}
 				avoidMolecules={['carbonDioxide', 'caffeine']}
 			/>
 			<MoleculeFlash 
-				width="14.3vw" 
-				height="14.3vw" 
-				bottom="4%" 
-				right="41%" 
-				interval={6600} 
+				width="15vw" 
+				height="15vw" 
+				bottom="6%" 
+				right="40%" 
+				interval={7100} 
 				zIndex={2}
-				opacity={0.54}
-				scale={0.82}
+				opacity={0.65}
+				scale={0.87}
+				initialDelay={1900}
 				hideOnMobile={true}
 				avoidMolecules={['carbonDioxide', 'methanol']}
 			/>
+			
+			{/* Zredukowana liczba molekuł dla lepszej wydajności */}
 			<MoleculeFlash 
-				width="16.4vw" 
-				height="16.4vw" 
-				top="43%" 
-				left="3%" 
-				interval={6500} 
+				width="16vw" 
+				height="16vw" 
+				top="40%" 
+				left="5%" 
+				interval={6700} 
 				zIndex={2}
-				opacity={0.62}
-				scale={0.87}
+				opacity={0.68}
+				scale={0.9}
+				initialDelay={700}
 				avoidMolecules={['penicillin', 'nitricAcid']}
 			/>
 			<MoleculeFlash 
-				width="15.2vw" 
-				height="15.2vw" 
-				top="35%" 
-				right="6%" 
-				interval={5300} 
+				width="15vw" 
+				height="15vw" 
+				top="33%" 
+				right="4%" 
+				interval={5800} 
 				zIndex={3}
-				opacity={0.58}
-				scale={0.86}
+				opacity={0.63}
+				scale={0.88}
+				initialDelay={1200}
 				avoidMolecules={['methanol', 'nitrobenzene']}
-			/>
-			{/* Additional molecules for more random scattered effect */}
-			<MoleculeFlash 
-				width="12.5vw" 
-				height="12.5vw" 
-				top="29%" 
-				left="17%" 
-				interval={7800} 
-				zIndex={2}
-				opacity={0.48}
-				scale={0.75}
-				avoidMolecules={['cocaine', 'nitricAcid']}
-			/>
-			<MoleculeFlash 
-				width="13.1vw" 
-				height="13.1vw" 
-				top="22%" 
-				right="16%" 
-				interval={5900} 
-				zIndex={2}
-				opacity={0.51}
-				scale={0.79}
-				avoidMolecules={['carbonDioxide', 'formicAcid']}
 			/>
 			
 			<motion.div 

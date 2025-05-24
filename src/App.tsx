@@ -8,10 +8,23 @@ import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { NextSection } from "./components/next";
 import { MolpyDocs, MolplotDocs, MolvisDocs } from "./docs";
+import { LoadingScreen } from "./components/LoadingScreen";
 import "./App.css";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingText, setLoadingText] = useState("Loading MolCrafts...");
+
+  // Symulacja początkowego ładowania aplikacji
+  useEffect(() => {
+    // Pokaż ekran ładowania przez 2 sekundy przy pierwszym uruchomieniu
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Handle route changes and history
   useEffect(() => {
@@ -39,10 +52,19 @@ function App() {
         const newPath = anchor.href.replace(window.location.origin, '');
         
         if (newPath !== currentPath) {
+          // Pokazujemy ekran ładowania przy zmianie strony
+          setLoadingText(`Loading ${getPageName(newPath)}...`);
+          setIsLoading(true);
+          
           // Update URL without full page reload
           window.history.pushState({}, '', newPath);
-          setCurrentPath(newPath);
-          window.scrollTo(0, 0);
+          
+          // Symulacja czasu ładowania strony
+          setTimeout(() => {
+            setCurrentPath(newPath);
+            window.scrollTo(0, 0);
+            setIsLoading(false);
+          }, 1200); // Symulacja czasu ładowania
         }
       }
     };
@@ -52,6 +74,15 @@ function App() {
       document.removeEventListener('click', handleLinkClick);
     };
   }, [currentPath]);
+
+  // Pomocnicza funkcja do uzyskania nazwy strony na podstawie ścieżki
+  const getPageName = (path: string): string => {
+    if (path === '/') return 'Home';
+    if (path.startsWith('/docs/molpy')) return 'MolPy Documentation';
+    if (path.startsWith('/docs/molplot')) return 'MolPlot Documentation';
+    if (path.startsWith('/docs/molvis')) return 'MolVis Documentation';
+    return path.split('/').pop() || 'Page';
+  };
 
   // Obsługa efektu przewijania dla elementów z klasą scroll-fade
   useEffect(() => {
@@ -101,22 +132,29 @@ function App() {
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col min-h-screen"
-      >
-        {!isDocsPage && <Navbar />}
-        <main className={`flex-grow ${isDocsPage ? 'docs-page' : ''}`}>
-          {renderContent()}
-        </main>
-        {!isDocsPage && <Footer />}
-        <ScrollToTop />
-      </motion.div>
-    </AnimatePresence>
+    <>
+      <LoadingScreen isLoading={isLoading} text={loadingText} />
+      
+      <AnimatePresence mode="wait">
+        {!isLoading && (
+          <motion.div
+            key={currentPath}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col min-h-screen"
+          >
+            {!isDocsPage && <Navbar />}
+            <main className={`flex-grow ${isDocsPage ? 'docs-page' : ''}`}>
+              {renderContent()}
+            </main>
+            {!isDocsPage && <Footer />}
+            <ScrollToTop />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
