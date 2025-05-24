@@ -174,9 +174,11 @@ export const MoleculeFlash = ({
         bottom,
         zIndex,
         pointerEvents: 'none',
-        overflow: 'visible',
+        overflow: 'hidden',
         padding: '0',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
       }}
       className="molecule-flash-container"
     >
@@ -208,7 +210,8 @@ export const MoleculeFlash = ({
               height: '100%',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              transformOrigin: 'center',
             }}
             className="molecule-flash-content"
           >

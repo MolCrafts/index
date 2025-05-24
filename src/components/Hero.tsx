@@ -46,10 +46,10 @@ export const Hero = () => {
 			
 			{/* Zoptymalizowane molekuły z lepszymi animacjami */}
 			<MoleculeFlash 
-				width="20vw" 
-				height="20vw" 
-				top="5%" 
-				left="7%" 
+				width="18vw" 
+				height="18vw" 
+				top="8%" 
+				left="8%" 
 				interval={5500} 
 				zIndex={3}
 				opacity={0.7}
@@ -58,10 +58,10 @@ export const Hero = () => {
 				avoidMolecules={['cocaine', 'caffeine']}
 			/>
 			<MoleculeFlash 
-				width="16vw" 
-				height="16vw" 
-				top="10%" 
-				right="6%" 
+				width="15vw" 
+				height="15vw" 
+				top="12%" 
+				right="8%" 
 				interval={6800} 
 				zIndex={2}
 				opacity={0.65}
@@ -70,10 +70,10 @@ export const Hero = () => {
 				avoidMolecules={['methanol', 'formicAcid']}
 			/>
 			<MoleculeFlash 
-				width="18vw" 
-				height="18vw" 
-				bottom="8%" 
-				left="9%" 
+				width="16vw" 
+				height="16vw" 
+				bottom="10%" 
+				left="10%" 
 				interval={6200} 
 				zIndex={4}
 				opacity={0.7}
@@ -82,10 +82,10 @@ export const Hero = () => {
 				avoidMolecules={['nitrobenzene', 'penicillin']}
 			/>
 			<MoleculeFlash 
-				width="17vw" 
-				height="17vw" 
-				bottom="11%" 
-				right="8%" 
+				width="15vw" 
+				height="15vw" 
+				bottom="12%" 
+				right="10%" 
 				interval={5200} 
 				zIndex={3}
 				opacity={0.75}
@@ -94,9 +94,9 @@ export const Hero = () => {
 				avoidMolecules={['nitricAcid', 'carbonMonoxide']}
 			/>
 			<MoleculeFlash 
-				width="14vw" 
-				height="14vw" 
-				top="7%" 
+				width="12vw" 
+				height="12vw" 
+				top="10%" 
 				left="38%" 
 				interval={7500} 
 				zIndex={2}
@@ -107,10 +107,10 @@ export const Hero = () => {
 				avoidMolecules={['carbonDioxide', 'caffeine']}
 			/>
 			<MoleculeFlash 
-				width="15vw" 
-				height="15vw" 
-				bottom="6%" 
-				right="40%" 
+				width="13vw" 
+				height="13vw" 
+				bottom="8%" 
+				right="38%" 
 				interval={7100} 
 				zIndex={2}
 				opacity={0.65}
@@ -122,10 +122,10 @@ export const Hero = () => {
 			
 			{/* Zredukowana liczba molekuł dla lepszej wydajności */}
 			<MoleculeFlash 
-				width="16vw" 
-				height="16vw" 
-				top="40%" 
-				left="5%" 
+				width="14vw" 
+				height="14vw" 
+				top="38%" 
+				left="8%" 
 				interval={6700} 
 				zIndex={2}
 				opacity={0.68}
@@ -134,10 +134,10 @@ export const Hero = () => {
 				avoidMolecules={['penicillin', 'nitricAcid']}
 			/>
 			<MoleculeFlash 
-				width="15vw" 
-				height="15vw" 
-				top="33%" 
-				right="4%" 
+				width="13vw" 
+				height="13vw" 
+				top="35%" 
+				right="8%" 
 				interval={5800} 
 				zIndex={3}
 				opacity={0.63}
