@@ -3,10 +3,21 @@ import { Button } from "./ui/button";
 import { buttonVariants } from "./ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { fadeIn, slideUp, buttonHover } from "../lib/animations";
-import { useEffect } from "react";
-import { MoleculeFlash } from "./molecules/MoleculeFlash";
+import { useEffect, useState } from "react";
+
+// Array of molecule images
+const moleculeImages = [
+	"/Ethanol_Conformer3D_small.png",
+	"/Methanol_Conformer3D_small.png",
+	"/Cocaine_Conformer3D_small.png",
+	"/Carbon-Dioxide_Conformer3D_small.png"
+];
 
 export const Hero = () => {
+	const [showMolecule, setShowMolecule] = useState(false);
+	const [currentMolecule, setCurrentMolecule] = useState(0);
+	const [moleculePosition, setMoleculePosition] = useState({ top: "30%", left: "70%" });
+
 	// Inicjalizacja animacji po załadowaniu strony
 	useEffect(() => {
 		const handleScroll = () => {
@@ -23,6 +34,50 @@ export const Hero = () => {
 		handleScroll(); // Wywołaj raz na początku, aby aktywować widoczne elementy
 		
 		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
+
+	// Flash molecule effect
+	useEffect(() => {
+		// Function to calculate random position based on viewport
+		const getRandomPosition = () => {
+			// Adjust safe area margins based on screen size
+			const safeMarginHorizontal = window.innerWidth < 768 ? 15 : 20;
+			const safeMarginVertical = window.innerWidth < 768 ? 20 : 25;
+			
+			// Calculate safe area percentages 
+			const minX = safeMarginHorizontal;
+			const maxX = 100 - safeMarginHorizontal - 15; // Extra margin for image width
+			const minY = safeMarginVertical;
+			const maxY = 70; // Keep in top 70% of screen for visibility
+			
+			const newTop = Math.floor(Math.random() * (maxY - minY)) + minY + "%";
+			const newLeft = Math.floor(Math.random() * (maxX - minX)) + minX + "%";
+			
+			return { top: newTop, left: newLeft };
+		};
+		
+		// Show molecule for 3 seconds, then hide for 2 seconds
+		const showTimer = setInterval(() => {
+			// Pick random molecule first (while hidden)
+			const randomIndex = Math.floor(Math.random() * moleculeImages.length);
+			setCurrentMolecule(randomIndex);
+			
+			// Generate random position and show
+			setMoleculePosition(getRandomPosition());
+			setShowMolecule(true);
+			
+			// Hide after 3 seconds
+			setTimeout(() => setShowMolecule(false), 3000);
+		}, 5000); // Every 5 seconds
+		
+		// Start with showing a molecule, after a slight delay
+		setTimeout(() => {
+			setMoleculePosition(getRandomPosition());
+			setCurrentMolecule(Math.floor(Math.random() * moleculeImages.length));
+			setShowMolecule(true);
+		}, 800);
+		
+		return () => clearInterval(showTimer);
 	}, []);
 
 	return (
@@ -44,107 +99,31 @@ export const Hero = () => {
 			<div className="molecular-glow" style={{ top: '60%', left: '30%', width: '200px', height: '200px', animationDelay: '3s' }} />
 			<div className="molecular-glow" style={{ top: '20%', right: '20%', width: '250px', height: '250px', animationDelay: '5s' }} />
 			
-			{/* Zoptymalizowane molekuły z lepszymi animacjami */}
-			<MoleculeFlash 
-				width="18vw" 
-				height="18vw" 
-				top="8%" 
-				left="8%" 
-				interval={5500} 
-				zIndex={3}
-				opacity={0.7}
-				scale={0.95}
-				initialDelay={300}
-				avoidMolecules={['cocaine', 'caffeine']}
-			/>
-			<MoleculeFlash 
-				width="15vw" 
-				height="15vw" 
-				top="12%" 
-				right="8%" 
-				interval={6800} 
-				zIndex={2}
-				opacity={0.65}
-				scale={0.9}
-				initialDelay={800}
-				avoidMolecules={['methanol', 'formicAcid']}
-			/>
-			<MoleculeFlash 
-				width="16vw" 
-				height="16vw" 
-				bottom="10%" 
-				left="10%" 
-				interval={6200} 
-				zIndex={4}
-				opacity={0.7}
-				scale={0.93}
-				initialDelay={1100}
-				avoidMolecules={['nitrobenzene', 'penicillin']}
-			/>
-			<MoleculeFlash 
-				width="15vw" 
-				height="15vw" 
-				bottom="12%" 
-				right="10%" 
-				interval={5200} 
-				zIndex={3}
-				opacity={0.75}
-				scale={0.95}
-				initialDelay={500}
-				avoidMolecules={['nitricAcid', 'carbonMonoxide']}
-			/>
-			<MoleculeFlash 
-				width="12vw" 
-				height="12vw" 
-				top="10%" 
-				left="38%" 
-				interval={7500} 
-				zIndex={2}
-				opacity={0.6}
-				scale={0.85}
-				initialDelay={1500}
-				hideOnMobile={true}
-				avoidMolecules={['carbonDioxide', 'caffeine']}
-			/>
-			<MoleculeFlash 
-				width="13vw" 
-				height="13vw" 
-				bottom="8%" 
-				right="38%" 
-				interval={7100} 
-				zIndex={2}
-				opacity={0.65}
-				scale={0.87}
-				initialDelay={1900}
-				hideOnMobile={true}
-				avoidMolecules={['carbonDioxide', 'methanol']}
-			/>
-			
-			{/* Zredukowana liczba molekuł dla lepszej wydajności */}
-			<MoleculeFlash 
-				width="14vw" 
-				height="14vw" 
-				top="38%" 
-				left="8%" 
-				interval={6700} 
-				zIndex={2}
-				opacity={0.68}
-				scale={0.9}
-				initialDelay={700}
-				avoidMolecules={['penicillin', 'nitricAcid']}
-			/>
-			<MoleculeFlash 
-				width="13vw" 
-				height="13vw" 
-				top="35%" 
-				right="8%" 
-				interval={5800} 
-				zIndex={3}
-				opacity={0.63}
-				scale={0.88}
-				initialDelay={1200}
-				avoidMolecules={['methanol', 'nitrobenzene']}
-			/>
+			{/* Random molecule image that flashes */}
+			{showMolecule && (
+				<motion.img
+					src={moleculeImages[currentMolecule]}
+					alt="Molecule"
+					className="absolute z-10 w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 object-contain molecule-glow-effect"
+					style={{ ...moleculePosition }}
+					initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+					animate={{ 
+						opacity: 1, 
+						scale: 1, 
+						rotate: 10,
+						transition: {
+							opacity: { duration: 0.5 },
+							scale: { duration: 0.5 },
+							rotate: { 
+								duration: 3, 
+								repeat: Infinity, 
+								repeatType: "reverse" 
+							}
+						}
+					}}
+					exit={{ opacity: 0, scale: 0.8 }}
+				/>
+			)}
 			
 			<motion.div 
 				className="text-center space-y-6 mb-8 z-10 max-w-3xl px-4"
