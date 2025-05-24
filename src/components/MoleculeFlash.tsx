@@ -27,7 +27,6 @@ interface MoleculeFlashProps {
   scale?: number;
   opacity?: number;
   rotate?: boolean;
-  rotateSpeed?: number;
   hideOnMobile?: boolean;
   avoidMolecules?: MoleculeType[]; // Optional list of molecules to avoid
 }
@@ -45,7 +44,6 @@ export const MoleculeFlash = ({
   scale = 1,
   opacity = 0.8,
   rotate = true,
-  rotateSpeed = 1,
   hideOnMobile = false,
   avoidMolecules = []
 }: MoleculeFlashProps) => {
@@ -125,17 +123,6 @@ export const MoleculeFlash = ({
   if (isMobile && hideOnMobile) {
     return null;
   }
-
-  // Calculate responsive scale based on screen size
-  const getResponsiveScale = () => {
-    if (window.innerWidth < 768) {
-      return scale * 0.6; // Smaller on mobile
-    } else if (window.innerWidth < 1024) {
-      return scale * 0.8; // Medium on tablets
-    } else {
-      return scale; // Original scale on desktop
-    }
-  };
 
   return (
     <div 
