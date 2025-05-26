@@ -1,0 +1,13 @@
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quickstart: quickstart.md
+  - User Guide:
+      - Overview: user_guide/overview.md
+      - App: user_guide/app.md
+      - CLI: user_guide/cli.md
+  - Tutorials:
+      - Tutorial 1: tutorials/tutorial-1.md
+      - Tutorial 2: tutorials/tutorial-2.md
+
+    

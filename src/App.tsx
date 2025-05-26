@@ -9,6 +9,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { NextSection } from "./components/next";
 import { MolpyDocs, MolplotDocs, MolvisDocs } from "./docs";
 import { LoadingScreen } from "./components/LoadingScreen";
+import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
 
 function App() {
@@ -18,10 +19,10 @@ function App() {
 
   // Symulacja początkowego ładowania aplikacji
   useEffect(() => {
-    // Pokaż ekran ładowania przez 2 sekundy przy pierwszym uruchomieniu
+    // Reduce loading time to improve SEO and initial page load
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 500);
     
     return () => clearTimeout(timer);
   }, []);
@@ -59,12 +60,12 @@ function App() {
           // Update URL without full page reload
           window.history.pushState({}, '', newPath);
           
-          // Symulacja czasu ładowania strony
+          // Reduce page transition loading time
           setTimeout(() => {
             setCurrentPath(newPath);
             window.scrollTo(0, 0);
             setIsLoading(false);
-          }, 1200); // Symulacja czasu ładowania
+          }, 500); // Reduced from 1200ms to improve UX and SEO
         }
       }
     };
@@ -133,6 +134,9 @@ function App() {
 
   return (
     <>
+      {/* SEO Structured Data */}
+      <SEOSchema path={currentPath} />
+      
       <LoadingScreen isLoading={isLoading} text={loadingText} />
       
       <AnimatePresence mode="wait">

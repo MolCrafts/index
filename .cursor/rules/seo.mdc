@@ -1,0 +1,159 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+SEO Audit and Strategy for MolCrafts Landing Page
+1. SEO Audit
+Technical SEO
+Rendering & Indexing: The MolCrafts site is a React single-page app (SPA) with client-side routing (see App.tsx), which may pose indexing challenges. In a CSR setup, “without executing JS, crawlers cannot obtain any content”
+github.com
+. As a result, search engines may not see the full page content unless server-side rendering (SSR) or pre-rendering is implemented. To ensure crawlability, consider enabling SSR/static prerender or using a dedicated crawler-friendly snapshot.
+Page Structure: The HTML markup uses semantic tags (e.g. <section>, <main>) for layout, which is good. For example, the Hero section uses a <h1> for “MolCrafts” and a <h2> for the tagline “Seamless Molecular Sciences toolbox”
+github.com
+, and the Features section uses a <h2> (“Powerful Features”)
+github.com
+. These headings establish a clear hierarchy. Ensure that other sections also use proper heading levels (e.g. About section should start with an <h2> or <h3> as appropriate).
+Meta Tags & Crawl Control: The code and metadata (package.json) do not show any <title>, <meta name="description">, or robots directives. For example, the package.json contains only a generic description and two keywords (“molcrafts”, “landing-page”)
+github.com
+github.com
+. This implies the site likely lacks a meaningful <title> and meta description in its HTML. Add a unique <title> and descriptive meta tags on the landing page. Also add a robots.txt and sitemap.xml to guide crawlers (a sitemap “guides robots for easier indexing” of site links
+github.com
+).
+Performance: The site includes many animations (background blobs, MoleculeFlash components, loading screens) which may slow initial load. A 2-second loading screen is hard-coded in App.tsx
+github.com
+, delaying content. Optimize performance by minimizing render-blocking scripts, lazy-loading heavy components, and ensuring fast time-to-content. Google PageSpeed and Lighthouse scores should be regularly checked. Improved load speed also benefits SEO ranking.
+On-Page SEO
+Title & Meta Description: As noted, no custom title or description is present. The title should include “MolCrafts” plus a concise descriptor (e.g. “MolCrafts – Open-Source Molecular Simulation Toolbox”). The meta description should summarize the site’s offerings and include key phrases (e.g. “molecular simulation”, “open-source”, etc.).
+Heading Structure: The landing page has a good start: an <h1> (“MolCrafts”) and <h2> (“Seamless Molecular Sciences toolbox”) in the Hero section
+github.com
+. Ensure subsequent sections follow in order (e.g. Features heading is <h2>
+github.com
+). Avoid skipping levels (don’t jump from H1 to H3). Each section (e.g. About, Features) should have a clear heading with relevant keywords.
+Content and Keywords: The visible text uses relevant terms such as “Molecular Simulation”, “Open-Source”, and “molecular sciences research”. For example, the Hero paragraph reads “Advancing Molecular Simulation with the Strength of Open-Source Collaboration”
+github.com
+ and the Features intro says “MolCrafts provides a comprehensive suite of tools for molecular sciences research”
+github.com
+. These are good for targeting terms like “molecular simulation” and “open-source”. To optimize further, sprinkle top keywords (e.g. molecular simulation, computational chemistry, data analysis, molecular toolbox) in headings and body text. Consider adding a brief “About MolCrafts” paragraph highlighting the project’s purpose and main keywords.
+Images & Alt Text: The current code uses SVG/icon graphics (Lucide icons and backgrounds) and no <img> tags with photos, so there are no missing alt attributes. If you add any illustrative images in the future, provide descriptive alt text for each.
+Internal Linking: The landing page links to GitHub (“Github Repository” button) and presumably to the docs sections (MolPy, etc.). Ensure all important pages (features, docs, blog) are interlinked. Use descriptive anchor text (e.g. “MolPy Documentation”) instead of generic “click here” links.
+Mobile & Accessibility: The responsive layout and Tailwind classes suggest mobile friendliness. Verify via Chrome’s mobile emulator or Google’s Mobile-Friendly Test. Use aria-labels or proper HTML roles if needed for interactive components (e.g. the floating “Explore Molcrafts” arrow should be keyboard-accessible).
+Content Audit
+Quality and Relevance: The content is concise and thematic. It highlights “molecular sciences” themes (from the MolPy README
+github.com
+), which is relevant. Expand on content by adding brief introductions for each feature or link to documentation.
+Keyword Usage: Primary keywords like “molecular simulation” appear organically (Hero text and MolPy description
+github.com
+). Build out content (e.g. an About section) to include secondary keywords (e.g. “computational chemistry”, “molecular modeling”, “data management in simulations”) to capture broader search queries.
+Uniqueness: Ensure all page text is unique (not copied from others) and useful. The tagline and features text are original. If reusing text from documentation, consider summarizing to avoid duplication penalties.
+Schema Markup: Currently none is evident. Adding JSON-LD (e.g. Organization or SoftwareApplication schema) will help search engines understand the site’s content. Include structured data for the organization (MolCrafts), software products (MolPy, MolPlot, etc.), and breadcrumbs if multiple pages exist.
+On-Page SEO Audit Checklist
+Element	Current Status	Recommendation
+Title Tag	Not found in code.	Add a unique <title> with “MolCrafts” and primary keywords.
+Meta Description	Not present.	Add a <meta name="description"> summarizing the site’s value.
+Headings (H1/H2/H3)	H1 & H2 present (MolCrafts, tagline)
+github.com
+
+H2 in Features
+github.com
+. Further sections need proper headings.	Ensure logical heading hierarchy with keywords (e.g. H2 for each section).
+Keyword Tag	Package keywords only ["molcrafts","landing-page"]
+github.com
+ (ignored by modern SEO).	Use relevant keywords in content and meta title/desc instead (meta keywords tag is deprecated).
+Alt Text on Images	No <img> elements currently.	If adding images, use descriptive alt attributes.
+Semantic HTML	Uses <main>, <section>, etc.; looks valid.	Good. Continue using semantic tags for structure.
+URL Structure	Single-page; routes like /docs/molpy.	Ensure clean, descriptive URLs if multi-page (e.g. /docs/molpy/).
+Robots.txt / Sitemap.xml	None found.	Create robots.txt and sitemap.xml to guide indexing
+github.com
+.
+Page Speed (Core Web Vitals)	Animations and loading screen may delay content.	Optimize and minify assets; remove unnecessary delays.
+Mobile-Friendly	Responsive layout via Tailwind; likely passes mobile-friendly test.	Verify via testing; fix any issues.
+
+2. Key SEO Weaknesses
+CSR without SSR: The SPA approach means initial HTML has minimal content; as a result, search bots may see little text (SEO issue)
+github.com
+. Implement SSR or prerender to expose content in HTML.
+Missing Meta Tags: No custom <title> or <meta description> is defined, hurting click-through and ranking.
+Slow First Paint: The 2-second artificial loading screen (MolCrafts loading animation) delays content visibility, potentially hurting SEO. Remove or shorten this delay.
+Limited Metadata: The project’s metadata is sparse (package.json description “MolCrafts landing page” and only “molcrafts” keyword
+github.com
+github.com
+). This suggests the actual HTML is similarly minimal. Enrich with business/keyword info.
+No Structured Data: Lacking JSON-LD schema for Organization/Software. Adding schema markup will improve rich results and visibility.
+Link Juice: Currently, the site is new and likely has few external links. A lack of backlinks will limit ranking ability; this must be addressed (see Backlinks strategy).
+3. SEO Strategy for “molcrafts”
+Target Keywords: Focus on the brand “molcrafts” but also relevant thematic keywords. Possible targets include: molecular simulation, computational chemistry, molecular sciences tools, open-source molecular toolkit, data analysis. Below is a starter list of keyword suggestions:
+Keyword	Rationale/Notes
+molcrafts	Primary brand name (low volume initially but essential for brand SEO).
+molecular simulation toolbox	Matches site tagline and content (targets niche “toolbox” queries).
+open-source molecular research	Emphasizes open collaboration aspect (“Open-Source” is in Hero text).
+computational chemistry tools	Broad domain term, high relevance; competitors like GROMACS rank high.
+molecular data management	From MolPy description (file parsing, data management)
+github.com
+.
+molecular dynamics simulation	A common field term; MolCrafts covers this area.
+MolPy library	Audience for MolPy docs; capitalizing on subproject name.
+molecular visualization	Related to planned MolVis; grabs visualization queries.
+
+(Note: Actual search volumes should be checked with an SEO tool. The above are illustrative high-level targets.) Ranking “molcrafts” Top:
+Since “molcrafts” is the unique brand term, ensure every page titles and content mention “MolCrafts”. Create high-quality pages (About, Docs, GitHub README) referencing MolCrafts. Register and verify the site in Google Search Console. Encourage external links using the exact brand name as anchor text (e.g. GitHub, open-source lists). On-Page Keyword Optimization:
+Titles & Headings: Incorporate target keywords. For example, a title like “MolCrafts – Open-Source Molecular Simulation Toolbox”. Use keywords in H2/H3 (e.g. “Powerful Features” might become “Powerful Features of MolCrafts”).
+Body Content: Expand sections or add short descriptions so that each page has 300+ words with natural usage of keywords. For example, an About section could include “MolCrafts (MolPy, MolPot, etc.)” and mention key terms such as “molecular simulations”, “data analysis”, “open-source collaboration”.
+URL and Meta: If extending beyond one page, use keyword-rich URLs (e.g. /molpy, /molpot) and write meta descriptions like: “MolCrafts is an open-source toolkit for molecular simulation and analysis. Discover MolPy, MolPot, and more.”
+Content Development: Consider adding a short blog or news section about project updates (each post can target long-tail keywords). Also build out the documentation (MolPy, MolPlot, MolPot) with SEO in mind (doc pages often rank well for technical terms). Use the MolPy README’s language (e.g. “molecular simulation”, “trajectories”, “data management”
+github.com
+) to craft meta descriptions or abstracts.
+4. Recommendations
+Metadata Improvements: Add a <head> section in the HTML (or use a React head plugin) to define <title>, <meta name="description">, and <meta charset>. For example: <title>MolCrafts – Open-Source Molecular Simulation Toolbox</title>. Write a concise description like: “MolCrafts is an open-source suite (MolPy, MolPot, MolVis) for molecular simulations and data analysis in computational chemistry.”
+Structured Data (Schema): Implement Schema.org JSON-LD. At minimum, add an Organization schema with name “MolCrafts” and URL, and a SoftwareApplication schema for the toolkit (listing categories like Computational Chemistry). This helps Google display rich snippets.
+Performance Tuning: Remove or shorten the artificial loading delay in code (currently 2s)
+github.com
+. Use lazy-loading for heavy components (e.g. the 3D backgrounds or animations). Minify and bundle scripts/CSS (Vite/rsbuild should already do this in production). Optimize any images and consider compressing vector shapes if used. Aim for a First Contentful Paint under 2s.
+Content and Backlinks: Leverage the GitHub presence. Add a descriptive README on GitHub (with keywords) linking back to molcrafts.org. Reach out on academic forums, open science blogs, or social media (Reddit r/chemistry, Hacker News, etc.) to showcase MolCrafts, which can generate authoritative backlinks. Submit the site to relevant directories (e.g. computational chemistry resource lists). Participation in conferences or papers, mentioning MolCrafts, would also drive links.
+Monitoring: Use Google Search Console and analytics to track which keywords bring traffic. Adjust strategy based on data (e.g. if “molecular toolbox” gets clicks, emphasize related content). Regularly audit with tools like Lighthouse to catch regressions in SEO or performance.
+By addressing the technical SEO gaps (especially enabling crawler-friendly rendering), enriching on-page metadata, and strategically targeting molecular science keywords, MolCrafts can improve its search visibility. Consistent branding (“MolCrafts”) combined with high-quality content and backlink outreach should drive the site toward ranking #1 for its niche terms.
+Keyword Strategy Table
+Keyword	Relevance Focus
+molcrafts (brand)	Primary brand term (build awareness, exactly matching site name).
+molecular simulation toolbox	Closely matches tagline; moderate competition.
+open-source molecular tools	Emphasizes collaboration; targets GitHub searchers.
+computational chemistry tools	Broad field term; high volume, competitive (e.g. GROMACS).
+molecular dynamics simulation	Direct audience interest; high volume, competitive.
+molecular data analysis	Niche term linking to feature set (data management).
+MolPy library	Specific product term (captures MolPy docs search).
+molecular visualization	For MolVis component; moderate competition.
+
+On-Page SEO Audit Checklist (Summary)
+Item	Status / Finding	Action Item
+Title Tag	Missing (generic or default)	Add a unique, keyword-rich title.
+Meta Description	Missing	Write an informative meta description with target keywords.
+Headings (H1–H3)	Present (Hero H1 “MolCrafts”
+github.com
+; H2 tagline; Features H2
+github.com
+)	Ensure all sections have logical heading tags with keywords.
+Content Keywords	Relevant terms present (e.g. “molecular simulation”
+github.com
+)	Expand content to include more target keywords/context.
+Images & Alt Text	No images currently; icons/SVG used	If adding images, include descriptive alt text.
+URL Structure	SPA routes (e.g. /docs/molpy)	If multi-page, use clean, descriptive URLs.
+Internal Linking	Limited (GitHub link present)	Link to docs and resources; use keyword-rich anchor text.
+Schema/Structured Data	Not implemented	Add JSON-LD for Organization/Software.
+Sitemap	None detected	Create and submit sitemap.xml (guides crawlers
+github.com
+).
+robots.txt	None detected	Create robots.txt to control crawler access.
+Page Speed	Potentially slow (animations, loading screen)	Optimize assets; reduce load time for better SEO.
+Mobile-Friendly	Likely responsive (Tailwind CSS classes)	Test and fix any mobile usability issues.
+
+Competitive Keyword Benchmarking
+While MolCrafts is a unique brand, it competes conceptually with established molecular simulation tools. For example:
+Keyword	Top Competitor Examples	Note (MolCrafts Strategy)
+molecular simulation	GROMACS, OpenMM	Very competitive. Focus MolCrafts on niche phrases (e.g. “molcrafts molecular toolbox”).
+computational chemistry	RDKit, Psi4	High volume. Use in broader content to attract related interest.
+data analysis chemistry	MDAnalysis, chemfiles	Moderate competition. Highlight unique approach in content (cite MolPy data tools
+github.com
+).
+molecular visualization	VMD, PyMOL	Highly developed tools. MolCrafts’ future “MolVis” can target long-tail like “molvis babylonjs React”.
+
+open-source chemistry	GitHub projects, projects pages	General. Emphasize MolCrafts’ open-source nature in metadata and outreach.
