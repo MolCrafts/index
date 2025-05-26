@@ -42,8 +42,8 @@ const docsRoutes: RouteProps[] = [
     label: "MolPy",
   },
   {
-    href: "/docs/molplot",
-    label: "MolPlot",
+    href: "/docs/molpot",
+    label: "MolPot",
   },
   {
     href: "/docs/molvis",

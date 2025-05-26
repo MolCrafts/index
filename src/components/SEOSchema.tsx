@@ -79,18 +79,20 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           'url': 'https://molcrafts.org'
         }
       });
-    } else if (path.startsWith('/docs/molplot')) {
-      // Software schema for MolPlot docs
+    } else if (path.startsWith('/docs/molpot')) {
+      // Software schema for MolPot docs
       script.innerHTML = JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'SoftwareSourceCode',
-        'name': 'MolPlot',
-        'applicationCategory': 'Scientific',
-        'programmingLanguage': 'Python',
-        'description': 'MolPlot is a visualization tool for molecular data and simulation results.',
-        'codeRepository': 'https://github.com/MolCrafts/MolPlot',
-        'isPartOf': {
-          '@type': 'SoftwareApplication',
+        '@type': 'SoftwareApplication',
+        'name': 'MolPot',
+        'applicationCategory': 'Scientific Software',
+        'operatingSystem': 'Cross-platform',
+        'description': 'MolPot is a visualization tool for molecular data and simulation results.',
+        'codeRepository': 'https://github.com/MolCrafts/MolPot',
+        'programmingLanguage': ['Python', 'TypeScript'],
+        'license': 'MIT',
+        'author': {
+          '@type': 'Organization',
           'name': 'MolCrafts',
           'url': 'https://molcrafts.org'
         }

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { DocsNavbar } from "./components/DocsNavbar";
 import { DocsFooter } from "./components/DocsFooter";
 
-export type DocTheme = "molpy" | "molplot" | "molvis";
+export type DocTheme = "molpy" | "molpot" | "molvis";
 
 interface DocumentationLayoutProps {
   children: ReactNode;

@@ -7,7 +7,7 @@ import { Hero } from "./components/Hero";
 import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { NextSection } from "./components/next";
-import { MolpyDocs, MolplotDocs, MolvisDocs } from "./docs";
+import { MolpyDocs, MolpotDocs, MolvisDocs } from "./docs";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
@@ -80,7 +80,7 @@ function App() {
   const getPageName = (path: string): string => {
     if (path === '/') return 'Home';
     if (path.startsWith('/docs/molpy')) return 'MolPy Documentation';
-    if (path.startsWith('/docs/molplot')) return 'MolPlot Documentation';
+    if (path.startsWith('/docs/molpot')) return 'MolPot Documentation';
     if (path.startsWith('/docs/molvis')) return 'MolVis Documentation';
     return path.split('/').pop() || 'Page';
   };
@@ -115,8 +115,8 @@ function App() {
   const renderContent = () => {
     if (currentPath.startsWith('/docs/molpy')) {
       return <MolpyDocs />;
-    } else if (currentPath.startsWith('/docs/molplot')) {
-      return <MolplotDocs />;
+    } else if (currentPath.startsWith('/docs/molpot')) {
+      return <MolpotDocs />;
     } else if (currentPath.startsWith('/docs/molvis')) {
       return <MolvisDocs />;
     } else {

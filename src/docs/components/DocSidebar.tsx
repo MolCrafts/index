@@ -17,12 +17,12 @@ export const DocSidebar: React.FC<DocSidebarProps> = ({
   activeSectionId,
   onSectionClick,
 }) => {
-  const themeStyles = {
+  const themeConfig = {
     molpy: {
       active: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
       hover: "hover:bg-blue-50 dark:hover:bg-blue-900/20"
     },
-    molplot: {
+    molpot: {
       active: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
       hover: "hover:bg-green-50 dark:hover:bg-green-900/20"
     },
@@ -32,7 +32,7 @@ export const DocSidebar: React.FC<DocSidebarProps> = ({
     }
   };
 
-  const styles = themeStyles[theme];
+  const styles = themeConfig[theme];
 
   return (
     <div className="w-64 pr-4">

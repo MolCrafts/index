@@ -108,11 +108,11 @@ export const Footer = () => {
 						</div>
 						<div>
 							<motion.a
-								href="/docs/molplot"
+								href="/docs/molpot"
 								className="opacity-60 hover:opacity-100 block"
 								whileHover={{ x: 5 }}
 							>
-								<span className="text-green-600 dark:text-green-400">MolPlot</span>
+								<span className="text-green-600 dark:text-green-400">MolPot</span>
 							</motion.a>
 						</div>
 						<div>

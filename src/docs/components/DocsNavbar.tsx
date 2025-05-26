@@ -16,7 +16,7 @@ export const DocsNavbar: React.FC<DocsNavbarProps> = ({ theme }) => {
       hover: "hover:text-blue-700 dark:hover:text-blue-300",
       border: "border-blue-200 dark:border-blue-800"
     },
-    molplot: {
+    molpot: {
       accent: "text-green-600 dark:text-green-400",
       hover: "hover:text-green-700 dark:hover:text-green-300",
       border: "border-green-200 dark:border-green-800"
@@ -65,11 +65,11 @@ export const DocsNavbar: React.FC<DocsNavbarProps> = ({ theme }) => {
               MolPy
             </motion.a>
             <motion.a 
-              href="/docs/molplot" 
-              className={`text-sm font-medium ${theme === "molplot" ? "text-green-600 dark:text-green-400" : "text-muted-foreground"}`}
+              href="/docs/molpot" 
+              className={`text-sm font-medium ${theme === "molpot" ? "text-green-600 dark:text-green-400" : "text-muted-foreground"}`}
               whileHover={{ y: -2 }}
             >
-              MolPlot
+              MolPot
             </motion.a>
             <motion.a 
               href="/docs/molvis" 

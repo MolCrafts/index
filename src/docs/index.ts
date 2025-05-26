@@ -1,5 +1,5 @@
 export { MolpyDocs } from "./molpy";
-export { MolplotDocs } from "./molpot";
+export { MolpotDocs } from "./molpot";
 export { MolvisDocs } from "./molvis";
 
 export { DocumentationLayout, type DocTheme } from "./DocumentationLayout";
