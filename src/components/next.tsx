@@ -50,9 +50,16 @@ export const NextSection = () => {
 			onKeyDown={(e) => {
 				if (e.key === "Enter" || e.key === " ") scrollToNext();
 			}}
-			className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 cursor-pointer animate-pulse text-center flex flex-col items-center"
+			className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 cursor-pointer animate-bounce text-center flex flex-col items-center"
 		>
-			<span className="block text-sm text-green-500 mb-1 text-center">Explore Molcrafts</span>
+			<span
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full bg-green-400 opacity-30 blur-2xl pointer-events-none"
+                style={{ width: 64, height: 64, left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
+            />
+			<span className="block text-sm text-green-400/70 mb-1 text-center">
+				Explore
+			</span>
 			<ChevronDown
 				size={24}
 				className="text-green-500 hover:scale-105 transition"

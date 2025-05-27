@@ -106,7 +106,7 @@ export const Hero = () => {
 						className="inline text-5xl sm:text-6xl md:text-7xl"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.2, duration: 0.8 }}
+						transition={{ delay: 0.1, duration: 0.4 }}
 					>
 						<span className="gradient-text-primary">MolCrafts</span>
 					</motion.h1>
@@ -115,7 +115,7 @@ export const Hero = () => {
 						className="inline text-3xl md:text-4xl lg:text-5xl sm:text-2xl mt-3"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.4, duration: 0.8 }}
+						transition={{ delay: 0.2, duration: 0.4 }}
 					>
 						<span className="gradient-text-secondary">
 							Seamless Molecular Sciences toolbox
@@ -127,7 +127,7 @@ export const Hero = () => {
 					className="text-xl text-muted-foreground max-w-md mx-auto"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ delay: 0.6, duration: 0.8 }}
+					transition={{ delay: 0.3, duration: 0.4 }}
 				>
 					Advancing Molecular Simulation with the Strength of Open-Source
 					Collaboration for Computational Chemistry and Molecular Data Analysis
@@ -137,7 +137,7 @@ export const Hero = () => {
 					className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ delay: 0.8, duration: 0.8 }}
+					transition={{ delay: 0.4, duration: 0.4 }}
 				>
 					<motion.div whileHover={buttonHover}>
 						<Button className="w-full btn-hover-effect focus-ring">

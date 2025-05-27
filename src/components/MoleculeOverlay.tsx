@@ -145,18 +145,18 @@ export const MoleculeOverlay = () => {
 					<motion.img
 						src={moleculeImages[currentMolecule]}
 						alt="Molecule"
-						className="absolute pointer-events-none z-10 w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain molecule-glow-effect select-none"
+						className="absolute pointer-events-none z-10 w-30 h-30 md:w-42 md:h-42 lg:w-48 lg:h-48 object-contain molecule-glow-effect select-none"
 						style={{ ...moleculePosition }}
-						initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+						initial={{ opacity: 0, scale: 0.92, rotate: -10 }}
 						animate={{
 							opacity: 1,
 							scale: 1,
 							rotate: 10,
 							transition: {
-								opacity: { duration: 0.5 },
-								scale: { duration: 0.5 },
+								opacity: { duration: 0.8 },
+								scale: { duration: 0.8 },
 								rotate: {
-									duration: 4,
+									duration: 6,
 									repeat: Number.POSITIVE_INFINITY,
 									repeatType: "reverse",
 								},
@@ -164,10 +164,10 @@ export const MoleculeOverlay = () => {
 						}}
 						exit={{
 							opacity: 0,
-							scale: 0.8,
+							scale: 0.92,
 							transition: {
-								opacity: { duration: 0.5 },
-								scale: { duration: 0.5 },
+								opacity: { duration: 0.8 },
+								scale: { duration: 0.8 },
 							},
 						}}
 						draggable="false"
