@@ -8,14 +8,14 @@ import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { NextSection } from "./components/next";
 import { MolpyDocs, MolpotDocs, MolvisDocs } from "./docs";
-import { LoadingScreen } from "./components/LoadingScreen";
+
 import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingText, setLoadingText] = useState("Loading MolCrafts...");
+  
 
   // Symulacja początkowego ładowania aplikacji
   useEffect(() => {
@@ -54,8 +54,8 @@ function App() {
         
         if (newPath !== currentPath) {
           // Pokazujemy ekran ładowania przy zmianie strony
-          setLoadingText(`Loading ${getPageName(newPath)}...`);
-          setIsLoading(true);
+          
+          
           
           // Update URL without full page reload
           window.history.pushState({}, '', newPath);
@@ -76,16 +76,10 @@ function App() {
     };
   }, [currentPath]);
 
-  // Pomocnicza funkcja do uzyskania nazwy strony na podstawie ścieżki
-  const getPageName = (path: string): string => {
-    if (path === '/') return 'Home';
-    if (path.startsWith('/docs/molpy')) return 'MolPy Documentation';
-    if (path.startsWith('/docs/molpot')) return 'MolPot Documentation';
-    if (path.startsWith('/docs/molvis')) return 'MolVis Documentation';
-    return path.split('/').pop() || 'Page';
-  };
+ 
 
-  // Obsługa efektu przewijania dla elementów z klasą scroll-fade
+
+
   useEffect(() => {
     const handleScroll = () => {
       const elements = document.querySelectorAll('.scroll-fade');
@@ -137,7 +131,7 @@ function App() {
       {/* SEO Structured Data */}
       <SEOSchema path={currentPath} />
       
-      <LoadingScreen isLoading={isLoading} text={loadingText} />
+     
       
       <AnimatePresence mode="wait">
         {!isLoading && (
