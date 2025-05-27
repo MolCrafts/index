@@ -101,7 +101,7 @@ export const Hero = () => {
 				>
 					<motion.div whileHover={buttonHover}>
 						<Button className="w-full btn-hover-effect focus-ring">
-							Get Started with MolCrafts
+							Start MolCrafts
 						</Button>
 					</motion.div>
 
