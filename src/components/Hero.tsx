@@ -3,8 +3,12 @@ import { Button } from "./ui/button";
 import { buttonVariants } from "./ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { fadeIn, slideUp, buttonHover } from "../lib/animations";
-import { useEffect } from "react";
-import { MoleculeFlash } from "./molecules/MoleculeFlash";
+import { useEffect, lazy, Suspense } from "react";
+
+// Lazy load the MoleculeOverlay component
+const MoleculeOverlay = lazy(() => import('./MoleculeOverlay').then(module => ({ 
+	default: module.MoleculeOverlay 
+})));
 
 export const Hero = () => {
 	// Inicjalizacja animacji po załadowaniu strony
@@ -32,126 +36,31 @@ export const Hero = () => {
 			initial="hidden"
 			animate="visible"
 			variants={fadeIn}
+			aria-labelledby="main-heading"
 		>
 			{/* Enhanced subtle background blobs with molecular-like shapes */}
-			<div className="molecule-blob" style={{ top: '25%', left: '15%' }} />
-			<div className="molecule-blob" style={{ top: '35%', right: '20%', animationDelay: '7s' }} />
-			<div className="molecule-blob" style={{ bottom: '30%', left: '25%', animationDelay: '4s' }} />
-			<div className="molecule-blob" style={{ bottom: '15%', right: '15%', animationDelay: '2s' }} />
+			<div className="molecule-blob" style={{ top: '25%', left: '15%' }} aria-hidden="true" />
+			<div className="molecule-blob" style={{ top: '35%', right: '20%', animationDelay: '7s' }} aria-hidden="true" />
+			<div className="molecule-blob" style={{ bottom: '30%', left: '25%', animationDelay: '4s' }} aria-hidden="true" />
+			<div className="molecule-blob" style={{ bottom: '15%', right: '15%', animationDelay: '2s' }} aria-hidden="true" />
 			
 			{/* Subtle molecular background glow effects */}
-			<div className="molecular-glow" style={{ top: '30%', left: '50%', width: '300px', height: '300px' }} />
-			<div className="molecular-glow" style={{ top: '60%', left: '30%', width: '200px', height: '200px', animationDelay: '3s' }} />
-			<div className="molecular-glow" style={{ top: '20%', right: '20%', width: '250px', height: '250px', animationDelay: '5s' }} />
+			<div className="molecular-glow" style={{ top: '30%', left: '50%', width: '300px', height: '300px' }} aria-hidden="true" />
+			<div className="molecular-glow" style={{ top: '60%', left: '30%', width: '200px', height: '200px', animationDelay: '3s' }} aria-hidden="true" />
+			<div className="molecular-glow" style={{ top: '20%', right: '20%', width: '250px', height: '250px', animationDelay: '5s' }} aria-hidden="true" />
 			
-			{/* Zoptymalizowane molekuły z lepszymi animacjami */}
-			<MoleculeFlash 
-				width="20vw" 
-				height="20vw" 
-				top="5%" 
-				left="7%" 
-				interval={5500} 
-				zIndex={3}
-				opacity={0.7}
-				scale={0.95}
-				initialDelay={300}
-				avoidMolecules={['cocaine', 'caffeine']}
-			/>
-			<MoleculeFlash 
-				width="16vw" 
-				height="16vw" 
-				top="10%" 
-				right="6%" 
-				interval={6800} 
-				zIndex={2}
-				opacity={0.65}
-				scale={0.9}
-				initialDelay={800}
-				avoidMolecules={['methanol', 'formicAcid']}
-			/>
-			<MoleculeFlash 
-				width="18vw" 
-				height="18vw" 
-				bottom="8%" 
-				left="9%" 
-				interval={6200} 
-				zIndex={4}
-				opacity={0.7}
-				scale={0.93}
-				initialDelay={1100}
-				avoidMolecules={['nitrobenzene', 'penicillin']}
-			/>
-			<MoleculeFlash 
-				width="17vw" 
-				height="17vw" 
-				bottom="11%" 
-				right="8%" 
-				interval={5200} 
-				zIndex={3}
-				opacity={0.75}
-				scale={0.95}
-				initialDelay={500}
-				avoidMolecules={['nitricAcid', 'carbonMonoxide']}
-			/>
-			<MoleculeFlash 
-				width="14vw" 
-				height="14vw" 
-				top="7%" 
-				left="38%" 
-				interval={7500} 
-				zIndex={2}
-				opacity={0.6}
-				scale={0.85}
-				initialDelay={1500}
-				hideOnMobile={true}
-				avoidMolecules={['carbonDioxide', 'caffeine']}
-			/>
-			<MoleculeFlash 
-				width="15vw" 
-				height="15vw" 
-				bottom="6%" 
-				right="40%" 
-				interval={7100} 
-				zIndex={2}
-				opacity={0.65}
-				scale={0.87}
-				initialDelay={1900}
-				hideOnMobile={true}
-				avoidMolecules={['carbonDioxide', 'methanol']}
-			/>
-			
-			{/* Zredukowana liczba molekuł dla lepszej wydajności */}
-			<MoleculeFlash 
-				width="16vw" 
-				height="16vw" 
-				top="40%" 
-				left="5%" 
-				interval={6700} 
-				zIndex={2}
-				opacity={0.68}
-				scale={0.9}
-				initialDelay={700}
-				avoidMolecules={['penicillin', 'nitricAcid']}
-			/>
-			<MoleculeFlash 
-				width="15vw" 
-				height="15vw" 
-				top="33%" 
-				right="4%" 
-				interval={5800} 
-				zIndex={3}
-				opacity={0.63}
-				scale={0.88}
-				initialDelay={1200}
-				avoidMolecules={['methanol', 'nitrobenzene']}
-			/>
+			{/* Molecule overlay - now directly in Hero */}
+			<Suspense fallback={null}>
+				<MoleculeOverlay />
+			</Suspense>
 			
 			<motion.div 
 				className="text-center space-y-6 mb-8 z-10 max-w-3xl px-4"
 				variants={slideUp}
 			>
-				<motion.main className="font-bold text-4xl sm:text-2xl">
+				<motion.header className="font-bold text-4xl sm:text-2xl">
 					<motion.h1 
+						id="main-heading"
 						className="inline text-5xl sm:text-6xl md:text-7xl"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -172,7 +81,7 @@ export const Hero = () => {
 							Seamless Molecular Sciences toolbox
 						</span>
 					</motion.h2>
-				</motion.main>
+				</motion.header>
 
 				<motion.p 
 					className="text-xl text-muted-foreground max-w-md mx-auto"
@@ -181,7 +90,7 @@ export const Hero = () => {
 					transition={{ delay: 0.6, duration: 0.8 }}
 				>
 					Advancing Molecular Simulation with the Strength of Open-Source
-					Collaboration
+					Collaboration for Computational Chemistry and Molecular Data Analysis
 				</motion.p>
 
 				<motion.div 
@@ -192,7 +101,7 @@ export const Hero = () => {
 				>
 					<motion.div whileHover={buttonHover}>
 						<Button className="w-full btn-hover-effect focus-ring">
-							Get Started
+							Start MolCrafts
 						</Button>
 					</motion.div>
 
@@ -204,15 +113,16 @@ export const Hero = () => {
 							className={`w-full btn-hover-effect focus-ring ${buttonVariants({
 								variant: "outline",
 							})}`}
+							aria-label="Visit MolCrafts GitHub Repository"
 						>
 							Github Repository
-							<GitHubLogoIcon className="ml-2 w-5 h-5" />
+							<GitHubLogoIcon className="ml-2 w-5 h-5" aria-hidden="true" />
 						</a>
 					</motion.div>
 				</motion.div>
 			</motion.div>
 
-			<div className="shadow" />
+			<div className="shadow" aria-hidden="true" />
 		</motion.section>
 	);
 };

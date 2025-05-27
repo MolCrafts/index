@@ -3,9 +3,9 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { fadeIn, staggerContainer } from "../lib/animations";
 import { LazyImage } from "./LazyImage";
-import molpyLogo from "../assets/molpy.png";
-import molpotLogo from "../assets/molpot.png";
-import molvisLogo from "../assets/molvis.png";
+import molpyLogo from "../assets/molpy.webp";
+import molpotLogo from "../assets/molpot.webp";
+import molvisLogo from "../assets/molvis.webp";
 
 export const EcosystemLogos = () => {
   const sectionRef = useRef(null);

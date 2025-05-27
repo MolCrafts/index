@@ -1,39 +1,42 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React from "react";
 import { DocTheme } from "../DocumentationLayout";
 
-interface DocButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface DocButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   theme: DocTheme;
-  variant?: "primary" | "outline";
+  variant?: "solid" | "outline";
+  children: React.ReactNode;
 }
 
 export const DocButton: React.FC<DocButtonProps> = ({
   theme,
-  variant = "primary",
+  variant = "solid",
   children,
   className,
   ...props
 }) => {
-  const themeStyles = {
+  const themeConfig = {
     molpy: {
-      primary: "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-700 dark:hover:bg-blue-600",
-      outline: "border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950"
+      solid: "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
+      outline: "border-blue-200 text-blue-600 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/20"
     },
-    molplot: {
-      primary: "bg-green-600 hover:bg-green-700 text-white dark:bg-green-700 dark:hover:bg-green-600",
-      outline: "border-green-600 text-green-600 hover:bg-green-50 dark:border-green-400 dark:text-green-400 dark:hover:bg-green-950"
+    molpot: {
+      solid: "bg-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600",
+      outline: "border-green-200 text-green-600 hover:bg-green-50 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/20"
     },
     molvis: {
-      primary: "bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-700 dark:hover:bg-purple-600",
-      outline: "border-purple-600 text-purple-600 hover:bg-purple-50 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-950"
+      solid: "bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600",
+      outline: "border-purple-200 text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400 dark:hover:bg-purple-900/20"
     }
   };
 
-  const styles = themeStyles[theme];
+  const styles = themeConfig[theme];
   const variantStyle = styles[variant];
 
   return (
     <button
-      className={`px-4 py-2 rounded-md transition-colors border ${variantStyle} ${className || ""}`}
+      className={`px-4 py-2 rounded-md transition-colors duration-200 ${
+        variant === "outline" ? "border-2" : ""
+      } ${variantStyle} ${className || ""}`}
       {...props}
     >
       {children}

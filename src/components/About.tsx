@@ -3,7 +3,7 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { fadeIn, slideUp, staggerContainer } from "../lib/animations";
 import { LazyImage } from "./LazyImage";
-import molcraftsLogo from "../assets/molcrafts.png";
+import molcraftsLogo from "../assets/molcrafts.webp";
 import { EcosystemLogos } from "./EcosystemLogos";
 
 export const About = () => {

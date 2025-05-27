@@ -11,7 +11,7 @@ export const Footer = () => {
 			<hr className="w-11/12 mx-auto opacity-30" />
 
 			<motion.section 
-				className="container py-12 md:py-16 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-8"
+				className="container py-12 md:py-16 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-8 gap-y-8"
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.7 }}
@@ -108,11 +108,11 @@ export const Footer = () => {
 						</div>
 						<div>
 							<motion.a
-								href="/docs/molplot"
+								href="/docs/molpot"
 								className="opacity-60 hover:opacity-100 block"
 								whileHover={{ x: 5 }}
 							>
-								<span className="text-green-600 dark:text-green-400">MolPlot</span>
+								<span className="text-green-600 dark:text-green-400">MolPot</span>
 							</motion.a>
 						</div>
 						<div>
@@ -139,14 +139,14 @@ export const Footer = () => {
 						<p className="text-sm text-muted-foreground">
 							Subscribe for updates
 						</p>
-						<div className="flex">
+						<div className="flex flex-col gap-2 newsletter-form">
 							<input 
 								type="email" 
-								placeholder="Email address" 
-								className="py-1 px-2 rounded-l-md border border-input bg-background text-sm max-w-32 md:max-w-none"
+								placeholder="Email" 
+								className="py-1 px-2 rounded-md border border-input bg-background text-sm w-full"
 							/>
 							<motion.button 
-								className="bg-primary text-primary-foreground px-3 py-1 rounded-r-md text-sm"
+								className="newsletter-btn bg-primary text-primary-foreground py-1.5 rounded-md text-sm w-full"
 								whileHover={{ backgroundColor: "hsl(var(--primary) / 0.8)" }}
 								whileTap={{ scale: 0.97 }}
 							>

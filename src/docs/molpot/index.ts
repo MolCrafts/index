@@ -1,1 +1,1 @@
-export { MolplotDocs } from "./MolplotDocs"; 
+export { MolpotDocs } from "./MolpotDocs"; 

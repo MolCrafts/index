@@ -7,21 +7,22 @@ import { Hero } from "./components/Hero";
 import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { NextSection } from "./components/next";
-import { MolpyDocs, MolplotDocs, MolvisDocs } from "./docs";
-import { LoadingScreen } from "./components/LoadingScreen";
+import { MolpyDocs, MolpotDocs, MolvisDocs } from "./docs";
+
+import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingText, setLoadingText] = useState("Loading MolCrafts...");
+  
 
   // Symulacja początkowego ładowania aplikacji
   useEffect(() => {
-    // Pokaż ekran ładowania przez 2 sekundy przy pierwszym uruchomieniu
+    // Reduce loading time to improve SEO and initial page load
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 500);
     
     return () => clearTimeout(timer);
   }, []);
@@ -53,18 +54,18 @@ function App() {
         
         if (newPath !== currentPath) {
           // Pokazujemy ekran ładowania przy zmianie strony
-          setLoadingText(`Loading ${getPageName(newPath)}...`);
-          setIsLoading(true);
+          
+          
           
           // Update URL without full page reload
           window.history.pushState({}, '', newPath);
           
-          // Symulacja czasu ładowania strony
+          // Reduce page transition loading time
           setTimeout(() => {
             setCurrentPath(newPath);
             window.scrollTo(0, 0);
             setIsLoading(false);
-          }, 1200); // Symulacja czasu ładowania
+          }, 500); // Reduced from 1200ms to improve UX and SEO
         }
       }
     };
@@ -75,16 +76,10 @@ function App() {
     };
   }, [currentPath]);
 
-  // Pomocnicza funkcja do uzyskania nazwy strony na podstawie ścieżki
-  const getPageName = (path: string): string => {
-    if (path === '/') return 'Home';
-    if (path.startsWith('/docs/molpy')) return 'MolPy Documentation';
-    if (path.startsWith('/docs/molplot')) return 'MolPlot Documentation';
-    if (path.startsWith('/docs/molvis')) return 'MolVis Documentation';
-    return path.split('/').pop() || 'Page';
-  };
+ 
 
-  // Obsługa efektu przewijania dla elementów z klasą scroll-fade
+
+
   useEffect(() => {
     const handleScroll = () => {
       const elements = document.querySelectorAll('.scroll-fade');
@@ -114,8 +109,8 @@ function App() {
   const renderContent = () => {
     if (currentPath.startsWith('/docs/molpy')) {
       return <MolpyDocs />;
-    } else if (currentPath.startsWith('/docs/molplot')) {
-      return <MolplotDocs />;
+    } else if (currentPath.startsWith('/docs/molpot')) {
+      return <MolpotDocs />;
     } else if (currentPath.startsWith('/docs/molvis')) {
       return <MolvisDocs />;
     } else {
@@ -133,7 +128,10 @@ function App() {
 
   return (
     <>
-      <LoadingScreen isLoading={isLoading} text={loadingText} />
+      {/* SEO Structured Data */}
+      <SEOSchema path={currentPath} />
+      
+     
       
       <AnimatePresence mode="wait">
         {!isLoading && (

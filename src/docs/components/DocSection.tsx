@@ -14,26 +14,26 @@ export const DocSection: React.FC<DocSectionProps> = ({
   title,
   children,
 }) => {
-  const themeStyles = {
+  const themeConfig = {
     molpy: {
-      heading: "text-blue-700 dark:text-blue-300",
-      border: "border-blue-200 dark:border-blue-800"
+      textColor: "text-blue-600 dark:text-blue-400",
+      borderColor: "border-blue-200 dark:border-blue-800"
     },
-    molplot: {
-      heading: "text-green-700 dark:text-green-300",
-      border: "border-green-200 dark:border-green-800"
+    molpot: {
+      textColor: "text-green-600 dark:text-green-400",
+      borderColor: "border-green-200 dark:border-green-800"
     },
     molvis: {
-      heading: "text-purple-700 dark:text-purple-300",
-      border: "border-purple-200 dark:border-purple-800"
+      textColor: "text-purple-600 dark:text-purple-400",
+      borderColor: "border-purple-200 dark:border-purple-800"
     }
   };
 
-  const styles = themeStyles[theme];
+  const styles = themeConfig[theme];
 
   return (
-    <section id={id} className={`mb-12 pb-8 border-b ${styles.border}`}>
-      <h2 className={`text-2xl font-semibold mb-6 ${styles.heading}`}>
+    <section id={id} className={`mb-12 pb-8 border-b ${styles.borderColor}`}>
+      <h2 className={`text-2xl font-semibold mb-6 ${styles.textColor}`}>
         {title}
       </h2>
       <div className="prose max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground">

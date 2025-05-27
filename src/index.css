@@ -506,3 +506,33 @@ canvas * {
     opacity: 0.5;
   }
 }
+
+/* Molecule glow effect */
+.molecule-glow-effect {
+  filter: drop-shadow(0 0 5px rgba(128, 255, 212, 0.4)) drop-shadow(0 0 8px rgba(64, 164, 223, 0.2));
+  animation: pulse-glow 3s ease-in-out infinite alternate;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+@keyframes pulse-glow {
+  0% {
+    filter: drop-shadow(0 0 3px rgba(128, 255, 212, 0.3)) drop-shadow(0 0 5px rgba(64, 164, 223, 0.15));
+  }
+  100% {
+    filter: drop-shadow(0 0 6px rgba(128, 255, 212, 0.45)) drop-shadow(0 0 9px rgba(64, 164, 223, 0.25));
+  }
+}
+
+/* Disable selection for molecule images */
+.select-none {
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+}
