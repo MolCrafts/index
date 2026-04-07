@@ -1,41 +1,69 @@
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 export const Newsletter = () => {
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log("Subscribed!");
-  };
+	const [email, setEmail] = useState("");
+	const [subscribed, setSubscribed] = useState(false);
 
-  return (
-    <section id="newsletter" className="overflow-hidden w-full">
-      <hr className="w-11/12 mx-auto" />
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (email) {
+			setSubscribed(true);
+			setEmail("");
+		}
+	};
 
-      <div className="container py-24 sm:py-32 max-w-full">
-        <h3 className="text-center text-4xl md:text-5xl font-bold">
-          Join Our Daily{" "}
-          <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-            Newsletter
-          </span>
-        </h3>
-        <p className="text-xl text-muted-foreground text-center mt-4 mb-8">
-          Lorem ipsum dolor sit amet consectetur.
-        </p>
+	return (
+		<section
+			id="newsletter"
+			className="py-20 border-t border-zinc-800/30 bg-zinc-950/20"
+		>
+			<div className="container mx-auto px-4 max-w-5xl">
+				<div className="flex flex-col md:flex-row items-center justify-between gap-10">
+					<div className="flex-1 text-center md:text-left">
+						<h2 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight font-['Outfit',sans-serif]">
+							Stay <span className="gradient-text-primary">Updated</span>
+						</h2>
+						<p className="text-muted-foreground text-sm uppercase tracking-[0.2em] font-bold opacity-60">
+							Join our research mailing list
+						</p>
+					</div>
 
-        <form
-          className="flex flex-col w-full md:w-6/12 lg:w-4/12 mx-auto gap-4 md:gap-2 px-4"
-          onSubmit={handleSubmit}
-        >
-          <Input
-            placeholder="leomirandadev@gmail.com"
-            className="bg-muted/50 dark:bg-muted/80"
-            aria-label="email"
-          />
-          <Button className="whitespace-nowrap">Subscribe</Button>
-        </form>
-      </div>
-
-      <hr className="w-11/12 mx-auto" />
-    </section>
-  );
+					<div className="w-full md:w-auto min-w-[300px]">
+						{subscribed ? (
+							<motion.div
+								initial={{ scale: 0.9, opacity: 0 }}
+								animate={{ scale: 1, opacity: 1 }}
+								className="bg-primary/10 text-primary py-3 px-6 rounded-full font-medium inline-block flex items-center gap-2 border border-primary/20"
+							>
+								<span className="text-sm">Subscribed successfully!</span>
+							</motion.div>
+						) : (
+							<form
+								onSubmit={handleSubmit}
+								className="relative group max-w-md w-full"
+							>
+								<input
+									type="email"
+									required
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									placeholder="Enter your email"
+									className="w-full bg-zinc-900/50 border border-zinc-800 text-white py-4 pl-6 pr-32 rounded-full focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all text-sm font-medium"
+								/>
+								<button
+									type="submit"
+									className="absolute right-1 top-1 bottom-1 bg-white text-black font-bold px-6 rounded-full hover:bg-primary hover:text-black transition-all flex items-center gap-2 text-xs uppercase tracking-widest"
+								>
+									Join
+									<ArrowRight className="w-3 h-3" />
+								</button>
+							</form>
+						)}
+					</div>
+				</div>
+			</div>
+		</section>
+	);
 };

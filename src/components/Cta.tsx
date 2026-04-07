@@ -1,38 +1,48 @@
-import { Button } from "./ui/button";
+import { FileText, Github } from "lucide-react";
 
 export const Cta = () => {
-  return (
-    <section
-      id="cta"
-      className="bg-muted/50 py-16 my-24 sm:my-32"
-    >
-      <div className="container lg:grid lg:grid-cols-2 place-items-center">
-        <div className="lg:col-start-1">
-          <h2 className="text-3xl md:text-4xl font-bold ">
-            All Your
-            <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-              {" "}
-              Ideas & Concepts{" "}
-            </span>
-            In One Interface
-          </h2>
-          <p className="text-muted-foreground text-xl mt-4 mb-8 lg:mb-0">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque,
-            beatae. Ipsa tempore ipsum iste quibusdam illum ducimus eos. Quasi,
-            sed!
-          </p>
-        </div>
+	return (
+		<section
+			id="cta"
+			className="bg-[#050505] py-24 sm:py-32 border-t border-border/40 relative"
+		>
+			{/* Subtle glow */}
+			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-[200px] bg-[#03a3d7]/5 blur-[100px] rounded-full point-events-none" />
 
-        <div className="space-y-4 lg:col-start-2">
-          <Button className="w-full md:mr-4 md:w-auto">Request a Demo</Button>
-          <Button
-            variant="outline"
-            className="w-full md:w-auto"
-          >
-            View all features
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
+			<div className="container lg:grid lg:grid-cols-2 place-items-center gap-12 relative z-10">
+				<div className="lg:col-start-1 text-center lg:text-left">
+					<h2 className="text-3xl md:text-5xl font-bold tracking-tight">
+						Start Building with
+						<span className="block mt-2 bg-gradient-to-r from-[#03a3d7] via-[#8ce4ff] to-[#03a3d7] text-transparent bg-clip-text animate-gradient-x">
+							MolCrafts
+						</span>
+					</h2>
+					<p className="text-muted-foreground text-lg md:text-xl mt-6 mb-8 lg:mb-0 leading-relaxed max-w-xl mx-auto lg:mx-0">
+						Ready to integrate modern, high-performance molecular tools into
+						your workflow? Grab the source code, check out the examples, and
+						start running your first simulation today.
+					</p>
+				</div>
+
+				<div className="lg:col-start-2 w-full flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-end h-auto">
+					<a
+						href="https://github.com/MolCrafts"
+						target="_blank"
+						rel="noreferrer noopener"
+						className="flex items-center justify-center w-[220px] h-[52px] text-base font-semibold rounded-md bg-[#03a3d7] text-black outline outline-1 outline-[#03a3d7] outline-offset-[3px] transition-all hover:bg-[#8ce4ff] shadow-[0_0_15px_rgba(3,163,215,0.3)] box-border"
+					>
+						<Github className="mr-2 h-5 w-5" />
+						View on GitHub
+					</a>
+					<a
+						href="/papers"
+						className="flex items-center justify-center w-[220px] h-[52px] text-base font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-zinc-700 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 box-border"
+					>
+						<FileText className="mr-2 h-5 w-5" />
+						Papers
+					</a>
+				</div>
+			</div>
+		</section>
+	);
 };

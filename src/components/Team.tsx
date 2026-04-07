@@ -1,174 +1,117 @@
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Github, Twitter } from "lucide-react";
 
-interface TeamProps {
-  imageUrl: string;
-  name: string;
-  position: string;
-  socialNetworks: SociaNetworkslProps[];
+interface ContributorProps {
+	imageUrl: string;
+	name: string;
+	role: string;
+	githubUrl: string;
 }
 
-interface SociaNetworkslProps {
-  name: string;
-  url: string;
-}
-
-const teamList: TeamProps[] = [
-  {
-    imageUrl: "https://i.pravatar.cc/150?img=35",
-    name: "Emma Smith",
-    position: "Product Manager",
-    socialNetworks: [
-      {
-        name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
-      },
-      {
-        name: "Facebook",
-        url: "https://www.facebook.com/",
-      },
-      {
-        name: "Instagram",
-        url: "https://www.instagram.com/",
-      },
-    ],
-  },
-  {
-    imageUrl: "https://i.pravatar.cc/150?img=60",
-    name: "John Doe",
-    position: "Tech Lead",
-    socialNetworks: [
-      {
-        name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
-      },
-      {
-        name: "Facebook",
-        url: "https://www.facebook.com/",
-      },
-      {
-        name: "Instagram",
-        url: "https://www.instagram.com/",
-      },
-    ],
-  },
-  {
-    imageUrl: "https://i.pravatar.cc/150?img=36",
-    name: "Ashley Ross",
-    position: "Frontend Developer",
-    socialNetworks: [
-      {
-        name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
-      },
-
-      {
-        name: "Instagram",
-        url: "https://www.instagram.com/",
-      },
-    ],
-  },
-  {
-    imageUrl: "https://i.pravatar.cc/150?img=17",
-    name: "Bruce Rogers",
-    position: "Backend Developer",
-    socialNetworks: [
-      {
-        name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
-      },
-      {
-        name: "Facebook",
-        url: "https://www.facebook.com/",
-      },
-    ],
-  },
+const contributors: ContributorProps[] = [
+	{
+		imageUrl: "https://avatars.githubusercontent.com/u/101?v=4", // Placeholder GitHub-like avatars
+		name: "Alexey R.",
+		role: "Core Maintainer · MolPy",
+		githubUrl: "https://github.com/",
+	},
+	{
+		imageUrl: "https://avatars.githubusercontent.com/u/102?v=4",
+		name: "Sarah Chen",
+		role: "Lead Architect · MolPot",
+		githubUrl: "https://github.com/",
+	},
+	{
+		imageUrl: "https://avatars.githubusercontent.com/u/103?v=4",
+		name: "Dr. James O.",
+		role: "AI Integration Lead",
+		githubUrl: "https://github.com/",
+	},
+	{
+		imageUrl: "https://avatars.githubusercontent.com/u/104?v=4",
+		name: "Elena M.",
+		role: "WebGL & Visualization",
+		githubUrl: "https://github.com/",
+	},
 ];
 
 export const Team = () => {
-  const socialIcon = (iconName: string) => {
-    switch (iconName) {
-      case "Linkedin":
-        return <Linkedin size="20" />;
+	return (
+		<section
+			id="team"
+			className="py-24 sm:py-32 bg-[#0a0a0a] border-t border-border/40 relative overflow-hidden"
+		>
+			{/* Subtle background glow */}
+			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[200px] bg-[#03a3d7]/5 blur-[120px] rounded-full point-events-none" />
 
-      case "Facebook":
-        return <Facebook size="20" />;
+			<div className="container mx-auto px-4 md:px-8 relative z-10">
+				<div className="text-center mb-16">
+					<h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">
+						Built by Scientists
+					</h2>
+					<p className="mt-4 max-w-2xl mx-auto text-lg text-zinc-500 font-light">
+						A global community of computational chemists and AI engineers.
+					</p>
+				</div>
 
-      case "Instagram":
-        return <Instagram size="20" />;
-    }
-  };
+				<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+					{contributors.map(
+						({ imageUrl, name, role, githubUrl }: ContributorProps) => (
+							<div
+								key={name}
+								className="group flex flex-col items-center text-center pb-8"
+							>
+								<div className="w-24 h-24 rounded-full overflow-hidden mb-5 relative z-10 transition-transform duration-500 group-hover:scale-105">
+									<img
+										src={imageUrl}
+										alt={`${name} avatar`}
+										className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700"
+									/>
+								</div>
 
-  return (
-    <section
-      id="team"
-      className="container py-24 sm:py-32"
-    >
-      <h2 className="text-3xl md:text-4xl font-bold">
-        <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Our Dedicated{" "}
-        </span>
-        Crew
-      </h2>
+								<div className="relative z-10 w-full">
+									<h3 className="text-lg font-semibold text-zinc-100">
+										{name}
+									</h3>
+									<p className="text-sm text-zinc-500 mt-1 font-light">
+										{role}
+									</p>
 
-      <p className="mt-4 mb-10 text-xl text-muted-foreground">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-        dolor pariatur sit!
-      </p>
+									<div className="mt-4 flex justify-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+										<a
+											rel="noreferrer noopener"
+											href={githubUrl}
+											target="_blank"
+											className="text-zinc-500 hover:text-white transition-colors"
+											aria-label={`${name}'s GitHub`}
+										>
+											<Github size={16} />
+										</a>
+										<a
+											rel="noreferrer noopener"
+											href="#"
+											target="_blank"
+											className="text-zinc-500 hover:text-[#1da1f2] transition-colors"
+											aria-label={`${name}'s Twitter`}
+										>
+											<Twitter size={16} />
+										</a>
+									</div>
+								</div>
+							</div>
+						),
+					)}
+				</div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-10">
-        {teamList.map(
-          ({ imageUrl, name, position, socialNetworks }: TeamProps) => (
-            <Card
-              key={name}
-              className="bg-muted/50 relative mt-8 flex flex-col justify-center items-center"
-            >
-              <CardHeader className="mt-8 flex justify-center items-center pb-2">
-                <img
-                  src={imageUrl}
-                  alt={`${name} ${position}`}
-                  className="absolute -top-12 rounded-full w-24 h-24 aspect-square object-cover"
-                />
-                <CardTitle className="text-center">{name}</CardTitle>
-                <CardDescription className="text-primary">
-                  {position}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="text-center pb-2">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-              </CardContent>
-
-              <CardFooter>
-                {socialNetworks.map(({ name, url }: SociaNetworkslProps) => (
-                  <div key={name}>
-                    <a
-                      rel="noreferrer noopener"
-                      href={url}
-                      target="_blank"
-                      className={buttonVariants({
-                        variant: "ghost",
-                        size: "sm",
-                      })}
-                    >
-                      <span className="sr-only">{name} icon</span>
-                      {socialIcon(name)}
-                    </a>
-                  </div>
-                ))}
-              </CardFooter>
-            </Card>
-          )
-        )}
-      </div>
-    </section>
-  );
+				<div className="mt-12 text-center">
+					<p className="text-zinc-500 mb-4">Want to see your name here?</p>
+					<a
+						href="#community"
+						className="text-[#10b981] font-semibold hover:underline"
+					>
+						Read the Contribution Guide →
+					</a>
+				</div>
+			</div>
+		</section>
+	);
 };

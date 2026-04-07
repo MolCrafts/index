@@ -1,11 +1,11 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+import carbonDioxideMolecule from "../assets/molecules/Carbon-Dioxide_Conformer3D_small.webp";
+import cocaineMolecule from "../assets/molecules/Cocaine_Conformer3D_small.webp";
 // Import the molecule images
 import ethanolMolecule from "../assets/molecules/Ethanol_Conformer3D_small.webp";
 import methanolMolecule from "../assets/molecules/Methanol_Conformer3D_small.webp";
-import cocaineMolecule from "../assets/molecules/Cocaine_Conformer3D_small.webp";
-import carbonDioxideMolecule from "../assets/molecules/Carbon-Dioxide_Conformer3D_small.webp";
 
 // Array of molecule images
 const moleculeImages = [
