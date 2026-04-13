@@ -123,6 +123,66 @@ export const Footer = () => {
 								</span>
 							</motion.a>
 						</div>
+						<div>
+							<motion.a
+								href="/molcfg"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-emerald-600 dark:text-emerald-400">
+									MolCfg
+								</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/mollog"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-sky-600 dark:text-sky-400">
+									MolLog
+								</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/molq"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-pink-600 dark:text-pink-400">
+									MolQ
+								</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/molrs"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-red-600 dark:text-red-500">MolRs</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/molnex"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-cyan-600 dark:text-cyan-400">MolNex</span>
+							</motion.a>
+						</div>
+						<div>
+							<motion.a
+								href="/molexp"
+								className="opacity-60 hover:opacity-100 block"
+								whileHover={{ x: 5 }}
+							>
+								<span className="text-indigo-600 dark:text-indigo-400">MolExp</span>
+							</motion.a>
+						</div>
 					</div>
 				</motion.div>
 

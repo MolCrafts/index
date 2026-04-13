@@ -8,7 +8,7 @@ import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
 import { ScrollToTop } from "./components/ScrollToTop";
-import { MolVisLanding, MolpyLanding, MolrecLanding } from "./pages";
+import { MolVisLanding, MolpyLanding, MolrecLanding, MolcfgLanding, MollogLanding, MolqLanding, MolrsLanding, MolexpLanding, MolnexLanding } from "./pages";
 
 import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
@@ -111,6 +111,24 @@ function App() {
 		}
 		if (currentPath.startsWith("/molvis")) {
 			return <MolVisLanding />;
+		}
+		if (currentPath.startsWith("/molcfg")) {
+			return <MolcfgLanding />;
+		}
+		if (currentPath.startsWith("/mollog")) {
+			return <MollogLanding />;
+		}
+		if (currentPath.startsWith("/molq")) {
+			return <MolqLanding />;
+		}
+		if (currentPath.startsWith("/molrs")) {
+			return <MolrsLanding />;
+		}
+		if (currentPath.startsWith("/molexp")) {
+			return <MolexpLanding />;
+		}
+		if (currentPath.startsWith("/molnex")) {
+			return <MolnexLanding />;
 		}
 		// Default landing page
 		return (

@@ -55,7 +55,7 @@ export const MolVisLanding = () => {
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
 						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl text-purple-400 font-['Playfair_Display',serif] italic font-medium mb-4"
+							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
@@ -64,7 +64,7 @@ export const MolVisLanding = () => {
 						</motion.h3>
 
 						<motion.h1
-							className="text-5xl sm:text-6xl md:text-8xl font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1] w-full mb-6 bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text"
+							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-purple-500 via-fuchsia-400 to-purple-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2, duration: 0.4 }}
@@ -73,37 +73,41 @@ export const MolVisLanding = () => {
 						</motion.h1>
 
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl text-zinc-300 font-light tracking-wide max-w-3xl mx-auto"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							An open-source, Babylon.js-powered 3D visualization and analysis
-							application for atomistic and particle-based simulation data.
-							Built to handle million-particle datasets.
+							Interactive molecular visualization toolkit
 						</motion.h2>
 					</motion.header>
 
 					<motion.div
-						className="flex flex-col sm:flex-row justify-center mt-12 gap-6"
+						className="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.5, duration: 0.4 }}
 					>
-						<a
-							href="https://github.com/MolCrafts"
-							target="_blank"
-							rel="noreferrer noopener"
-							className="px-8 py-3 rounded-md bg-purple-500 text-white font-semibold outline outline-1 outline-purple-500 outline-offset-[3px] hover:bg-purple-400 transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-						>
-							View Open Source
-						</a>
-						<a
-							href="#features"
-							className="px-8 py-3 rounded-md bg-zinc-900 border border-zinc-800 text-white font-semibold hover:bg-zinc-800 transition-all"
-						>
-							Learn More
-						</a>
+						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+							<a
+								href="#features"
+								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-purple-500 text-zinc-950 outline outline-1 outline-purple-500 outline-offset-[3px] transition-all hover:bg-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+							>
+								Explore
+							</a>
+						</motion.div>
+
+						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+							<a
+								rel="noreferrer noopener"
+								href="https://github.com/MolCrafts/molvis"
+								target="_blank"
+								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-purple-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+								aria-label="View on GitHub"
+							>
+								Open Source
+							</a>
+						</motion.div>
 					</motion.div>
 				</motion.div>
 			</motion.section>
@@ -121,8 +125,10 @@ export const MolVisLanding = () => {
 				>
 					<motion.div className="text-center mb-20" variants={slideUp}>
 						<motion.h2
-							className="text-3xl md:text-5xl font-bold tracking-tight"
-							variants={fadeIn}
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.3, duration: 0.4 }}
 						>
 							Visual <span className="text-purple-400">Excellence</span>
 						</motion.h2>
@@ -135,21 +141,21 @@ export const MolVisLanding = () => {
 						{[
 							{
 								icon: <WorkflowIcon className="w-8 h-8" />,
-								title: "Powered by Babylon.js",
+								title: "Web, Desktop, and Notebook Ready",
 								description:
-									"High-performance WebGL & WebGPU rendering capable of delivering smooth interactions with massive structural domains.",
+									"MolVis targets the web, desktop, and Jupyter notebooks with Babylon.js rendering and WebAssembly-backed molecular data processing.",
 							},
 							{
 								icon: <DataIcon className="w-8 h-8" />,
-								title: "Trajectory Analysis",
+								title: "Interactive Rendering Modes",
 								description:
-									"Playback and scrub through long simulation trajectories dynamically, featuring built-in OVITO-style pipeline modifiers.",
+									"View, select, edit, manipulate, measure, and scrub trajectories through one interactive 3D graphics toolkit.",
 							},
 							{
 								icon: <IntegrationIcon className="w-8 h-8" />,
-								title: "Structural Identification",
+								title: "Multiple Interfaces",
 								description:
-									"Color and visually filter domains instantly based on localized structural environments like FCC, BCC, and HCP.",
+									"The same codebase ships a core package, React web app, Python Jupyter widget, and VSCode extension with a modular modifier pipeline.",
 							},
 						].map((feature, idx) => (
 							<motion.div

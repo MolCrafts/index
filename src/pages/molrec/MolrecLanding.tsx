@@ -73,7 +73,7 @@ export const MolrecLanding = () => {
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
 						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl text-amber-500 font-['Playfair_Display',serif] italic font-medium mb-4"
+							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
@@ -82,7 +82,7 @@ export const MolrecLanding = () => {
 						</motion.h3>
 
 						<motion.h1
-							className="text-5xl sm:text-6xl md:text-8xl font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1] w-full mb-6 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text"
+							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-amber-500 via-orange-400 to-amber-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2, duration: 0.4 }}
@@ -91,36 +91,41 @@ export const MolrecLanding = () => {
 						</motion.h1>
 
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl text-zinc-300 font-light tracking-wide max-w-2xl mx-auto"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							Standardized schemas and high-performance storage for molecular
-							simulation interoperability and AI-ready datasets.
+							A Backend-Neutral Record Specification for Atomistic Data
 						</motion.h2>
 					</motion.header>
 
 					<motion.div
-						className="flex flex-col sm:flex-row justify-center mt-12 gap-6"
+						className="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.5, duration: 0.4 }}
 					>
-						<a
-							href="https://github.com/MolCrafts"
-							target="_blank"
-							rel="noreferrer noopener"
-							className="px-8 py-3 rounded-md bg-amber-600 text-white font-semibold outline outline-1 outline-amber-600 outline-offset-[3px] hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(217,119,6,0.3)]"
-						>
-							View Repository
-						</a>
-						<a
-							href="#features"
-							className="px-8 py-3 rounded-md bg-zinc-900 border border-zinc-800 text-white font-semibold hover:bg-zinc-800 transition-all"
-						>
-							Learn More
-						</a>
+						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+							<a
+								href="#features"
+								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-amber-500 text-zinc-950 outline outline-1 outline-amber-500 outline-offset-[3px] transition-all hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+							>
+								Explore
+							</a>
+						</motion.div>
+
+						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+							<a
+								rel="noreferrer noopener"
+								href="https://github.com/MolCrafts/molrec"
+								target="_blank"
+								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-amber-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(245,158,11,0.1)]"
+								aria-label="View on GitHub"
+							>
+								Open Source
+							</a>
+						</motion.div>
 					</motion.div>
 				</motion.div>
 			</motion.section>
@@ -139,8 +144,10 @@ export const MolrecLanding = () => {
 				>
 					<motion.div className="text-center mb-20" variants={slideUp}>
 						<motion.h2
-							className="text-3xl md:text-5xl font-bold tracking-tight"
-							variants={fadeIn}
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.3, duration: 0.4 }}
 						>
 							Unified <span className="text-amber-500">Infrastructure</span>
 						</motion.h2>
@@ -153,21 +160,21 @@ export const MolrecLanding = () => {
 						{[
 							{
 								icon: <DataIcon className="w-8 h-8" />,
-								title: "Unified Storage",
+								title: "Backend-Neutral Storage",
 								description:
-									"Efficient storage backends supporting HDF5 and Zarr for local and cloud-based molecular datasets.",
+									"The spec defines semantics, not storage. Zarr v3 is the reference implementation, but HDF5, SQL, or other backends can implement the same record model.",
 							},
 							{
 								icon: <WorkflowIcon className="w-8 h-8" />,
-								title: "Schema Enforcement",
+								title: "Language-Agnostic Semantics",
 								description:
-									"Strict validation ensuring data integrity and interoperability across different simulation engines.",
+									"A single semantic layer lets one tool interpret another tool's atomistic records without guessing what arrays or dataset names mean.",
 							},
 							{
 								icon: <IntegrationIcon className="w-8 h-8" />,
-								title: "AI Integration",
+								title: "First-Class Collections & Grids",
 								description:
-									"Seamlessly prepare simulation trajectories for deep learning pipelines and neural network potentials.",
+									"Frames can hold atoms, bonds, angles, beads, fragments, and volumetric grids as first-class record elements.",
 							},
 						].map((feature, idx) => (
 							<motion.div
@@ -204,20 +211,20 @@ export const MolrecLanding = () => {
 								viewport={{ once: true }}
 							>
 								<h2 className="text-3xl md:text-4xl font-bold mb-6 font-['Playfair_Display',serif] italic text-zinc-100">
-									Standardizing the Data Lifecycle.
+									The Atomistic Data Backbone.
 								</h2>
 								<p className="text-lg text-zinc-400 mb-8 leading-relaxed font-light">
-									MolRec provides a set of core primitives that encapsulate
-									complex molecular topologies and trajectories. It's designed
-									to be the "source of truth" for your AI models and analysis
-									pipelines.
+									MolRec defines what a molecular record means, not how it must
+									be stored. From canonical snapshots to trajectories and
+									observables, metadata stays explicit instead of being inferred
+									from array shape or dataset naming.
 								</p>
 								<ul className="space-y-4">
 									{[
-										"Compact binary serialization",
-										"Lazy loading for multi-terabyte datasets",
-										"Pandas & Xarray integration",
-										"Extensible metadata support",
+										"Language-Agnostic Specification",
+										"First-class Grid and Collection Support",
+										"Extensible to MD, ML Potentials, and Electronic Structure",
+										"Mandatory Metadata for Every Observable",
 									].map((item) => (
 										<li key={item} className="flex items-center gap-3">
 											<div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
@@ -242,20 +249,17 @@ export const MolrecLanding = () => {
 									<div className="w-3 h-3 rounded-full bg-green-500/30" />
 								</div>
 								<pre className="text-amber-500/80 leading-relaxed overflow-x-auto">
-									{`import molrec as mr
-
-# Open standardized trajectory
-traj = mr.load("run01.zarr")
-
-# Add frame with strict schema
-traj.append(
-    positions=pos,
-    topology=top,
-    params={"temp": 300}
-)
-
-# Export for AI training
-dataset = traj.to_torch_dataset()`}
+									{`/
++-- meta                  # record-level metadata (required)
++-- frame                 # canonical snapshot (required)
+|   +-- atoms/            #   named collection: atoms
+|   +-- bonds/            #   named collection: bonds
+|   +-- <grids>/          #   named volumetric grids
+|   +-- box               #   simulation cell (SimBox)
++-- trajectory            # time-series frames (optional)
++-- observables           # derived quantities (optional)
++-- method                # scientific context (optional)
++-- parameters            # workflow parameters (optional)`}
 								</pre>
 							</motion.div>
 						</div>

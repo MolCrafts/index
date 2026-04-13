@@ -22,8 +22,8 @@ const originalNodes: NodeDetail[] = [
 		id: "molpy",
 		title: "MolPy",
 		description:
-			"The Orchestrator. Topology and dataset management built for scale.",
-		features: ["Python", "Rust", "CUDA"],
+			"Programmable toolkit for building, editing, typing, and exporting molecular systems in Python.",
+		features: ["Python", "Polymers", "Force Fields"],
 		color: "text-blue-500",
 		glow: "bg-blue-500",
 	},
@@ -31,8 +31,8 @@ const originalNodes: NodeDetail[] = [
 		id: "molvis",
 		title: "MolVis",
 		description:
-			"The Visual Lens. Interactive 3D trajectory and tensor rendering.",
-		features: ["WebGPU", "Real-time", "Tensors"],
+			"Interactive molecular visualization toolkit for the web, desktop, and Jupyter notebooks.",
+		features: ["Babylon.js", "WASM", "Jupyter"],
 		color: "text-purple-500",
 		glow: "bg-purple-500",
 	},
@@ -40,10 +40,58 @@ const originalNodes: NodeDetail[] = [
 		id: "molrec",
 		title: "MolRec",
 		description:
-			"The Data Backbone. Standardized schemas and high-performance storage.",
-		features: ["HDF5", "Lineage", "Schemas"],
+			"Backend-neutral record specification for atomistic data semantics.",
+		features: ["Spec", "Zarr v3", "Observables"],
 		color: "text-amber-500",
 		glow: "bg-amber-500",
+	},
+	{
+		id: "molcfg",
+		title: "MolCfg",
+		description: "Zero-dependency configuration library for Python.",
+		features: ["Layered", "Type-Safe", "Tracking"],
+		color: "text-emerald-500",
+		glow: "bg-emerald-500",
+	},
+	{
+		id: "mollog",
+		title: "MolLog",
+		description: "Zero-dependency structured logging for Python.",
+		features: ["Structured", "Scoped", "Handlers"],
+		color: "text-sky-500",
+		glow: "bg-sky-500",
+	},
+	{
+		id: "molq",
+		title: "MolQ",
+		description: "Unified job queue for Python workloads.",
+		features: ["HPC", "Local", "Lineage"],
+		color: "text-pink-500",
+		glow: "bg-pink-500",
+	},
+	{
+		id: "molrs",
+		title: "MolRs",
+		description: "Molecular modeling toolkit with Rust, Python, npm, and FFI interfaces.",
+		features: ["Rust", "WASM", "Packing"],
+		color: "text-red-500",
+		glow: "bg-red-500",
+	},
+	{
+		id: "molexp",
+		title: "MolExp",
+		description: "Workflow-and-agent platform for research experiment management.",
+		features: ["Workflow", "Workspace", "Assets"],
+		color: "text-indigo-500",
+		glow: "bg-indigo-500",
+	},
+	{
+		id: "molnex",
+		title: "MolNex",
+		description: "Layered molecular ML framework split into execution, representation, potential, and model-family packages.",
+		features: ["molix", "molrep", "molpot"],
+		color: "text-cyan-500",
+		glow: "bg-cyan-500",
 	},
 ];
 
@@ -71,6 +119,18 @@ const capabilities: Capability[] = [
 		name: "Visualization",
 		desc: "3D Rendering",
 		color: "text-amber-500",
+	},
+	{
+		id: "cfg",
+		name: "Infrastructure",
+		desc: "Configuration",
+		color: "text-teal-500",
+	},
+	{
+		id: "ops",
+		name: "Operations",
+		desc: "Execution",
+		color: "text-pink-500",
 	},
 ];
 
@@ -125,8 +185,13 @@ export const EcosystemArchitecture = () => {
 			<TextNode item={capabilities[1]} />
 			<NodeCard node={originalNodes[1]} />
 			<TextNode item={capabilities[2]} />
-			<TextNode item={capabilities[3]} />
 			<NodeCard node={originalNodes[2]} />
+			<TextNode item={capabilities[3]} />
+			<NodeCard node={originalNodes[3]} />
+			<TextNode item={capabilities[4]} />
+			<NodeCard node={originalNodes[4]} />
+			<TextNode item={capabilities[5]} />
+			<NodeCard node={originalNodes[5]} />
 		</div>
 	);
 
@@ -166,7 +231,9 @@ export const EcosystemArchitecture = () => {
 							</span>
 						</h2>
 						<p className="text-xl md:text-2xl text-muted-foreground font-light mt-6 max-w-3xl">
-							Where modeling, simulation, and analysis converge flawlessly.
+							MolCrafts components stay separate on purpose so modeling,
+							workflow, data semantics, visualization, and infrastructure can
+							evolve without collapsing into one layer.
 						</p>
 					</motion.div>
 				</div>

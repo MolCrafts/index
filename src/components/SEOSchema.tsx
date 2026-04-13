@@ -43,7 +43,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 						url: "https://molcrafts.org",
 						name: "MolCrafts – AI Infrastructure for Molecular Science",
 						description:
-							"MolCrafts is an open-source AI infrastructure suite (MolPy, MolVis, MolRec) for molecular simulations and data analysis.",
+							"MolCrafts is an open-source molecular software ecosystem spanning workflows, visualization, data specifications, and scientific infrastructure.",
 						publisher: {
 							"@id": "https://molcrafts.org/#organization",
 						},
@@ -54,7 +54,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 						url: "https://molcrafts.org",
 						name: "MolCrafts – AI Infrastructure for Molecular Science",
 						description:
-							"MolCrafts is an open-source AI infrastructure suite (MolPy, MolVis, MolRec) for molecular simulations and data analysis.",
+							"MolCrafts is an open-source molecular software ecosystem spanning workflows, visualization, data specifications, and scientific infrastructure.",
 						isPartOf: {
 							"@id": "https://molcrafts.org/#website",
 						},
@@ -73,8 +73,8 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 				applicationCategory: "Scientific",
 				programmingLanguage: "Python",
 				description:
-					"MolPy is a Python library for molecular simulations and data management in computational chemistry.",
-				codeRepository: "https://github.com/MolCrafts/MolPy",
+					"MolPy is a programmable Python toolkit for building, editing, typing, and exporting molecular systems.",
+				codeRepository: "https://github.com/MolCrafts/molpy",
 				isPartOf: {
 					"@type": "SoftwareApplication",
 					name: "MolCrafts",
@@ -90,10 +90,10 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 				applicationCategory: "Scientific Software",
 				operatingSystem: "Cross-platform",
 				description:
-					"MolRec is a molecular simulation data model providing standardized schemas for interoperability.",
-				codeRepository: "https://github.com/MolCrafts/MolRec",
-				programmingLanguage: ["Python", "TypeScript"],
-				license: "MIT",
+					"MolRec is a backend-neutral record specification for atomistic data.",
+				codeRepository: "https://github.com/MolCrafts/molrec",
+				programmingLanguage: ["Markdown", "Text"],
+				license: "BSD-3-Clause",
 				author: {
 					"@type": "Organization",
 					name: "MolCrafts",
@@ -109,8 +109,8 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 				applicationCategory: "Scientific",
 				programmingLanguage: "JavaScript",
 				description:
-					"MolVis is a molecular visualization tool for rendering 3D molecular structures.",
-				codeRepository: "https://github.com/MolCrafts/MolVis",
+					"MolVis is an interactive molecular visualization toolkit for the web, desktop, and Jupyter notebooks.",
+				codeRepository: "https://github.com/MolCrafts/molvis",
 				isPartOf: {
 					"@type": "SoftwareApplication",
 					name: "MolCrafts",

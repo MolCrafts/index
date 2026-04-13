@@ -21,113 +21,108 @@ const MoleculeOverlay = lazy(() =>
 const FEATURES = [
 	{
 		icon: <WorkflowIcon className="w-8 h-8" />,
-		title: "Notation-Driven Polymers",
+		title: "Named Hierarchies",
 		description:
-			"Parse SMILES, BigSMILES, CGSmiles, and G-BigSMILES, then build linear, branched, or cyclic polymer systems from the same notation layer.",
-	},
-	{
-		icon: <IntegrationIcon className="w-8 h-8" />,
-		title: "Typing and Parameters",
-		description:
-			"Assign force-field data with explicit typifiers and inspectable ForceField objects instead of opaque engine files.",
-	},
-	{
-		icon: <DataIcon className="w-8 h-8" />,
-		title: "Frame and Trajectory Data",
-		description:
-			"Work with Block and Frame tables for vectorized arrays, trajectory handling, and downstream analysis.",
-	},
-	{
-		icon: <SimulationIcon className="w-8 h-8" />,
-		title: "Engine and Format Export",
-		description:
-			"Write LAMMPS, AMBER, PDB, GRO, HDF5, and related outputs from the same in-memory system model.",
-	},
-	{
-		icon: <CollaborationIcon className="w-8 h-8" />,
-		title: "External Tool Bridges",
-		description:
-			"Use RDKit, Packmol, and AmberTools through explicit wrappers when a workflow needs external chemistry or packing tools.",
+			"Named loggers with hierarchy and propagation semantics similar to standard logging.",
 	},
 	{
 		icon: <AnalysisIcon className="w-8 h-8" />,
-		title: "MCP for AI Agents",
+		title: "Structured Fields",
 		description:
-			"Expose modules, signatures, docstrings, and source to AI agents through MolPy's MCP server.",
+			"Structured extra fields and bind() interface for storing reusable contextual information.",
+	},
+	{
+		icon: <DataIcon className="w-8 h-8" />,
+		title: "Context Locals",
+		description:
+			"Context-local fields via bind_context() and scoped_context() for threaded/async workflows.",
+	},
+	{
+		icon: <SimulationIcon className="w-8 h-8" />,
+		title: "Handlers Variety",
+		description:
+			"StreamHandler, FileHandler, RotatingFileHandler, TimedRotatingFileHandler, QueueHandler out of the box.",
+	},
+	{
+		icon: <IntegrationIcon className="w-8 h-8" />,
+		title: "Formatters",
+		description:
+			"TextFormatter and JSONFormatter supplied seamlessly for terminal outputs and machine scraping.",
+	},
+	{
+		icon: <CollaborationIcon className="w-8 h-8" />,
+		title: "Zero Dependencies",
+		description:
+			"No runtime dependencies. Exception and stack capture on every record, optionally using Rich for terminals.",
 	},
 ];
 
 const API_SNIPPETS = [
 	{
-		title: "Define an Editable Molecule",
-		filename: "atomistic.py",
+		title: "Structured JSON Output",
+		filename: "json_log.py",
 		description:
-			"Start with an Atomistic graph, add atoms and bonds, and keep chemistry editable until you are ready for tables or files.",
-		code: `import molpy as mp
+			"Easily construct highly structured log messages. Out-of-the-box support for JSON ensures telemetry pipelines ingest easily.",
+		code: `from mollog import JSONFormatter, StreamHandler, configure, get_logger
 
-mol = mp.Atomistic(name="ethanol")
+handler = StreamHandler()
+handler.set_formatter(JSONFormatter())
+configure(level="info", handlers=[handler])
 
-c1 = mol.def_atom(element="C", name="C1", x=0.00, y=0.00, z=0.00)
-c2 = mol.def_atom(element="C", name="C2", x=1.54, y=0.00, z=0.00)
-o = mol.def_atom(element="O", name="O1", x=2.95, y=0.00, z=0.00)
-
-mol.def_bond(c1, c2, order=1)
-mol.def_bond(c2, o, order=1)`,
+logger = get_logger("api")
+logger.info("request complete", status=200, duration_ms=18)
+# {"message":"request complete", "status":200, "duration_ms":18, ...}`,
 	},
 	{
-		title: "Derive Topology from Bonds",
-		filename: "topology.py",
+		title: "Context Variables",
+		filename: "context.py",
 		description:
-			"Angles and dihedrals stay derived from the bond graph, so topology updates follow chemistry edits instead of manual bookkeeping.",
-		code: `import molpy as mp
+			"Bind metadata to loggers directly to be included across multiple invocations without repeating parameters.",
+		code: `from mollog import get_logger
 
-mol = mp.Atomistic(name="propane")
-c1 = mol.def_atom(element="C", name="C1")
-c2 = mol.def_atom(element="C", name="C2")
-c3 = mol.def_atom(element="C", name="C3")
+logger = get_logger("service").bind(worker_id="w-001")
 
-mol.def_bond(c1, c2)
-mol.def_bond(c2, c3)
+logger.info("starting task")
+# Emits log with {"worker_id": "w-001", "message": "starting task"}
 
-mol = mol.get_topo(gen_angle=True, gen_dihe=True)
-print(len(mol.angles), len(mol.dihedrals))`,
+logger.info("ending task", elapsed=0.5)
+# Emits log with {"worker_id": "w-001", "message": "ending task", "elapsed": 0.5}`,
 	},
 	{
-		title: "Cross into Vectorized Data",
-		filename: "frame.py",
+		title: "Rich Terminal Displays",
+		filename: "rich_log.py",
 		description:
-			"Convert explicitly to a Frame when you want aligned arrays, block tables, file I/O, or downstream numerical work.",
-		code: `import molpy as mp
+			"Make terminal outputs beautiful. Optionally install mollog with rich features and use Rich Handler directly.",
+		code: `import mollog
+from mollog.handlers.rich import RichHandler
 
-water = mp.Atomistic(name="water")
-o = water.def_atom(element="O", x=0.000, y=0.000, z=0.000)
-h1 = water.def_atom(element="H", x=0.957, y=0.000, z=0.000)
-h2 = water.def_atom(element="H", x=-0.239, y=0.927, z=0.000)
+handler = RichHandler()
+mollog.configure(level="debug", handlers=[handler])
 
-water.def_bond(o, h1)
-water.def_bond(o, h2)
-
-frame = water.to_frame()
-atoms = frame["atoms"]
-xyz = atoms[["x", "y", "z"]]`,
+log = mollog.get_logger("system")
+log.debug("Tracing complex payload rendering", user_id=412)
+log.error("Failed to connect to database")`,
 	},
 	{
-		title: "Inspect Parameters Before Export",
-		filename: "forcefield.py",
+		title: "Scoped Logging",
+		filename: "scoped.py",
 		description:
-			"Force fields stay as Python data, so you can check styles and type records before they become engine-specific files.",
-		code: `import molpy as mp
+			"For async applications and scoped workloads, use context-local bindings.",
+		code: `from mollog import scoped_context, get_logger
 
-ff = mp.io.read_xml_forcefield("oplsaa.xml")
-bond_style = ff.get_style_by_name("harmonic", mp.BondStyle)
-ct_ct = bond_style.get_type_by_name("CT-CT", mp.BondType)
+logger = get_logger("async_app")
 
-print(ct_ct["k0"])
-print(ct_ct["r0"])`,
+with scoped_context(request_id="1234abcd"):
+    logger.info("Handling web request...")
+    # The log automatically captures request_id="1234abcd" 
+    # without explicitly appending it to the log call
+
+logger.info("Outside scope") 
+# No request_id present`,
 	},
 ];
 
-export const MolpyLanding = () => {
+export const MollogLanding = () => {
 	const sectionRef = useRef(null);
 	const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 	const [activeCodeIdx, setActiveCodeIdx] = useState(0);
@@ -172,30 +167,30 @@ export const MolpyLanding = () => {
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
 						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
 						>
-							Explicit. Programmable. LLM-Friendly.
+							Zero-Dependency. Structured. Scoped.
 						</motion.h3>
 
 						<motion.h1
-							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-sky-500 via-blue-400 to-sky-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2, duration: 0.4 }}
 						>
-							MolPy
+							MolLog
 						</motion.h1>
 
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							A programmable toolkit for molecular simulation workflows
+							Zero-Dependency Structured Logging for Python
 						</motion.h2>
 					</motion.header>
 
@@ -208,7 +203,7 @@ export const MolpyLanding = () => {
 						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
 							<a
 								href="#toolkit"
-								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-blue-500 text-zinc-950 outline outline-1 outline-blue-500 outline-offset-[3px] transition-all hover:bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)]"
+								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-sky-500 text-zinc-950 outline outline-1 outline-sky-500 outline-offset-[3px] transition-all hover:bg-sky-400 shadow-[0_0_15px_rgba(14,165,233,0.3)]"
 							>
 								See the API
 							</a>
@@ -217,9 +212,9 @@ export const MolpyLanding = () => {
 						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
 							<a
 								rel="noreferrer noopener"
-								href="https://github.com/MolCrafts/molpy"
+								href="https://github.com/MolCrafts/mollog"
 								target="_blank"
-								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-blue-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(59,130,246,0.1)]"
+								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-sky-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(14,165,233,0.1)]"
 								aria-label="View on GitHub"
 							>
 								View on GitHub
@@ -246,17 +241,17 @@ export const MolpyLanding = () => {
 						variants={slideUp}
 					>
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							What the <span className="bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text leading-relaxed">API</span> Feels Like
+							What the <span className="bg-gradient-to-r from-sky-400 to-blue-400 text-transparent bg-clip-text leading-relaxed">API</span> Feels Like
 						</motion.h2>
 						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-							MolPy keeps topology, force fields, numerical frames, and engine
-							I/O explicit and composable in Python, with polymer construction
-							and reactive topology editing as core strengths.
+							These examples are generic on purpose. They show how MolLog 
+							simplifies structured logging to its purest components, ensuring telemetry
+							is clean and accessible.
 						</p>
 					</motion.div>
 
@@ -282,7 +277,7 @@ export const MolpyLanding = () => {
 										<div
 											className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
 												activeCodeIdx === idx
-													? "bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+													? "bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.5)]"
 													: "bg-zinc-900 border border-zinc-700"
 											}`}
 										>
@@ -292,7 +287,7 @@ export const MolpyLanding = () => {
 										</div>
 
 										<div
-											className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-blue-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+											className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-sky-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
 										>
 											<span className="font-bold text-lg md:text-xl tracking-wide font-sans">
 												{cap.title}
@@ -316,7 +311,7 @@ export const MolpyLanding = () => {
 						>
 							<div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
 								{/* Subtle top glow line */}
-								<div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+								<div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
 								<div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
 									<div className="flex space-x-2">
 										<div className="w-3 h-3 rounded-full bg-zinc-700" />
@@ -334,7 +329,7 @@ export const MolpyLanding = () => {
 									style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
 								>
 									<SyntaxHighlighter
-										language="python"
+										language={API_SNIPPETS[activeCodeIdx].filename.endsWith('.sh') ? 'bash' : 'python'}
 										style={vscDarkPlus}
 										customStyle={{
 											background: "transparent",
@@ -369,18 +364,17 @@ export const MolpyLanding = () => {
 				>
 					<motion.div className="text-center mb-20" variants={slideUp}>
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							What MolPy <span className="bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text leading-relaxed">Covers</span>
+							What MolLog <span className="bg-gradient-to-r from-sky-400 to-blue-400 text-transparent bg-clip-text leading-relaxed">Covers</span>
 						</motion.h2>
 						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
 							The API above shows how the toolkit feels to use. The features
-							below show how the same data model reaches across system setup,
-							parameterization, export, analysis-oriented data handling, and
-							agent-facing tooling.
+							below show how the architecture allows comprehensive lifecycle 
+							and observability for complex python packages.
 						</p>
 					</motion.div>
 
@@ -394,7 +388,7 @@ export const MolpyLanding = () => {
 								className="flex flex-col items-center text-center group"
 								variants={slideUp}
 							>
-								<div className="text-blue-500 mb-6 group-hover:text-blue-400 transition-colors">
+								<div className="text-sky-500 mb-6 group-hover:text-sky-400 transition-colors">
 									{feature.icon}
 								</div>
 								<h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
