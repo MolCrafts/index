@@ -1,14 +1,12 @@
 import type { SVGProps } from "react";
-import moko from "../assets/moko.svg";
+import moko from "@/assets/moko/moko.png";
 
 export const LogoIcon = (props: React.SVGProps<SVGSVGElement>) => {
-	// moko is imported as a string URL by rsbuild
 	return (
 		<img
-			src={moko as unknown as string}
+			src={moko}
 			alt="MolCrafts Logo"
-			style={{ width: "50px", height: "auto" }}
-			className={props.className}
+			className={`w-12 h-12 object-contain rounded-lg ${props.className ?? ""}`}
 		/>
 	);
 };

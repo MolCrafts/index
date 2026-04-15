@@ -1,10 +1,8 @@
 import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
-	AnalysisIcon,
-	CollaborationIcon,
 	DataIcon,
 	IntegrationIcon,
 	SimulationIcon,
@@ -20,109 +18,128 @@ const MoleculeOverlay = lazy(() =>
 
 const FEATURES = [
 	{
-		icon: <WorkflowIcon className="w-8 h-8" />,
-		title: "Named Hierarchies",
+		icon: <IntegrationIcon className="w-8 h-8" />,
+		title: "Packmol-Compatible Scripts",
 		description:
-			"Named loggers with hierarchy and propagation semantics similar to standard logging.",
-	},
-	{
-		icon: <AnalysisIcon className="w-8 h-8" />,
-		title: "Structured Fields",
-		description:
-			"Structured extra fields and bind() interface for storing reusable contextual information.",
-	},
-	{
-		icon: <DataIcon className="w-8 h-8" />,
-		title: "Context Locals",
-		description:
-			"Context-local fields via bind_context() and scoped_context() for threaded/async workflows.",
+			"Reads the same `.inp` keyword script Packmol uses — drop in existing decks unchanged.",
 	},
 	{
 		icon: <SimulationIcon className="w-8 h-8" />,
-		title: "Handlers Variety",
+		title: "Geometric Restraints",
 		description:
-			"StreamHandler, FileHandler, RotatingFileHandler, TimedRotatingFileHandler, QueueHandler out of the box.",
+			"Box, sphere, half-space planes, fixed positions, and per-atom-subset restraints out of the box.",
+	},
+	{
+		icon: <DataIcon className="w-8 h-8" />,
+		title: "Extended Format Support",
+		description:
+			"Reads PDB, XYZ, SDF/MOL, LAMMPS dump, LAMMPS data; writes PDB, XYZ, LAMMPS dump.",
+	},
+	{
+		icon: <WorkflowIcon className="w-8 h-8" />,
+		title: "Three Surfaces, One Engine",
+		description:
+			"Same kernel exposed as a CLI binary, a Rust crate, and a Python package.",
+	},
+	{
+		icon: <SimulationIcon className="w-8 h-8" />,
+		title: "Reproducible Packings",
+		description:
+			"Seedable RNG, explicit tolerance, configurable outer-loop iterations — same inputs, same configuration.",
 	},
 	{
 		icon: <IntegrationIcon className="w-8 h-8" />,
-		title: "Formatters",
+		title: "Pairs With MolRs",
 		description:
-			"TextFormatter and JSONFormatter supplied seamlessly for terminal outputs and machine scraping.",
-	},
-	{
-		icon: <CollaborationIcon className="w-8 h-8" />,
-		title: "Zero Dependencies",
-		description:
-			"No runtime dependencies. Exception and stack capture on every record, optionally using Rich for terminals.",
+			"Python API consumes MolRs frames directly; share a single in-memory representation across the toolkit.",
 	},
 ];
 
 const API_SNIPPETS = [
 	{
-		title: "Structured JSON Output",
-		filename: "json_log.py",
+		title: "Drop-in Packmol Script",
+		filename: "mixture.inp",
 		description:
-			"Easily construct highly structured log messages. Out-of-the-box support for JSON ensures telemetry pipelines ingest easily.",
-		code: `from mollog import JSONFormatter, StreamHandler, configure, get_logger
+			"Same `.inp` format as Packmol — bring your existing scripts, the binary takes a file or stdin.",
+		language: "bash",
+		code: `# molpack mixture.inp   (or:  molpack < mixture.inp)
+tolerance 2.0
+seed 42
+filetype pdb
+output mixture.pdb
 
-handler = StreamHandler()
-handler.set_formatter(JSONFormatter())
-configure(level="info", handlers=[handler])
+structure water.pdb
+  number 500
+  inside box 0. 0. 0. 40. 40. 40.
+end structure
 
-logger = get_logger("api")
-logger.info("request complete", status=200, duration_ms=18)
-# {"message":"request complete", "status":200, "duration_ms":18, ...}`,
+structure ethanol.pdb
+  number 50
+  inside box 0. 0. 0. 40. 40. 40.
+end structure`,
 	},
 	{
-		title: "Context Variables",
-		filename: "context.py",
+		title: "Pack From Python",
+		filename: "pack_water.py",
 		description:
-			"Bind metadata to loggers directly to be included across multiple invocations without repeating parameters.",
-		code: `from mollog import get_logger
+			"Read a frame with MolRs, declare a Target with restraints, call `Molpack().pack(...)`.",
+		language: "python",
+		code: `import molrs
+from molpack import InsideBox, Molpack, Target
 
-logger = get_logger("service").bind(worker_id="w-001")
+frame = molrs.read_pdb("water.pdb")
 
-logger.info("starting task")
-# Emits log with {"worker_id": "w-001", "message": "starting task"}
+water = (
+    Target("water", frame, count=500)
+    .with_restraint(InsideBox([0, 0, 0], [40, 40, 40]))
+)
 
-logger.info("ending task", elapsed=0.5)
-# Emits log with {"worker_id": "w-001", "message": "ending task", "elapsed": 0.5}`,
+result = Molpack(tolerance=2.0).pack(
+    [water], max_loops=200, seed=42,
+)`,
 	},
 	{
-		title: "Rich Terminal Displays",
-		filename: "rich_log.py",
+		title: "Native Rust API",
+		filename: "pack.rs",
 		description:
-			"Make terminal outputs beautiful. Optionally install mollog with rich features and use Rich Handler directly.",
-		code: `import mollog
-from mollog.handlers.rich import RichHandler
+			"Same engine as a Rust crate — build Targets from raw coords, compose restraints, get a typed result.",
+		language: "rust",
+		code: `use molpack::{InsideBoxRestraint, Molpack, Target};
 
-handler = RichHandler()
-mollog.configure(level="debug", handlers=[handler])
+let positions = [[0.0, 0.0, 0.0], [0.96, 0.0, 0.0], [-0.24, 0.93, 0.0]];
+let radii = [1.52, 1.20, 1.20];
 
-log = mollog.get_logger("system")
-log.debug("Tracing complex payload rendering", user_id=412)
-log.error("Failed to connect to database")`,
+let target = Target::from_coords(&positions, &radii, 100)
+    .with_name("water")
+    .with_restraint(InsideBoxRestraint::new([0.0; 3], [40.0; 3]));
+
+let result = Molpack::new()
+    .tolerance(2.0)
+    .pack(&[target], 200, Some(42))?;`,
 	},
 	{
-		title: "Scoped Logging",
-		filename: "scoped.py",
+		title: "Beyond PDB & XYZ",
+		filename: "formats.inp",
 		description:
-			"For async applications and scoped workloads, use context-local bindings.",
-		code: `from mollog import scoped_context, get_logger
+			"Beyond Packmol's PDB/XYZ, molpack reads SDF/MOL and LAMMPS dump/data — by extension or `filetype`.",
+		language: "bash",
+		code: `# Mix file types: ligand from SDF, solvent from a LAMMPS dump
+output system.pdb
 
-logger = get_logger("async_app")
+structure ligand.sdf
+  number 1
+  fixed 20. 20. 20. 0. 0. 0.
+end structure
 
-with scoped_context(request_id="1234abcd"):
-    logger.info("Handling web request...")
-    # The log automatically captures request_id="1234abcd" 
-    # without explicitly appending it to the log call
-
-logger.info("Outside scope") 
-# No request_id present`,
+structure water.lammpstrj
+  filetype lammps_dump
+  number 800
+  inside box 0. 0. 0. 40. 40. 40.
+end structure`,
 	},
 ];
 
-export const MollogLanding = () => {
+export const MolpackLanding = () => {
 	const sectionRef = useRef(null);
 	const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 	const [activeCodeIdx, setActiveCodeIdx] = useState(0);
@@ -140,7 +157,6 @@ export const MollogLanding = () => {
 				animate="visible"
 				variants={fadeIn}
 			>
-				{/* Background Blobs */}
 				<div
 					className="molecule-blob"
 					style={{ top: "25%", left: "15%" }}
@@ -161,44 +177,42 @@ export const MollogLanding = () => {
 					<MoleculeOverlay />
 				</Suspense>
 
-
 				<motion.div
 					className="text-center w-full max-w-7xl mx-auto px-4 z-10"
 					variants={slideUp}
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
 						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-amber-400 via-orange-300 to-amber-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
 						>
-							Logs that read like notebooks.
+							Flexible 
 						</motion.h3>
 
 						<motion.h1
-							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-sky-500 via-blue-400 to-sky-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2, duration: 0.4 }}
 						>
-							MolLog
+							MolPack
 						</motion.h1>
 
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-indigo-400 via-sky-300 to-indigo-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-amber-300 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							Zero-Dependency Structured Logging for Python
+							Extensible molecule packing for initial configuration generation
 						</motion.h2>
 					</motion.header>
 				</motion.div>
-
 			</motion.section>
 
-			{/* NAKED UNIFIED CAPABILITIES SECTION (NO CARDS) */}
+			{/* API / SNIPPETS SECTION */}
 			<section id="toolkit" className="relative py-24 sm:py-32">
 				<motion.div
 					ref={sectionRef}
@@ -212,24 +226,25 @@ export const MollogLanding = () => {
 						variants={slideUp}
 					>
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							What the <span className="bg-gradient-to-r from-sky-400 to-blue-400 text-transparent bg-clip-text leading-relaxed">API</span> Feels Like
+							What the{" "}
+							<span className="bg-gradient-to-r from-orange-400 to-amber-400 text-transparent bg-clip-text leading-relaxed">
+								API
+							</span>{" "}
+							Feels Like
 						</motion.h2>
 						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-							These examples are generic on purpose. They show how MolLog 
-							simplifies structured logging to its purest components, ensuring telemetry
-							is clean and accessible.
+							The same engine, three ways in: a Packmol-compatible binary, a
+							Rust crate, a Python package.
 						</p>
 					</motion.div>
 
 					<div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-						{/* Timeline-style capabilities menu (Naked text, pure interactions) */}
 						<div className="w-full lg:w-5/12 relative pt-2">
-							{/* Vertical continuous line */}
 							<div className="absolute left-[8px] top-6 bottom-6 w-[1px] bg-zinc-800/80" />
 
 							<div className="flex flex-col gap-10 relative">
@@ -244,11 +259,10 @@ export const MollogLanding = () => {
 												: "opacity-40 hover:opacity-80"
 										}`}
 									>
-										{/* Active Dot / Timeline node */}
 										<div
 											className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
 												activeCodeIdx === idx
-													? "bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.5)]"
+													? "bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
 													: "bg-zinc-900 border border-zinc-700"
 											}`}
 										>
@@ -258,7 +272,7 @@ export const MollogLanding = () => {
 										</div>
 
 										<div
-											className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-sky-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+											className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-orange-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
 										>
 											<span className="font-bold text-lg md:text-xl tracking-wide font-sans">
 												{cap.title}
@@ -272,7 +286,6 @@ export const MollogLanding = () => {
 							</div>
 						</div>
 
-						{/* Pure Naked Terminal Code Editor Representation */}
 						<motion.div
 							key={activeCodeIdx}
 							initial={{ opacity: 0, y: 15 }}
@@ -281,8 +294,7 @@ export const MollogLanding = () => {
 							className="w-full lg:w-7/12 sticky top-32"
 						>
 							<div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
-								{/* Subtle top glow line */}
-								<div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
+								<div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
 								<div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
 									<div className="flex space-x-2">
 										<div className="w-3 h-3 rounded-full bg-zinc-700" />
@@ -294,13 +306,12 @@ export const MollogLanding = () => {
 									</div>
 								</div>
 
-								{/* Code Content Area with custom scrollbar hiding */}
 								<div
 									className="p-6 md:p-8 overflow-x-auto text-[13px] sm:text-sm md:text-[15px] font-mono leading-relaxed bg-[#030303] min-h-[420px] flex items-center"
 									style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
 								>
 									<SyntaxHighlighter
-										language={API_SNIPPETS[activeCodeIdx].filename.endsWith('.sh') ? 'bash' : 'python'}
+										language={API_SNIPPETS[activeCodeIdx].language}
 										style={vscDarkPlus}
 										customStyle={{
 											background: "transparent",
@@ -321,7 +332,7 @@ export const MollogLanding = () => {
 				</motion.div>
 			</section>
 
-			{/* FEATURES SECTION (DOMAIN BREADTH) */}
+			{/* FEATURES SECTION */}
 			<section
 				id="features"
 				className="space-section gradient-bg-1 relative py-24 sm:py-32"
@@ -335,17 +346,19 @@ export const MollogLanding = () => {
 				>
 					<motion.div className="text-center mb-20" variants={slideUp}>
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							What MolLog <span className="bg-gradient-to-r from-sky-400 to-blue-400 text-transparent bg-clip-text leading-relaxed">Covers</span>
+							What MolPack{" "}
+							<span className="bg-gradient-to-r from-orange-400 to-amber-400 text-transparent bg-clip-text leading-relaxed">
+								Covers
+							</span>
 						</motion.h2>
 						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-							The API above shows how the toolkit feels to use. The features
-							below show how the architecture allows comprehensive lifecycle 
-							and observability for complex python packages.
+							From a single `.inp` script to a typed Rust API — one packing
+							engine, surfaced where you need it.
 						</p>
 					</motion.div>
 
@@ -359,7 +372,7 @@ export const MollogLanding = () => {
 								className="flex flex-col items-center text-center group"
 								variants={slideUp}
 							>
-								<div className="text-sky-500 mb-6 group-hover:text-sky-400 transition-colors">
+								<div className="text-orange-500 mb-6 group-hover:text-orange-400 transition-colors">
 									{feature.icon}
 								</div>
 								<h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">

@@ -10,90 +10,10 @@ import { useEffect, useRef, useState } from "react";
 
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ChevronDown, Menu } from "lucide-react";
+import { ecosystemCategories } from "../lib/ecosystem";
+import { Button } from "./ui/button";
 import { LogoIcon } from "./Icons";
 import { ModeToggle } from "./mode-toggle";
-
-const ecosystemCategories = [
-	{
-		title: "Application",
-		items: [
-			{
-				title: "MolPy",
-				href: "/molpy",
-				description:
-					"Programmable toolkit for molecular simulation workflows.",
-				color: "text-blue-500",
-				bg: "hover:bg-blue-500/10",
-			},
-			{
-				title: "MolVis",
-				href: "/molvis",
-				description: "Interactive molecular visualization for web, desktop, and notebooks.",
-				color: "text-purple-500",
-				bg: "hover:bg-purple-500/10",
-			},
-			{
-				title: "MolNex",
-				href: "/molnex",
-				description: "General molecular ML frame split into molix, molrep, molpot, molzoo.",
-				color: "text-cyan-500",
-				bg: "hover:bg-cyan-500/10",
-			},
-		],
-	},
-	{
-		title: "Infrastructure",
-		items: [
-			{
-				title: "MolCfg",
-				href: "/molcfg",
-				description: "Zero-Dependency Configuration Library for Python.",
-				color: "text-emerald-500",
-				bg: "hover:bg-emerald-500/10",
-			},
-			{
-				title: "MolLog",
-				href: "/mollog",
-				description: "Zero-Dependency Structured Logging for Python.",
-				color: "text-sky-500",
-				bg: "hover:bg-sky-500/10",
-			},
-			{
-				title: "MolQ",
-				href: "/molq",
-				description: "Unified Job Queue for Python Workloads.",
-				color: "text-pink-500",
-				bg: "hover:bg-pink-500/10",
-			},
-			{
-				title: "MolExp",
-				href: "/molexp",
-				description: "Workflow-and-agent platform for research experiment management.",
-				color: "text-indigo-500",
-				bg: "hover:bg-indigo-500/10",
-			},
-		],
-	},
-	{
-		title: "Specification",
-		items: [
-			{
-				title: "MolRec",
-				href: "/molrec",
-				description: "Backend-neutral record specification for atomistic data.",
-				color: "text-amber-500",
-				bg: "hover:bg-amber-500/10",
-			},
-			{
-				title: "MolRs",
-				href: "/molrs",
-				description: "Molecular modeling toolkit with Rust, Python, npm, and FFI interfaces.",
-				color: "text-red-500",
-				bg: "hover:bg-red-500/10",
-			},
-		],
-	},
-];
 
 export const Navbar = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -202,9 +122,12 @@ export const Navbar = () => {
 									{/* Glow inside dropdown */}
 									<div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
 
-									<div className="relative flex flex-row gap-8 px-2 py-1">
+									<div className="relative flex flex-row gap-6 px-2 py-1">
 										{ecosystemCategories.map((category, catIdx) => (
-											<div key={category.title} className="flex flex-col gap-1 w-60">
+											<div
+												key={category.title}
+												className="flex flex-col gap-1 w-44"
+											>
 												<div className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
 													{category.title}
 												</div>
@@ -215,16 +138,20 @@ export const Navbar = () => {
 															href={item.href}
 															initial={{ opacity: 0, x: -10 }}
 															animate={{ opacity: 1, x: 0 }}
-															transition={{ delay: (catIdx * category.items.length + itemIdx) * 0.05 }}
-															className={`flex flex-col gap-1 p-3 rounded-lg transition-all ${item.bg} group flex-grow-0`}
+															transition={{
+																delay:
+																	(catIdx * category.items.length + itemIdx) *
+																	0.05,
+															}}
+															className={`flex items-baseline gap-2 px-3 py-2 rounded-lg transition-all ${item.bg} group`}
 														>
 															<span
 																className={`text-sm font-semibold transition-colors group-hover:translate-x-1 duration-200 ${item.color}`}
 															>
 																{item.title}
 															</span>
-															<span className="text-xs text-muted-foreground leading-relaxed leading-snug">
-																{item.description}
+															<span className="text-xs text-muted-foreground">
+																· {item.role}
 															</span>
 														</motion.a>
 													))}
@@ -249,11 +176,11 @@ export const Navbar = () => {
 						</motion.a>
 					) : (
 						<motion.a
-							href="#about"
+							href="#manifesto"
 							className="text-sm font-medium px-4 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors"
 							whileHover={{ y: -1 }}
 						>
-							About
+							Manifesto
 						</motion.a>
 					)}
 				</nav>
@@ -261,17 +188,16 @@ export const Navbar = () => {
 				{/* Right Side Actions */}
 				<div className="flex items-center gap-3">
 					<div className="hidden md:flex items-center gap-3">
-						<motion.a
-							rel="noreferrer noopener"
-							href="https://github.com/MolCrafts"
-							target="_blank"
-							className="flex items-center text-sm font-semibold h-9 px-4 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all shadow-sm"
-							whileHover={{ scale: 1.02 }}
-							whileTap={{ scale: 0.98 }}
-						>
-							<GitHubLogoIcon className="mr-2 w-4 h-4" />
-							Github
-						</motion.a>
+						<Button asChild variant="ghost" size="icon" className="ghost">
+							<a
+								rel="noreferrer noopener"
+								href="https://github.com/MolCrafts"
+								target="_blank"
+							>
+								<GitHubLogoIcon className="h-[1.1rem] w-[1.2rem]" />
+								<span className="sr-only">GitHub</span>
+							</a>
+						</Button>
 						<ModeToggle />
 					</div>
 
@@ -314,7 +240,7 @@ export const Navbar = () => {
 															href={item.href}
 															onClick={() => setIsOpen(false)}
 															className={
-																"flex flex-col p-3 rounded-lg hover:bg-accent transition-all"
+																"flex items-baseline gap-2 p-3 rounded-lg hover:bg-accent transition-all"
 															}
 														>
 															<span
@@ -322,8 +248,8 @@ export const Navbar = () => {
 															>
 																{item.title}
 															</span>
-															<span className="text-xs text-muted-foreground line-clamp-1">
-																{item.description}
+															<span className="text-xs text-muted-foreground">
+																· {item.role}
 															</span>
 														</a>
 													))}
@@ -344,11 +270,11 @@ export const Navbar = () => {
 										</a>
 									) : (
 										<a
-											href="#about"
+											href="#manifesto"
 											onClick={() => setIsOpen(false)}
 											className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
 										>
-											About
+											Manifesto
 										</a>
 									)}
 

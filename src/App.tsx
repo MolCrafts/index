@@ -7,8 +7,19 @@ import { Hero } from "./components/Hero";
 import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
-import { ScrollToTop } from "./components/ScrollToTop";
-import { MolVisLanding, MolpyLanding, MolrecLanding, MolcfgLanding, MollogLanding, MolqLanding, MolrsLanding, MolexpLanding, MolnexLanding } from "./pages";
+import {
+	MolVisLanding,
+	MolpyLanding,
+	MolrecLanding,
+	MolcfgLanding,
+	MollogLanding,
+	MolqLanding,
+	MolrsLanding,
+	MolexpLanding,
+	MolnexLanding,
+	MolpackLanding,
+	NotFound,
+} from "./pages";
 
 import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
@@ -17,7 +28,6 @@ function App() {
 	const [currentPath, setCurrentPath] = useState(window.location.pathname);
 	const [isLoading, setIsLoading] = useState(true);
 
-	// Symulacja początkowego ładowania aplikacji
 	useEffect(() => {
 		// Reduce loading time to improve SEO and initial page load
 		const timer = setTimeout(() => {
@@ -84,7 +94,6 @@ function App() {
 			const elements = document.querySelectorAll(".scroll-fade");
 			for (const element of elements) {
 				const position = element.getBoundingClientRect();
-				// Aktywuj efekt, gdy element jest widoczny w oknie przeglądarki
 				if (position.top < window.innerHeight - 100) {
 					element.classList.add("active");
 				}
@@ -94,7 +103,6 @@ function App() {
 		// Only add scroll handler for the landing page
 		if (currentPath === "/") {
 			window.addEventListener("scroll", handleScroll);
-			// Wywołaj raz na początku, aby aktywować widoczne elementy
 			handleScroll();
 
 			return () => window.removeEventListener("scroll", handleScroll);
@@ -130,16 +138,22 @@ function App() {
 		if (currentPath.startsWith("/molnex")) {
 			return <MolnexLanding />;
 		}
-		// Default landing page
-		return (
-			<>
-				<Hero />
-				<EcosystemArchitecture />
-				<Manifesto />
-				<Newsletter />
-				<Cta />
-			</>
-		);
+		if (currentPath.startsWith("/molpack")) {
+			return <MolpackLanding />;
+		}
+		if (currentPath === "/" || currentPath === "") {
+			return (
+				<>
+					<Hero />
+					<Manifesto />
+					<EcosystemArchitecture />
+					<Newsletter />
+					<Cta />
+				</>
+			);
+		}
+
+		return <NotFound />;
 	};
 
 	return (
@@ -160,7 +174,6 @@ function App() {
 						<Navbar />
 						<main className="flex-grow">{renderContent()}</main>
 						<Footer />
-						<ScrollToTop />
 					</motion.div>
 				)}
 			</AnimatePresence>

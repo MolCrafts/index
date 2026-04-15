@@ -22,7 +22,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 						name: "MolCrafts",
 						url: "https://molcrafts.org",
 						description:
-							"An open-source molecular sciences toolbox that advances molecular simulation with the strength of open-source collaboration.",
+							"Open molecular software for workflows, records, visualization, and scientific infrastructure.",
 						sameAs: ["https://github.com/MolCrafts"],
 					},
 					{
@@ -41,9 +41,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 						"@type": "WebSite",
 						"@id": "https://molcrafts.org/#website",
 						url: "https://molcrafts.org",
-						name: "MolCrafts – AI Infrastructure for Molecular Science",
+						name: "MolCrafts – Open Foundation for Molecular Science",
 						description:
-							"MolCrafts is an open-source molecular software ecosystem spanning workflows, visualization, data specifications, and scientific infrastructure.",
+							"MolCrafts is an open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
 						publisher: {
 							"@id": "https://molcrafts.org/#organization",
 						},
@@ -52,9 +52,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 						"@type": "WebPage",
 						"@id": "https://molcrafts.org/#webpage",
 						url: "https://molcrafts.org",
-						name: "MolCrafts – AI Infrastructure for Molecular Science",
+						name: "MolCrafts – Open Foundation for Molecular Science",
 						description:
-							"MolCrafts is an open-source molecular software ecosystem spanning workflows, visualization, data specifications, and scientific infrastructure.",
+							"MolCrafts is an open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
 						isPartOf: {
 							"@id": "https://molcrafts.org/#website",
 						},
@@ -111,6 +111,24 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 				description:
 					"MolVis is an interactive molecular visualization toolkit for the web, desktop, and Jupyter notebooks.",
 				codeRepository: "https://github.com/MolCrafts/molvis",
+				isPartOf: {
+					"@type": "SoftwareApplication",
+					name: "MolCrafts",
+					url: "https://molcrafts.org",
+				},
+			});
+		} else if (path.startsWith("/molpack")) {
+			// Software schema for MolPack landing
+			script.innerHTML = JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "SoftwareSourceCode",
+				name: "MolPack",
+				applicationCategory: "Scientific",
+				programmingLanguage: ["Rust", "Python"],
+				description:
+					"MolPack is a Packmol-grade molecular packing engine in pure Rust, with a CLI binary and Python bindings for building initial configurations for molecular dynamics simulations.",
+				codeRepository: "https://github.com/MolCrafts/molpack",
+				license: "BSD-3-Clause",
 				isPartOf: {
 					"@type": "SoftwareApplication",
 					name: "MolCrafts",

@@ -1,5 +1,4 @@
 import { motion, useInView } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -183,12 +182,12 @@ export const MolqLanding = () => {
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
 						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-rose-400 via-fuchsia-300 to-rose-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
 						>
-							Unified. Robust. HPC-Ready.
+							One queue, every cluster.
 						</motion.h3>
 
 						<motion.h1
@@ -201,7 +200,7 @@ export const MolqLanding = () => {
 						</motion.h1>
 
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-pink-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-fuchsia-400 via-purple-300 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
@@ -209,53 +208,8 @@ export const MolqLanding = () => {
 							Unified Job Queue for Python Workloads
 						</motion.h2>
 					</motion.header>
-
-					<motion.div
-						className="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.5, duration: 0.4 }}
-					>
-						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-							<a
-								href="#toolkit"
-								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-pink-500 text-zinc-950 outline outline-1 outline-pink-500 outline-offset-[3px] transition-all hover:bg-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.3)]"
-							>
-								See the API
-							</a>
-						</motion.div>
-
-						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-							<a
-								rel="noreferrer noopener"
-								href="https://github.com/MolCrafts/molq"
-								target="_blank"
-								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-pink-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(236,72,153,0.1)]"
-								aria-label="View on GitHub"
-							>
-								View on GitHub
-							</a>
-						</motion.div>
-					</motion.div>
 				</motion.div>
 
-				{/* Scroll indicator */}
-				<motion.div
-					className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 1, duration: 1 }}
-				>
-					<span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold font-['Outfit',sans-serif]">
-						Scroll
-					</span>
-					<motion.div
-						animate={{ y: [0, 5, 0] }}
-						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-					>
-						<ChevronDown className="w-5 h-5 text-muted-foreground/50" />
-					</motion.div>
-				</motion.div>
 			</motion.section>
 
 			{/* NAKED UNIFIED CAPABILITIES SECTION (NO CARDS) */}

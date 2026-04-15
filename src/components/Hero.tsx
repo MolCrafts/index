@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { Suspense, lazy, useEffect } from "react";
 import { fadeIn, slideUp } from "../lib/animations";
 
@@ -131,58 +130,9 @@ export const Hero = () => {
 					</motion.h2>
 				</motion.header>
 
-				<motion.div
-					className="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.5, duration: 0.4 }}
-				>
-					<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-						<a
-							href="#features"
-							className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#10b981] text-zinc-950 outline outline-1 outline-[#10b981] outline-offset-[3px] transition-all hover:bg-[#34d399] shadow-[0_0_15px_rgba(16,185,129,0.3)]"
-						>
-							Explore
-						</a>
-					</motion.div>
-
-					<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-						<a
-							rel="noreferrer noopener"
-							href="https://github.com/MolCrafts"
-							target="_blank"
-							className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-[#10b981] outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
-							aria-label="View on GitHub"
-						>
-							Open Source
-						</a>
-					</motion.div>
-				</motion.div>
 			</motion.div>
 
 			<div className="shadow" aria-hidden="true" />
-
-			{/* Scroll indicator */}
-			<motion.div
-				className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 1, duration: 1 }}
-			>
-				<span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold font-['Outfit',sans-serif]">
-					Scroll
-				</span>
-				<motion.div
-					animate={{ y: [0, 5, 0] }}
-					transition={{
-						duration: 2,
-						repeat: Number.POSITIVE_INFINITY,
-						ease: "easeInOut",
-					}}
-				>
-					<ChevronDown className="w-5 h-5 text-muted-foreground/50" />
-				</motion.div>
-			</motion.div>
 		</motion.section>
 	);
 };

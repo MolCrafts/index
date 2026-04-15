@@ -1,5 +1,4 @@
 import { motion, useInView } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -22,109 +21,99 @@ const MoleculeOverlay = lazy(() =>
 const FEATURES = [
 	{
 		icon: <WorkflowIcon className="w-8 h-8" />,
-		title: "Notation-Driven Polymers",
+		title: "Polymer Notations",
 		description:
-			"Parse SMILES, BigSMILES, CGSmiles, and G-BigSMILES, then build linear, branched, or cyclic polymer systems from the same notation layer.",
+			"Parse SMILES, BigSMILES, CGSmiles, and G-BigSMILES from one notation layer.",
 	},
 	{
 		icon: <IntegrationIcon className="w-8 h-8" />,
-		title: "Typing and Parameters",
+		title: "Layered Data Model",
 		description:
-			"Assign force-field data with explicit typifiers and inspectable ForceField objects instead of opaque engine files.",
+			"Atomistic graphs, Frame tables, and ForceField objects on distinct, explicit layers.",
 	},
 	{
 		icon: <DataIcon className="w-8 h-8" />,
-		title: "Frame and Trajectory Data",
+		title: "Statistical Distributions",
 		description:
-			"Work with Block and Frame tables for vectorized arrays, trajectory handling, and downstream analysis.",
+			"Schulz–Zimm, Poisson, Flory–Schulz, and uniform distributions for reproducible polydisperse systems.",
 	},
 	{
 		icon: <SimulationIcon className="w-8 h-8" />,
-		title: "Engine and Format Export",
+		title: "Queryable Force Fields",
 		description:
-			"Write LAMMPS, AMBER, PDB, GRO, HDF5, and related outputs from the same in-memory system model.",
+			"ForceField is an inspectable typed dictionary — check parameters in Python before export.",
 	},
 	{
 		icon: <CollaborationIcon className="w-8 h-8" />,
-		title: "External Tool Bridges",
+		title: "Reactive Topology Editing",
 		description:
-			"Use RDKit, Packmol, and AmberTools through explicit wrappers when a workflow needs external chemistry or packing tools.",
+			"Express crosslinks via anchor and leaving-group selectors; emit fix bond/react templates.",
 	},
 	{
 		icon: <AnalysisIcon className="w-8 h-8" />,
 		title: "MCP for AI Agents",
 		description:
-			"Expose modules, signatures, docstrings, and source to AI agents through MolPy's MCP server.",
+			"Expose modules, signatures, and source through MolPy's Model Context Protocol server.",
 	},
 ];
 
 const API_SNIPPETS = [
 	{
-		title: "Define an Editable Molecule",
-		filename: "atomistic.py",
+		title: "Small Molecule → LAMMPS",
+		filename: "small_molecule.py",
 		description:
-			"Start with an Atomistic graph, add atoms and bonds, and keep chemistry editable until you are ready for tables or files.",
+			"Parse SMILES, assign OPLS-AA types, and export a complete LAMMPS deck.",
 		code: `import molpy as mp
 
-mol = mp.Atomistic(name="ethanol")
+mol   = mp.parser.parse_molecule("CCO")          # ethanol from SMILES
+ff    = mp.io.read_xml_forcefield("oplsaa.xml")
+typed = mp.typifier.OplsAtomisticTypifier(ff).typify(mol)
 
-c1 = mol.def_atom(element="C", name="C1", x=0.00, y=0.00, z=0.00)
-c2 = mol.def_atom(element="C", name="C2", x=1.54, y=0.00, z=0.00)
-o = mol.def_atom(element="O", name="O1", x=2.95, y=0.00, z=0.00)
-
-mol.def_bond(c1, c2, order=1)
-mol.def_bond(c2, o, order=1)`,
+mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
 	},
 	{
-		title: "Derive Topology from Bonds",
-		filename: "topology.py",
+		title: "Polymer from BigSMILES",
+		filename: "polymer.py",
 		description:
-			"Angles and dihedrals stay derived from the bond graph, so topology updates follow chemistry edits instead of manual bookkeeping.",
+			"Build a PEO chain from G-BigSMILES, type it, and export.",
 		code: `import molpy as mp
 
-mol = mp.Atomistic(name="propane")
-c1 = mol.def_atom(element="C", name="C1")
-c2 = mol.def_atom(element="C", name="C2")
-c3 = mol.def_atom(element="C", name="C3")
+# PEO chain, degree of polymerization = 10
+peo = mp.tool.polymer("{[<]CCOCC[>]}|10|")
 
-mol.def_bond(c1, c2)
-mol.def_bond(c2, c3)
-
-mol = mol.get_topo(gen_angle=True, gen_dihe=True)
-print(len(mol.angles), len(mol.dihedrals))`,
+ff    = mp.io.read_xml_forcefield("oplsaa.xml")
+typed = mp.typifier.OplsAtomisticTypifier(ff).typify(peo)
+mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
 	},
 	{
-		title: "Cross into Vectorized Data",
-		filename: "frame.py",
+		title: "Polydisperse System",
+		filename: "polydisperse.py",
 		description:
-			"Convert explicitly to a Frame when you want aligned arrays, block tables, file I/O, or downstream numerical work.",
+			"Sample a Schulz–Zimm distribution and pack the chains into a periodic box.",
 		code: `import molpy as mp
 
-water = mp.Atomistic(name="water")
-o = water.def_atom(element="O", x=0.000, y=0.000, z=0.000)
-h1 = water.def_atom(element="H", x=0.957, y=0.000, z=0.000)
-h2 = water.def_atom(element="H", x=-0.239, y=0.927, z=0.000)
+# Mn = 1500 Da, Mw = 3000 Da, total mass ≈ 500 kDa
+chains = mp.tool.polymer_system(
+    "{[<]CCOCC[>]}|schulz_zimm(1500,3000)||5e5|",
+    random_seed=42,
+)
 
-water.def_bond(o, h1)
-water.def_bond(o, h2)
-
-frame = water.to_frame()
-atoms = frame["atoms"]
-xyz = atoms[["x", "y", "z"]]`,
+frames = [c.to_frame() for c in chains]
+packed = mp.pack.pack(frames, box=[80, 80, 80])
+mp.io.write_lammps_system("peo_bulk/", packed, ff)`,
 	},
 	{
-		title: "Inspect Parameters Before Export",
+		title: "Inspectable Force Field",
 		filename: "forcefield.py",
 		description:
-			"Force fields stay as Python data, so you can check styles and type records before they become engine-specific files.",
+			"Force fields stay as Python data — query types and parameters before export.",
 		code: `import molpy as mp
 
 ff = mp.io.read_xml_forcefield("oplsaa.xml")
 bond_style = ff.get_style_by_name("harmonic", mp.BondStyle)
 ct_ct = bond_style.get_type_by_name("CT-CT", mp.BondType)
 
-print(ct_ct["k0"])
-print(ct_ct["r0"])`,
+print(ct_ct["k0"], ct_ct["r0"])`,
 	},
 ];
 
@@ -174,12 +163,12 @@ export const MolpyLanding = () => {
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
 						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-sky-400 via-cyan-300 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
 						>
-							Explicit. Programmable. LLM-Friendly.
+							Built from Blocks.
 						</motion.h3>
 
 						<motion.h1
@@ -192,61 +181,16 @@ export const MolpyLanding = () => {
 						</motion.h1>
 
 						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							A programmable toolkit for molecular simulation workflows
+							A programmable Python toolkit for molecular modelling
 						</motion.h2>
 					</motion.header>
-
-					<motion.div
-						className="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-8 mt-12"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.5, duration: 0.4 }}
-					>
-						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-							<a
-								href="#toolkit"
-								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-blue-500 text-zinc-950 outline outline-1 outline-blue-500 outline-offset-[3px] transition-all hover:bg-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)]"
-							>
-								See the API
-							</a>
-						</motion.div>
-
-						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-							<a
-								rel="noreferrer noopener"
-								href="https://github.com/MolCrafts/molpy"
-								target="_blank"
-								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-blue-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(59,130,246,0.1)]"
-								aria-label="View on GitHub"
-							>
-								View on GitHub
-							</a>
-						</motion.div>
-					</motion.div>
 				</motion.div>
 
-				{/* Scroll indicator */}
-				<motion.div
-					className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 1, duration: 1 }}
-				>
-					<span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold font-['Outfit',sans-serif]">
-						Scroll
-					</span>
-					<motion.div
-						animate={{ y: [0, 5, 0] }}
-						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-					>
-						<ChevronDown className="w-5 h-5 text-muted-foreground/50" />
-					</motion.div>
-				</motion.div>
 			</motion.section>
 
 			{/* NAKED UNIFIED CAPABILITIES SECTION (NO CARDS) */}
@@ -271,9 +215,8 @@ export const MolpyLanding = () => {
 							What the <span className="bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text leading-relaxed">API</span> Feels Like
 						</motion.h2>
 						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-							MolPy keeps topology, force fields, numerical frames, and engine
-							I/O explicit and composable in Python, with polymer construction
-							and reactive topology editing as core strengths.
+							Topology, force fields, frames, and engine I/O — explicit and
+							composable in Python.
 						</p>
 					</motion.div>
 
@@ -394,10 +337,7 @@ export const MolpyLanding = () => {
 							What MolPy <span className="bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text leading-relaxed">Covers</span>
 						</motion.h2>
 						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-							The API above shows how the toolkit feels to use. The features
-							below show how the same data model reaches across system setup,
-							parameterization, export, analysis-oriented data handling, and
-							agent-facing tooling.
+							One data model from notation parsing to engine export.
 						</p>
 					</motion.div>
 

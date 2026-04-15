@@ -1,47 +1,95 @@
-import { FileText, Github } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Github } from "lucide-react";
+import { slideUp, staggerContainer } from "../lib/animations";
+import { cn } from "../lib/utils";
+
+const ACCENT = "#03a3d7";
 
 export const Cta = () => {
 	return (
-		<section
-			id="cta"
-			className="bg-[#050505] py-24 sm:py-32 border-t border-border/40 relative"
-		>
-			{/* Subtle glow */}
-			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-[200px] bg-[#03a3d7]/5 blur-[100px] rounded-full point-events-none" />
+		<section id="cta" className="py-16 md:py-20 relative overflow-hidden">
+			<div className="container mx-auto px-4 lg:px-8 max-w-5xl relative z-10">
+				<motion.div
+					variants={staggerContainer}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-80px" }}
+					className="flex flex-col gap-3"
+				>
+					<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+						<motion.div
+							variants={slideUp}
+							className="flex flex-col gap-3 shrink-0"
+						>
+							<div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm">
+								<div className="w-12 h-[1px] bg-primary opacity-50" />
+								Repositories
+							</div>
+							<p className="text-xl md:text-2xl text-foreground font-light leading-snug">
+								Use the layer you need.{" "}
+								<span className="text-muted-foreground">Leave the rest.</span>
+							</p>
+						</motion.div>
 
-			<div className="container lg:grid lg:grid-cols-2 place-items-center gap-12 relative z-10">
-				<div className="lg:col-start-1 text-center lg:text-left">
-					<h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-						Start Building with
-						<span className="block mt-2 bg-gradient-to-r from-[#03a3d7] via-[#8ce4ff] to-[#03a3d7] text-transparent bg-clip-text animate-gradient-x">
-							MolCrafts
-						</span>
-					</h2>
-					<p className="text-muted-foreground text-lg md:text-xl mt-6 mb-8 lg:mb-0 leading-relaxed max-w-xl mx-auto lg:mx-0">
-						Ready to integrate modern, high-performance molecular tools into
-						your workflow? Grab the source code, check out the examples, and
-						start running your first simulation today.
-					</p>
-				</div>
+						<motion.a
+							href="https://github.com/MolCrafts"
+							target="_blank"
+							rel="noreferrer noopener"
+							variants={slideUp}
+							className="group flex items-center gap-4 shrink-0 no-underline"
+						>
+							<div
+								className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+								style={{
+									backgroundColor: `${ACCENT}1f`,
+									boxShadow: `0 0 24px ${ACCENT}30`,
+								}}
+							>
+								<Github className="w-5 h-5" style={{ color: ACCENT }} />
+							</div>
 
-				<div className="lg:col-start-2 w-full flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-end h-auto">
-					<a
-						href="https://github.com/MolCrafts"
-						target="_blank"
-						rel="noreferrer noopener"
-						className="flex items-center justify-center w-[220px] h-[52px] text-base font-semibold rounded-md bg-[#03a3d7] text-black outline outline-1 outline-[#03a3d7] outline-offset-[3px] transition-all hover:bg-[#8ce4ff] shadow-[0_0_15px_rgba(3,163,215,0.3)] box-border"
+							<div className="flex flex-col">
+								<span
+									className="text-[10px] font-bold tracking-[0.35em] uppercase"
+									style={{ color: ACCENT }}
+								>
+									github.com/MolCrafts
+								</span>
+								<span className="text-base font-light text-foreground transition-colors group-hover:text-primary">
+									Browse all repos
+								</span>
+							</div>
+
+							<ArrowUpRight
+								className={cn(
+									"w-4 h-4 ml-1 transition-transform",
+									"group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
+								)}
+								style={{ color: ACCENT }}
+							/>
+						</motion.a>
+					</div>
+
+					<motion.div
+						variants={slideUp}
+						className="hidden md:flex items-center gap-2"
 					>
-						<Github className="mr-2 h-5 w-5" />
-						View on GitHub
-					</a>
-					<a
-						href="/papers"
-						className="flex items-center justify-center w-[220px] h-[52px] text-base font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-zinc-700 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 box-border"
-					>
-						<FileText className="mr-2 h-5 w-5" />
-						Papers
-					</a>
-				</div>
+						<div
+							className="flex-1 h-px"
+							style={{
+								background: `linear-gradient(90deg, transparent 0%, ${ACCENT}30 30%, ${ACCENT}cc 100%)`,
+								boxShadow: `0 0 12px ${ACCENT}80, 0 0 24px ${ACCENT}40`,
+							}}
+						/>
+						<div
+							className="w-1.5 h-1.5 rounded-full shrink-0"
+							style={{
+								backgroundColor: ACCENT,
+								boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${ACCENT}80`,
+							}}
+						/>
+					</motion.div>
+				</motion.div>
 			</div>
 		</section>
 	);

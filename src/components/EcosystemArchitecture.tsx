@@ -1,20 +1,20 @@
-import { motion } from "framer-motion";
-import { slideUp } from "../lib/animations";
 import atomOrbitalMoko from "@/assets/moko/atom_obital.png";
 import flaskMoko from "@/assets/moko/flask.png";
 import molcfgMoko from "@/assets/moko/molcfg.png";
 import mollogMoko from "@/assets/moko/mollog.png";
 import molnexMoko from "@/assets/moko/molnex.png";
+import molpackMoko from "@/assets/moko/molpack.png";
 import molpyMoko from "@/assets/moko/molpy.png";
 import molrecMoko from "@/assets/moko/molrec.png";
 import molrsMoko from "@/assets/moko/molrs.png";
 import movisMoko from "@/assets/moko/movis.png";
+import { motion } from "framer-motion";
+import { slideUp } from "../lib/animations";
 
 interface NodeDetail {
 	id: string;
 	title: string;
 	description: string;
-	features: string[];
 	color: string;
 	glow: string;
 	mokoSrc: string;
@@ -26,8 +26,7 @@ const originalNodes: NodeDetail[] = [
 		id: "molpy",
 		title: "MolPy",
 		description:
-			"Programmable toolkit for molecular simulation workflows in Python.",
-		features: ["Python", "Polymers", "Explicit"],
+			"Programmable Python toolkit for molecular simulation workflows.",
 		color: "text-blue-400",
 		glow: "bg-blue-500",
 		mokoSrc: molpyMoko,
@@ -36,9 +35,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molvis",
 		title: "MolVis",
-		description:
-			"Interactive molecular visualization for the web, desktop, and Jupyter notebooks.",
-		features: ["Web", "Desktop", "Jupyter"],
+		description: "Interactive 3D molecules — web, desktop, Jupyter.",
 		color: "text-purple-400",
 		glow: "bg-purple-500",
 		mokoSrc: movisMoko,
@@ -47,8 +44,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molrec",
 		title: "MolRec",
-		description: "Backend-neutral record specification for atomistic data.",
-		features: ["Spec", "Metadata", "Observables"],
+		description: "Backend-neutral record spec for atomistic data.",
 		color: "text-amber-400",
 		glow: "bg-amber-500",
 		mokoSrc: molrecMoko,
@@ -57,8 +53,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molcfg",
 		title: "MolCfg",
-		description: "Layered configuration with validation and source tracking.",
-		features: ["Layered", "Validation", "Tracking"],
+		description: "Layered config with source tracking. Zero deps.",
 		color: "text-emerald-400",
 		glow: "bg-emerald-500",
 		mokoSrc: molcfgMoko,
@@ -67,8 +62,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "mollog",
 		title: "MolLog",
-		description: "Zero-dependency structured logging for Python.",
-		features: ["Structured", "Context", "Handlers"],
+		description: "Structured Python logging. Zero dependencies.",
 		color: "text-sky-400",
 		glow: "bg-sky-500",
 		mokoSrc: mollogMoko,
@@ -77,8 +71,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molq",
 		title: "MolQ",
-		description: "Unified job queue from laptops to HPC clusters.",
-		features: ["Local", "HPC", "Lineage"],
+		description: "One job-queue API: local, slurm, pbs, lsf.",
 		color: "text-pink-400",
 		glow: "bg-pink-500",
 		mokoSrc: atomOrbitalMoko,
@@ -87,9 +80,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molrs",
 		title: "MolRs",
-		description:
-			"Molecular modeling toolkit with Rust, Python, npm, and FFI interfaces.",
-		features: ["Rust", "Python", "WASM"],
+		description: "Rust molecular kernel — Python, WASM, C bindings.",
 		color: "text-red-400",
 		glow: "bg-red-500",
 		mokoSrc: molrsMoko,
@@ -98,9 +89,7 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molexp",
 		title: "MolExp",
-		description:
-			"Workflow-and-agent platform for research experiment management.",
-		features: ["Workflow", "Workspace", "Assets"],
+		description: "Typed workflows, asset dedup, agent layer for experiments.",
 		color: "text-indigo-400",
 		glow: "bg-indigo-500",
 		mokoSrc: flaskMoko,
@@ -109,12 +98,22 @@ const originalNodes: NodeDetail[] = [
 	{
 		id: "molnex",
 		title: "MolNex",
-		description: "Layered framework for molecular machine learning systems.",
-		features: ["molix", "molrep", "molpot"],
+		description:
+			"Layered ML framework: training, representation, potentials, model zoo.",
 		color: "text-cyan-400",
 		glow: "bg-cyan-500",
 		mokoSrc: molnexMoko,
 		hex: "#06b6d4",
+	},
+	{
+		id: "molpack",
+		title: "MolPack",
+		description:
+			"Packmol-grade molecular packing engine — CLI, Rust crate, Python package.",
+		color: "text-orange-400",
+		glow: "bg-orange-500",
+		mokoSrc: molpackMoko,
+		hex: "#f97316",
 	},
 ];
 
@@ -122,7 +121,7 @@ const categoryGroups = [
 	{
 		label: "Application",
 		hex: "#3b82f6",
-		nodeIds: ["molpy", "molvis", "molnex"],
+		nodeIds: ["molpy", "molvis", "molnex", "molpack"],
 	},
 	{
 		label: "Infrastructure",
@@ -140,7 +139,7 @@ export const EcosystemArchitecture = () => {
 	const NodeCard = ({ node }: { node: NodeDetail }) => (
 		<motion.a
 			href={`/${node.id}`}
-			className="w-[220px] h-[220px] shrink-0 bg-zinc-900/50 border border-white/[0.06] rounded-2xl p-5 flex flex-col gap-3 cursor-pointer group no-underline relative overflow-hidden"
+			className="w-[220px] h-[220px] shrink-0 bg-zinc-900/50 border border-white/[0.06] rounded-2xl p-5 flex flex-col gap-4 cursor-pointer group no-underline relative overflow-hidden"
 			draggable="false"
 			whileHover={{
 				y: -8,
@@ -157,52 +156,32 @@ export const EcosystemArchitecture = () => {
 				}}
 			/>
 
-			{/* Icon container */}
-			<div
-				className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-				style={{ backgroundColor: `${node.hex}18` }}
-			>
-				<img
-					src={node.mokoSrc}
-					alt={node.title}
-					className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-300"
-					draggable="false"
-				/>
-			</div>
-
-			{/* Text */}
-			<div className="flex flex-col gap-1.5 flex-grow min-h-0">
-				<h3 className={`text-base font-bold tracking-tight ${node.color}`}>
+			{/* Header row: large icon + title on same line */}
+			<div className="flex items-center gap-3 shrink-0">
+				<div
+					className="w-16 h-16 rounded-xl flex items-center justify-center shrink-0"
+					style={{ backgroundColor: `${node.hex}18` }}
+				>
+					<img
+						src={node.mokoSrc}
+						alt={node.title}
+						className="w-12 h-12 object-contain rounded-lg group-hover:scale-110 transition-transform duration-300"
+						draggable="false"
+					/>
+				</div>
+				<h3 className={`text-lg font-bold tracking-tight ${node.color}`}>
 					{node.title}
 				</h3>
-				<p className="text-xs text-zinc-500 font-light leading-relaxed line-clamp-3">
-					{node.description}
-				</p>
 			</div>
 
-			{/* Feature tags */}
-			<div className="flex flex-wrap gap-1.5">
-				{node.features.map((feature) => (
-					<span
-						key={feature}
-						className="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-semibold"
-						style={{
-							color: node.hex,
-							backgroundColor: `${node.hex}10`,
-							border: `1px solid ${node.hex}28`,
-						}}
-					>
-						{feature}
-					</span>
-				))}
-			</div>
+			{/* Description */}
+			<p className="text-xs text-zinc-500 font-light leading-relaxed line-clamp-4 flex-grow min-h-0">
+				{node.description}
+			</p>
 		</motion.a>
 	);
 
-	const CategoryDivider = ({
-		label,
-		hex,
-	}: { label: string; hex: string }) => (
+	const CategoryDivider = ({ label, hex }: { label: string; hex: string }) => (
 		<div className="flex flex-col items-center justify-center shrink-0 w-12 h-[220px] select-none gap-2 mx-1">
 			<div
 				className="w-px flex-1"
@@ -267,17 +246,8 @@ export const EcosystemArchitecture = () => {
 							<div className="w-12 h-[1px] bg-primary opacity-50" />
 							Ecosystem
 						</div>
-						<h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-foreground leading-[1.05]">
-							Separate{" "}
-							<span className="gradient-text-primary text-transparent bg-clip-text">
-								By Design
-							</span>
-						</h2>
-						<p className="text-xl md:text-2xl text-muted-foreground font-light mt-6 max-w-3xl">
-							MolCrafts components stay separate on purpose. Modeling, records,
-							visualization, workflows, queues, and infrastructure carry
-							different responsibilities and should be able to evolve without
-							collapsing into one layer.
+						<p className="text-2xl md:text-3xl text-foreground font-light leading-snug max-w-3xl">
+							Separate by design. Unified by purpose.
 						</p>
 					</motion.div>
 				</div>
