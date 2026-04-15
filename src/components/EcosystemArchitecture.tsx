@@ -1,5 +1,14 @@
 import { motion } from "framer-motion";
 import { slideUp } from "../lib/animations";
+import atomOrbitalMoko from "@/assets/moko/atom_obital.png";
+import flaskMoko from "@/assets/moko/flask.png";
+import molcfgMoko from "@/assets/moko/molcfg.png";
+import mollogMoko from "@/assets/moko/mollog.png";
+import molnexMoko from "@/assets/moko/molnex.png";
+import molpyMoko from "@/assets/moko/molpy.png";
+import molrecMoko from "@/assets/moko/molrec.png";
+import molrsMoko from "@/assets/moko/molrs.png";
+import movisMoko from "@/assets/moko/movis.png";
 
 interface NodeDetail {
 	id: string;
@@ -8,13 +17,8 @@ interface NodeDetail {
 	features: string[];
 	color: string;
 	glow: string;
-}
-
-interface Capability {
-	id: string;
-	name: string;
-	desc: string;
-	color: string;
+	mokoSrc: string;
+	hex: string;
 }
 
 const originalNodes: NodeDetail[] = [
@@ -22,176 +26,216 @@ const originalNodes: NodeDetail[] = [
 		id: "molpy",
 		title: "MolPy",
 		description:
-			"Programmable toolkit for building, editing, typing, and exporting molecular systems in Python.",
-		features: ["Python", "Polymers", "Force Fields"],
-		color: "text-blue-500",
+			"Programmable toolkit for molecular simulation workflows in Python.",
+		features: ["Python", "Polymers", "Explicit"],
+		color: "text-blue-400",
 		glow: "bg-blue-500",
+		mokoSrc: molpyMoko,
+		hex: "#3b82f6",
 	},
 	{
 		id: "molvis",
 		title: "MolVis",
 		description:
-			"Interactive molecular visualization toolkit for the web, desktop, and Jupyter notebooks.",
-		features: ["Babylon.js", "WASM", "Jupyter"],
-		color: "text-purple-500",
+			"Interactive molecular visualization for the web, desktop, and Jupyter notebooks.",
+		features: ["Web", "Desktop", "Jupyter"],
+		color: "text-purple-400",
 		glow: "bg-purple-500",
+		mokoSrc: movisMoko,
+		hex: "#a855f7",
 	},
 	{
 		id: "molrec",
 		title: "MolRec",
-		description:
-			"Backend-neutral record specification for atomistic data semantics.",
-		features: ["Spec", "Zarr v3", "Observables"],
-		color: "text-amber-500",
+		description: "Backend-neutral record specification for atomistic data.",
+		features: ["Spec", "Metadata", "Observables"],
+		color: "text-amber-400",
 		glow: "bg-amber-500",
+		mokoSrc: molrecMoko,
+		hex: "#f59e0b",
 	},
 	{
 		id: "molcfg",
 		title: "MolCfg",
-		description: "Zero-dependency configuration library for Python.",
-		features: ["Layered", "Type-Safe", "Tracking"],
-		color: "text-emerald-500",
+		description: "Layered configuration with validation and source tracking.",
+		features: ["Layered", "Validation", "Tracking"],
+		color: "text-emerald-400",
 		glow: "bg-emerald-500",
+		mokoSrc: molcfgMoko,
+		hex: "#10b981",
 	},
 	{
 		id: "mollog",
 		title: "MolLog",
 		description: "Zero-dependency structured logging for Python.",
-		features: ["Structured", "Scoped", "Handlers"],
-		color: "text-sky-500",
+		features: ["Structured", "Context", "Handlers"],
+		color: "text-sky-400",
 		glow: "bg-sky-500",
+		mokoSrc: mollogMoko,
+		hex: "#0ea5e9",
 	},
 	{
 		id: "molq",
 		title: "MolQ",
-		description: "Unified job queue for Python workloads.",
-		features: ["HPC", "Local", "Lineage"],
-		color: "text-pink-500",
+		description: "Unified job queue from laptops to HPC clusters.",
+		features: ["Local", "HPC", "Lineage"],
+		color: "text-pink-400",
 		glow: "bg-pink-500",
+		mokoSrc: atomOrbitalMoko,
+		hex: "#ec4899",
 	},
 	{
 		id: "molrs",
 		title: "MolRs",
-		description: "Molecular modeling toolkit with Rust, Python, npm, and FFI interfaces.",
-		features: ["Rust", "WASM", "Packing"],
-		color: "text-red-500",
+		description:
+			"Molecular modeling toolkit with Rust, Python, npm, and FFI interfaces.",
+		features: ["Rust", "Python", "WASM"],
+		color: "text-red-400",
 		glow: "bg-red-500",
+		mokoSrc: molrsMoko,
+		hex: "#ef4444",
 	},
 	{
 		id: "molexp",
 		title: "MolExp",
-		description: "Workflow-and-agent platform for research experiment management.",
+		description:
+			"Workflow-and-agent platform for research experiment management.",
 		features: ["Workflow", "Workspace", "Assets"],
-		color: "text-indigo-500",
+		color: "text-indigo-400",
 		glow: "bg-indigo-500",
+		mokoSrc: flaskMoko,
+		hex: "#6366f1",
 	},
 	{
 		id: "molnex",
 		title: "MolNex",
-		description: "Layered molecular ML framework split into execution, representation, potential, and model-family packages.",
+		description: "Layered framework for molecular machine learning systems.",
 		features: ["molix", "molrep", "molpot"],
-		color: "text-cyan-500",
+		color: "text-cyan-400",
 		glow: "bg-cyan-500",
+		mokoSrc: molnexMoko,
+		hex: "#06b6d4",
 	},
 ];
 
-const capabilities: Capability[] = [
+const categoryGroups = [
 	{
-		id: "mod",
-		name: "Modeling",
-		desc: "Architectures",
-		color: "text-emerald-500",
+		label: "Application",
+		hex: "#3b82f6",
+		nodeIds: ["molpy", "molvis", "molnex"],
 	},
 	{
-		id: "sim",
-		name: "Simulation",
-		desc: "Dynamics & Orbits",
-		color: "text-blue-500",
+		label: "Infrastructure",
+		hex: "#10b981",
+		nodeIds: ["molcfg", "mollog", "molq", "molexp"],
 	},
 	{
-		id: "ana",
-		name: "Analysis",
-		desc: "Scientific Insights",
-		color: "text-purple-500",
-	},
-	{
-		id: "vis",
-		name: "Visualization",
-		desc: "3D Rendering",
-		color: "text-amber-500",
-	},
-	{
-		id: "cfg",
-		name: "Infrastructure",
-		desc: "Configuration",
-		color: "text-teal-500",
-	},
-	{
-		id: "ops",
-		name: "Operations",
-		desc: "Execution",
-		color: "text-pink-500",
+		label: "Specification",
+		hex: "#f59e0b",
+		nodeIds: ["molrec", "molrs"],
 	},
 ];
 
 export const EcosystemArchitecture = () => {
-	// Single robust card component
 	const NodeCard = ({ node }: { node: NodeDetail }) => (
-		<div className="w-[320px] h-[340px] shrink-0 bg-zinc-900/40 hover:bg-zinc-800/60 border border-white/5 hover:border-white/10 rounded-2xl p-8 flex flex-col gap-4 transition-transform duration-300 transform-gpu hover:-translate-y-1 cursor-pointer">
-			<div className="flex items-center gap-3">
-				<div
-					className={`w-10 h-10 rounded-full ${node.glow} bg-opacity-10 flex items-center justify-center`}
-				>
-					<div className={`w-3 h-3 rounded-full ${node.glow}`} />
-				</div>
-				<h3 className={`text-2xl font-bold tracking-tight ${node.color}`}>
-					{node.title}
-				</h3>
+		<motion.a
+			href={`/${node.id}`}
+			className="w-[220px] h-[220px] shrink-0 bg-zinc-900/50 border border-white/[0.06] rounded-2xl p-5 flex flex-col gap-3 cursor-pointer group no-underline relative overflow-hidden"
+			draggable="false"
+			whileHover={{
+				y: -8,
+				boxShadow: `0 16px 48px ${node.hex}28, 0 0 0 1px ${node.hex}22`,
+				borderColor: `${node.hex}30`,
+			}}
+			transition={{ duration: 0.22, ease: "easeOut" }}
+		>
+			{/* Colored top accent */}
+			<div
+				className="absolute top-0 left-6 right-6 h-px"
+				style={{
+					background: `linear-gradient(90deg, transparent, ${node.hex}90, transparent)`,
+				}}
+			/>
+
+			{/* Icon container */}
+			<div
+				className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+				style={{ backgroundColor: `${node.hex}18` }}
+			>
+				<img
+					src={node.mokoSrc}
+					alt={node.title}
+					className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-300"
+					draggable="false"
+				/>
 			</div>
 
-			<p className="text-base text-zinc-400 font-light leading-relaxed min-h-[70px]">
-				{node.description}
-			</p>
+			{/* Text */}
+			<div className="flex flex-col gap-1.5 flex-grow min-h-0">
+				<h3 className={`text-base font-bold tracking-tight ${node.color}`}>
+					{node.title}
+				</h3>
+				<p className="text-xs text-zinc-500 font-light leading-relaxed line-clamp-3">
+					{node.description}
+				</p>
+			</div>
 
-			<div className="flex flex-wrap gap-2 mt-auto">
+			{/* Feature tags */}
+			<div className="flex flex-wrap gap-1.5">
 				{node.features.map((feature) => (
 					<span
 						key={feature}
-						className="px-2 py-1 bg-white/5 rounded-md text-[11px] uppercase tracking-wider font-semibold text-zinc-300"
+						className="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-semibold"
+						style={{
+							color: node.hex,
+							backgroundColor: `${node.hex}10`,
+							border: `1px solid ${node.hex}28`,
+						}}
 					>
 						{feature}
 					</span>
 				))}
 			</div>
-		</div>
+		</motion.a>
 	);
 
-	// Text capability node acting as a vertical structural divider between cards
-	const TextNode = ({ item }: { item: Capability }) => (
-		<div className="flex items-center justify-center shrink-0 mx-2 md:mx-4 h-[450px] md:h-[500px] select-none group">
+	const CategoryDivider = ({
+		label,
+		hex,
+	}: { label: string; hex: string }) => (
+		<div className="flex flex-col items-center justify-center shrink-0 w-12 h-[220px] select-none gap-2 mx-1">
+			<div
+				className="w-px flex-1"
+				style={{
+					background: `linear-gradient(to bottom, transparent, ${hex}60)`,
+				}}
+			/>
 			<span
-				className={`text-3xl md:text-4xl font-black tracking-[0.4em] uppercase font-sans ${item.color} opacity-20 group-hover:opacity-60 transition-opacity duration-500 [writing-mode:vertical-rl] rotate-180`}
+				className="text-[10px] font-bold tracking-[0.35em] uppercase [writing-mode:vertical-rl] rotate-180"
+				style={{ color: `${hex}cc` }}
 			>
-				{item.name}
+				{label}
 			</span>
+			<div
+				className="w-px flex-1"
+				style={{
+					background: `linear-gradient(to top, transparent, ${hex}60)`,
+				}}
+			/>
 		</div>
 	);
 
-	// One full loop segment that mixes apps and capabilities intricately together
 	const MarqueeSequence = () => (
-		<div className="flex gap-4 md:gap-8 pr-4 md:pr-8 items-center">
-			<TextNode item={capabilities[0]} />
-			<NodeCard node={originalNodes[0]} />
-			<TextNode item={capabilities[1]} />
-			<NodeCard node={originalNodes[1]} />
-			<TextNode item={capabilities[2]} />
-			<NodeCard node={originalNodes[2]} />
-			<TextNode item={capabilities[3]} />
-			<NodeCard node={originalNodes[3]} />
-			<TextNode item={capabilities[4]} />
-			<NodeCard node={originalNodes[4]} />
-			<TextNode item={capabilities[5]} />
-			<NodeCard node={originalNodes[5]} />
+		<div className="flex gap-4 md:gap-5 pr-4 md:pr-5 items-center">
+			{categoryGroups.map((group) => (
+				<div key={group.label} className="flex gap-4 md:gap-5 items-center">
+					<CategoryDivider label={group.label} hex={group.hex} />
+					{group.nodeIds.map((id) => {
+						const node = originalNodes.find((n) => n.id === id);
+						return node ? <NodeCard key={id} node={node} /> : null;
+					})}
+				</div>
+			))}
 		</div>
 	);
 
@@ -204,10 +248,10 @@ export const EcosystemArchitecture = () => {
 			<style>{`
                 @keyframes marquee {
                     0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); } 
+                    100% { transform: translateX(-50%); }
                 }
                 .animate-marquee {
-                    animation: marquee 50s linear infinite;
+                    animation: marquee 60s linear infinite;
                 }
             `}</style>
 
@@ -219,29 +263,29 @@ export const EcosystemArchitecture = () => {
 						whileInView="visible"
 						viewport={{ once: true }}
 					>
-						{/* Eyebrow to perfectly match Manifesto's alignment style */}
 						<div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm mb-6">
 							<div className="w-12 h-[1px] bg-primary opacity-50" />
 							Ecosystem
 						</div>
 						<h2 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-foreground leading-[1.05]">
-							Atomic{" "}
+							Separate{" "}
 							<span className="gradient-text-primary text-transparent bg-clip-text">
-								Architecture
+								By Design
 							</span>
 						</h2>
 						<p className="text-xl md:text-2xl text-muted-foreground font-light mt-6 max-w-3xl">
-							MolCrafts components stay separate on purpose so modeling,
-							workflow, data semantics, visualization, and infrastructure can
-							evolve without collapsing into one layer.
+							MolCrafts components stay separate on purpose. Modeling, records,
+							visualization, workflows, queues, and infrastructure carry
+							different responsibilities and should be able to evolve without
+							collapsing into one layer.
 						</p>
 					</motion.div>
 				</div>
 			</div>
 
-			{/* Full-width Automatic Marquee completely decoupled from the container alignment */}
+			{/* Full-width Automatic Marquee */}
 			<div className="w-full relative z-10 group overflow-hidden py-4">
-				{/* Visual fade edges, using pointer-events-none so it doesn't block hover pause */}
+				{/* Visual fade edges */}
 				<div className="absolute left-0 top-0 bottom-0 w-24 md:w-48 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
 				<div className="absolute right-0 top-0 bottom-0 w-24 md:w-48 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
 

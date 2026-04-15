@@ -1,4 +1,5 @@
 import { motion, useInView } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -166,6 +167,7 @@ export const MolpyLanding = () => {
 					<MoleculeOverlay />
 				</Suspense>
 
+
 				<motion.div
 					className="text-center w-full max-w-7xl mx-auto px-4 z-10"
 					variants={slideUp}
@@ -228,8 +230,23 @@ export const MolpyLanding = () => {
 					</motion.div>
 				</motion.div>
 
-				{/* Scroll hint line */}
-				<div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-gradient-to-b from-transparent via-zinc-700 to-transparent" />
+				{/* Scroll indicator */}
+				<motion.div
+					className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 1, duration: 1 }}
+				>
+					<span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold font-['Outfit',sans-serif]">
+						Scroll
+					</span>
+					<motion.div
+						animate={{ y: [0, 5, 0] }}
+						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+					>
+						<ChevronDown className="w-5 h-5 text-muted-foreground/50" />
+					</motion.div>
+				</motion.div>
 			</motion.section>
 
 			{/* NAKED UNIFIED CAPABILITIES SECTION (NO CARDS) */}

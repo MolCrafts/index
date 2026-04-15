@@ -1,4 +1,5 @@
 import { motion, useInView } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { Suspense, lazy, useEffect, useRef } from "react";
 import {
 	DataIcon,
@@ -25,7 +26,7 @@ export const MolrecLanding = () => {
 		<div className="flex flex-col w-full">
 			{/* HERO SECTION */}
 			<motion.section
-				className="w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+				className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
 				initial="hidden"
 				animate="visible"
 				variants={fadeIn}
@@ -66,6 +67,7 @@ export const MolrecLanding = () => {
 				<Suspense fallback={null}>
 					<MoleculeOverlay />
 				</Suspense>
+
 
 				<motion.div
 					className="text-center w-full max-w-7xl mx-auto px-4 z-10"
@@ -108,10 +110,10 @@ export const MolrecLanding = () => {
 					>
 						<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
 							<a
-								href="#features"
+								href="#toolkit"
 								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-amber-500 text-zinc-950 outline outline-1 outline-amber-500 outline-offset-[3px] transition-all hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.3)]"
 							>
-								Explore
+								See the API
 							</a>
 						</motion.div>
 
@@ -123,16 +125,34 @@ export const MolrecLanding = () => {
 								className="flex items-center justify-center w-full sm:w-auto text-base sm:text-lg px-8 py-3 font-semibold rounded-md bg-[#0a0a0a] text-white outline outline-1 outline-amber-500 outline-offset-[3px] border border-zinc-800 transition-all hover:bg-zinc-900 shadow-[0_0_15px_rgba(245,158,11,0.1)]"
 								aria-label="View on GitHub"
 							>
-								Open Source
+								View on GitHub
 							</a>
 						</motion.div>
+					</motion.div>
+				</motion.div>
+
+				{/* Scroll indicator */}
+				<motion.div
+					className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 1, duration: 1 }}
+				>
+					<span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold font-['Outfit',sans-serif]">
+						Scroll
+					</span>
+					<motion.div
+						animate={{ y: [0, 5, 0] }}
+						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+					>
+						<ChevronDown className="w-5 h-5 text-muted-foreground/50" />
 					</motion.div>
 				</motion.div>
 			</motion.section>
 
 			{/* FEATURES SECTION */}
 			<section
-				id="features"
+				id="toolkit"
 				className="space-section gradient-bg-1 relative py-24 sm:py-32"
 			>
 				<motion.div
