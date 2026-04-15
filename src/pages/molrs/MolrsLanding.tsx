@@ -92,7 +92,7 @@ export const MolrsLanding = () => {
 
 
 				<motion.div
-					className="text-center w-full max-w-7xl mx-auto px-4 z-10"
+					className="text-center w-full max-w-7xl mx-auto px-4 z-10 mb-32"
 					variants={slideUp}
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">

@@ -178,7 +178,7 @@ export const MolpackLanding = () => {
 				</Suspense>
 
 				<motion.div
-					className="text-center w-full max-w-7xl mx-auto px-4 z-10"
+					className="text-center w-full max-w-7xl mx-auto px-4 z-10 mb-32"
 					variants={slideUp}
 				>
 					<motion.header className="flex flex-col items-center justify-center w-full">
@@ -188,7 +188,7 @@ export const MolpackLanding = () => {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1, duration: 0.4 }}
 						>
-							Flexible 
+							Pack first. Simulate clean.
 						</motion.h3>
 
 						<motion.h1
@@ -206,7 +206,7 @@ export const MolpackLanding = () => {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.4 }}
 						>
-							Extensible molecule packing for initial configuration generation
+							Extensible Initial-configuration Packing Package
 						</motion.h2>
 					</motion.header>
 				</motion.div>
