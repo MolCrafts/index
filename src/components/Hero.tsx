@@ -1,9 +1,6 @@
 import { motion } from "framer-motion";
-import { Button } from "./ui/button";
-import { buttonVariants } from "./ui/button";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { fadeIn, slideUp, buttonHover } from "../lib/animations";
-import { useEffect, lazy, Suspense } from "react";
+import { Suspense, lazy, useEffect } from "react";
+import { fadeIn, slideUp } from "../lib/animations";
 
 // Lazy load the MoleculeOverlay component
 const MoleculeOverlay = lazy(() =>
@@ -17,12 +14,12 @@ export const Hero = () => {
 	useEffect(() => {
 		const handleScroll = () => {
 			const elements = document.querySelectorAll(".scroll-fade");
-			elements.forEach((element) => {
+			for (const element of elements) {
 				const position = element.getBoundingClientRect();
 				if (position.top < window.innerHeight) {
 					element.classList.add("active");
 				}
-			});
+			}
 		};
 
 		window.addEventListener("scroll", handleScroll);
@@ -97,69 +94,42 @@ export const Hero = () => {
 			</Suspense>
 
 			<motion.div
-				className="text-center space-y-6 mb-8 z-10 max-w-3xl px-4"
+				className="text-center w-full max-w-7xl mx-auto px-4 z-10 mb-32"
 				variants={slideUp}
 			>
-				<motion.header className="font-bold text-4xl sm:text-2xl">
-					<motion.h1
-						id="main-heading"
-						className="inline text-5xl sm:text-6xl md:text-7xl"
-						initial={{ opacity: 0, y: 20 }}
+				<motion.header className="flex flex-col items-center justify-center w-full">
+					{/* Kicker: Elegant French-style cursive/serif (Playfair Display Italic), subtle and refined */}
+					<motion.h3
+						className="text-2xl sm:text-3xl md:text-4xl gradient-text-secondary font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6"
+						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.1, duration: 0.4 }}
 					>
-						<span className="gradient-text-primary">MolCrafts</span>
-					</motion.h1>
-					<br />
-					<motion.h2
-						className="inline text-3xl md:text-4xl lg:text-5xl sm:text-2xl mt-3"
+						Simulate. Learn. Create.
+					</motion.h3>
+
+					{/* Head: Modern bold sans-serif, slightly reduced size, still the visual anchor */}
+					<motion.h1
+						id="main-heading"
+						className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1] w-full mb-6 sm:mb-8 bg-gradient-to-r from-[#03a3d7] via-[#8ce4ff] to-[#03a3d7] bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.2, duration: 0.4 }}
 					>
-						<span className="gradient-text-secondary">
-							Seamless Molecular Sciences toolbox
-						</span>
+						MolCrafts
+					</motion.h1>
+
+					{/* Subhead: Clean minimal sans-serif, describing the platform clearly, with sliding gradient animation restored */}
+					<motion.h2
+						className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-[#10b981] via-[#1fc0f1] to-[#10b981] bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3, duration: 0.4 }}
+					>
+						AI Infrastructure for Molecular Science
 					</motion.h2>
 				</motion.header>
 
-				<motion.p
-					className="text-xl text-muted-foreground max-w-md mx-auto"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.3, duration: 0.4 }}
-				>
-					Advancing Molecular Simulation with the Strength of Open-Source
-					Collaboration for Computational Chemistry and Molecular Data Analysis
-				</motion.p>
-
-				<motion.div
-					className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.4, duration: 0.4 }}
-				>
-					<motion.div whileHover={buttonHover}>
-						<Button className="w-full btn-hover-effect focus-ring">
-							Start MolCrafts
-						</Button>
-					</motion.div>
-
-					<motion.div whileHover={buttonHover}>
-						<a
-							rel="noreferrer noopener"
-							href="https://github.com/MolCrafts"
-							target="_blank"
-							className={`w-full btn-hover-effect focus-ring ${buttonVariants({
-								variant: "outline",
-							})}`}
-							aria-label="Visit MolCrafts GitHub Repository"
-						>
-							Github Repository
-							<GitHubLogoIcon className="ml-2 w-5 h-5" aria-hidden="true" />
-						</a>
-					</motion.div>
-				</motion.div>
 			</motion.div>
 
 			<div className="shadow" aria-hidden="true" />

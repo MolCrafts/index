@@ -3,6 +3,14 @@
 # Tell Biome this is the root config
 root = true
 
+[vcs]
+enabled = true
+client_kind = "git"
+use_ignore_file = true
+
+[files]
+ignore = ["dist", "node_modules", "src/components/ui"]
+
 # Global formatter settings
 [formatter]
 # Maximum line width before wrapping
@@ -15,6 +23,13 @@ indent_size = 2
 quote_style = "double"
 # Always emit semicolons
 semi_colons = true
+
+[organizeImports]
+enabled = true
+
+[linter]
+enabled = true
+rules.recommended = true
 
 # Language-specific overrides (optional)
 [language.javascript]

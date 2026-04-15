@@ -1,182 +1,161 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-// Import the molecule images
-import ethanolMolecule from "../assets/molecules/Ethanol_Conformer3D_small.webp";
-import methanolMolecule from "../assets/molecules/Methanol_Conformer3D_small.webp";
-import cocaineMolecule from "../assets/molecules/Cocaine_Conformer3D_small.webp";
-import carbonDioxideMolecule from "../assets/molecules/Carbon-Dioxide_Conformer3D_small.webp";
+import aspirinMolecule from "@/assets/molecules/aspirin.webp";
+import caffeineMolecule from "@/assets/molecules/caffeine.webp";
+import dopamineMolecule from "@/assets/molecules/dopamine.webp";
+import ibuprofenMolecule from "@/assets/molecules/ibuprofen.webp";
+import nicotineMolecule from "@/assets/molecules/nicotine.webp";
+import quinineMolecule from "@/assets/molecules/quinine.webp";
 
-// Array of molecule images
-const moleculeImages = [
-	ethanolMolecule,
-	methanolMolecule,
-	cocaineMolecule,
-	carbonDioxideMolecule,
+const MOLECULES = [
+  aspirinMolecule,
+  caffeineMolecule,
+  dopamineMolecule,
+  ibuprofenMolecule,
+  nicotineMolecule,
+  quinineMolecule,
 ];
 
-// Define safe zones where molecules shouldn't appear
-const ZONES = {
-	// Avoid center area (text and buttons)
-	CENTER: {
-		widthPercent: 70, // Center area width percentage
-		heightPercent: 60, // Center area height percentage
-		topOffset: 30, // Percentage from top
-	},
-};
+function rand(min: number, max: number) {
+  return min + Math.random() * (max - min);
+}
+
+interface SlotState {
+  visible: boolean;
+  uid: number;
+  imgIdx: number;
+  top: string;
+  left: string;
+}
+
+function useSlot(
+  xMin: number,
+  xMax: number,
+  yMin: number,
+  yMax: number,
+  showMs: number,
+  periodMs: number,
+  initialDelayMs: number,
+): SlotState {
+  const [state, setState] = useState<SlotState>({
+    visible: false,
+    uid: 0,
+    imgIdx: 0,
+    top: "50%",
+    left: "10%",
+  });
+
+  // Track the hide-timer so it can be cleared on unmount
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const show = useCallback(() => {
+    const top = `${rand(yMin, yMax).toFixed(1)}%`;
+    const left = `${rand(xMin, xMax).toFixed(1)}%`;
+    const imgIdx = Math.floor(Math.random() * MOLECULES.length);
+    setState((s) => ({ visible: true, uid: s.uid + 1, imgIdx, top, left }));
+    if (hideTimerRef.current !== null) clearTimeout(hideTimerRef.current);
+    hideTimerRef.current = setTimeout(
+      () => setState((s) => ({ ...s, visible: false })),
+      showMs,
+    );
+  }, [xMin, xMax, yMin, yMax, showMs]);
+
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    const initTimer = setTimeout(() => {
+      show();
+      intervalId = setInterval(show, periodMs);
+    }, initialDelayMs);
+
+    return () => {
+      clearTimeout(initTimer);
+      if (intervalId !== null) clearInterval(intervalId);
+      if (hideTimerRef.current !== null) clearTimeout(hideTimerRef.current);
+    };
+  }, [show, periodMs, initialDelayMs]);
+
+  return state;
+}
 
 export const MoleculeOverlay = () => {
-	const [showMolecule, setShowMolecule] = useState(false);
-	const [currentMolecule, setCurrentMolecule] = useState(0);
-	const [moleculePosition, setMoleculePosition] = useState({
-		top: "30%",
-		left: "70%",
-	});
-	const containerRef = useRef<HTMLDivElement>(null);
+  // Left edge slot — cycles every 7.5s, visible 4.5s
+  const leftSlot = useSlot(3, 16, 15, 78, 4500, 7500, 700);
+  // Right edge slot — cycles every 8.5s, visible 4.5s, offset start
+  const rightSlot = useSlot(81, 93, 15, 78, 4500, 8500, 2800);
 
-	// Function to calculate random position based on viewport and avoid content areas
-	const getRandomPosition = useCallback(() => {
-		// Get viewport width and height
-		const viewportWidth = window.innerWidth;
-		const viewportHeight = window.innerHeight;
-
-		// Calculate center safe zone (where text/buttons are)
-		const centerWidth = (ZONES.CENTER.widthPercent / 100) * viewportWidth;
-		const centerLeft = (viewportWidth - centerWidth) / 2;
-		const centerTop = (ZONES.CENTER.topOffset / 100) * viewportHeight;
-		const centerBottom =
-			centerTop + (ZONES.CENTER.heightPercent / 100) * viewportHeight;
-
-		// Define left, right, top regions where molecules can appear
-		const regions = [
-			// Left side
-			{
-				minX: 10,
-				maxX: centerLeft - 50, // Leave some margin
-				minY: 10,
-				maxY: viewportHeight - 100,
-			},
-			// Right side
-			{
-				minX: centerLeft + centerWidth + 50, // Leave some margin
-				maxX: viewportWidth - 100, // Right margin
-				minY: 10,
-				maxY: viewportHeight - 100,
-			},
-			// Top area
-			{
-				minX: centerLeft,
-				maxX: centerLeft + centerWidth,
-				minY: 5,
-				maxY: centerTop - 30, // Space above content
-			},
-			// Bottom area
-			{
-				minX: centerLeft,
-				maxX: centerLeft + centerWidth,
-				minY: centerBottom + 30, // Space below content
-				maxY: viewportHeight - 100,
-			},
-		];
-
-		// Filter out regions that are too small
-		const validRegions = regions.filter(
-			(r) => r.maxX - r.minX > 100 && r.maxY - r.minY > 100,
-		);
-
-		// If no valid regions, use fallback position
-		if (validRegions.length === 0) {
-			return { top: "10%", left: "10%" };
-		}
-
-		// Select random region
-		const region =
-			validRegions[Math.floor(Math.random() * validRegions.length)];
-
-		// Calculate random position within the selected region
-		const randomX =
-			Math.floor(Math.random() * (region.maxX - region.minX)) + region.minX;
-		const randomY =
-			Math.floor(Math.random() * (region.maxY - region.minY)) + region.minY;
-
-		// Convert to percentage (for responsive positioning)
-		const leftPercent = (randomX / viewportWidth) * 100;
-		const topPercent = (randomY / viewportHeight) * 100;
-
-		return {
-			top: `${topPercent}%`,
-			left: `${leftPercent}%`,
-		};
-	}, []);
-
-	// Flash molecule effect
-	useEffect(() => {
-		// Show molecule for 3 seconds, then hide for 2 seconds
-		const showTimer = setInterval(() => {
-			// Pick random molecule first (while hidden)
-			const randomIndex = Math.floor(Math.random() * moleculeImages.length);
-			setCurrentMolecule(randomIndex);
-
-			// Generate random position and show
-			setMoleculePosition(getRandomPosition());
-			setShowMolecule(true);
-
-			// Hide after 3 seconds
-			setTimeout(() => setShowMolecule(false), 3000);
-		}, 5000); // Every 5 seconds
-
-		// Start with showing a molecule, after a slight delay
-		setTimeout(() => {
-			setMoleculePosition(getRandomPosition());
-			setCurrentMolecule(Math.floor(Math.random() * moleculeImages.length));
-			setShowMolecule(true);
-		}, 800);
-
-		return () => clearInterval(showTimer);
-	}, [getRandomPosition]);
-
-	return (
-		<div
-			ref={containerRef}
-			className="absolute inset-0 pointer-events-none overflow-hidden"
-		>
-			<AnimatePresence>
-				{showMolecule && (
-					<motion.img
-						src={moleculeImages[currentMolecule]}
-						alt="Molecule"
-						className="absolute pointer-events-none z-10 w-30 h-30 md:w-42 md:h-42 lg:w-48 lg:h-48 object-contain molecule-glow-effect select-none"
-						style={{ ...moleculePosition }}
-						initial={{ opacity: 0, scale: 0.92, rotate: -10 }}
-						animate={{
-							opacity: 1,
-							scale: 1,
-							rotate: 10,
-							transition: {
-								opacity: { duration: 0.8 },
-								scale: { duration: 0.8 },
-								rotate: {
-									duration: 6,
-									repeat: Number.POSITIVE_INFINITY,
-									repeatType: "reverse",
-								},
-							},
-						}}
-						exit={{
-							opacity: 0,
-							scale: 0.92,
-							transition: {
-								opacity: { duration: 0.8 },
-								scale: { duration: 0.8 },
-							},
-						}}
-						draggable="false"
-					/>
-				)}
-			</AnimatePresence>
-		</div>
-	);
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <AnimatePresence>
+        {leftSlot.visible && (
+          <motion.img
+            key={`left-${leftSlot.uid}`}
+            src={MOLECULES[leftSlot.imgIdx]}
+            alt="Molecule"
+            className="absolute pointer-events-none z-10 w-36 h-36 md:w-44 md:h-44 object-contain select-none molecule-glow-effect"
+            style={{
+              top: leftSlot.top,
+              left: leftSlot.left,
+              transform: "translate(-50%, -50%)",
+            }}
+            initial={{ opacity: 0, scale: 0.82, y: 0, rotate: -8 }}
+            animate={{
+              opacity: 0.82,
+              scale: 1,
+              y: [0, -22, 0, 22, 0],
+              rotate: [-8, 8],
+            }}
+            transition={{
+              opacity: { duration: 1, ease: "easeOut" },
+              scale: { duration: 1, ease: "easeOut" },
+              y: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+              rotate: {
+                duration: 10,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              },
+            }}
+            exit={{ opacity: 0, scale: 0.88, transition: { duration: 1, ease: "easeIn" } }}
+            draggable="false"
+          />
+        )}
+        {rightSlot.visible && (
+          <motion.img
+            key={`right-${rightSlot.uid}`}
+            src={MOLECULES[rightSlot.imgIdx]}
+            alt="Molecule"
+            className="absolute pointer-events-none z-10 w-40 h-40 md:w-52 md:h-52 object-contain select-none molecule-glow-effect"
+            style={{
+              top: rightSlot.top,
+              left: rightSlot.left,
+              transform: "translate(-50%, -50%)",
+            }}
+            initial={{ opacity: 0, scale: 0.82, y: 0, rotate: 6 }}
+            animate={{
+              opacity: 0.88,
+              scale: 1,
+              y: [0, 24, 0, -24, 0],
+              rotate: [6, -6],
+            }}
+            transition={{
+              opacity: { duration: 1, ease: "easeOut" },
+              scale: { duration: 1, ease: "easeOut" },
+              y: { duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+              rotate: {
+                duration: 11,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              },
+            }}
+            exit={{ opacity: 0, scale: 0.88, transition: { duration: 1, ease: "easeIn" } }}
+            draggable="false"
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
-// Default export for lazy loading
 export default MoleculeOverlay;

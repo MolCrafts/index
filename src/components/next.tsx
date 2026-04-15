@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export const NextSection = () => {
 	const [sections, setSections] = useState<HTMLElement[]>([]);
@@ -53,10 +53,16 @@ export const NextSection = () => {
 			className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 cursor-pointer animate-bounce text-center flex flex-col items-center"
 		>
 			<span
-                aria-hidden="true"
-                className="absolute inset-0 rounded-full bg-green-400 opacity-30 blur-2xl pointer-events-none"
-                style={{ width: 64, height: 64, left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
-            />
+				aria-hidden="true"
+				className="absolute inset-0 rounded-full bg-green-400 opacity-30 blur-2xl pointer-events-none"
+				style={{
+					width: 64,
+					height: 64,
+					left: "50%",
+					top: "50%",
+					transform: "translate(-50%, -50%)",
+				}}
+			/>
 			<span className="block text-sm text-green-400/70 mb-1 text-center">
 				Explore
 			</span>

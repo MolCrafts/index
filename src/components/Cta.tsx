@@ -1,38 +1,96 @@
-import { Button } from "./ui/button";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Github } from "lucide-react";
+import { slideUp, staggerContainer } from "../lib/animations";
+import { cn } from "../lib/utils";
+
+const ACCENT = "#03a3d7";
 
 export const Cta = () => {
-  return (
-    <section
-      id="cta"
-      className="bg-muted/50 py-16 my-24 sm:my-32"
-    >
-      <div className="container lg:grid lg:grid-cols-2 place-items-center">
-        <div className="lg:col-start-1">
-          <h2 className="text-3xl md:text-4xl font-bold ">
-            All Your
-            <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-              {" "}
-              Ideas & Concepts{" "}
-            </span>
-            In One Interface
-          </h2>
-          <p className="text-muted-foreground text-xl mt-4 mb-8 lg:mb-0">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque,
-            beatae. Ipsa tempore ipsum iste quibusdam illum ducimus eos. Quasi,
-            sed!
-          </p>
-        </div>
+	return (
+		<section id="cta" className="py-16 md:py-20 relative overflow-hidden">
+			<div className="container mx-auto px-4 lg:px-8 max-w-5xl relative z-10">
+				<motion.div
+					variants={staggerContainer}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-80px" }}
+					className="flex flex-col gap-3"
+				>
+					<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+						<motion.div
+							variants={slideUp}
+							className="flex flex-col gap-3 shrink-0"
+						>
+							<div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm">
+								<div className="w-12 h-[1px] bg-primary opacity-50" />
+								Repositories
+							</div>
+							<p className="text-xl md:text-2xl text-foreground font-light leading-snug">
+								Use the layer you need.{" "}
+								<span className="text-muted-foreground">Leave the rest.</span>
+							</p>
+						</motion.div>
 
-        <div className="space-y-4 lg:col-start-2">
-          <Button className="w-full md:mr-4 md:w-auto">Request a Demo</Button>
-          <Button
-            variant="outline"
-            className="w-full md:w-auto"
-          >
-            View all features
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
+						<motion.a
+							href="https://github.com/MolCrafts"
+							target="_blank"
+							rel="noreferrer noopener"
+							variants={slideUp}
+							className="group flex items-center gap-4 shrink-0 no-underline"
+						>
+							<div
+								className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+								style={{
+									backgroundColor: `${ACCENT}1f`,
+									boxShadow: `0 0 24px ${ACCENT}30`,
+								}}
+							>
+								<Github className="w-5 h-5" style={{ color: ACCENT }} />
+							</div>
+
+							<div className="flex flex-col">
+								<span
+									className="text-[10px] font-bold tracking-[0.35em] uppercase"
+									style={{ color: ACCENT }}
+								>
+									github.com/MolCrafts
+								</span>
+								<span className="text-base font-light text-foreground transition-colors group-hover:text-primary">
+									Browse all repos
+								</span>
+							</div>
+
+							<ArrowUpRight
+								className={cn(
+									"w-4 h-4 ml-1 transition-transform",
+									"group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
+								)}
+								style={{ color: ACCENT }}
+							/>
+						</motion.a>
+					</div>
+
+					<motion.div
+						variants={slideUp}
+						className="hidden md:flex items-center gap-2"
+					>
+						<div
+							className="flex-1 h-px"
+							style={{
+								background: `linear-gradient(90deg, transparent 0%, ${ACCENT}30 30%, ${ACCENT}cc 100%)`,
+								boxShadow: `0 0 12px ${ACCENT}80, 0 0 24px ${ACCENT}40`,
+							}}
+						/>
+						<div
+							className="w-1.5 h-1.5 rounded-full shrink-0"
+							style={{
+								backgroundColor: ACCENT,
+								boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${ACCENT}80`,
+							}}
+						/>
+					</motion.div>
+				</motion.div>
+			</div>
+		</section>
+	);
 };

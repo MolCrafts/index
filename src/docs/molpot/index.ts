@@ -1,1 +1,0 @@
-export { MolpotDocs } from "./MolpotDocs"; 
