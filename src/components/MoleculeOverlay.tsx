@@ -55,10 +55,7 @@ function useSlot(
     const imgIdx = Math.floor(Math.random() * MOLECULES.length);
     setState((s) => ({ visible: true, uid: s.uid + 1, imgIdx, top, left }));
     if (hideTimerRef.current !== null) clearTimeout(hideTimerRef.current);
-    hideTimerRef.current = setTimeout(
-      () => setState((s) => ({ ...s, visible: false })),
-      showMs,
-    );
+    hideTimerRef.current = setTimeout(() => setState((s) => ({ ...s, visible: false })), showMs);
   }, [xMin, xMax, yMin, yMax, showMs]);
 
   useEffect(() => {
@@ -108,7 +105,11 @@ export const MoleculeOverlay = () => {
             transition={{
               opacity: { duration: 1, ease: "easeOut" },
               scale: { duration: 1, ease: "easeOut" },
-              y: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+              y: {
+                duration: 8,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              },
               rotate: {
                 duration: 10,
                 repeat: Number.POSITIVE_INFINITY,
@@ -116,7 +117,11 @@ export const MoleculeOverlay = () => {
                 ease: "easeInOut",
               },
             }}
-            exit={{ opacity: 0, scale: 0.88, transition: { duration: 1, ease: "easeIn" } }}
+            exit={{
+              opacity: 0,
+              scale: 0.88,
+              transition: { duration: 1, ease: "easeIn" },
+            }}
             draggable="false"
           />
         )}
@@ -141,7 +146,11 @@ export const MoleculeOverlay = () => {
             transition={{
               opacity: { duration: 1, ease: "easeOut" },
               scale: { duration: 1, ease: "easeOut" },
-              y: { duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+              y: {
+                duration: 9,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              },
               rotate: {
                 duration: 11,
                 repeat: Number.POSITIVE_INFINITY,
@@ -149,7 +158,11 @@ export const MoleculeOverlay = () => {
                 ease: "easeInOut",
               },
             }}
-            exit={{ opacity: 0, scale: 0.88, transition: { duration: 1, ease: "easeIn" } }}
+            exit={{
+              opacity: 0,
+              scale: 0.88,
+              transition: { duration: 1, ease: "easeIn" },
+            }}
             draggable="false"
           />
         )}
