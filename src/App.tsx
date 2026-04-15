@@ -8,177 +8,177 @@ import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
 import {
-	MolVisLanding,
-	MolpyLanding,
-	MolrecLanding,
-	MolcfgLanding,
-	MollogLanding,
-	MolqLanding,
-	MolrsLanding,
-	MolexpLanding,
-	MolnexLanding,
-	MolpackLanding,
-	NotFound,
+  MolVisLanding,
+  MolpyLanding,
+  MolrecLanding,
+  MolcfgLanding,
+  MollogLanding,
+  MolqLanding,
+  MolrsLanding,
+  MolexpLanding,
+  MolnexLanding,
+  MolpackLanding,
+  NotFound,
 } from "./pages";
 
 import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
 
 function App() {
-	const [currentPath, setCurrentPath] = useState(window.location.pathname);
-	const [isLoading, setIsLoading] = useState(true);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		// Reduce loading time to improve SEO and initial page load
-		const timer = setTimeout(() => {
-			setIsLoading(false);
-		}, 500);
+  useEffect(() => {
+    // Reduce loading time to improve SEO and initial page load
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
 
-		return () => clearTimeout(timer);
-	}, []);
+    return () => clearTimeout(timer);
+  }, []);
 
-	// Handle route changes and history
-	useEffect(() => {
-		const handleLocationChange = () => {
-			setCurrentPath(window.location.pathname);
-			window.scrollTo(0, 0);
-		};
+  // Handle route changes and history
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+      window.scrollTo(0, 0);
+    };
 
-		// Handle browser back/forward navigation
-		window.addEventListener("popstate", handleLocationChange);
+    // Handle browser back/forward navigation
+    window.addEventListener("popstate", handleLocationChange);
 
-		return () => {
-			window.removeEventListener("popstate", handleLocationChange);
-		};
-	}, []);
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+    };
+  }, []);
 
-	// Modify links to use client-side routing
-	useEffect(() => {
-		const handleLinkClick = (e: MouseEvent) => {
-			const target = e.target as HTMLElement;
-			const anchor = target.closest("a");
+  // Modify links to use client-side routing
+  useEffect(() => {
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest("a");
 
-			if (anchor?.href?.startsWith(window.location.origin) && !anchor.target) {
-				const url = new URL(anchor.href);
+      if (anchor?.href?.startsWith(window.location.origin) && !anchor.target) {
+        const url = new URL(anchor.href);
 
-				// Handle anchor links on the same page naturally
-				if (url.pathname === window.location.pathname && url.hash) {
-					return; // Let the browser handle the scroll
-				}
+        // Handle anchor links on the same page naturally
+        if (url.pathname === window.location.pathname && url.hash) {
+          return; // Let the browser handle the scroll
+        }
 
-				e.preventDefault();
-				const newPath = url.pathname;
+        e.preventDefault();
+        const newPath = url.pathname;
 
-				if (newPath !== currentPath) {
-					// Update URL without full page reload
-					window.history.pushState({}, "", newPath);
+        if (newPath !== currentPath) {
+          // Update URL without full page reload
+          window.history.pushState({}, "", newPath);
 
-					// Reduce page transition loading time
-					setTimeout(() => {
-						setCurrentPath(newPath);
-						window.scrollTo(0, 0);
-						setIsLoading(false);
-					}, 500); // Reduced from 1200ms to improve UX and SEO
-				}
-			}
-		};
+          // Reduce page transition loading time
+          setTimeout(() => {
+            setCurrentPath(newPath);
+            window.scrollTo(0, 0);
+            setIsLoading(false);
+          }, 500); // Reduced from 1200ms to improve UX and SEO
+        }
+      }
+    };
 
-		document.addEventListener("click", handleLinkClick);
-		return () => {
-			document.removeEventListener("click", handleLinkClick);
-		};
-	}, [currentPath]);
+    document.addEventListener("click", handleLinkClick);
+    return () => {
+      document.removeEventListener("click", handleLinkClick);
+    };
+  }, [currentPath]);
 
-	useEffect(() => {
-		const handleScroll = () => {
-			const elements = document.querySelectorAll(".scroll-fade");
-			for (const element of elements) {
-				const position = element.getBoundingClientRect();
-				if (position.top < window.innerHeight - 100) {
-					element.classList.add("active");
-				}
-			}
-		};
+  useEffect(() => {
+    const handleScroll = () => {
+      const elements = document.querySelectorAll(".scroll-fade");
+      for (const element of elements) {
+        const position = element.getBoundingClientRect();
+        if (position.top < window.innerHeight - 100) {
+          element.classList.add("active");
+        }
+      }
+    };
 
-		// Only add scroll handler for the landing page
-		if (currentPath === "/") {
-			window.addEventListener("scroll", handleScroll);
-			handleScroll();
+    // Only add scroll handler for the landing page
+    if (currentPath === "/") {
+      window.addEventListener("scroll", handleScroll);
+      handleScroll();
 
-			return () => window.removeEventListener("scroll", handleScroll);
-		}
-	}, [currentPath]);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [currentPath]);
 
-	// Render content based on the current path
-	const renderContent = () => {
-		if (currentPath.startsWith("/molpy")) {
-			return <MolpyLanding />;
-		}
-		if (currentPath.startsWith("/molrec")) {
-			return <MolrecLanding />;
-		}
-		if (currentPath.startsWith("/molvis")) {
-			return <MolVisLanding />;
-		}
-		if (currentPath.startsWith("/molcfg")) {
-			return <MolcfgLanding />;
-		}
-		if (currentPath.startsWith("/mollog")) {
-			return <MollogLanding />;
-		}
-		if (currentPath.startsWith("/molq")) {
-			return <MolqLanding />;
-		}
-		if (currentPath.startsWith("/molrs")) {
-			return <MolrsLanding />;
-		}
-		if (currentPath.startsWith("/molexp")) {
-			return <MolexpLanding />;
-		}
-		if (currentPath.startsWith("/molnex")) {
-			return <MolnexLanding />;
-		}
-		if (currentPath.startsWith("/molpack")) {
-			return <MolpackLanding />;
-		}
-		if (currentPath === "/" || currentPath === "") {
-			return (
-				<>
-					<Hero />
-					<Manifesto />
-					<EcosystemArchitecture />
-					<Newsletter />
-					<Cta />
-				</>
-			);
-		}
+  // Render content based on the current path
+  const renderContent = () => {
+    if (currentPath.startsWith("/molpy")) {
+      return <MolpyLanding />;
+    }
+    if (currentPath.startsWith("/molrec")) {
+      return <MolrecLanding />;
+    }
+    if (currentPath.startsWith("/molvis")) {
+      return <MolVisLanding />;
+    }
+    if (currentPath.startsWith("/molcfg")) {
+      return <MolcfgLanding />;
+    }
+    if (currentPath.startsWith("/mollog")) {
+      return <MollogLanding />;
+    }
+    if (currentPath.startsWith("/molq")) {
+      return <MolqLanding />;
+    }
+    if (currentPath.startsWith("/molrs")) {
+      return <MolrsLanding />;
+    }
+    if (currentPath.startsWith("/molexp")) {
+      return <MolexpLanding />;
+    }
+    if (currentPath.startsWith("/molnex")) {
+      return <MolnexLanding />;
+    }
+    if (currentPath.startsWith("/molpack")) {
+      return <MolpackLanding />;
+    }
+    if (currentPath === "/" || currentPath === "") {
+      return (
+        <>
+          <Hero />
+          <Manifesto />
+          <EcosystemArchitecture />
+          <Newsletter />
+          <Cta />
+        </>
+      );
+    }
 
-		return <NotFound />;
-	};
+    return <NotFound />;
+  };
 
-	return (
-		<>
-			{/* SEO Structured Data */}
-			<SEOSchema path={currentPath} />
+  return (
+    <>
+      {/* SEO Structured Data */}
+      <SEOSchema path={currentPath} />
 
-			<AnimatePresence mode="wait">
-				{!isLoading && (
-					<motion.div
-						key={currentPath}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.5 }}
-						className="flex flex-col min-h-screen"
-					>
-						<Navbar />
-						<main className="flex-grow">{renderContent()}</main>
-						<Footer />
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</>
-	);
+      <AnimatePresence mode="wait">
+        {!isLoading && (
+          <motion.div
+            key={currentPath}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col min-h-screen"
+          >
+            <Navbar />
+            <main className="flex-grow">{renderContent()}</main>
+            <Footer />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }
 
 export default App;

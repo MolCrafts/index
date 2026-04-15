@@ -1,305 +1,300 @@
 import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
-	AnalysisIcon,
-	CollaborationIcon,
-	DataIcon,
-	IntegrationIcon,
-	SimulationIcon,
-	WorkflowIcon,
+  AnalysisIcon,
+  CollaborationIcon,
+  DataIcon,
+  IntegrationIcon,
+  SimulationIcon,
+  WorkflowIcon,
 } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 
 const MoleculeOverlay = lazy(() =>
-	import("../../components/MoleculeOverlay").then((module) => ({
-		default: module.MoleculeOverlay,
-	})),
+  import("../../components/MoleculeOverlay").then((module) => ({
+    default: module.MoleculeOverlay,
+  })),
 );
 
 const FEATURES = [
-	{
-		icon: <WorkflowIcon className="w-8 h-8" />,
-		title: "Hierarchical Data Model",
-		description:
-			"Frame / Block plus MolGraph provide typed, column-oriented atomistic data and topology across Rust, Python, WASM, and C bindings.",
-	},
-	{
-		icon: <DataIcon className="w-8 h-8" />,
-		title: "Coordinate Generation",
-		description: "Gen3D — distance geometry and MMFF94 minimization for robust 3D coordinate generation.",
-	},
-	{
-		icon: <IntegrationIcon className="w-8 h-8" />,
-		title: "Computational Core",
-		description:
-			"O(N) neighbor search, RDF/MSD/cluster analysis, MMFF94 force-field terms, and Packmol-grade molecular packing live in the core toolkit.",
-	},
+  {
+    icon: <WorkflowIcon className="w-8 h-8" />,
+    title: "Hierarchical Data Model",
+    description:
+      "Frame / Block plus MolGraph provide typed, column-oriented atomistic data and topology across Rust, Python, WASM, and C bindings.",
+  },
+  {
+    icon: <DataIcon className="w-8 h-8" />,
+    title: "Coordinate Generation",
+    description:
+      "Gen3D — distance geometry and MMFF94 minimization for robust 3D coordinate generation.",
+  },
+  {
+    icon: <IntegrationIcon className="w-8 h-8" />,
+    title: "Computational Core",
+    description:
+      "O(N) neighbor search, RDF/MSD/cluster analysis, MMFF94 force-field terms, and Packmol-grade molecular packing live in the core toolkit.",
+  },
 ];
 
 const API_SNIPPETS = [
-	{
-		title: "Coordinate Gen in Rust",
-		filename: "generate.rs",
-		description: "Easily parse SMILES and generate 3D coordinates securely inside Rust or via Python/WASM bridges.",
-		code: `use molrs::{parse_smiles, to_atomistic, generate_3d};
+  {
+    title: "Coordinate Gen in Rust",
+    filename: "generate.rs",
+    description:
+      "Easily parse SMILES and generate 3D coordinates securely inside Rust or via Python/WASM bridges.",
+    code: `use molrs::{parse_smiles, to_atomistic, generate_3d};
 
 let ir = parse_smiles("c1ccccc1").unwrap();
 let mol = to_atomistic(&ir).unwrap();
 let (mol3d, _) = generate_3d(&mol, Default::default()).unwrap();`,
-	},
+  },
 ];
 
 export const MolrsLanding = () => {
-	const sectionRef = useRef(null);
-	const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-	const [activeCodeIdx, setActiveCodeIdx] = useState(0);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const [activeCodeIdx, setActiveCodeIdx] = useState(0);
 
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-	return (
-		<div className="flex flex-col w-full">
-			{/* HERO SECTION */}
-			<motion.section
-				className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
-				initial="hidden"
-				animate="visible"
-				variants={fadeIn}
-			>
-				{/* Background Blobs */}
-				<div
-					className="molecule-blob"
-					style={{ top: "25%", left: "15%" }}
-					aria-hidden="true"
-				/>
-				<div
-					className="molecule-blob"
-					style={{ bottom: "30%", right: "20%", animationDelay: "4s" }}
-					aria-hidden="true"
-				/>
-				<div
-					className="molecular-glow"
-					style={{ top: "30%", left: "50%", width: "300px", height: "300px" }}
-					aria-hidden="true"
-				/>
+  return (
+    <div className="flex flex-col w-full">
+      {/* HERO SECTION */}
+      <motion.section
+        className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+      >
+        {/* Background Blobs */}
+        <div className="molecule-blob" style={{ top: "25%", left: "15%" }} aria-hidden="true" />
+        <div
+          className="molecule-blob"
+          style={{ bottom: "30%", right: "20%", animationDelay: "4s" }}
+          aria-hidden="true"
+        />
+        <div
+          className="molecular-glow"
+          style={{ top: "30%", left: "50%", width: "300px", height: "300px" }}
+          aria-hidden="true"
+        />
 
-				<Suspense fallback={null}>
-					<MoleculeOverlay />
-				</Suspense>
+        <Suspense fallback={null}>
+          <MoleculeOverlay />
+        </Suspense>
 
+        <motion.div
+          className="text-center w-full max-w-7xl mx-auto px-4 z-10 mb-32"
+          variants={slideUp}
+        >
+          <motion.header className="flex flex-col items-center justify-center w-full">
+            <motion.h3
+              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-orange-400 via-amber-300 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+            >
+              Rust speed. Python ease.
+            </motion.h3>
 
-				<motion.div
-					className="text-center w-full max-w-7xl mx-auto px-4 z-10 mb-32"
-					variants={slideUp}
-				>
-					<motion.header className="flex flex-col items-center justify-center w-full">
-						<motion.h3
-							className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-orange-400 via-amber-300 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
-							initial={{ opacity: 0, y: -10 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.1, duration: 0.4 }}
-						>
-							Rust speed. Python ease.
-						</motion.h3>
+            <motion.h1
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-red-500 via-rose-400 to-red-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
+              MolRs
+            </motion.h1>
 
-						<motion.h1
-							className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-red-500 via-rose-400 to-red-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.2, duration: 0.4 }}
-						>
-							MolRs
-						</motion.h1>
+            <motion.h2
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-rose-400 via-pink-300 to-rose-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+            >
+              A molecular modeling toolkit with Rust and Python interfaces
+            </motion.h2>
+          </motion.header>
+        </motion.div>
+      </motion.section>
 
-						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-rose-400 via-pink-300 to-rose-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.3, duration: 0.4 }}
-						>
-							A molecular modeling toolkit with Rust and Python interfaces
-						</motion.h2>
-					</motion.header>
-				</motion.div>
+      {/* NAKED UNIFIED CAPABILITIES SECTION (NO CARDS) */}
+      <section id="toolkit" className="relative py-24 sm:py-32">
+        <motion.div
+          ref={sectionRef}
+          className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl"
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
+            <motion.h2
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-rose-400 to-red-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+            >
+              What the{" "}
+              <span className="bg-gradient-to-r from-red-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">
+                API
+              </span>{" "}
+              Feels Like
+            </motion.h2>
+            <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
+              The README positions MolRs as a multi-interface core: Rust crates, Python bindings,
+              npm package, and lower-level FFI for fast molecular modeling and packing workflows.
+            </p>
+          </motion.div>
 
-			</motion.section>
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+            {/* Timeline-style capabilities menu (Naked text, pure interactions) */}
+            <div className="w-full lg:w-5/12 relative pt-2">
+              {/* Vertical continuous line */}
+              <div className="absolute left-[8px] top-6 bottom-6 w-[1px] bg-zinc-800/80" />
 
-			{/* NAKED UNIFIED CAPABILITIES SECTION (NO CARDS) */}
-			<section id="toolkit" className="relative py-24 sm:py-32">
-				<motion.div
-					ref={sectionRef}
-					className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl"
-					variants={staggerContainer}
-					initial="hidden"
-					animate={isInView ? "visible" : "hidden"}
-				>
-					<motion.div
-						className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto"
-						variants={slideUp}
-					>
-						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-rose-400 to-red-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.3, duration: 0.4 }}
-						>
-							What the <span className="bg-gradient-to-r from-red-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">API</span> Feels Like
-						</motion.h2>
-						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-							The README positions MolRs as a multi-interface core: Rust crates,
-							Python bindings, npm package, and lower-level FFI for fast
-							molecular modeling and packing workflows.
-						</p>
-					</motion.div>
+              <div className="flex flex-col gap-10 relative">
+                {API_SNIPPETS.map((cap, idx) => (
+                  <button
+                    key={cap.title}
+                    type="button"
+                    onClick={() => setActiveCodeIdx(idx)}
+                    className={`text-left pl-10 transition-all duration-300 relative group outline-none ${
+                      activeCodeIdx === idx ? "opacity-100" : "opacity-40 hover:opacity-80"
+                    }`}
+                  >
+                    {/* Active Dot / Timeline node */}
+                    <div
+                      className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
+                        activeCodeIdx === idx
+                          ? "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"
+                          : "bg-zinc-900 border border-zinc-700"
+                      }`}
+                    >
+                      {activeCodeIdx === idx && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                      )}
+                    </div>
 
-					<div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-						{/* Timeline-style capabilities menu (Naked text, pure interactions) */}
-						<div className="w-full lg:w-5/12 relative pt-2">
-							{/* Vertical continuous line */}
-							<div className="absolute left-[8px] top-6 bottom-6 w-[1px] bg-zinc-800/80" />
+                    <div
+                      className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-red-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+                    >
+                      <span className="font-bold text-lg md:text-xl tracking-wide font-sans">
+                        {cap.title}
+                      </span>
+                    </div>
+                    <p className="text-[15px] leading-relaxed text-zinc-400 font-light max-w-sm">
+                      {cap.description}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-							<div className="flex flex-col gap-10 relative">
-								{API_SNIPPETS.map((cap, idx) => (
-									<button
-										key={cap.title}
-										type="button"
-										onClick={() => setActiveCodeIdx(idx)}
-										className={`text-left pl-10 transition-all duration-300 relative group outline-none ${
-											activeCodeIdx === idx
-												? "opacity-100"
-												: "opacity-40 hover:opacity-80"
-										}`}
-									>
-										{/* Active Dot / Timeline node */}
-										<div
-											className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
-												activeCodeIdx === idx
-													? "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"
-													: "bg-zinc-900 border border-zinc-700"
-											}`}
-										>
-											{activeCodeIdx === idx && (
-												<div className="w-1.5 h-1.5 rounded-full bg-white" />
-											)}
-										</div>
+            {/* Pure Naked Terminal Code Editor Representation */}
+            <motion.div
+              key={activeCodeIdx}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="w-full lg:w-7/12 sticky top-32"
+            >
+              <div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
+                {/* Subtle top glow line */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
+                <div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 rounded-full bg-zinc-700" />
+                    <div className="w-3 h-3 rounded-full bg-zinc-700" />
+                    <div className="w-3 h-3 rounded-full bg-zinc-700" />
+                  </div>
+                  <div className="text-[11px] text-zinc-500 font-mono tracking-[0.15em] uppercase font-medium">
+                    {API_SNIPPETS[activeCodeIdx].filename}
+                  </div>
+                </div>
 
-										<div
-											className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-red-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
-										>
-											<span className="font-bold text-lg md:text-xl tracking-wide font-sans">
-												{cap.title}
-											</span>
-										</div>
-										<p className="text-[15px] leading-relaxed text-zinc-400 font-light max-w-sm">
-											{cap.description}
-										</p>
-									</button>
-								))}
-							</div>
-						</div>
+                {/* Code Content Area with custom scrollbar hiding */}
+                <div
+                  className="p-6 md:p-8 overflow-x-auto text-[13px] sm:text-sm md:text-[15px] font-mono leading-relaxed bg-[#030303] min-h-[420px] flex items-center"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  <SyntaxHighlighter
+                    language={
+                      API_SNIPPETS[activeCodeIdx].filename.endsWith(".sh") ? "bash" : "python"
+                    }
+                    style={vscDarkPlus}
+                    customStyle={{
+                      background: "transparent",
+                      padding: 0,
+                      margin: 0,
+                      width: "100%",
+                      textShadow: "none",
+                    }}
+                    wrapLines={true}
+                    showLineNumbers={false}
+                  >
+                    {API_SNIPPETS[activeCodeIdx].code}
+                  </SyntaxHighlighter>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </section>
 
-						{/* Pure Naked Terminal Code Editor Representation */}
-						<motion.div
-							key={activeCodeIdx}
-							initial={{ opacity: 0, y: 15 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.4 }}
-							className="w-full lg:w-7/12 sticky top-32"
-						>
-							<div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
-								{/* Subtle top glow line */}
-								<div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
-								<div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
-									<div className="flex space-x-2">
-										<div className="w-3 h-3 rounded-full bg-zinc-700" />
-										<div className="w-3 h-3 rounded-full bg-zinc-700" />
-										<div className="w-3 h-3 rounded-full bg-zinc-700" />
-									</div>
-									<div className="text-[11px] text-zinc-500 font-mono tracking-[0.15em] uppercase font-medium">
-										{API_SNIPPETS[activeCodeIdx].filename}
-									</div>
-								</div>
+      {/* FEATURES SECTION (DOMAIN BREADTH) */}
+      <section id="features" className="space-section gradient-bg-1 relative py-24 sm:py-32">
+        <motion.div
+          className="container mx-auto px-4 relative z-10"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          <motion.div className="text-center mb-20" variants={slideUp}>
+            <motion.h2
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-rose-400 to-red-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+            >
+              What MolRs{" "}
+              <span className="bg-gradient-to-r from-red-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">
+                Covers
+              </span>
+            </motion.h2>
+            <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
+              The API above serves as the foundational data model logic. It showcases the packing
+              and coordinate builder limits.
+            </p>
+          </motion.div>
 
-								{/* Code Content Area with custom scrollbar hiding */}
-								<div
-									className="p-6 md:p-8 overflow-x-auto text-[13px] sm:text-sm md:text-[15px] font-mono leading-relaxed bg-[#030303] min-h-[420px] flex items-center"
-									style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-								>
-									<SyntaxHighlighter
-										language={API_SNIPPETS[activeCodeIdx].filename.endsWith('.sh') ? 'bash' : 'python'}
-										style={vscDarkPlus}
-										customStyle={{
-											background: "transparent",
-											padding: 0,
-											margin: 0,
-											width: "100%",
-											textShadow: "none",
-										}}
-										wrapLines={true}
-										showLineNumbers={false}
-									>
-										{API_SNIPPETS[activeCodeIdx].code}
-									</SyntaxHighlighter>
-								</div>
-							</div>
-						</motion.div>
-					</div>
-				</motion.div>
-			</section>
-
-			{/* FEATURES SECTION (DOMAIN BREADTH) */}
-			<section
-				id="features"
-				className="space-section gradient-bg-1 relative py-24 sm:py-32"
-			>
-				<motion.div
-					className="container mx-auto px-4 relative z-10"
-					variants={staggerContainer}
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, amount: 0.1 }}
-				>
-					<motion.div className="text-center mb-20" variants={slideUp}>
-						<motion.h2
-							className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-rose-400 to-red-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.3, duration: 0.4 }}
-						>
-							What MolRs <span className="bg-gradient-to-r from-red-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">Covers</span>
-						</motion.h2>
-						<p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-							The API above serves as the foundational data model logic. It showcases the packing and coordinate builder limits.
-						</p>
-					</motion.div>
-
-					<motion.div
-						className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-						variants={staggerContainer}
-					>
-						{FEATURES.map((feature) => (
-							<motion.div
-								key={feature.title}
-								className="flex flex-col items-center text-center group"
-								variants={slideUp}
-							>
-								<div className="text-red-500 mb-6 group-hover:text-red-400 transition-colors">
-									{feature.icon}
-								</div>
-								<h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-									{feature.title}
-								</h3>
-								<p className="text-zinc-500 leading-relaxed font-light">
-									{feature.description}
-								</p>
-							</motion.div>
-						))}
-					</motion.div>
-				</motion.div>
-			</section>
-		</div>
-	);
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+            variants={staggerContainer}
+          >
+            {FEATURES.map((feature) => (
+              <motion.div
+                key={feature.title}
+                className="flex flex-col items-center text-center group"
+                variants={slideUp}
+              >
+                <div className="text-red-500 mb-6 group-hover:text-red-400 transition-colors">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
+                  {feature.title}
+                </h3>
+                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+    </div>
+  );
 };
