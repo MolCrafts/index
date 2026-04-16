@@ -2,14 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {
-  AnalysisIcon,
-  CollaborationIcon,
-  DataIcon,
-  IntegrationIcon,
-  SimulationIcon,
-  WorkflowIcon,
-} from "../../components/FeatureIcons";
+import { DataIcon, IntegrationIcon, WorkflowIcon } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 
 const MoleculeOverlay = lazy(() =>

@@ -1,13 +1,20 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ChevronDown, Menu } from "lucide-react";
 import { ecosystemCategories } from "../lib/ecosystem";
-import { Button } from "./ui/button";
 import { LogoIcon } from "./Icons";
 import { ModeToggle } from "./mode-toggle";
+import { Button } from "./ui/button";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -238,13 +245,14 @@ export const Navbar = () => {
                       Docs
                     </a>
                   ) : (
-                    <a
-                      href="#manifesto"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
-                    >
-                      Manifesto
-                    </a>
+                    <SheetClose asChild>
+                      <a
+                        href="#manifesto"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
+                      >
+                        Manifesto
+                      </a>
+                    </SheetClose>
                   )}
 
                   <div className="mt-8 pt-6 border-t dark:border-zinc-800 flex flex-col gap-4">

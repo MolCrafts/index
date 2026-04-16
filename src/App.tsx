@@ -9,15 +9,15 @@ import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
 import {
   MolVisLanding,
-  MolpyLanding,
-  MolrecLanding,
   MolcfgLanding,
-  MollogLanding,
-  MolqLanding,
-  MolrsLanding,
   MolexpLanding,
+  MollogLanding,
   MolnexLanding,
   MolpackLanding,
+  MolpyLanding,
+  MolqLanding,
+  MolrecLanding,
+  MolrsLanding,
   NotFound,
 } from "./pages";
 

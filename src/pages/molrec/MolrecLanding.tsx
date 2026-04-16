@@ -140,9 +140,9 @@ export const MolrecLanding = () => {
                 description:
                   "Frames can hold atoms, bonds, angles, beads, fragments, and volumetric grids as first-class record elements.",
               },
-            ].map((feature, idx) => (
+            ].map((feature) => (
               <motion.div
-                key={idx}
+                key={feature.title}
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
