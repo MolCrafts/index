@@ -1,7 +1,7 @@
+import sadMoko from "@/assets/moko/sad.png";
 import { motion } from "framer-motion";
 import { Suspense, lazy } from "react";
 import { fadeIn, slideUp } from "../lib/animations";
-import sadMoko from "@/assets/moko/sad.png";
 
 // Lazy load the MoleculeOverlay component
 const MoleculeOverlay = lazy(() =>
@@ -53,11 +53,19 @@ export const NotFound = () => {
         variants={slideUp}
       >
         <motion.header className="flex flex-col items-center justify-center w-full">
-          {/* Sad moko mascot */}
+          {/* Sad moko mascot — feathered into the backdrop, mint halo to match the page */}
           <motion.img
             src={sadMoko}
             alt="Moko"
-            className="w-28 h-28 md:w-36 md:h-36 object-contain mb-4"
+            className="w-36 h-36 md:w-44 md:h-44 object-cover mb-4"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(circle at center, #000 42%, rgba(0,0,0,0.65) 60%, transparent 78%)",
+              maskImage:
+                "radial-gradient(circle at center, #000 42%, rgba(0,0,0,0.65) 60%, transparent 78%)",
+              filter:
+                "drop-shadow(0 0 28px rgba(16,185,129,0.28)) drop-shadow(0 0 12px rgba(140,228,255,0.18))",
+            }}
             initial={{ opacity: 0, scale: 0.88 }}
             animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
             transition={{

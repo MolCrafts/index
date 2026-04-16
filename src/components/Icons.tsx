@@ -1,5 +1,5 @@
-import type { SVGProps } from "react";
 import moko from "@/assets/moko/moko.png";
+import type { SVGProps } from "react";
 
 export const LogoIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
