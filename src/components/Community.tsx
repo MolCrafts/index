@@ -56,7 +56,9 @@ export const Community = () => {
 
           {/* Discord/Forum Card */}
           <motion.a
-            href="#"
+            href="https://github.com/MolCrafts"
+            target="_blank"
+            rel="noreferrer noopener"
             className="group flex flex-col items-center text-center p-6 transition-all"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
