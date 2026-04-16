@@ -126,9 +126,9 @@ export const MolVisLanding = () => {
                 description:
                   "The same codebase ships a core package, React web app, Python Jupyter widget, and VSCode extension with a modular modifier pipeline.",
               },
-            ].map((feature, idx) => (
+            ].map((feature) => (
               <motion.div
-                key={idx}
+                key={feature.title}
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
