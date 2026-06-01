@@ -1,6 +1,7 @@
 export interface EcosystemItem {
   title: string;
   href: string;
+  external?: boolean;
   role: string;
   description: string;
   color: string;
@@ -56,6 +57,15 @@ export const ecosystemCategories: EcosystemCategory[] = [
         color: "text-indigo-500",
         bg: "hover:bg-indigo-500/10",
       },
+      {
+        title: "MolHub",
+        href: "https://github.com/MolCrafts/molhub",
+        external: true,
+        role: "datasets",
+        description: "Common dataset protocols, built-in molecular benchmarks, and uploaders.",
+        color: "text-lime-500",
+        bg: "hover:bg-lime-500/10",
+      },
     ],
   },
   {
@@ -92,6 +102,33 @@ export const ecosystemCategories: EcosystemCategory[] = [
         description: "One job-queue API: local, slurm, pbs, lsf.",
         color: "text-pink-500",
         bg: "hover:bg-pink-500/10",
+      },
+      {
+        title: "MolMCP",
+        href: "https://github.com/MolCrafts/molmcp",
+        external: true,
+        role: "agent tools",
+        description: "MCP server for package introspection and ecosystem providers.",
+        color: "text-violet-500",
+        bg: "hover:bg-violet-500/10",
+      },
+      {
+        title: "MolQRC",
+        href: "https://github.com/MolCrafts/molqrc",
+        external: true,
+        role: "QR core",
+        description: "QR Code generator with a C core, Python API, and CLI.",
+        color: "text-fuchsia-500",
+        bg: "hover:bg-fuchsia-500/10",
+      },
+      {
+        title: "Symphony",
+        href: "https://github.com/MolCrafts/molcrafts-symphony",
+        external: true,
+        role: "agent runner",
+        description: "MolCrafts Symphony runs GitHub Project issues through coding agents.",
+        color: "text-rose-500",
+        bg: "hover:bg-rose-500/10",
       },
     ],
   },

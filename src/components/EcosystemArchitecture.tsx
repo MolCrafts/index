@@ -1,5 +1,9 @@
 import atomOrbitalMoko from "@/assets/moko/atom_obital.png";
+import coffeeMoko from "@/assets/moko/coffee.png";
 import flaskMoko from "@/assets/moko/flask.png";
+import lastSupperMoko from "@/assets/moko/last_supper.png";
+import masterMoko from "@/assets/moko/master.png";
+import mokoMoko from "@/assets/moko/moko.png";
 import molcfgMoko from "@/assets/moko/molcfg.png";
 import mollogMoko from "@/assets/moko/mollog.png";
 import molnexMoko from "@/assets/moko/molnex.png";
@@ -15,6 +19,8 @@ interface NodeDetail {
   id: string;
   title: string;
   description: string;
+  href?: string;
+  external?: boolean;
   color: string;
   glow: string;
   mokoSrc: string;
@@ -95,6 +101,17 @@ const originalNodes: NodeDetail[] = [
     hex: "#6366f1",
   },
   {
+    id: "molhub",
+    title: "MolHub",
+    description: "Common dataset protocols, built-in molecular benchmarks, and uploaders.",
+    href: "https://github.com/MolCrafts/molhub",
+    external: true,
+    color: "text-lime-400",
+    glow: "bg-lime-500",
+    mokoSrc: coffeeMoko,
+    hex: "#84cc16",
+  },
+  {
     id: "molnex",
     title: "MolNex",
     description: "Layered ML framework: training, representation, potentials, model zoo.",
@@ -112,18 +129,51 @@ const originalNodes: NodeDetail[] = [
     mokoSrc: molpackMoko,
     hex: "#f97316",
   },
+  {
+    id: "molmcp",
+    title: "MolMCP",
+    description: "MCP server for package introspection and ecosystem providers.",
+    href: "https://github.com/MolCrafts/molmcp",
+    external: true,
+    color: "text-violet-400",
+    glow: "bg-violet-500",
+    mokoSrc: masterMoko,
+    hex: "#8b5cf6",
+  },
+  {
+    id: "molqrc",
+    title: "MolQRC",
+    description: "QR Code generator with a C core, Python API, and CLI.",
+    href: "https://github.com/MolCrafts/molqrc",
+    external: true,
+    color: "text-fuchsia-400",
+    glow: "bg-fuchsia-500",
+    mokoSrc: mokoMoko,
+    hex: "#d946ef",
+  },
+  {
+    id: "molcrafts-symphony",
+    title: "Symphony",
+    description: "MolCrafts Symphony runs GitHub Project issues through coding agents.",
+    href: "https://github.com/MolCrafts/molcrafts-symphony",
+    external: true,
+    color: "text-rose-400",
+    glow: "bg-rose-500",
+    mokoSrc: lastSupperMoko,
+    hex: "#f43f5e",
+  },
 ];
 
 const categoryGroups = [
   {
     label: "Application",
     hex: "#3b82f6",
-    nodeIds: ["molpy", "molvis", "molnex", "molpack", "molexp"],
+    nodeIds: ["molpy", "molvis", "molnex", "molpack", "molexp", "molhub"],
   },
   {
     label: "Infrastructure",
     hex: "#10b981",
-    nodeIds: ["molrs", "molcfg", "mollog", "molq"],
+    nodeIds: ["molrs", "molcfg", "mollog", "molq", "molmcp", "molqrc", "molcrafts-symphony"],
   },
   {
     label: "Specification",
@@ -133,9 +183,13 @@ const categoryGroups = [
 ];
 
 export const EcosystemArchitecture = () => {
+  const getNodeHref = (node: NodeDetail) => node.href ?? `/${node.id}`;
+
   const NodeCard = ({ node }: { node: NodeDetail }) => (
     <motion.a
-      href={`/${node.id}`}
+      href={getNodeHref(node)}
+      target={node.external ? "_blank" : undefined}
+      rel={node.external ? "noreferrer noopener" : undefined}
       className="w-[220px] h-[220px] shrink-0 bg-zinc-900/50 border border-white/[0.06] rounded-2xl p-5 flex flex-col gap-4 cursor-pointer group no-underline relative overflow-hidden"
       draggable="false"
       whileHover={{
