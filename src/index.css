@@ -1,3 +1,8 @@
+/* @reference is required by Tailwind v4 for files that use @apply but
+   don't import "tailwindcss" themselves. Points at our token entry so
+   custom utilities like `ring-primary` resolve. */
+@reference "./styles/tailwind.css";
+
 html {
   scroll-behavior: smooth;
 }
@@ -140,18 +145,8 @@ section::before {
   pointer-events: none;
 }
 
-/* Improved global background */
-:root {
-  --background-rgb: 255, 255, 255;
-  --primary-rgb: 31, 192, 241;
-  /* Corresponds to the #1fc0f1 color from gradient-text-primary */
-}
-
-.dark {
-  --background-rgb: 20, 14, 4;
-  --primary-rgb: 3, 163, 215;
-  /* Corresponds to the #03a3d7 color from gradient-text-primary */
-}
+/* --background-rgb / --primary-rgb live in src/styles/tailwind.css alongside
+   the rest of the token contract. */
 
 /* Enhanced gradient backgrounds with invisible transitions */
 .gradient-bg-1,
@@ -195,17 +190,18 @@ section::before {
   display: none;
 }
 
-/* Enhanced gradients for text */
-.gradient-text-primary {
-  @apply bg-gradient-to-r from-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text;
-}
-
-.gradient-text-secondary {
-  @apply bg-gradient-to-r from-[#34D399] via-[#10B981] to-[#059669] text-transparent bg-clip-text;
-}
-
+/* Enhanced gradients for text — colors come from --brand-* tokens defined
+   in src/styles/tailwind.css. */
 .gradient-text-accent {
-  @apply bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#1d4ed8] text-transparent bg-clip-text;
+  background-image: linear-gradient(
+    to right,
+    var(--brand-accent-from),
+    var(--brand-accent-via),
+    var(--brand-accent-to)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 /* Premium Glass effect for cards */
@@ -253,21 +249,46 @@ section::before {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
 }
 
-/* Premium Text Gradients */
+/* Premium Text Gradients — animated, take colors from --brand-* tokens. */
 .premium-text-primary {
   @apply bg-gradient-to-br from-white via-zinc-200 to-zinc-500 text-transparent bg-clip-text;
 }
 
+.gradient-text-primary,
+.gradient-text-secondary,
+.gradient-text-molrec {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: var(--animate-gradient-x);
+}
+
 .gradient-text-primary {
-  @apply bg-gradient-to-r from-[#03a3d7] via-[#8ce4ff] to-[#03a3d7] text-transparent bg-clip-text bg-[length:200%_auto] animate-gradient-x;
+  background-image: linear-gradient(
+    to right,
+    var(--brand-primary-from),
+    var(--brand-primary-via),
+    var(--brand-primary-to)
+  );
 }
 
 .gradient-text-secondary {
-  @apply bg-gradient-to-r from-[#10b981] via-[#34d399] to-[#10b981] text-transparent bg-clip-text bg-[length:200%_auto] animate-gradient-x;
+  background-image: linear-gradient(
+    to right,
+    var(--brand-secondary-from),
+    var(--brand-secondary-via),
+    var(--brand-secondary-to)
+  );
 }
 
 .gradient-text-molrec {
-  @apply bg-gradient-to-r from-[#f59e0b] via-[#fbbf24] to-[#f59e0b] text-transparent bg-clip-text bg-[length:200%_auto] animate-gradient-x;
+  background-image: linear-gradient(
+    to right,
+    var(--brand-molrec-from),
+    var(--brand-molrec-via),
+    var(--brand-molrec-to)
+  );
 }
 
 /* Custom animations */

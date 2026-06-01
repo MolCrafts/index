@@ -1,14 +1,14 @@
 # molcrafts-index — Project Context
 
-MolCrafts ecosystem 的落地页站点。多产品单仓库：主页 + 9 个子产品 landing（molpy / molrec / molvis / molcfg / mollog / molq / molrs / molexp / molnex）。
+MolCrafts ecosystem 的落地页站点。多产品单仓库：主页 + 10 个子产品 landing（molpy / molrec / molvis / molcfg / mollog / molq / molrs / molexp / molnex / molpack）。
 
 ## Stack
 
 - React 18 + TypeScript (strict)
 - Rsbuild（构建）
-- Biome（lint/format，配置见 `biome.toml`）
-- TailwindCSS + `tailwindcss-animate`
-- Radix UI（原语） + shadcn-style 变体（`src/components/ui/`，biome 忽略）
+- Biome（lint/format，配置见 `biome.json`）
+- TailwindCSS + `tw-animate-css`
+- Radix UI（原语） + shadcn-style 变体（`src/components/ui/`）
 - Framer Motion（动画）
 - 客户端路由：`App.tsx` 里用 `window.location.pathname` 手写的 switch，不引 react-router
 
@@ -42,7 +42,7 @@ src/
 
 ## 已知历史遗留
 
-- 源文件混用 tab / 2-space 缩进。`biome.toml` 声明 `indent_style = "space"` 但 `biome check` 不强制。**不要顺手批量改缩进**——会污染 diff。动到哪行修到哪行。
+- 源文件可能混用 tab / 2-space 缩进。`biome.json` 的 formatter 声明 `indentStyle: "space"`（`indentWidth: 2`），`biome check` 会标记不一致缩进。**不要顺手批量改缩进**——会污染 diff。动到哪行修到哪行。
 - `App.tsx` 的路由是手写 switch，尚未抽象。不在当前任务范围就别动它。
 
 ## 可用资产

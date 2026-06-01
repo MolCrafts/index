@@ -127,6 +127,8 @@ export const Navbar = () => {
                             <motion.a
                               key={item.title}
                               href={item.href}
+                              target={item.external ? "_blank" : undefined}
+                              rel={item.external ? "noreferrer noopener" : undefined}
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{
@@ -218,6 +220,8 @@ export const Navbar = () => {
                             <a
                               key={item.title}
                               href={item.href}
+                              target={item.external ? "_blank" : undefined}
+                              rel={item.external ? "noreferrer noopener" : undefined}
                               onClick={() => setIsOpen(false)}
                               className={
                                 "flex items-baseline gap-2 p-3 rounded-lg hover:bg-accent transition-all"
