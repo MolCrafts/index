@@ -86,7 +86,7 @@ export const MolrecLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -126,7 +126,7 @@ export const MolrecLanding = () => {
                 icon: <DataIcon className="w-8 h-8" />,
                 title: "Backend-Neutral Storage",
                 description:
-                  "The spec defines semantics, not storage. Zarr v3 is the reference implementation, but HDF5, SQL, or other backends can implement the same record model.",
+                  "The spec defines semantics, not storage. Any array store or database backend can implement the same record model.",
               },
               {
                 icon: <WorkflowIcon className="w-8 h-8" />,
@@ -219,6 +219,8 @@ export const MolrecLanding = () => {
 |   +-- box               #   simulation cell (SimBox)
 +-- trajectory            # time-series frames (optional)
 +-- observables           # derived quantities (optional)
++-- status                # execution state and progress (optional)
++-- metrics               # runtime metric stream (optional)
 +-- method                # scientific context (optional)
 +-- parameters            # workflow parameters (optional)`}
                 </pre>

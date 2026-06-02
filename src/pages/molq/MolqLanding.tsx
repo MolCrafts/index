@@ -63,11 +63,12 @@ const API_SNIPPETS = [
     filename: "submitor.py",
     description:
       "Define workloads structurally without tying logic to SLURM or Local implementations until initialization.",
-    code: `from molq import Duration, JobResources, Memory, Submitor
+    code: `from molq import Cluster, Duration, JobResources, Memory, Submitor
 
-local = Submitor("devbox", "local")
+cluster = Cluster("devbox", "local")
+local = Submitor(target=cluster)
 
-job = local.submit(
+job = local.submit_job(
     argv=["python", "train.py"],
     resources=JobResources(
         cpu_count=4,
@@ -84,11 +85,12 @@ assert record.state.value == "succeeded"`,
     filename: "retries.py",
     description:
       "Implement robust retry strategies and strict job flow dependencies to safely sequence multi-stage analyses.",
-    code: `from molq import RetryBackoff, RetryPolicy, Submitor
+    code: `from molq import Cluster, RetryBackoff, RetryPolicy, Submitor
 
-slurm = Submitor("hpc", "slurm")
+cluster = Cluster("hpc", "slurm")
+slurm = Submitor(target=cluster)
 
-train = slurm.submit(
+train = slurm.submit_job(
     argv=["python", "train.py"],
     retry=RetryPolicy(
         max_attempts=3,
@@ -96,7 +98,7 @@ train = slurm.submit(
     ),
 )
 
-eval_job = slurm.submit(
+eval_job = slurm.submit_job(
     argv=["python", "eval.py"],
     after_success=[train.job_id],
 )`,
@@ -105,7 +107,7 @@ eval_job = slurm.submit(
     title: "Configuration Profiles",
     filename: "config.toml",
     description:
-      "Use ~./molq/config.toml to define shared HPC environment configurations independently from local application code.",
+      "Use ~/.molq/config.toml to define shared HPC environment configurations independently from local application code.",
     code: `[profiles.gpu]
 scheduler = "slurm"
 cluster_name = "hpc"
@@ -195,7 +197,7 @@ export const MolqLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-fuchsia-400 via-purple-300 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-300 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -217,13 +219,13 @@ export const MolqLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-pink-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-pink-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">
+              <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 text-transparent bg-clip-text leading-relaxed">
                 API
               </span>{" "}
               Feels Like
@@ -344,13 +346,13 @@ export const MolqLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-pink-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolQ{" "}
-              <span className="bg-gradient-to-r from-pink-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">
+              <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 text-transparent bg-clip-text leading-relaxed">
                 Covers
               </span>
             </motion.h2>

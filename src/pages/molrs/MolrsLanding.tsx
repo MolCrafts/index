@@ -22,27 +22,28 @@ const FEATURES = [
     icon: <DataIcon className="w-8 h-8" />,
     title: "Coordinate Generation",
     description:
-      "Gen3D — distance geometry and MMFF94 minimization for robust 3D coordinate generation.",
+      "Robust 3D coordinate generation from connectivity, with optional energy minimization.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
     title: "Computational Core",
     description:
-      "O(N) neighbor search, RDF/MSD/cluster analysis, MMFF94 force-field terms, and Packmol-grade molecular packing live in the core toolkit.",
+      "Neighbor search, structural and dynamical analysis, force-field terms, and 3D embedding live in the core toolkit.",
   },
 ];
 
 const API_SNIPPETS = [
   {
-    title: "Coordinate Gen in Rust",
+    title: "Coordinates in Rust",
     filename: "generate.rs",
     description:
-      "Easily parse SMILES and generate 3D coordinates securely inside Rust or via Python/WASM bridges.",
-    code: `use molrs::{parse_smiles, to_atomistic, generate_3d};
+      "Parse a structure and generate 3D coordinates in Rust, or through the Python and WASM bridges.",
+    code: `use molrs::smiles::{parse_smiles, to_atomistic};
+use molrs::embed::{generate_3d, EmbedOptions};
 
 let ir = parse_smiles("c1ccccc1").unwrap();
 let mol = to_atomistic(&ir).unwrap();
-let (mol3d, _) = generate_3d(&mol, Default::default()).unwrap();`,
+let (mol3d, _) = generate_3d(&mol, EmbedOptions::default()).unwrap();`,
   },
 ];
 
@@ -96,7 +97,7 @@ export const MolrsLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-red-500 via-rose-400 to-red-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-red-500 via-orange-400 to-red-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -105,7 +106,7 @@ export const MolrsLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-rose-400 via-pink-300 to-rose-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-orange-300 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -127,20 +128,20 @@ export const MolrsLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-rose-400 to-red-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-orange-400 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-red-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">
+              <span className="bg-gradient-to-r from-red-400 to-orange-400 text-transparent bg-clip-text leading-relaxed">
                 API
               </span>{" "}
               Feels Like
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              The README positions MolRs as a multi-interface core: Rust crates, Python bindings,
-              npm package, and lower-level FFI for fast molecular modeling and packing workflows.
+              MolRs is a multi-interface core — Rust crate, Python bindings, npm package, and C FFI
+              — for fast molecular modeling and analysis workflows.
             </p>
           </motion.div>
 
@@ -250,19 +251,19 @@ export const MolrsLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-rose-400 to-red-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-red-400 via-orange-400 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolRs{" "}
-              <span className="bg-gradient-to-r from-red-400 to-rose-400 text-transparent bg-clip-text leading-relaxed">
+              <span className="bg-gradient-to-r from-red-400 to-orange-400 text-transparent bg-clip-text leading-relaxed">
                 Covers
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              The API above serves as the foundational data model logic. It showcases the packing
-              and coordinate builder limits.
+              The example above shows the core surface. The capabilities below span the data model,
+              coordinate generation, and analysis.
             </p>
           </motion.div>
 

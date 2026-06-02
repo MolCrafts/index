@@ -108,14 +108,14 @@ print(cfg["url"])
 # "http://127.0.0.1:8080/api"`,
   },
   {
-    title: "Zero Dependencies",
+    title: "One Dependency",
     filename: "install.sh",
     description:
-      "Keep your docker images lean and your environment clean. Built entirely on the standard library with no external dependencies.",
+      "Keep your docker images lean and your environment clean. A single runtime dependency (pyyaml) — nothing else.",
     code: `# Installation is as simple as pip installing
 pip install molcrafts-molcfg
 
-# No other packages required!`,
+# Only one runtime dependency: pyyaml`,
   },
 ];
 
@@ -178,12 +178,12 @@ export const MolcfgLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-lime-400 via-emerald-300 to-lime-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-emerald-400 via-teal-300 to-teal-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Zero-Dependency Configuration Library for Python
+              Layered Configuration Library for Python
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -212,9 +212,8 @@ export const MolcfgLanding = () => {
               Feels Like
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              The examples here follow the README directly: layered loading, source tracking,
-              interpolation, schema validation, and immutable merge behavior without runtime
-              dependencies.
+              Layered loading, source tracking, interpolation, schema validation, and immutable
+              merge behavior — with a single runtime dependency.
             </p>
           </motion.div>
 
@@ -336,8 +335,8 @@ export const MolcfgLanding = () => {
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
               The API above shows how the toolkit feels to use. The features below show how the
-              package is designed to handle every edge case when dealing with configurations in your
-              python package.
+              package is designed to handle every edge case when dealing with configuration in your
+              Python package.
             </p>
           </motion.div>
 
