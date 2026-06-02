@@ -125,7 +125,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         applicationCategory: "Scientific",
         programmingLanguage: ["Rust", "Python"],
         description:
-          "MolPack is a Packmol-grade molecular packing engine in pure Rust, with a CLI binary and Python bindings for building initial configurations for molecular dynamics simulations.",
+          "MolPack is a molecular packing engine in pure Rust, with a CLI binary and Python bindings for building initial configurations for molecular dynamics simulations.",
         codeRepository: "https://github.com/MolCrafts/molpack",
         license: "BSD-3-Clause",
         isPartOf: {

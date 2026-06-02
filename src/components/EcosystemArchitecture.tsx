@@ -40,7 +40,7 @@ const originalNodes: NodeDetail[] = [
   {
     id: "molvis",
     title: "MolVis",
-    description: "Interactive 3D molecules — web, desktop, Jupyter.",
+    description: "Interactive 3D molecules — browser, editor, notebooks.",
     color: "text-purple-400",
     glow: "bg-purple-500",
     mokoSrc: movisMoko,
@@ -58,7 +58,7 @@ const originalNodes: NodeDetail[] = [
   {
     id: "molcfg",
     title: "MolCfg",
-    description: "Layered config with source tracking. Zero deps.",
+    description: "Layered config with source tracking. One dep (pyyaml).",
     color: "text-emerald-400",
     glow: "bg-emerald-500",
     mokoSrc: molcfgMoko,
@@ -67,7 +67,7 @@ const originalNodes: NodeDetail[] = [
   {
     id: "mollog",
     title: "MolLog",
-    description: "Structured Python logging. Zero dependencies.",
+    description: "Structured Python logging, stdlib-compatible.",
     color: "text-sky-400",
     glow: "bg-sky-500",
     mokoSrc: mollogMoko,
@@ -123,7 +123,7 @@ const originalNodes: NodeDetail[] = [
   {
     id: "molpack",
     title: "MolPack",
-    description: "Packmol-grade molecular packing engine — CLI, Rust crate, Python package.",
+    description: "Molecular packing engine — CLI, Rust crate, Python package.",
     color: "text-orange-400",
     glow: "bg-orange-500",
     mokoSrc: molpackMoko,

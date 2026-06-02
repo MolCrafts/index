@@ -16,39 +16,64 @@ const FEATURES = [
     icon: <WorkflowIcon className="w-8 h-8" />,
     title: "Execution and Representation",
     description:
-      "`molix` owns training and evaluation lifecycle, while `molrep` owns reusable molecular representation modules.",
+      "`molix` owns the training and evaluation lifecycle — trainer, hooks, and data pipeline — while `molrep` owns reusable equivariant representation modules.",
   },
   {
     icon: <DataIcon className="w-8 h-8" />,
     title: "Composition and Potentials",
     description:
-      "`molpot` turns learned representations into compositional outputs and structured potential-based models.",
+      "`molpot` turns learned representations into compositional, physics-aware outputs: energy, force, and stress derivation alongside classical potential terms.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
-    title: "Reference Model Families",
+    title: "Reference Models",
     description:
-      "`molzoo` assembles curated reference architectures from the lower-level stack without collapsing the package boundaries.",
+      "`molzoo` assembles reference encoder families from the shared stack without collapsing the package boundaries.",
   },
 ];
 
 const API_SNIPPETS = [
   {
-    title: "Layered Composition",
+    title: "Execution Layer",
     filename: "train.py",
     description:
-      "MolNex is organized around distinct ownership: execution, representation learning, compositional modeling, and reference assemblies.",
-    code: `import molnex.molix as mx
-import molnex.molrep as rep
-import molnex.molpot as pot
+      "`molix.Trainer` wraps any nn.Module with a hook-driven training loop. You supply the model, the loss, and an optimizer factory.",
+    code: `import torch
+from molix.core.trainer import Trainer
 
-# Distinct modular composition
-features = rep.AtomEmbedding(hidden=128)
-potential = pot.EnergyModel(backbone=features)
+# Execution layer wraps any nn.Module.
+trainer = Trainer(
+    model=model,                                  # representation + potential
+    loss_fn=loss_fn,                              # (pred, batch) -> scalar
+    optimizer_factory=lambda p: torch.optim.Adam(p, lr=1e-3),
+)
 
-# Execution layer orchestrates
-trainer = mx.Trainer(model=potential)
-trainer.fit(dataset)`,
+state = trainer.train(datamodule, max_epochs=50)
+print(state["train/loss"])`,
+  },
+  {
+    title: "Reference Models",
+    filename: "encoders.py",
+    description:
+      "`molzoo` ships reference encoder families assembled from shared representation blocks. Each shares one interface and writes per-layer node features into the batch.",
+    code: `# Every reference family in molzoo shares one encoder interface:
+#   encoder(batch) -> batch with per-layer node features.
+# Pick a family, then drop it into the Trainer above —
+# swapping the architecture never touches the training loop.
+
+batch = encoder(batch)   # per-layer node features (N, layers, dim)`,
+  },
+  {
+    title: "Built-in Datasets",
+    filename: "data.py",
+    description:
+      "Built-in datasets share one packed, mmap-friendly cache. Batches arrive as nested TensorDicts split into atoms / edges / graphs.",
+    code: `# Built-in datasets share one packed, mmap-friendly cache.
+# Batches are nested TensorDicts with a fixed namespace layout.
+batch["atoms", "Z"]           # atomic numbers   (N,)
+batch["atoms", "pos"]         # positions        (N, 3)
+batch["edges", "edge_index"]  # source -> target (E, 2)
+batch["graphs", "energy"]     # per-graph target (B,)`,
   },
 ];
 
@@ -268,8 +293,8 @@ export const MolnexLanding = () => {
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              The design keeps abstraction decoupled from trainers. The ecosystem guarantees
-              representation interoperability.
+              The design keeps representations decoupled from trainers, so components stay
+              interchangeable across the stack.
             </p>
           </motion.div>
 

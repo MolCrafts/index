@@ -55,7 +55,7 @@ export const MolVisLanding = () => {
         >
           <motion.header className="flex flex-col items-center justify-center w-full">
             <motion.h3
-              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-fuchsia-400 via-pink-300 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-indigo-400 via-violet-300 to-indigo-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -64,7 +64,7 @@ export const MolVisLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-purple-500 via-fuchsia-400 to-purple-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-purple-500 via-violet-400 to-purple-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -94,7 +94,7 @@ export const MolVisLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-purple-400 via-violet-400 to-indigo-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -110,9 +110,9 @@ export const MolVisLanding = () => {
             {[
               {
                 icon: <WorkflowIcon className="w-8 h-8" />,
-                title: "Web, Desktop, and Notebook Ready",
+                title: "Browser, Editor, and Notebook Ready",
                 description:
-                  "MolVis targets the web, desktop, and Jupyter notebooks with Babylon.js rendering and WebAssembly-backed molecular data processing.",
+                  "MolVis runs in the browser, your editor, and notebooks, with hardware-accelerated 3D rendering and a fast molecular data core.",
               },
               {
                 icon: <DataIcon className="w-8 h-8" />,
@@ -124,7 +124,7 @@ export const MolVisLanding = () => {
                 icon: <IntegrationIcon className="w-8 h-8" />,
                 title: "Multiple Interfaces",
                 description:
-                  "The same codebase ships a core package, React web app, Python Jupyter widget, and VSCode extension with a modular modifier pipeline.",
+                  "The same codebase ships a core package, a web app, a notebook widget, and an editor extension with a modular modifier pipeline.",
               },
             ].map((feature) => (
               <motion.div

@@ -28,7 +28,7 @@ const FEATURES = [
     icon: <IntegrationIcon className="w-8 h-8" />,
     title: "Agent + UI Layer",
     description:
-      "FastAPI server, React UI, and an optional PydanticAI-based agent layer sit directly on top of the workflow runtime and workspace.",
+      "An HTTP server, a web UI, and an optional agent layer sit directly on top of the workflow runtime and workspace.",
   },
 ];
 
@@ -38,9 +38,9 @@ const API_SNIPPETS = [
     filename: "workflow.py",
     description:
       "Define typed async workflows with explicit task dependencies, then build and execute the resulting specification.",
-    code: `from molexp.workflow import workflow, TaskContext
+    code: `from molexp.workflow import WorkflowBuilder, TaskContext
 
-wf = workflow(name="data-pipeline")
+wf = WorkflowBuilder(name="data-pipeline")
 
 @wf.task
 async def fetch(ctx: TaskContext) -> list[float]:
@@ -143,8 +143,8 @@ export const MolexpLanding = () => {
               Feels Like
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              These examples mirror the README directly: task-graph execution, reproducible
-              Project-Experiment-Run workspaces, and agent-aware automation on one platform.
+              Task-graph execution, reproducible Project-Experiment-Run workspaces, and agent-aware
+              automation on one platform.
             </p>
           </motion.div>
 

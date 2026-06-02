@@ -34,8 +34,7 @@ const FEATURES = [
   {
     icon: <DataIcon className="w-8 h-8" />,
     title: "Context Locals",
-    description:
-      "Context-local fields via bind_context() and scoped_context() for threaded/async workflows.",
+    description: "Context-local fields via Context.scope() for threaded/async workflows.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -51,9 +50,9 @@ const FEATURES = [
   },
   {
     icon: <CollaborationIcon className="w-8 h-8" />,
-    title: "Zero Dependencies",
+    title: "Stdlib Drop-In",
     description:
-      "No runtime dependencies. Exception and stack capture on every record, optionally using Rich for terminals.",
+      "Mirrors the stdlib logging API (basicConfig, getLogger) and bridges existing logging records. Exception and stack capture on every record, with rich terminal output.",
   },
 ];
 
@@ -89,14 +88,15 @@ logger.info("ending task", elapsed=0.5)
 # Emits log with {"worker_id": "w-001", "message": "ending task", "elapsed": 0.5}`,
   },
   {
-    title: "Rich Terminal Displays",
+    title: "Pretty Terminal Output",
     filename: "rich_log.py",
     description:
-      "Make terminal outputs beautiful. Optionally install mollog with rich features and use Rich Handler directly.",
+      "Make terminal output readable. Install the optional extra for colorized, formatted records.",
     code: `import mollog
-from mollog.handlers.rich import RichHandler
+from mollog import RichFormatter, StreamHandler
 
-handler = RichHandler()
+handler = StreamHandler()
+handler.set_formatter(RichFormatter())
 mollog.configure(level="debug", handlers=[handler])
 
 log = mollog.get_logger("system")
@@ -107,16 +107,16 @@ log.error("Failed to connect to database")`,
     title: "Scoped Logging",
     filename: "scoped.py",
     description: "For async applications and scoped workloads, use context-local bindings.",
-    code: `from mollog import scoped_context, get_logger
+    code: `from mollog import Context, get_logger
 
 logger = get_logger("async_app")
 
-with scoped_context(request_id="1234abcd"):
+with Context.scope(request_id="1234abcd"):
     logger.info("Handling web request...")
-    # The log automatically captures request_id="1234abcd" 
+    # The log automatically captures request_id="1234abcd"
     # without explicitly appending it to the log call
 
-logger.info("Outside scope") 
+logger.info("Outside scope")
 # No request_id present`,
   },
 ];
@@ -185,7 +185,7 @@ export const MollogLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Zero-Dependency Structured Logging for Python
+              Structured Logging for Python, stdlib-compatible
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -214,8 +214,8 @@ export const MollogLanding = () => {
               Feels Like
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              These examples are generic on purpose. They show how MolLog simplifies structured
-              logging to its purest components, ensuring telemetry is clean and accessible.
+              MolLog keeps structured logging to its purest components, so telemetry stays clean and
+              easy to ingest.
             </p>
           </motion.div>
 

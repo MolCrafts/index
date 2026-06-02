@@ -21,8 +21,9 @@ const MoleculeOverlay = lazy(() =>
 const FEATURES = [
   {
     icon: <WorkflowIcon className="w-8 h-8" />,
-    title: "Polymer Notations",
-    description: "Parse SMILES, BigSMILES, CGSmiles, and G-BigSMILES from one notation layer.",
+    title: "Notation Parsing",
+    description:
+      "Turn molecular notation strings into structured topology through one parsing layer.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
@@ -32,9 +33,8 @@ const FEATURES = [
   },
   {
     icon: <DataIcon className="w-8 h-8" />,
-    title: "Statistical Distributions",
-    description:
-      "Schulz–Zimm, Poisson, Flory–Schulz, and uniform distributions for reproducible polydisperse systems.",
+    title: "Reproducible Sampling",
+    description: "Seeded statistical sampling for reproducible generation of disperse systems.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -46,57 +46,64 @@ const FEATURES = [
     icon: <CollaborationIcon className="w-8 h-8" />,
     title: "Reactive Topology Editing",
     description:
-      "Express crosslinks via anchor and leaving-group selectors; emit fix bond/react templates.",
+      "Express bond-forming edits through anchor and leaving-group selectors; emit engine-ready templates.",
   },
   {
     icon: <AnalysisIcon className="w-8 h-8" />,
-    title: "MCP for AI Agents",
+    title: "Built-in Analysis",
     description:
-      "Expose modules, signatures, and source through MolPy's Model Context Protocol server.",
+      "Structural, dynamical, and transport analysis routines ship in the compute module.",
   },
 ];
 
 const API_SNIPPETS = [
   {
-    title: "Small Molecule → LAMMPS",
-    filename: "small_molecule.py",
-    description: "Parse SMILES, assign OPLS-AA types, and export a complete LAMMPS deck.",
+    title: "Structure → Engine Deck",
+    filename: "structure.py",
+    description: "Parse a structure, assign atom types, and export a ready-to-run engine deck.",
     code: `import molpy as mp
 
-mol   = mp.parser.parse_molecule("CCO")          # ethanol from SMILES
+mol   = mp.parser.parse_molecule("CCO")          # parse from notation
 ff    = mp.io.read_xml_forcefield("oplsaa.xml")
 typed = mp.typifier.OplsAtomisticTypifier(ff).typify(mol)
 
 mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
   },
   {
-    title: "Polymer from BigSMILES",
-    filename: "polymer.py",
-    description: "Build a PEO chain from G-BigSMILES, type it, and export.",
+    title: "Build from Notation",
+    filename: "build.py",
+    description: "Build a chain from a notation string, type it, and export.",
     code: `import molpy as mp
+from molpy.builder import polymer
 
-# PEO chain, degree of polymerization = 10
-peo = mp.tool.polymer("{[<]CCOCC[>]}|10|")
+# chain, degree of polymerization = 10
+chain = polymer("{[<]CCOCC[>]}|10|")
 
-ff    = mp.io.read_xml_forcefield("oplsaa.xml")
-typed = mp.typifier.OplsAtomisticTypifier(ff).typify(peo)
+ff    = mp.io.read_xml_forcefield("forcefield.xml")
+typed = mp.typifier.OplsAtomisticTypifier(ff).typify(chain)
 mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
   },
   {
-    title: "Polydisperse System",
-    filename: "polydisperse.py",
-    description: "Sample a Schulz–Zimm distribution and pack the chains into a periodic box.",
-    code: `import molpy as mp
+    title: "Sampled System",
+    filename: "system.py",
+    description: "Sample a distribution and pack the result into a periodic box.",
+    code: `import numpy as np
+import molpy as mp
+from molpy.builder import polymer_system
+from molpy.pack import Molpack, InsideBoxConstraint
 
-# Mn = 1500 Da, Mw = 3000 Da, total mass ≈ 500 kDa
-chains = mp.tool.polymer_system(
+# sample a disperse population, seeded for reproducibility
+chains = polymer_system(
     "{[<]CCOCC[>]}|schulz_zimm(1500,3000)||5e5|",
     random_seed=42,
 )
 
-frames = [c.to_frame() for c in chains]
-packed = mp.pack.pack(frames, box=[80, 80, 80])
-mp.io.write_lammps_system("peo_bulk/", packed, ff)`,
+packer = Molpack(workdir="peo_bulk")
+box = InsideBoxConstraint(length=np.full(3, 80.0), origin=np.zeros(3))
+for chain in chains:
+    packer.add_target(chain.to_frame(), number=1, constraint=box)
+
+packed = packer.optimize(max_steps=10000, seed=42)`,
   },
   {
     title: "Inspectable Force Field",
