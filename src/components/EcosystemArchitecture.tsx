@@ -1,7 +1,6 @@
 import atomOrbitalMoko from "@/assets/moko/atom_obital.png";
 import coffeeMoko from "@/assets/moko/coffee.png";
 import flaskMoko from "@/assets/moko/flask.png";
-import lastSupperMoko from "@/assets/moko/last_supper.png";
 import masterMoko from "@/assets/moko/master.png";
 import mokoMoko from "@/assets/moko/moko.png";
 import molcfgMoko from "@/assets/moko/molcfg.png";
@@ -151,17 +150,6 @@ const originalNodes: NodeDetail[] = [
     mokoSrc: mokoMoko,
     hex: "#d946ef",
   },
-  {
-    id: "molcrafts-symphony",
-    title: "Symphony",
-    description: "MolCrafts Symphony runs GitHub Project issues through coding agents.",
-    href: "https://github.com/MolCrafts/molcrafts-symphony",
-    external: true,
-    color: "text-rose-400",
-    glow: "bg-rose-500",
-    mokoSrc: lastSupperMoko,
-    hex: "#f43f5e",
-  },
 ];
 
 const categoryGroups = [
@@ -173,7 +161,7 @@ const categoryGroups = [
   {
     label: "Infrastructure",
     hex: "#10b981",
-    nodeIds: ["molrs", "molcfg", "mollog", "molq", "molmcp", "molqrc", "molcrafts-symphony"],
+    nodeIds: ["molrs", "molcfg", "mollog", "molq", "molmcp", "molqrc"],
   },
   {
     label: "Specification",

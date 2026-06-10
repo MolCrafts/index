@@ -27,13 +27,13 @@ export const Manifesto = () => {
             className="text-lg md:text-xl lg:text-2xl text-foreground font-light leading-[1.5] max-w-5xl space-y-6"
           >
             <p className="font-medium text-foreground">
-              Molcrafts is an open foundation for molecular and materials science.
+              MolCrafts is an open foundation for molecular and materials science.
             </p>
             <p>We bring methods, data, and workflows onto common ground.</p>
             <p>We keep scientific work open, FAIR, and reproducible.</p>
             <p>We help researchers go further, with less repetition.</p>
             <p className="font-medium text-primary">
-              Molcrafts exists to extend the frontiers of knowledge.
+              MolCrafts exists to extend the frontiers of knowledge.
             </p>
           </motion.div>
         </motion.div>

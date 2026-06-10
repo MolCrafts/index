@@ -3,7 +3,9 @@ import { ArrowUpRight, Github } from "lucide-react";
 import { slideUp, staggerContainer } from "../lib/animations";
 import { cn } from "../lib/utils";
 
-const ACCENT = "#03a3d7";
+// Brand display accent — theme-aware via the --accent-rgb token (see tailwind.css).
+const ACCENT = "rgb(var(--accent-rgb))";
+const accentAlpha = (alpha: number) => `rgba(var(--accent-rgb), ${alpha})`;
 
 export const Cta = () => {
   return (
@@ -37,8 +39,8 @@ export const Cta = () => {
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
                 style={{
-                  backgroundColor: `${ACCENT}1f`,
-                  boxShadow: `0 0 24px ${ACCENT}30`,
+                  backgroundColor: accentAlpha(0.12),
+                  boxShadow: `0 0 24px ${accentAlpha(0.19)}`,
                 }}
               >
                 <Github className="w-5 h-5" style={{ color: ACCENT }} />
@@ -70,15 +72,15 @@ export const Cta = () => {
             <div
               className="flex-1 h-px"
               style={{
-                background: `linear-gradient(90deg, transparent 0%, ${ACCENT}30 30%, ${ACCENT}cc 100%)`,
-                boxShadow: `0 0 12px ${ACCENT}80, 0 0 24px ${ACCENT}40`,
+                background: `linear-gradient(90deg, transparent 0%, ${accentAlpha(0.19)} 30%, ${accentAlpha(0.8)} 100%)`,
+                boxShadow: `0 0 12px ${accentAlpha(0.5)}, 0 0 24px ${accentAlpha(0.25)}`,
               }}
             />
             <div
               className="w-1.5 h-1.5 rounded-full shrink-0"
               style={{
                 backgroundColor: ACCENT,
-                boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${ACCENT}80`,
+                boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${accentAlpha(0.5)}`,
               }}
             />
           </motion.div>

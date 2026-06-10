@@ -117,19 +117,26 @@
     --canvas: 0 0% 98%;
     --radius: 0.5rem;
 
-    /* RGB twin tokens — used by `rgba(var(--xxx-rgb), alpha)` in section
-       transitions and molecule-flash drop-shadows in index.css. */
+    /* RGB twin tokens — consumed as `rgba(var(--xxx-rgb), alpha)` in section
+       transitions, molecule-flash glows, and token-driven inline styles.
+       Brand split (single source of truth): --primary (green, HSL above) is
+       the interactive/UI color; --accent-rgb (cyan) is the decorative *display*
+       color behind hero gradients, glows, and the Explore CTA. Kept distinct
+       on purpose — don't collapse them. */
     --background-rgb: 255, 255, 255;
-    --primary-rgb: 31, 192, 241;
+    --accent-rgb: 31, 192, 241; /* cyan #1fc0f1 — display accent (light) */
 
-    /* Brand gradient ramps (decorative). Defined here so the gradient text
-       utilities below stay free of inline hex. */
-    --brand-primary-from: #03a3d7;
+    /* Brand gradient ramps (decorative). Single source for the gradient-text
+       utilities in index.css — keeps components free of inline hex. */
+    --brand-primary-from: #03a3d7; /* cyan display ramp — hero H1, wordmark */
     --brand-primary-via: #8ce4ff;
     --brand-primary-to: #03a3d7;
-    --brand-secondary-from: #10b981;
+    --brand-secondary-from: #10b981; /* green ramp — kickers, inline accents */
     --brand-secondary-via: #34d399;
     --brand-secondary-to: #10b981;
+    --brand-display-from: #10b981; /* green→cyan bridge — hero subhead, 404 */
+    --brand-display-via: #1fc0f1;
+    --brand-display-to: #10b981;
     --brand-accent-from: #60a5fa;
     --brand-accent-via: #3b82f6;
     --brand-accent-to: #1d4ed8;
@@ -172,7 +179,7 @@
     --canvas: 240 6% 8%;
 
     --background-rgb: 20, 14, 4;
-    --primary-rgb: 3, 163, 215;
+    --accent-rgb: 3, 163, 215; /* cyan #03a3d7 — display accent (dark) */
   }
 }
 

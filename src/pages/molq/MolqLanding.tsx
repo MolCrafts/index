@@ -11,6 +11,8 @@ import {
   WorkflowIcon,
 } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
+import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
   import("../../components/MoleculeOverlay").then((module) => ({
@@ -138,6 +140,8 @@ molq cleanup slurm --profile gpu --dry-run`,
   },
 ];
 
+const ACCENT = PRODUCT_ACCENTS.molq;
+
 export const MolqLanding = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
@@ -179,7 +183,12 @@ export const MolqLanding = () => {
         >
           <motion.header className="flex flex-col items-center justify-center w-full">
             <motion.h3
-              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-rose-400 via-fuchsia-300 to-rose-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              className={cn(
+                "text-2xl sm:text-3xl md:text-4xl",
+                GRADIENT_TEXT,
+                ACCENT.kicker,
+                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+              )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -188,7 +197,12 @@ export const MolqLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className={cn(
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                GRADIENT_TEXT,
+                ACCENT.title,
+                "pt-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -197,7 +211,12 @@ export const MolqLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-300 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.subhead,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -219,13 +238,23 @@ export const MolqLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 API
               </span>{" "}
               Feels Like
@@ -255,9 +284,7 @@ export const MolqLanding = () => {
                     {/* Active Dot / Timeline node */}
                     <div
                       className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
-                        activeCodeIdx === idx
-                          ? "bg-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.5)]"
-                          : "bg-zinc-900 border border-zinc-700"
+                        activeCodeIdx === idx ? ACCENT.dot : "bg-zinc-900 border border-zinc-700"
                       }`}
                     >
                       {activeCodeIdx === idx && (
@@ -266,7 +293,12 @@ export const MolqLanding = () => {
                     </div>
 
                     <div
-                      className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-pink-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+                      className={cn(
+                        "mb-2 transition-colors duration-300",
+                        activeCodeIdx === idx
+                          ? ACCENT.accentText
+                          : "text-zinc-500 group-hover:text-zinc-300",
+                      )}
                     >
                       <span className="font-bold text-lg md:text-xl tracking-wide font-sans">
                         {cap.title}
@@ -290,7 +322,12 @@ export const MolqLanding = () => {
             >
               <div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
                 {/* Subtle top glow line */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-pink-500/20 to-transparent" />
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-transparent",
+                    ACCENT.glowLine,
+                  )}
+                />
                 <div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-zinc-700" />
@@ -346,13 +383,23 @@ export const MolqLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolQ{" "}
-              <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 Covers
               </span>
             </motion.h2>
@@ -372,7 +419,7 @@ export const MolqLanding = () => {
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
-                <div className="text-pink-500 mb-6 group-hover:text-pink-400 transition-colors">
+                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
                   {feature.icon}
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
