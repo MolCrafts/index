@@ -81,6 +81,8 @@ export const Footer = () => {
                   <motion.a
                     key={item.title}
                     href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer noopener" : undefined}
                     whileHover={{ x: 3 }}
                     className="group flex items-center justify-between rounded-lg border border-zinc-800/50 bg-zinc-900/30 px-3 py-2 hover:bg-zinc-900/60 hover:border-zinc-700 transition-colors"
                   >

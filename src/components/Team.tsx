@@ -1,4 +1,4 @@
-import { Github, Twitter } from "lucide-react";
+import { Github } from "lucide-react";
 
 interface ContributorProps {
   imageUrl: string;
@@ -77,15 +77,6 @@ export const Team = () => {
                     aria-label={`${name}'s GitHub`}
                   >
                     <Github size={16} />
-                  </a>
-                  <a
-                    rel="noreferrer noopener"
-                    href="#"
-                    target="_blank"
-                    className="text-zinc-500 hover:text-[#1da1f2] transition-colors"
-                    aria-label={`${name}'s Twitter`}
-                  >
-                    <Twitter size={16} />
                   </a>
                 </div>
               </div>
