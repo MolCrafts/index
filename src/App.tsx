@@ -7,6 +7,7 @@ import { Hero } from "./components/Hero";
 import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
+import { Sponsors } from "./components/Sponsors";
 import {
   MolVisLanding,
   MolcfgLanding,
@@ -147,6 +148,7 @@ function App() {
           <Hero />
           <Manifesto />
           <EcosystemArchitecture />
+          <Sponsors />
           <Newsletter />
           <Cta />
         </>

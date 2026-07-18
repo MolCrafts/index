@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [pluginReact()],
   html: {
     favicon: "./src/assets/moko.svg",
-    title: "MolCrafts – AI Infrastructure for Molecular Science",
+    title: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
     tags: [
       {
         tag: "link",
@@ -31,7 +31,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:title",
-          content: "MolCrafts – AI Infrastructure for Molecular Science",
+          content: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
         },
       },
       {
@@ -39,7 +39,7 @@ export default defineConfig({
         attrs: {
           property: "og:description",
           content:
-            "Open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
+            "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
         },
       },
       { tag: "meta", attrs: { property: "og:type", content: "website" } },
@@ -55,7 +55,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:image:alt",
-          content: "MolCrafts – AI Infrastructure for Molecular Science",
+          content: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
         },
       },
     ],
@@ -63,14 +63,14 @@ export default defineConfig({
       charset: "UTF-8",
       viewport: "width=device-width, initial-scale=1.0",
       description:
-        "Open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
+        "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
       keywords:
-        "molcrafts, molecular science, AI infrastructure, molecular dynamics, MolPy, MolVis, MolRec, open-source",
+        "molcrafts, molecular science, AI infrastructure, collaborative science, molecular dynamics, MolPy, MolVis, MolRec, open-source",
       author: "MolCrafts Team",
       "twitter:card": "summary_large_image",
-      "twitter:title": "MolCrafts – AI Infrastructure for Molecular Science",
+      "twitter:title": "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
       "twitter:description":
-        "Open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
+        "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
       "twitter:image": "https://molcrafts.org/og/index.png",
     },
   },

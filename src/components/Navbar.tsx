@@ -116,9 +116,9 @@ export const Navbar = () => {
                   {/* Glow inside dropdown */}
                   <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
 
-                  <div className="relative flex flex-row gap-6 px-2 py-1">
+                  <div className="relative flex flex-row flex-wrap gap-6 px-2 py-1 max-w-[min(90vw,72rem)]">
                     {ecosystemCategories.map((category, catIdx) => (
-                      <div key={category.title} className="flex flex-col gap-1 w-44">
+                      <div key={category.title} className="flex flex-col gap-1 w-40">
                         <div className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
                           {category.title}
                         </div>
