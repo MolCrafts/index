@@ -165,11 +165,11 @@ export const Navbar = () => {
             </motion.a>
           ) : (
             <motion.a
-              href="#manifesto"
+              href="#vision"
               className="text-sm font-medium px-4 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors"
               whileHover={{ y: -1 }}
             >
-              Manifesto
+              Vision
             </motion.a>
           )}
         </nav>
@@ -251,10 +251,10 @@ export const Navbar = () => {
                   ) : (
                     <SheetClose asChild>
                       <a
-                        href="#manifesto"
+                        href="#vision"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
                       >
-                        Manifesto
+                        Vision
                       </a>
                     </SheetClose>
                   )}

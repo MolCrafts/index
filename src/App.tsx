@@ -8,6 +8,7 @@ import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
 import { Sponsors } from "./components/Sponsors";
+import { Vision } from "./components/Vision";
 import {
   MolVisLanding,
   MolcfgLanding,
@@ -146,6 +147,7 @@ function App() {
       return (
         <>
           <Hero />
+          <Vision />
           <Manifesto />
           <EcosystemArchitecture />
           <Sponsors />
