@@ -25,4 +25,9 @@ dist-ssr
 
 # Local tool config
 .claude/
+
+# Stateless installs — never commit lockfiles
 package-lock.json
+npm-shrinkwrap.json
+pnpm-lock.yaml
+yarn.lock

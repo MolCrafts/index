@@ -18,14 +18,17 @@
 molecular software ecosystem. A single repository serves both the main landing
 page and a dedicated landing page for every product in the ecosystem.
 
-It is built with [Rsbuild](https://rsbuild.dev), React 18, TailwindCSS, and
+It is built with [Rsbuild](https://rsbuild.rs), React 19, Tailwind CSS v4, and
 Radix UI primitives, with static HTML prerendering and Open Graph image
 generation at build time.
+
+Installs are **stateless** — no lockfile is committed. Each environment
+resolves `package.json` ranges fresh via `npm install` (Node ≥ 20).
 
 ## Development
 
 ```bash
-npm install        # install dependencies
+npm install        # resolve package.json (no lockfile)
 npm run dev        # start the Rsbuild dev server
 npm run build      # production build (runs postbuild prerender + OG generation)
 npm run preview    # preview the production build locally

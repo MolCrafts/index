@@ -3,6 +3,18 @@ import { pluginReact } from "@rsbuild/plugin-react";
 
 export default defineConfig({
   plugins: [pluginReact()],
+  source: {
+    entry: {
+      index: "./src/main.tsx",
+    },
+    tsconfigPath: "./tsconfig.json",
+  },
+  resolve: {
+    alias: {
+      "@": "./src",
+    },
+    aliasStrategy: "prefer-alias",
+  },
   html: {
     favicon: "./src/assets/moko.svg",
     title: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
@@ -26,7 +38,6 @@ export default defineConfig({
           href: "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital@1&display=swap",
         },
       },
-      // Open Graph — must use property= (not name=) so LinkedIn/Facebook render rich cards
       {
         tag: "meta",
         attrs: {
@@ -72,11 +83,6 @@ export default defineConfig({
       "twitter:description":
         "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
       "twitter:image": "https://molcrafts.org/og/index.png",
-    },
-  },
-  source: {
-    entry: {
-      index: "./src/main.tsx",
     },
   },
 });

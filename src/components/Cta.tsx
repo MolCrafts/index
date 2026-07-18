@@ -1,5 +1,6 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { slideUp, staggerContainer } from "../lib/animations";
 import { cn } from "../lib/utils";
 
@@ -43,7 +44,7 @@ export const Cta = () => {
                   boxShadow: `0 0 24px ${accentAlpha(0.19)}`,
                 }}
               >
-                <Github className="w-5 h-5" style={{ color: ACCENT }} />
+                <GitHubLogoIcon className="w-5 h-5" style={{ color: ACCENT }} />
               </div>
 
               <div className="flex flex-col">

@@ -7,8 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Check, Linkedin } from "lucide-react";
+import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import { Check } from "lucide-react";
 import { LightBulbIcon } from "./Icons";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
@@ -96,7 +96,7 @@ export const HeroCards = () => {
               })}
             >
               <span className="sr-only">Linkedin icon</span>
-              <Linkedin size="20" />
+              <LinkedInLogoIcon width={20} height={20} />
             </a>
           </div>
         </CardFooter>
