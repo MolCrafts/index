@@ -145,7 +145,7 @@ section::before {
   pointer-events: none;
 }
 
-/* --background-rgb / --primary-rgb live in src/styles/tailwind.css alongside
+/* --background-rgb / --accent-rgb live in src/styles/tailwind.css alongside
    the rest of the token contract. */
 
 /* Enhanced gradient backgrounds with invisible transitions */
@@ -256,6 +256,7 @@ section::before {
 
 .gradient-text-primary,
 .gradient-text-secondary,
+.gradient-text-display,
 .gradient-text-molrec {
   background-clip: text;
   -webkit-background-clip: text;
@@ -279,6 +280,15 @@ section::before {
     var(--brand-secondary-from),
     var(--brand-secondary-via),
     var(--brand-secondary-to)
+  );
+}
+
+.gradient-text-display {
+  background-image: linear-gradient(
+    to right,
+    var(--brand-display-from),
+    var(--brand-display-via),
+    var(--brand-display-to)
   );
 }
 
@@ -539,7 +549,7 @@ canvas * {
 
 /* Molecule Flash Animations */
 .molecule-flash-container {
-  filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.1));
+  filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.1));
   transition: all 1.5s ease;
   opacity: 0.8;
   mix-blend-mode: normal;
@@ -558,7 +568,7 @@ canvas * {
 }
 
 .dark .molecule-flash-container {
-  filter: drop-shadow(0 0 10px rgba(var(--primary-rgb), 0.15));
+  filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.15));
   opacity: 0.9;
   mix-blend-mode: screen;
 }
@@ -614,4 +624,26 @@ canvas * {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+/* Accessibility: honor reduced-motion. Neutralize the decorative infinite
+   animations (blobs, glows, gradient-text sweep, floats) for users who opt
+   out, while leaving one-shot entrance transitions intact. */
+@media (prefers-reduced-motion: reduce) {
+  .molecule-blob,
+  .molecular-glow,
+  .blob-animation,
+  .shadow,
+  .float-animation,
+  .molecule-glow-effect,
+  .gradient-text-primary,
+  .gradient-text-secondary,
+  .gradient-text-display,
+  .gradient-text-molrec {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

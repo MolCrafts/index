@@ -9,6 +9,8 @@ import {
   WorkflowIcon,
 } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
+import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
   import("../../components/MoleculeOverlay").then((module) => ({
@@ -19,9 +21,8 @@ const MoleculeOverlay = lazy(() =>
 const FEATURES = [
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
-    title: "Packmol-Compatible Scripts",
-    description:
-      "Reads the same `.inp` keyword script Packmol uses — drop in existing decks unchanged.",
+    title: "Drop-in Keyword Scripts",
+    description: "Reads a standard `.inp` keyword script — bring existing decks unchanged.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -31,8 +32,8 @@ const FEATURES = [
   },
   {
     icon: <DataIcon className="w-8 h-8" />,
-    title: "Extended Format Support",
-    description: "Reads PDB, XYZ, SDF/MOL, LAMMPS dump, LAMMPS data; writes PDB, XYZ, LAMMPS dump.",
+    title: "Common Formats",
+    description: "Reads and writes the common molecular structure and trajectory formats.",
   },
   {
     icon: <WorkflowIcon className="w-8 h-8" />,
@@ -55,10 +56,10 @@ const FEATURES = [
 
 const API_SNIPPETS = [
   {
-    title: "Drop-in Packmol Script",
+    title: "Drop-in Keyword Script",
     filename: "mixture.inp",
     description:
-      "Same `.inp` format as Packmol — bring your existing scripts, the binary takes a file or stdin.",
+      "A standard `.inp` keyword format — bring your existing scripts; the binary takes a file or stdin.",
     language: "bash",
     code: `# molpack mixture.inp   (or:  molpack < mixture.inp)
 tolerance 2.0
@@ -83,17 +84,21 @@ end structure`,
       "Read a frame with MolRs, declare a Target with restraints, call `Molpack().pack(...)`.",
     language: "python",
     code: `import molrs
-from molpack import InsideBox, Molpack, Target
+from molpack import InsideBoxRestraint, Molpack, Target
 
 frame = molrs.read_pdb("water.pdb")
 
 water = (
-    Target("water", frame, count=500)
-    .with_restraint(InsideBox([0, 0, 0], [40, 40, 40]))
+    Target(frame, count=500)
+    .with_name("water")
+    .with_restraint(InsideBoxRestraint([0, 0, 0], [40, 40, 40]))
 )
 
-result = Molpack(tolerance=2.0).pack(
-    [water], max_loops=200, seed=42,
+result = (
+    Molpack()
+    .with_tolerance(2.0)
+    .with_seed(42)
+    .pack([water], max_loops=200)
 )`,
   },
   {
@@ -109,33 +114,35 @@ let radii = [1.52, 1.20, 1.20];
 
 let target = Target::from_coords(&positions, &radii, 100)
     .with_name("water")
-    .with_restraint(InsideBoxRestraint::new([0.0; 3], [40.0; 3]));
+    .with_restraint(InsideBoxRestraint::new([0.0; 3], [40.0; 3], [false; 3]));
 
 let result = Molpack::new()
-    .tolerance(2.0)
-    .pack(&[target], 200, Some(42))?;`,
+    .with_tolerance(2.0)
+    .with_seed(42)
+    .pack(&[target], 200)?;`,
   },
   {
-    title: "Beyond PDB & XYZ",
-    filename: "formats.inp",
+    title: "Mix Restraints",
+    filename: "restraints.inp",
     description:
-      "Beyond Packmol's PDB/XYZ, molpack reads SDF/MOL and LAMMPS dump/data — by extension or `filetype`.",
+      "Combine fixed placements and region restraints across structures in a single deck.",
     language: "bash",
-    code: `# Mix file types: ligand from SDF, solvent from a LAMMPS dump
+    code: `# One fixed solute, many solvent molecules in a box
 output system.pdb
 
-structure ligand.sdf
+structure solute.pdb
   number 1
   fixed 20. 20. 20. 0. 0. 0.
 end structure
 
-structure water.lammpstrj
-  filetype lammps_dump
+structure water.pdb
   number 800
   inside box 0. 0. 0. 40. 40. 40.
 end structure`,
   },
 ];
+
+const ACCENT = PRODUCT_ACCENTS.molpack;
 
 export const MolpackLanding = () => {
   const sectionRef = useRef(null);
@@ -177,7 +184,12 @@ export const MolpackLanding = () => {
         >
           <motion.header className="flex flex-col items-center justify-center w-full">
             <motion.h3
-              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-amber-400 via-orange-300 to-amber-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              className={cn(
+                "text-2xl sm:text-3xl md:text-4xl",
+                GRADIENT_TEXT,
+                ACCENT.kicker,
+                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+              )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -186,7 +198,12 @@ export const MolpackLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className={cn(
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                GRADIENT_TEXT,
+                ACCENT.title,
+                "pt-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -195,7 +212,12 @@ export const MolpackLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-amber-300 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.subhead,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -217,20 +239,29 @@ export const MolpackLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-orange-400 to-amber-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 API
               </span>{" "}
               Feels Like
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              The same engine, three ways in: a Packmol-compatible binary, a Rust crate, a Python
-              package.
+              The same engine, three ways in: a CLI binary, a Rust crate, a Python package.
             </p>
           </motion.div>
 
@@ -250,9 +281,7 @@ export const MolpackLanding = () => {
                   >
                     <div
                       className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
-                        activeCodeIdx === idx
-                          ? "bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
-                          : "bg-zinc-900 border border-zinc-700"
+                        activeCodeIdx === idx ? ACCENT.dot : "bg-zinc-900 border border-zinc-700"
                       }`}
                     >
                       {activeCodeIdx === idx && (
@@ -261,7 +290,12 @@ export const MolpackLanding = () => {
                     </div>
 
                     <div
-                      className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-orange-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+                      className={cn(
+                        "mb-2 transition-colors duration-300",
+                        activeCodeIdx === idx
+                          ? ACCENT.accentText
+                          : "text-zinc-500 group-hover:text-zinc-300",
+                      )}
                     >
                       <span className="font-bold text-lg md:text-xl tracking-wide font-sans">
                         {cap.title}
@@ -283,7 +317,12 @@ export const MolpackLanding = () => {
               className="w-full lg:w-7/12 sticky top-32"
             >
               <div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-transparent",
+                    ACCENT.glowLine,
+                  )}
+                />
                 <div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-zinc-700" />
@@ -332,13 +371,23 @@ export const MolpackLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolPack{" "}
-              <span className="bg-gradient-to-r from-orange-400 to-amber-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 Covers
               </span>
             </motion.h2>
@@ -358,7 +407,7 @@ export const MolpackLanding = () => {
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
-                <div className="text-orange-500 mb-6 group-hover:text-orange-400 transition-colors">
+                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
                   {feature.icon}
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">

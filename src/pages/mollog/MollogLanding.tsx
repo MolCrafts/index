@@ -11,6 +11,8 @@ import {
   WorkflowIcon,
 } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
+import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
   import("../../components/MoleculeOverlay").then((module) => ({
@@ -34,8 +36,7 @@ const FEATURES = [
   {
     icon: <DataIcon className="w-8 h-8" />,
     title: "Context Locals",
-    description:
-      "Context-local fields via bind_context() and scoped_context() for threaded/async workflows.",
+    description: "Context-local fields via Context.scope() for threaded/async workflows.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -51,9 +52,9 @@ const FEATURES = [
   },
   {
     icon: <CollaborationIcon className="w-8 h-8" />,
-    title: "Zero Dependencies",
+    title: "Stdlib Drop-In",
     description:
-      "No runtime dependencies. Exception and stack capture on every record, optionally using Rich for terminals.",
+      "Mirrors the stdlib logging API (basicConfig, getLogger) and bridges existing logging records. Exception and stack capture on every record, with rich terminal output.",
   },
 ];
 
@@ -89,14 +90,15 @@ logger.info("ending task", elapsed=0.5)
 # Emits log with {"worker_id": "w-001", "message": "ending task", "elapsed": 0.5}`,
   },
   {
-    title: "Rich Terminal Displays",
+    title: "Pretty Terminal Output",
     filename: "rich_log.py",
     description:
-      "Make terminal outputs beautiful. Optionally install mollog with rich features and use Rich Handler directly.",
+      "Make terminal output readable. Install the optional extra for colorized, formatted records.",
     code: `import mollog
-from mollog.handlers.rich import RichHandler
+from mollog import RichFormatter, StreamHandler
 
-handler = RichHandler()
+handler = StreamHandler()
+handler.set_formatter(RichFormatter())
 mollog.configure(level="debug", handlers=[handler])
 
 log = mollog.get_logger("system")
@@ -107,19 +109,21 @@ log.error("Failed to connect to database")`,
     title: "Scoped Logging",
     filename: "scoped.py",
     description: "For async applications and scoped workloads, use context-local bindings.",
-    code: `from mollog import scoped_context, get_logger
+    code: `from mollog import Context, get_logger
 
 logger = get_logger("async_app")
 
-with scoped_context(request_id="1234abcd"):
+with Context.scope(request_id="1234abcd"):
     logger.info("Handling web request...")
-    # The log automatically captures request_id="1234abcd" 
+    # The log automatically captures request_id="1234abcd"
     # without explicitly appending it to the log call
 
-logger.info("Outside scope") 
+logger.info("Outside scope")
 # No request_id present`,
   },
 ];
+
+const ACCENT = PRODUCT_ACCENTS.mollog;
 
 export const MollogLanding = () => {
   const sectionRef = useRef(null);
@@ -162,7 +166,12 @@ export const MollogLanding = () => {
         >
           <motion.header className="flex flex-col items-center justify-center w-full">
             <motion.h3
-              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              className={cn(
+                "text-2xl sm:text-3xl md:text-4xl",
+                GRADIENT_TEXT,
+                ACCENT.kicker,
+                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+              )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -171,7 +180,12 @@ export const MollogLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-sky-500 via-blue-400 to-sky-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className={cn(
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                GRADIENT_TEXT,
+                ACCENT.title,
+                "pt-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -180,12 +194,17 @@ export const MollogLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-indigo-400 via-sky-300 to-indigo-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.subhead,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Zero-Dependency Structured Logging for Python
+              Structured Logging for Python, stdlib-compatible
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -202,20 +221,30 @@ export const MollogLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-sky-400 to-blue-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 API
               </span>{" "}
               Feels Like
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              These examples are generic on purpose. They show how MolLog simplifies structured
-              logging to its purest components, ensuring telemetry is clean and accessible.
+              MolLog keeps structured logging to its purest components, so telemetry stays clean and
+              easy to ingest.
             </p>
           </motion.div>
 
@@ -238,9 +267,7 @@ export const MollogLanding = () => {
                     {/* Active Dot / Timeline node */}
                     <div
                       className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
-                        activeCodeIdx === idx
-                          ? "bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.5)]"
-                          : "bg-zinc-900 border border-zinc-700"
+                        activeCodeIdx === idx ? ACCENT.dot : "bg-zinc-900 border border-zinc-700"
                       }`}
                     >
                       {activeCodeIdx === idx && (
@@ -249,7 +276,12 @@ export const MollogLanding = () => {
                     </div>
 
                     <div
-                      className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-sky-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+                      className={cn(
+                        "mb-2 transition-colors duration-300",
+                        activeCodeIdx === idx
+                          ? ACCENT.accentText
+                          : "text-zinc-500 group-hover:text-zinc-300",
+                      )}
                     >
                       <span className="font-bold text-lg md:text-xl tracking-wide font-sans">
                         {cap.title}
@@ -273,7 +305,12 @@ export const MollogLanding = () => {
             >
               <div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
                 {/* Subtle top glow line */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-transparent",
+                    ACCENT.glowLine,
+                  )}
+                />
                 <div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-zinc-700" />
@@ -325,13 +362,23 @@ export const MollogLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-sky-400 via-blue-400 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolLog{" "}
-              <span className="bg-gradient-to-r from-sky-400 to-blue-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 Covers
               </span>
             </motion.h2>
@@ -352,7 +399,7 @@ export const MollogLanding = () => {
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
-                <div className="text-sky-500 mb-6 group-hover:text-sky-400 transition-colors">
+                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
                   {feature.icon}
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">

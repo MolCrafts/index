@@ -93,7 +93,7 @@ export const NotFound = () => {
 
           {/* 404 Heading */}
           <motion.h1
-            className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1] w-full mb-6 sm:mb-8 bg-gradient-to-r from-[#03a3d7] via-[#8ce4ff] to-[#03a3d7] bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text"
+            className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1] w-full mb-6 sm:mb-8 gradient-text-primary"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.4 }}
@@ -103,7 +103,7 @@ export const NotFound = () => {
 
           {/* Subhead */}
           <motion.h2
-            className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-[#10b981] via-[#1fc0f1] to-[#10b981] bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text"
+            className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto gradient-text-display"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.4 }}

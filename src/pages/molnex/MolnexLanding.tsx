@@ -4,6 +4,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { DataIcon, IntegrationIcon, WorkflowIcon } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
+import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
   import("../../components/MoleculeOverlay").then((module) => ({
@@ -16,41 +18,68 @@ const FEATURES = [
     icon: <WorkflowIcon className="w-8 h-8" />,
     title: "Execution and Representation",
     description:
-      "`molix` owns training and evaluation lifecycle, while `molrep` owns reusable molecular representation modules.",
+      "`molix` owns the training and evaluation lifecycle — trainer, hooks, and data pipeline — while `molrep` owns reusable equivariant representation modules.",
   },
   {
     icon: <DataIcon className="w-8 h-8" />,
     title: "Composition and Potentials",
     description:
-      "`molpot` turns learned representations into compositional outputs and structured potential-based models.",
+      "`molpot` turns learned representations into compositional, physics-aware outputs: energy, force, and stress derivation alongside classical potential terms.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
-    title: "Reference Model Families",
+    title: "Reference Models",
     description:
-      "`molzoo` assembles curated reference architectures from the lower-level stack without collapsing the package boundaries.",
+      "`molzoo` assembles reference encoder families from the shared stack without collapsing the package boundaries.",
   },
 ];
 
 const API_SNIPPETS = [
   {
-    title: "Layered Composition",
+    title: "Execution Layer",
     filename: "train.py",
     description:
-      "MolNex is organized around distinct ownership: execution, representation learning, compositional modeling, and reference assemblies.",
-    code: `import molnex.molix as mx
-import molnex.molrep as rep
-import molnex.molpot as pot
+      "`molix.Trainer` wraps any nn.Module with a hook-driven training loop. You supply the model, the loss, and an optimizer factory.",
+    code: `import torch
+from molix.core.trainer import Trainer
 
-# Distinct modular composition
-features = rep.AtomEmbedding(hidden=128)
-potential = pot.EnergyModel(backbone=features)
+# Execution layer wraps any nn.Module.
+trainer = Trainer(
+    model=model,                                  # representation + potential
+    loss_fn=loss_fn,                              # (pred, batch) -> scalar
+    optimizer_factory=lambda p: torch.optim.Adam(p, lr=1e-3),
+)
 
-# Execution layer orchestrates
-trainer = mx.Trainer(model=potential)
-trainer.fit(dataset)`,
+state = trainer.train(datamodule, max_epochs=50)
+print(state["train/loss"])`,
+  },
+  {
+    title: "Reference Models",
+    filename: "encoders.py",
+    description:
+      "`molzoo` ships reference encoder families assembled from shared representation blocks. Each shares one interface and writes per-layer node features into the batch.",
+    code: `# Every reference family in molzoo shares one encoder interface:
+#   encoder(batch) -> batch with per-layer node features.
+# Pick a family, then drop it into the Trainer above —
+# swapping the architecture never touches the training loop.
+
+batch = encoder(batch)   # per-layer node features (N, layers, dim)`,
+  },
+  {
+    title: "Built-in Datasets",
+    filename: "data.py",
+    description:
+      "Built-in datasets share one packed, mmap-friendly cache. Batches arrive as nested TensorDicts split into atoms / edges / graphs.",
+    code: `# Built-in datasets share one packed, mmap-friendly cache.
+# Batches are nested TensorDicts with a fixed namespace layout.
+batch["atoms", "Z"]           # atomic numbers   (N,)
+batch["atoms", "pos"]         # positions        (N, 3)
+batch["edges", "edge_index"]  # source -> target (E, 2)
+batch["graphs", "energy"]     # per-graph target (B,)`,
   },
 ];
+
+const ACCENT = PRODUCT_ACCENTS.molnex;
 
 export const MolnexLanding = () => {
   const sectionRef = useRef(null);
@@ -93,7 +122,12 @@ export const MolnexLanding = () => {
         >
           <motion.header className="flex flex-col items-center justify-center w-full">
             <motion.h3
-              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-teal-400 via-emerald-300 to-teal-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              className={cn(
+                "text-2xl sm:text-3xl md:text-4xl",
+                GRADIENT_TEXT,
+                ACCENT.kicker,
+                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+              )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -102,7 +136,12 @@ export const MolnexLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-cyan-500 via-teal-400 to-cyan-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className={cn(
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                GRADIENT_TEXT,
+                ACCENT.title,
+                "pt-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -111,7 +150,12 @@ export const MolnexLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-emerald-400 via-cyan-300 to-emerald-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.subhead,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -133,13 +177,23 @@ export const MolnexLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-cyan-400 via-teal-400 to-cyan-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 API
               </span>{" "}
               Feels Like
@@ -170,9 +224,7 @@ export const MolnexLanding = () => {
                     {/* Active Dot / Timeline node */}
                     <div
                       className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
-                        activeCodeIdx === idx
-                          ? "bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]"
-                          : "bg-zinc-900 border border-zinc-700"
+                        activeCodeIdx === idx ? ACCENT.dot : "bg-zinc-900 border border-zinc-700"
                       }`}
                     >
                       {activeCodeIdx === idx && (
@@ -181,7 +233,12 @@ export const MolnexLanding = () => {
                     </div>
 
                     <div
-                      className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-cyan-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+                      className={cn(
+                        "mb-2 transition-colors duration-300",
+                        activeCodeIdx === idx
+                          ? ACCENT.accentText
+                          : "text-zinc-500 group-hover:text-zinc-300",
+                      )}
                     >
                       <span className="font-bold text-lg md:text-xl tracking-wide font-sans">
                         {cap.title}
@@ -205,7 +262,12 @@ export const MolnexLanding = () => {
             >
               <div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
                 {/* Subtle top glow line */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-transparent",
+                    ACCENT.glowLine,
+                  )}
+                />
                 <div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-zinc-700" />
@@ -257,19 +319,29 @@ export const MolnexLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-cyan-400 via-teal-400 to-cyan-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolNex{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-teal-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 Covers
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              The design keeps abstraction decoupled from trainers. The ecosystem guarantees
-              representation interoperability.
+              The design keeps representations decoupled from trainers, so components stay
+              interchangeable across the stack.
             </p>
           </motion.div>
 
@@ -283,7 +355,7 @@ export const MolnexLanding = () => {
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
-                <div className="text-cyan-500 mb-6 group-hover:text-cyan-400 transition-colors">
+                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
                   {feature.icon}
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">

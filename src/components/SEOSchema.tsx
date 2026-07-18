@@ -22,7 +22,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             name: "MolCrafts",
             url: "https://molcrafts.org",
             description:
-              "Open molecular software for workflows, records, visualization, and scientific infrastructure.",
+              "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
             sameAs: ["https://github.com/MolCrafts"],
           },
           {
@@ -41,9 +41,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebSite",
             "@id": "https://molcrafts.org/#website",
             url: "https://molcrafts.org",
-            name: "MolCrafts – Open Foundation for Molecular Science",
+            name: "MolCrafts – AI Infrastructure for Molecular Science",
             description:
-              "MolCrafts is an open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
+              "MolCrafts is a next-generation open foundation for collaborative molecular science: methods, data, workflows, and AI agents on common ground.",
             publisher: {
               "@id": "https://molcrafts.org/#organization",
             },
@@ -52,9 +52,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebPage",
             "@id": "https://molcrafts.org/#webpage",
             url: "https://molcrafts.org",
-            name: "MolCrafts – Open Foundation for Molecular Science",
+            name: "MolCrafts – AI Infrastructure for Molecular Science",
             description:
-              "MolCrafts is an open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure.",
+              "MolCrafts is a next-generation open foundation for collaborative molecular science: methods, data, workflows, and AI agents on common ground.",
             isPartOf: {
               "@id": "https://molcrafts.org/#website",
             },
@@ -125,7 +125,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         applicationCategory: "Scientific",
         programmingLanguage: ["Rust", "Python"],
         description:
-          "MolPack is a Packmol-grade molecular packing engine in pure Rust, with a CLI binary and Python bindings for building initial configurations for molecular dynamics simulations.",
+          "MolPack is a molecular packing engine in pure Rust, with a CLI binary and Python bindings for building initial configurations for molecular dynamics simulations.",
         codeRepository: "https://github.com/MolCrafts/molpack",
         license: "BSD-3-Clause",
         isPartOf: {

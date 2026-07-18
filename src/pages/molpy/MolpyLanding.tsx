@@ -11,6 +11,8 @@ import {
   WorkflowIcon,
 } from "../../components/FeatureIcons";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
+import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
   import("../../components/MoleculeOverlay").then((module) => ({
@@ -21,8 +23,9 @@ const MoleculeOverlay = lazy(() =>
 const FEATURES = [
   {
     icon: <WorkflowIcon className="w-8 h-8" />,
-    title: "Polymer Notations",
-    description: "Parse SMILES, BigSMILES, CGSmiles, and G-BigSMILES from one notation layer.",
+    title: "Notation Parsing",
+    description:
+      "Turn molecular notation strings into structured topology through one parsing layer.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
@@ -32,9 +35,8 @@ const FEATURES = [
   },
   {
     icon: <DataIcon className="w-8 h-8" />,
-    title: "Statistical Distributions",
-    description:
-      "Schulz–Zimm, Poisson, Flory–Schulz, and uniform distributions for reproducible polydisperse systems.",
+    title: "Reproducible Sampling",
+    description: "Seeded statistical sampling for reproducible generation of disperse systems.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -46,57 +48,64 @@ const FEATURES = [
     icon: <CollaborationIcon className="w-8 h-8" />,
     title: "Reactive Topology Editing",
     description:
-      "Express crosslinks via anchor and leaving-group selectors; emit fix bond/react templates.",
+      "Express bond-forming edits through anchor and leaving-group selectors; emit engine-ready templates.",
   },
   {
     icon: <AnalysisIcon className="w-8 h-8" />,
-    title: "MCP for AI Agents",
+    title: "Built-in Analysis",
     description:
-      "Expose modules, signatures, and source through MolPy's Model Context Protocol server.",
+      "Structural, dynamical, and transport analysis routines ship in the compute module.",
   },
 ];
 
 const API_SNIPPETS = [
   {
-    title: "Small Molecule → LAMMPS",
-    filename: "small_molecule.py",
-    description: "Parse SMILES, assign OPLS-AA types, and export a complete LAMMPS deck.",
+    title: "Structure → Engine Deck",
+    filename: "structure.py",
+    description: "Parse a structure, assign atom types, and export a ready-to-run engine deck.",
     code: `import molpy as mp
 
-mol   = mp.parser.parse_molecule("CCO")          # ethanol from SMILES
+mol   = mp.parser.parse_molecule("CCO")          # parse from notation
 ff    = mp.io.read_xml_forcefield("oplsaa.xml")
 typed = mp.typifier.OplsAtomisticTypifier(ff).typify(mol)
 
 mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
   },
   {
-    title: "Polymer from BigSMILES",
-    filename: "polymer.py",
-    description: "Build a PEO chain from G-BigSMILES, type it, and export.",
+    title: "Build from Notation",
+    filename: "build.py",
+    description: "Build a chain from a notation string, type it, and export.",
     code: `import molpy as mp
+from molpy.builder import polymer
 
-# PEO chain, degree of polymerization = 10
-peo = mp.tool.polymer("{[<]CCOCC[>]}|10|")
+# chain, degree of polymerization = 10
+chain = polymer("{[<]CCOCC[>]}|10|")
 
-ff    = mp.io.read_xml_forcefield("oplsaa.xml")
-typed = mp.typifier.OplsAtomisticTypifier(ff).typify(peo)
+ff    = mp.io.read_xml_forcefield("forcefield.xml")
+typed = mp.typifier.OplsAtomisticTypifier(ff).typify(chain)
 mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
   },
   {
-    title: "Polydisperse System",
-    filename: "polydisperse.py",
-    description: "Sample a Schulz–Zimm distribution and pack the chains into a periodic box.",
-    code: `import molpy as mp
+    title: "Sampled System",
+    filename: "system.py",
+    description: "Sample a distribution and pack the result into a periodic box.",
+    code: `import numpy as np
+import molpy as mp
+from molpy.builder import polymer_system
+from molpy.pack import Molpack, InsideBoxConstraint
 
-# Mn = 1500 Da, Mw = 3000 Da, total mass ≈ 500 kDa
-chains = mp.tool.polymer_system(
+# sample a disperse population, seeded for reproducibility
+chains = polymer_system(
     "{[<]CCOCC[>]}|schulz_zimm(1500,3000)||5e5|",
     random_seed=42,
 )
 
-frames = [c.to_frame() for c in chains]
-packed = mp.pack.pack(frames, box=[80, 80, 80])
-mp.io.write_lammps_system("peo_bulk/", packed, ff)`,
+packer = Molpack(workdir="peo_bulk")
+box = InsideBoxConstraint(length=np.full(3, 80.0), origin=np.zeros(3))
+for chain in chains:
+    packer.add_target(chain.to_frame(), number=1, constraint=box)
+
+packed = packer.optimize(max_steps=10000, seed=42)`,
   },
   {
     title: "Inspectable Force Field",
@@ -111,6 +120,8 @@ ct_ct = bond_style.get_type_by_name("CT-CT", mp.BondType)
 print(ct_ct["k0"], ct_ct["r0"])`,
   },
 ];
+
+const ACCENT = PRODUCT_ACCENTS.molpy;
 
 export const MolpyLanding = () => {
   const sectionRef = useRef(null);
@@ -153,7 +164,12 @@ export const MolpyLanding = () => {
         >
           <motion.header className="flex flex-col items-center justify-center w-full">
             <motion.h3
-              className="text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-sky-400 via-cyan-300 to-sky-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2"
+              className={cn(
+                "text-2xl sm:text-3xl md:text-4xl",
+                GRADIENT_TEXT,
+                ACCENT.kicker,
+                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+              )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
@@ -162,7 +178,12 @@ export const MolpyLanding = () => {
             </motion.h3>
 
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pt-2"
+              className={cn(
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                GRADIENT_TEXT,
+                ACCENT.title,
+                "pt-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.4 }}
@@ -171,7 +192,12 @@ export const MolpyLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.subhead,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -193,13 +219,23 @@ export const MolpyLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What the{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 API
               </span>{" "}
               Feels Like
@@ -228,9 +264,7 @@ export const MolpyLanding = () => {
                     {/* Active Dot / Timeline node */}
                     <div
                       className={`absolute left-0 top-1 w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
-                        activeCodeIdx === idx
-                          ? "bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-                          : "bg-zinc-900 border border-zinc-700"
+                        activeCodeIdx === idx ? ACCENT.dot : "bg-zinc-900 border border-zinc-700"
                       }`}
                     >
                       {activeCodeIdx === idx && (
@@ -239,7 +273,12 @@ export const MolpyLanding = () => {
                     </div>
 
                     <div
-                      className={`mb-2 transition-colors duration-300 ${activeCodeIdx === idx ? "text-blue-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
+                      className={cn(
+                        "mb-2 transition-colors duration-300",
+                        activeCodeIdx === idx
+                          ? ACCENT.accentText
+                          : "text-zinc-500 group-hover:text-zinc-300",
+                      )}
                     >
                       <span className="font-bold text-lg md:text-xl tracking-wide font-sans">
                         {cap.title}
@@ -313,13 +352,23 @@ export const MolpyLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className="text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-[length:200%_auto] animate-gradient-x text-transparent bg-clip-text pb-2"
+              className={cn(
+                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
+                GRADIENT_TEXT,
+                ACCENT.heading,
+                "pb-2",
+              )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
               What MolPy{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text leading-relaxed">
+              <span
+                className={cn(
+                  "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
+                  ACCENT.headingSpan,
+                )}
+              >
                 Covers
               </span>
             </motion.h2>
@@ -338,7 +387,7 @@ export const MolpyLanding = () => {
                 className="flex flex-col items-center text-center group"
                 variants={slideUp}
               >
-                <div className="text-blue-500 mb-6 group-hover:text-blue-400 transition-colors">
+                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
                   {feature.icon}
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
