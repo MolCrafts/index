@@ -1,5 +1,6 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { BookOpen, Github, MessageSquare } from "lucide-react";
+import { BookOpen, MessageSquare } from "lucide-react";
 
 export const Community = () => {
   return (
@@ -42,7 +43,7 @@ export const Community = () => {
             transition={{ delay: 0.2 }}
           >
             <div className="text-zinc-500 mb-5 group-hover:text-[#10b981] group-hover:-translate-y-1 transition-all duration-300">
-              <Github size={32} />
+              <GitHubLogoIcon width={32} height={32} />
             </div>
             <h3 className="text-lg font-semibold text-zinc-100 mb-2">Contribute Code</h3>
             <p className="text-sm text-zinc-500 mb-4 font-light">

@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import { GiftIcon, MapIcon, MedalIcon, PlaneIcon } from "../components/Icons";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface FeatureProps {
-  icon: JSX.Element;
+  icon: ReactNode;
   title: string;
   description: string;
 }

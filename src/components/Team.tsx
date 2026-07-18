@@ -1,4 +1,4 @@
-import { Github } from "lucide-react";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 interface ContributorProps {
   imageUrl: string;
@@ -76,7 +76,7 @@ export const Team = () => {
                     className="text-zinc-500 hover:text-white transition-colors"
                     aria-label={`${name}'s GitHub`}
                   >
-                    <Github size={16} />
+                    <GitHubLogoIcon width={16} height={16} />
                   </a>
                 </div>
               </div>

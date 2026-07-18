@@ -1,19 +1,19 @@
-import { ThemeProvider } from "@/components/theme-provider.tsx";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import { ThemeProvider } from "@/components/theme-provider";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
 import "./styles/tailwind.css";
 import "./index.css";
 
 const rootElement = document.getElementById("root");
-if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </React.StrictMode>,
-  );
-} else {
-  console.error("Root element not found");
+if (!rootElement) {
+  throw new Error("Root element #root not found");
 }
+
+createRoot(rootElement).render(
+  <StrictMode>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </StrictMode>,
+);
