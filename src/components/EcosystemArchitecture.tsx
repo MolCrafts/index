@@ -1,6 +1,8 @@
 import atomOrbitalMoko from "@/assets/moko/atom_obital.png";
 import coffeeMoko from "@/assets/moko/coffee.png";
+import cookMoko from "@/assets/moko/cook.png";
 import flaskMoko from "@/assets/moko/flask.png";
+import happyMoko from "@/assets/moko/happy.png";
 import masterMoko from "@/assets/moko/master.png";
 import mokoMoko from "@/assets/moko/moko.png";
 import molcfgMoko from "@/assets/moko/molcfg.png";
@@ -30,79 +32,78 @@ const originalNodes: NodeDetail[] = [
   {
     id: "molpy",
     title: "MolPy",
-    description: "Programmable Python toolkit for molecular simulation workflows.",
+    description:
+      "Python toolkit for molecular workflows: parsing, building, editing, typing, analyzing, packing, and simulation I/O.",
     color: "text-blue-400",
     glow: "bg-blue-500",
     mokoSrc: molpyMoko,
     hex: "#3b82f6",
   },
   {
-    id: "molvis",
-    title: "MolVis",
-    description: "Interactive 3D molecules — browser, editor, notebooks.",
-    color: "text-purple-400",
-    glow: "bg-purple-500",
-    mokoSrc: movisMoko,
-    hex: "#a855f7",
-  },
-  {
-    id: "molrec",
-    title: "MolRec",
-    description: "Backend-neutral record spec for atomistic data.",
-    color: "text-amber-400",
-    glow: "bg-amber-500",
-    mokoSrc: molrecMoko,
-    hex: "#f59e0b",
-  },
-  {
-    id: "molcfg",
-    title: "MolCfg",
-    description: "Layered config with source tracking. One dep (pyyaml).",
-    color: "text-emerald-400",
-    glow: "bg-emerald-500",
-    mokoSrc: molcfgMoko,
-    hex: "#10b981",
-  },
-  {
-    id: "mollog",
-    title: "MolLog",
-    description: "Structured Python logging, stdlib-compatible.",
-    color: "text-sky-400",
-    glow: "bg-sky-500",
-    mokoSrc: mollogMoko,
-    hex: "#0ea5e9",
-  },
-  {
-    id: "molq",
-    title: "MolQ",
-    description: "One job-queue API: local, slurm, pbs, lsf.",
-    color: "text-pink-400",
-    glow: "bg-pink-500",
-    mokoSrc: atomOrbitalMoko,
-    hex: "#ec4899",
-  },
-  {
     id: "molrs",
     title: "MolRs",
-    description: "Rust molecular kernel — Python, WASM, C bindings.",
+    description:
+      "Rust core for molecular data structures, I/O, conformers, force fields, trajectory analysis, Python bindings, and WASM.",
     color: "text-red-400",
     glow: "bg-red-500",
     mokoSrc: molrsMoko,
     hex: "#ef4444",
   },
   {
+    id: "molpack",
+    title: "MolPack",
+    description:
+      "Packmol-grade molecular packing in Rust, with a Packmol-compatible CLI plus Rust and Python APIs.",
+    color: "text-orange-400",
+    glow: "bg-orange-500",
+    mokoSrc: molpackMoko,
+    hex: "#f97316",
+  },
+  {
+    id: "molnex",
+    title: "MolNex",
+    description:
+      "Layered molecular ML framework for training, representations, potential composition, and reference model families.",
+    color: "text-cyan-400",
+    glow: "bg-cyan-500",
+    mokoSrc: molnexMoko,
+    hex: "#06b6d4",
+  },
+  {
+    id: "molrec",
+    title: "MolRec",
+    description:
+      "Backend-neutral atomistic record contract for frames, trajectories, observables, status, metrics, and metadata.",
+    color: "text-amber-400",
+    glow: "bg-amber-500",
+    mokoSrc: molrecMoko,
+    hex: "#f59e0b",
+  },
+  {
     id: "molexp",
     title: "MolExp",
-    description: "Typed workflows, asset dedup, agent layer for experiments.",
+    description:
+      "Agent-assisted experiment platform with typed workflow graphs, tracked runs, artifact lineage, FastAPI, and a React UI.",
     color: "text-indigo-400",
     glow: "bg-indigo-500",
     mokoSrc: flaskMoko,
     hex: "#6366f1",
   },
   {
+    id: "molq",
+    title: "MolQ",
+    description:
+      "Unified job queue for local execution and HPC schedulers including SLURM, PBS, and LSF.",
+    color: "text-pink-400",
+    glow: "bg-pink-500",
+    mokoSrc: atomOrbitalMoko,
+    hex: "#ec4899",
+  },
+  {
     id: "molhub",
     title: "MolHub",
-    description: "Common dataset protocols, built-in molecular benchmarks, and uploaders.",
+    description:
+      "Dataset access layer for molecular benchmarks, custom datasets, and uploads to public repositories.",
     href: "https://github.com/MolCrafts/molhub",
     external: true,
     color: "text-lime-400",
@@ -111,27 +112,32 @@ const originalNodes: NodeDetail[] = [
     hex: "#84cc16",
   },
   {
-    id: "molnex",
-    title: "MolNex",
-    description: "Layered ML framework: training, representation, potentials, model zoo.",
-    color: "text-cyan-400",
-    glow: "bg-cyan-500",
-    mokoSrc: molnexMoko,
-    hex: "#06b6d4",
+    id: "molvis",
+    title: "MolVis",
+    description:
+      "Interactive 3D inspection, editing, measurement, and trajectory playback for the web, VSCode, and Jupyter.",
+    color: "text-purple-400",
+    glow: "bg-purple-500",
+    mokoSrc: movisMoko,
+    hex: "#a855f7",
   },
   {
-    id: "molpack",
-    title: "MolPack",
-    description: "Molecular packing engine — CLI, Rust crate, Python package.",
-    color: "text-orange-400",
-    glow: "bg-orange-500",
-    mokoSrc: molpackMoko,
-    hex: "#f97316",
+    id: "molplot",
+    title: "MolPlot",
+    description:
+      "Unified scientific charting — one Vega-Lite spec, two renderers (web + matplotlib).",
+    href: "https://github.com/MolCrafts/molplot",
+    external: true,
+    color: "text-teal-400",
+    glow: "bg-teal-500",
+    mokoSrc: happyMoko,
+    hex: "#14b8a6",
   },
   {
     id: "molmcp",
     title: "MolMCP",
-    description: "MCP server for package introspection and ecosystem providers.",
+    description:
+      "MCP server and graph-based codebase discovery for exposing MolCrafts capabilities to AI agents.",
     href: "https://github.com/MolCrafts/molmcp",
     external: true,
     color: "text-violet-400",
@@ -140,9 +146,29 @@ const originalNodes: NodeDetail[] = [
     hex: "#8b5cf6",
   },
   {
+    id: "molcfg",
+    title: "MolCfg",
+    description:
+      "Layered configuration with source tracking, validation, profiles, interpolation, and thread-safe access.",
+    color: "text-emerald-400",
+    glow: "bg-emerald-500",
+    mokoSrc: molcfgMoko,
+    hex: "#10b981",
+  },
+  {
+    id: "mollog",
+    title: "MolLog",
+    description:
+      "Structured Python logging with stdlib-compatible APIs, JSON/Rich formatting, and context propagation.",
+    color: "text-sky-400",
+    glow: "bg-sky-500",
+    mokoSrc: mollogMoko,
+    hex: "#0ea5e9",
+  },
+  {
     id: "molqrc",
     title: "MolQRC",
-    description: "QR Code generator with a C core, Python API, and CLI.",
+    description: "High-quality QR code generator library in Rust.",
     href: "https://github.com/MolCrafts/molqrc",
     external: true,
     color: "text-fuchsia-400",
@@ -150,23 +176,56 @@ const originalNodes: NodeDetail[] = [
     mokoSrc: mokoMoko,
     hex: "#d946ef",
   },
+  {
+    id: "harness",
+    title: "Harness",
+    description:
+      "Claude Code–first plugin marketplace and agent harness for MolCrafts development.",
+    href: "https://github.com/MolCrafts/molcrafts-harness",
+    external: true,
+    color: "text-zinc-300",
+    glow: "bg-zinc-500",
+    mokoSrc: cookMoko,
+    hex: "#a1a1aa",
+  },
+  {
+    id: "zensical",
+    title: "Zensical Theme",
+    description: "Shared Zensical theme extension for MolCrafts documentation sites.",
+    href: "https://github.com/MolCrafts/molcrafts-zensical-theme",
+    external: true,
+    color: "text-stone-300",
+    glow: "bg-stone-500",
+    mokoSrc: mokoMoko,
+    hex: "#a8a29e",
+  },
 ];
 
 const categoryGroups = [
   {
-    label: "Application",
+    label: "Core",
     hex: "#3b82f6",
-    nodeIds: ["molpy", "molvis", "molnex", "molpack", "molexp", "molhub"],
+    nodeIds: ["molpy", "molrs", "molpack", "molnex", "molrec"],
   },
   {
-    label: "Infrastructure",
+    label: "Workflow",
+    hex: "#6366f1",
+    nodeIds: ["molexp", "molq", "molhub"],
+  },
+  {
+    label: "Interfaces",
+    hex: "#a855f7",
+    nodeIds: ["molvis", "molplot", "molmcp"],
+  },
+  {
+    label: "Libraries",
     hex: "#10b981",
-    nodeIds: ["molrs", "molcfg", "mollog", "molq", "molmcp", "molqrc"],
+    nodeIds: ["molcfg", "mollog", "molqrc"],
   },
   {
-    label: "Specification",
-    hex: "#f59e0b",
-    nodeIds: ["molrec"],
+    label: "Tools",
+    hex: "#a1a1aa",
+    nodeIds: ["harness", "zensical"],
   },
 ];
 
@@ -267,7 +326,7 @@ export const EcosystemArchitecture = () => {
                     100% { transform: translateX(-50%); }
                 }
                 .animate-marquee {
-                    animation: marquee 60s linear infinite;
+                    animation: marquee 70s linear infinite;
                 }
             `}</style>
 
@@ -285,6 +344,11 @@ export const EcosystemArchitecture = () => {
             </div>
             <p className="text-2xl md:text-3xl text-foreground font-light leading-snug max-w-3xl">
               Separate by design. Unified by purpose.
+            </p>
+            <p className="mt-4 text-base text-muted-foreground font-light max-w-2xl">
+              User-facing <span className="text-foreground/80">mol*</span> products, plus{" "}
+              <span className="text-foreground/80">molcrafts-*</span> developer tools that keep the
+              ecosystem buildable, documentable, and agent-ready.
             </p>
           </motion.div>
         </div>

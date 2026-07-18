@@ -1,27 +1,52 @@
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import { Boxes, ChevronRight, FileCode2, Server, Users } from "lucide-react";
+import {
+  Boxes,
+  ChevronRight,
+  LayoutDashboard,
+  Library,
+  Monitor,
+  Users,
+  Workflow,
+  Wrench,
+} from "lucide-react";
 import { fadeIn, staggerContainer } from "../lib/animations";
 import { ecosystemCategories } from "../lib/ecosystem";
 import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
 
 const categoryMeta: Record<string, { icon: typeof Boxes; color: string; bg: string }> = {
-  Application: {
+  Core: {
     icon: Boxes,
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+  },
+  Workflow: {
+    icon: Workflow,
+    color: "text-indigo-400",
+    bg: "bg-indigo-500/10",
+  },
+  Interfaces: {
+    icon: Monitor,
     color: "text-purple-400",
     bg: "bg-purple-500/10",
   },
-  Infrastructure: {
-    icon: Server,
+  Libraries: {
+    icon: Library,
     color: "text-emerald-400",
     bg: "bg-emerald-500/10",
   },
-  Specification: {
-    icon: FileCode2,
-    color: "text-amber-400",
-    bg: "bg-amber-500/10",
+  Tools: {
+    icon: Wrench,
+    color: "text-zinc-400",
+    bg: "bg-zinc-500/10",
   },
+};
+
+const defaultCategoryMeta = {
+  icon: LayoutDashboard,
+  color: "text-muted-foreground",
+  bg: "bg-muted/40",
 };
 
 export const Footer = () => {
@@ -34,7 +59,7 @@ export const Footer = () => {
       className="w-full bg-gradient-to-b from-background to-card/10 mt-auto border-t border-zinc-800/40"
     >
       <motion.section
-        className="container py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-8"
+        className="container py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-8"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
@@ -47,9 +72,8 @@ export const Footer = () => {
             <span className="gradient-text-primary">MolCrafts</span>
           </a>
           <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-            Open molecular software,
-            <br />
-            built in public.
+            Next-generation open foundation for collaborative molecular science — humans and AI
+            agents on shared ground.
           </p>
           <a
             href="https://github.com/MolCrafts"
@@ -64,7 +88,7 @@ export const Footer = () => {
 
         {/* Category columns */}
         {ecosystemCategories.map((category) => {
-          const meta = categoryMeta[category.title];
+          const meta = categoryMeta[category.title] ?? defaultCategoryMeta;
           const Icon = meta.icon;
           return (
             <motion.div key={category.title} className="flex flex-col gap-3" variants={fadeIn}>

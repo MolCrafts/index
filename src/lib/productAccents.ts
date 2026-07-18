@@ -176,4 +176,7 @@ export const CHIP_ONLY_ACCENTS = {
   molhub: { color: "text-lime-500", bg: "hover:bg-lime-500/10" },
   molmcp: { color: "text-violet-500", bg: "hover:bg-violet-500/10" },
   molqrc: { color: "text-fuchsia-500", bg: "hover:bg-fuchsia-500/10" },
+  molplot: { color: "text-teal-500", bg: "hover:bg-teal-500/10" },
+  harness: { color: "text-zinc-400", bg: "hover:bg-zinc-500/10" },
+  zensical: { color: "text-stone-400", bg: "hover:bg-stone-500/10" },
 } satisfies Record<string, { color: string; bg: string }>;

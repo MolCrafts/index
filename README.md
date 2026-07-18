@@ -35,24 +35,31 @@ npm run typecheck  # TypeScript type-check (tsc --noEmit)
 
 ## MolCrafts ecosystem
 
-This site showcases the products of the MolCrafts ecosystem:
+### Products (`mol*`)
 
 | Project | Role |
 |---------|------|
-| [molpy](https://github.com/MolCrafts/molpy)     | Python toolkit — the shared molecular data model & workflow layer |
-| [molrs](https://github.com/MolCrafts/molrs)     | Rust core — molecular data structures & compute kernels (native + WASM) |
+| [molpy](https://github.com/MolCrafts/molpy)     | Python toolkit for molecular workflows |
+| [molrs](https://github.com/MolCrafts/molrs)     | Rust core — data structures, I/O, force fields, WASM |
 | [molpack](https://github.com/MolCrafts/molpack) | Packmol-grade molecular packing (Rust + Python) |
-| [molvis](https://github.com/MolCrafts/molvis)   | WebGL molecular visualization & editing |
-| [molexp](https://github.com/MolCrafts/molexp)   | Workflow & experiment-management platform |
-| [molnex](https://github.com/MolCrafts/molnex)   | Molecular machine-learning framework |
+| [molnex](https://github.com/MolCrafts/molnex)   | Layered molecular ML framework |
+| [molrec](https://github.com/MolCrafts/molrec)   | Backend-neutral atomistic record contract |
+| [molexp](https://github.com/MolCrafts/molexp)   | Agent-assisted experiment platform |
 | [molq](https://github.com/MolCrafts/molq)       | Unified job queue — local / SLURM / PBS / LSF |
+| [molhub](https://github.com/MolCrafts/molhub)   | Molecular benchmark datasets & uploaders |
+| [molvis](https://github.com/MolCrafts/molvis)   | Interactive 3D visualization (web / VSCode / Jupyter) |
+| [molplot](https://github.com/MolCrafts/molplot) | Unified scientific charting (Vega-Lite + matplotlib) |
+| [molmcp](https://github.com/MolCrafts/molmcp)   | MCP server for AI agents across the ecosystem |
 | [molcfg](https://github.com/MolCrafts/molcfg)   | Layered configuration library |
 | [mollog](https://github.com/MolCrafts/mollog)   | Structured logging, stdlib-compatible |
-| [molhub](https://github.com/MolCrafts/molhub)   | Molecular dataset hub |
-| [molmcp](https://github.com/MolCrafts/molmcp)   | MCP server for the ecosystem |
-| [molqrc](https://github.com/MolCrafts/molqrc)   | QR Code generator with a C core, Python API, and CLI |
-| [molcrafts-symphony](https://github.com/MolCrafts/molcrafts-symphony) | GitHub Project agent runner for plan / implement / review workflows |
-| [molrec](https://github.com/MolCrafts/molrec)   | Atomistic record specification |
+| [molqrc](https://github.com/MolCrafts/molqrc)   | QR code generator library in Rust |
+
+### Developer tools (`molcrafts-*`)
+
+| Project | Role |
+|---------|------|
+| [molcrafts-harness](https://github.com/MolCrafts/molcrafts-harness) | Agent harness / Claude Code plugin marketplace |
+| [molcrafts-zensical-theme](https://github.com/MolCrafts/molcrafts-zensical-theme) | Shared Zensical docs theme |
 
 ## License
 

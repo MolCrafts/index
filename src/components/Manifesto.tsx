@@ -26,6 +26,24 @@ export const Manifesto = () => {
             variants={slideUp}
             className="text-lg md:text-xl lg:text-2xl text-foreground font-light leading-[1.5] max-w-5xl space-y-6"
           >
+            <p>
+              Molecular and materials science is full of brilliant ideas trapped between formats,
+              scripts, folders, notebooks, cluster jobs, datasets, and half-remembered decisions.
+              Discovery should compound: a structure, a run, a model, a result — handed to the next
+              person or agent with its scientific context still alive.
+            </p>
+            <p>
+              MolCrafts is building a next-generation open foundation for collaborative science.
+              Scientists turn ideas into runnable studies; builders turn methods into tools others
+              can trust, reuse, and extend; AI agents join the same shared ground — so research
+              stays open, FAIR, and reproducible, and the frontiers of knowledge keep moving.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={slideUp}
+            className="text-lg md:text-xl lg:text-2xl text-foreground font-light leading-[1.5] max-w-5xl space-y-6 border-t border-border/40 pt-12"
+          >
             <p className="font-medium text-foreground">
               MolCrafts is an open foundation for molecular and materials science.
             </p>

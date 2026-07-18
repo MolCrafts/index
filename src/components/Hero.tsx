@@ -101,7 +101,7 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.4 }}
           >
-            Simulate. Learn. Create.
+            Simulate. Collaborate. Create.
           </motion.h3>
 
           {/* Head: Modern bold sans-serif, slightly reduced size, still the visual anchor */}
@@ -122,7 +122,7 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.4 }}
           >
-            AI Infrastructure for Molecular Science
+            Next-Gen AI Infrastructure for Molecular Science
           </motion.h2>
         </motion.header>
       </motion.div>
