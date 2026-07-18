@@ -1,19 +1,11 @@
 import { motion } from "framer-motion";
 import { slideUp, staggerContainer } from "../lib/animations";
 
-const lines = [
-  "MolCrafts is an open foundation for molecular and materials science.",
-  "We bring methods, data, and workflows onto common ground.",
-  "We keep scientific work open, FAIR, and reproducible.",
-  "We help researchers go further, with less repetition.",
-  "MolCrafts exists to extend the frontiers of knowledge.",
-] as const;
-
-export const Manifesto = () => {
+export const Vision = () => {
   return (
     <section
-      id="manifesto"
-      className="py-24 md:py-36 relative flex flex-col justify-center overflow-hidden"
+      id="vision"
+      className="py-32 md:py-48 relative flex flex-col justify-center overflow-hidden"
     >
       <div className="container mx-auto px-4 lg:px-8 max-w-5xl relative z-10">
         <motion.div
@@ -26,7 +18,7 @@ export const Manifesto = () => {
           <motion.div variants={slideUp} className="flex flex-col gap-6">
             <div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm">
               <div className="w-12 h-[1px] bg-primary opacity-50" />
-              Manifesto
+              Vision
             </div>
           </motion.div>
 
@@ -34,20 +26,18 @@ export const Manifesto = () => {
             variants={slideUp}
             className="text-lg md:text-xl lg:text-2xl text-foreground font-light leading-[1.5] max-w-5xl space-y-6"
           >
-            {lines.map((line, i) => (
-              <p
-                key={line}
-                className={
-                  i === 0
-                    ? "font-medium text-foreground"
-                    : i === lines.length - 1
-                      ? "font-medium text-primary"
-                      : undefined
-                }
-              >
-                {line}
-              </p>
-            ))}
+            <p>
+              Molecular and materials science is full of brilliant ideas trapped between formats,
+              scripts, folders, notebooks, cluster jobs, datasets, and half-remembered decisions.
+              Discovery should compound: a structure, a run, a model, a result — handed to the next
+              person or agent with its scientific context still alive.
+            </p>
+            <p>
+              MolCrafts is building a next-generation open foundation for collaborative science.
+              Scientists turn ideas into runnable studies; builders turn methods into tools others
+              can trust, reuse, and extend; AI agents join the same shared ground — so research
+              stays open, FAIR, and reproducible, and the frontiers of knowledge keep moving.
+            </p>
           </motion.div>
         </motion.div>
       </div>

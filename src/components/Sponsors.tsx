@@ -27,28 +27,39 @@ export const Sponsors = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-col gap-10"
+          className="flex flex-col gap-14"
         >
           <div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm">
             <div className="w-12 h-[1px] bg-primary opacity-50" />
             Sponsor
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 md:gap-10">
+          <div className="flex flex-wrap items-start gap-x-16 gap-y-12">
             {sponsors.map(({ name, href, logoSrc, logoAlt }) => (
               <a
                 key={name}
                 href={href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card/30 px-5 py-4 transition-colors hover:border-primary/40 hover:bg-card/60"
+                className="group flex flex-col items-center gap-4 no-underline"
               >
-                <img
-                  src={logoSrc}
-                  alt={logoAlt}
-                  className="h-7 w-7 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                {/* Monochrome silhouette logo */}
+                <span
+                  role="img"
+                  aria-label={logoAlt}
+                  className="block h-12 w-12 bg-foreground/45 group-hover:bg-foreground/80 transition-colors duration-300"
+                  style={{
+                    maskImage: `url(${logoSrc})`,
+                    maskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskImage: `url(${logoSrc})`,
+                    WebkitMaskSize: "contain",
+                    WebkitMaskRepeat: "no-repeat",
+                    WebkitMaskPosition: "center",
+                  }}
                 />
-                <span className="text-base md:text-lg font-semibold text-foreground/90 group-hover:text-foreground">
+                <span className="text-sm font-medium tracking-wide text-muted-foreground group-hover:text-foreground transition-colors duration-300 text-center max-w-[14rem]">
                   {name}
                 </span>
               </a>
