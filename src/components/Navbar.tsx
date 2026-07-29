@@ -34,7 +34,9 @@ export const Navbar = () => {
 
   const isSubpage = currentPath !== "/";
   const packageName = isSubpage ? currentPath.split("/")[1] : "";
-  const docsLink = packageName ? `https://${packageName}.molcrafts.org/` : "#";
+  const docsLink = packageName
+    ? `https://docs.molcrafts.org/${packageName}/`
+    : "#";
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

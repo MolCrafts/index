@@ -47,7 +47,7 @@ export const MolVisLanding = () => {
 
         <Suspense fallback={null}>
           <MoleculeOverlay
-            href="https://molvis.molcrafts.org"
+            href="https://docs.molcrafts.org/molvis/"
             hintLabel="Try It Live ↗"
             placement="spotlight"
           />

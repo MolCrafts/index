@@ -81,105 +81,119 @@
   }
 }
 
+/*
+ * MolCrafts brand contract — middle ground with molcrafts-zensical-theme.
+ *
+ * Shared hex anchors (theme CSS: --molcrafts-*):
+ *   forest #18432b · forest-light #2a6744 · forest-dark #0e2b1b
+ *   cream  #fbf6e4 · sand #f2da9d · sand-strong #c8841d
+ *   slate  #101811 (docs dark paper)
+ *
+ * Surfaces: marketing site stays digital; docs stay print-manual cream.
+ * Both share forest + sand. Cyan is display spark only (not buttons).
+ */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 45 55% 97%;
+    --foreground: 148 30% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 148 30% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    /* Brand identity for molcrafts-index — kept as MolCrafts green. */
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --popover-foreground: 148 30% 12%;
+    /* Interactive = forest family (#2a6744) */
+    --primary: 148 42% 28%;
+    --primary-foreground: 45 55% 97%;
+    --secondary: 45 35% 93%;
+    --secondary-foreground: 148 30% 16%;
+    --muted: 45 25% 93%;
+    --muted-foreground: 148 8% 38%;
+    --accent: 40 55% 92%;
+    --accent-foreground: 148 30% 16%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 142.1 76.2% 36.3%;
+    --border: 148 12% 86%;
+    --input: 148 12% 86%;
+    --ring: 148 42% 28%;
 
-    --success: 142 72% 29%;
-    --success-foreground: 142 72% 20%;
-    --success-soft: 142 72% 94%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 30 90% 28%;
-    --warning-soft: 38 92% 94%;
-    --info: 217 91% 48%;
-    --info-foreground: 217 91% 30%;
-    --info-soft: 217 91% 95%;
+    --success: 148 45% 28%;
+    --success-foreground: 148 45% 18%;
+    --success-soft: 148 35% 94%;
+    --warning: 36 75% 45%;
+    --warning-foreground: 30 70% 24%;
+    --warning-soft: 40 70% 94%;
+    --info: 192 70% 40%;
+    --info-foreground: 192 70% 22%;
+    --info-soft: 192 50% 95%;
 
-    --canvas: 0 0% 98%;
-    --radius: 0.5rem;
+    --canvas: 45 40% 96%;
+    --radius: 0.4rem;
 
-    /* RGB twin tokens — consumed as `rgba(var(--xxx-rgb), alpha)` in section
-       transitions, molecule-flash glows, and token-driven inline styles.
-       Brand split (single source of truth): --primary (green, HSL above) is
-       the interactive/UI color; --accent-rgb (cyan) is the decorative *display*
-       color behind hero gradients, glows, and the Explore CTA. Kept distinct
-       on purpose — don't collapse them. */
-    --background-rgb: 255, 255, 255;
-    --accent-rgb: 31, 192, 241; /* cyan #1fc0f1 — display accent (light) */
+    --background-rgb: 251, 246, 228;
+    --accent-rgb: 31, 192, 241;
 
-    /* Brand gradient ramps (decorative). Single source for the gradient-text
-       utilities in index.css — keeps components free of inline hex. */
-    --brand-primary-from: #03a3d7; /* cyan display ramp — hero H1, wordmark */
-    --brand-primary-via: #8ce4ff;
-    --brand-primary-to: #03a3d7;
-    --brand-secondary-from: #10b981; /* green ramp — kickers, inline accents */
-    --brand-secondary-via: #34d399;
-    --brand-secondary-to: #10b981;
-    --brand-display-from: #10b981; /* green→cyan bridge — hero subhead, 404 */
+    --brand-primary-from: #2a6744;
+    --brand-primary-via: #55a572;
+    --brand-primary-to: #18432b;
+    --brand-secondary-from: #c8841d;
+    --brand-secondary-via: #f2da9d;
+    --brand-secondary-to: #c8841d;
+    --brand-display-from: #2a6744;
     --brand-display-via: #1fc0f1;
-    --brand-display-to: #10b981;
+    --brand-display-to: #2a6744;
     --brand-accent-from: #60a5fa;
     --brand-accent-via: #3b82f6;
     --brand-accent-to: #1d4ed8;
-    --brand-molrec-from: #f59e0b;
-    --brand-molrec-via: #fbbf24;
-    --brand-molrec-to: #f59e0b;
+    --brand-molrec-from: #c8841d;
+    --brand-molrec-via: #f2da9d;
+    --brand-molrec-to: #c8841d;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 142.1 70.6% 45.3%;
-    --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
+    /* Theme slate paper #101811 */
+    --background: 130 20% 8%;
+    --foreground: 100 20% 92%;
+    --card: 130 16% 11%;
+    --card-foreground: 100 20% 92%;
+    --popover: 130 18% 10%;
+    --popover-foreground: 100 20% 92%;
+    --primary: 148 45% 34%;
+    --primary-foreground: 45 55% 96%;
+    --secondary: 130 12% 16%;
+    --secondary-foreground: 100 15% 94%;
+    --muted: 130 10% 15%;
+    --muted-foreground: 120 8% 62%;
+    --accent: 130 12% 15%;
+    --accent-foreground: 40 50% 88%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142.4 71.8% 29.2%;
+    --border: 130 12% 18%;
+    --input: 130 12% 18%;
+    --ring: 148 40% 42%;
 
-    --success: 142 60% 45%;
-    --success-foreground: 142 70% 85%;
-    --success-soft: 142 45% 16%;
-    --warning: 38 85% 55%;
-    --warning-foreground: 38 90% 85%;
-    --warning-soft: 38 50% 18%;
-    --info: 217 80% 60%;
-    --info-foreground: 217 80% 88%;
-    --info-soft: 217 60% 18%;
+    --success: 148 40% 42%;
+    --success-foreground: 148 40% 88%;
+    --success-soft: 148 30% 14%;
+    --warning: 38 70% 52%;
+    --warning-foreground: 40 60% 88%;
+    --warning-soft: 36 40% 16%;
+    --info: 192 55% 52%;
+    --info-foreground: 192 55% 90%;
+    --info-soft: 192 35% 16%;
 
-    --canvas: 240 6% 8%;
+    --canvas: 130 18% 7%;
 
-    --background-rgb: 20, 14, 4;
-    --accent-rgb: 3, 163, 215; /* cyan #03a3d7 — display accent (dark) */
+    --background-rgb: 16, 24, 17;
+    --accent-rgb: 142, 218, 157;
+
+    --brand-primary-from: #55a572;
+    --brand-primary-via: #8ecfa0;
+    --brand-primary-to: #2f7d50;
+    --brand-secondary-from: #f2da9d;
+    --brand-secondary-via: #f2c27c;
+    --brand-secondary-to: #f2da9d;
+    --brand-display-from: #55a572;
+    --brand-display-via: #8ce4ff;
+    --brand-display-to: #55a572;
   }
 }
 

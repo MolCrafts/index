@@ -30,6 +30,16 @@ interface NodeDetail {
 
 const originalNodes: NodeDetail[] = [
   {
+    id: "atomiverse",
+    title: "Atomiverse",
+    description:
+      "C++ / CUDA molecular engine: classical MD, SCF / DFT, plane-wave methods, and ab-initio MD on one Driver API.",
+    color: "text-lime-400",
+    glow: "bg-lime-500",
+    mokoSrc: masterMoko,
+    hex: "#84cc16",
+  },
+  {
     id: "molpy",
     title: "MolPy",
     description:
@@ -205,7 +215,7 @@ const categoryGroups = [
   {
     label: "Core",
     hex: "#3b82f6",
-    nodeIds: ["molpy", "molrs", "molpack", "molnex", "molrec"],
+    nodeIds: ["atomiverse", "molpy", "molrs", "molpack", "molnex", "molrec"],
   },
   {
     label: "Workflow",

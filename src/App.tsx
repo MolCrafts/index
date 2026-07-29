@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { Cta } from "./components/Cta";
 import { EcosystemArchitecture } from "./components/EcosystemArchitecture";
@@ -7,8 +8,11 @@ import { Hero } from "./components/Hero";
 import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
+import { SEOSchema } from "./components/SEOSchema";
 import { Sponsors } from "./components/Sponsors";
+import { pathProductSlug, type ProductSlug } from "./lib/routes";
 import {
+  AtomiverseLanding,
   MolVisLanding,
   MolcfgLanding,
   MolexpLanding,
@@ -21,39 +25,40 @@ import {
   MolrsLanding,
   NotFound,
 } from "./pages";
-
-import { SEOSchema } from "./components/SEOSchema";
 import "./App.css";
+
+const PRODUCT_PAGES: Record<ProductSlug, ComponentType> = {
+  molpy: MolpyLanding,
+  molrs: MolrsLanding,
+  molpack: MolpackLanding,
+  molnex: MolnexLanding,
+  molrec: MolrecLanding,
+  molexp: MolexpLanding,
+  molq: MolqLanding,
+  molvis: MolVisLanding,
+  molcfg: MolcfgLanding,
+  mollog: MollogLanding,
+  atomiverse: AtomiverseLanding,
+};
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Reduce loading time to improve SEO and initial page load
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
+    const timer = setTimeout(() => setIsLoading(false), 400);
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle route changes and history
   useEffect(() => {
     const handleLocationChange = () => {
       setCurrentPath(window.location.pathname);
       window.scrollTo(0, 0);
     };
-
-    // Handle browser back/forward navigation
     window.addEventListener("popstate", handleLocationChange);
-
-    return () => {
-      window.removeEventListener("popstate", handleLocationChange);
-    };
+    return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
-  // Modify links to use client-side routing
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -62,32 +67,26 @@ function App() {
       if (anchor?.href?.startsWith(window.location.origin) && !anchor.target) {
         const url = new URL(anchor.href);
 
-        // Handle anchor links on the same page naturally
         if (url.pathname === window.location.pathname && url.hash) {
-          return; // Let the browser handle the scroll
+          return;
         }
 
         e.preventDefault();
-        const newPath = url.pathname;
+        const newPath = url.pathname + url.search;
 
-        if (newPath !== currentPath) {
-          // Update URL without full page reload
+        if (newPath !== currentPath + window.location.search) {
           window.history.pushState({}, "", newPath);
-
-          // Reduce page transition loading time
           setTimeout(() => {
-            setCurrentPath(newPath);
+            setCurrentPath(url.pathname);
             window.scrollTo(0, 0);
             setIsLoading(false);
-          }, 500); // Reduced from 1200ms to improve UX and SEO
+          }, 350);
         }
       }
     };
 
     document.addEventListener("click", handleLinkClick);
-    return () => {
-      document.removeEventListener("click", handleLinkClick);
-    };
+    return () => document.removeEventListener("click", handleLinkClick);
   }, [currentPath]);
 
   useEffect(() => {
@@ -101,47 +100,14 @@ function App() {
       }
     };
 
-    // Only add scroll handler for the landing page
     if (currentPath === "/") {
       window.addEventListener("scroll", handleScroll);
       handleScroll();
-
       return () => window.removeEventListener("scroll", handleScroll);
     }
   }, [currentPath]);
 
-  // Render content based on the current path
   const renderContent = () => {
-    if (currentPath.startsWith("/molpy")) {
-      return <MolpyLanding />;
-    }
-    if (currentPath.startsWith("/molrec")) {
-      return <MolrecLanding />;
-    }
-    if (currentPath.startsWith("/molvis")) {
-      return <MolVisLanding />;
-    }
-    if (currentPath.startsWith("/molcfg")) {
-      return <MolcfgLanding />;
-    }
-    if (currentPath.startsWith("/mollog")) {
-      return <MollogLanding />;
-    }
-    if (currentPath.startsWith("/molq")) {
-      return <MolqLanding />;
-    }
-    if (currentPath.startsWith("/molrs")) {
-      return <MolrsLanding />;
-    }
-    if (currentPath.startsWith("/molexp")) {
-      return <MolexpLanding />;
-    }
-    if (currentPath.startsWith("/molnex")) {
-      return <MolnexLanding />;
-    }
-    if (currentPath.startsWith("/molpack")) {
-      return <MolpackLanding />;
-    }
     if (currentPath === "/" || currentPath === "") {
       return (
         <>
@@ -155,12 +121,22 @@ function App() {
       );
     }
 
+    // Explicit 404 route (used by docs edge router fallback)
+    if (currentPath === "/404" || currentPath.startsWith("/404/")) {
+      return <NotFound />;
+    }
+
+    const slug = pathProductSlug(currentPath);
+    if (slug) {
+      const Page = PRODUCT_PAGES[slug];
+      return <Page />;
+    }
+
     return <NotFound />;
   };
 
   return (
     <>
-      {/* SEO Structured Data */}
       <SEOSchema path={currentPath} />
 
       <AnimatePresence mode="wait">
@@ -170,7 +146,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.35 }}
             className="flex flex-col min-h-screen"
           >
             <Navbar />

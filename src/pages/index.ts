@@ -8,4 +8,5 @@ export { MolrsLanding } from "./molrs/MolrsLanding";
 export { MolexpLanding } from "./molexp/MolexpLanding";
 export { MolnexLanding } from "./molnex/MolnexLanding";
 export { MolpackLanding } from "./molpack/MolpackLanding";
+export { AtomiverseLanding } from "./atomiverse/AtomiverseLanding";
 export { NotFound } from "./NotFound";

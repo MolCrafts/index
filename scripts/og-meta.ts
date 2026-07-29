@@ -17,8 +17,8 @@ export const routes: OgRoute[] = [
     kicker: "Simulate. Collaborate. Create.",
     title: "MolCrafts",
     subtitle: "Next-Gen AI Infrastructure for Molecular Science",
-    gradient: ["#03a3d7", "#8ce4ff", "#03a3d7"],
-    subGradient: ["#10b981", "#1fc0f1", "#10b981"],
+    gradient: ["#2a6744", "#55a572", "#18432b"],
+    subGradient: ["#c8841d", "#f2da9d", "#c8841d"],
     ogTitle: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
     ogDescription:
       "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
@@ -141,5 +141,17 @@ export const routes: OgRoute[] = [
     ogTitle: "MolPack – Extensible Initial-configuration Packing Package",
     ogDescription:
       "Pack first. Simulate clean. Packmol-grade engine — CLI, Rust crate, Python package. Part of MolCrafts.",
+  },
+  {
+    path: "/atomiverse",
+    slug: "atomiverse",
+    kicker: "One engine. Many methods.",
+    title: "Atomiverse",
+    subtitle: "C++ / CUDA molecular simulation engine",
+    gradient: ["#84cc16", "#4ade80", "#84cc16"],
+    subGradient: ["#a3e635", "#86efac", "#a3e635"],
+    ogTitle: "Atomiverse – C++ / CUDA molecular simulation engine",
+    ogDescription:
+      "One engine. Many methods. Classical MD, SCF/DFT, plane-wave, and AIMD on one Driver API. Part of MolCrafts.",
   },
 ];

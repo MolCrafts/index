@@ -24,6 +24,15 @@ export const ecosystemCategories: EcosystemCategory[] = [
     title: "Core",
     items: [
       {
+        title: "Atomiverse",
+        href: "/atomiverse",
+        role: "simulation engine",
+        description:
+          "C++ / CUDA molecular engine: classical MD, SCF / DFT, plane-wave methods, and ab-initio MD on one Driver API.",
+        color: PRODUCT_ACCENTS.atomiverse.chip.color,
+        bg: PRODUCT_ACCENTS.atomiverse.chip.bg,
+      },
+      {
         title: "MolPy",
         href: "/molpy",
         role: "toolkit",

@@ -1,8 +1,14 @@
+import path from "node:path";
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 
 export default defineConfig({
   plugins: [pluginReact()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   html: {
     favicon: "./src/assets/moko.svg",
     title: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",

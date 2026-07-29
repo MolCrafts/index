@@ -166,6 +166,19 @@ export const PRODUCT_ACCENTS = {
     dot: "bg-amber-500",
     chip: { color: "text-amber-500", bg: "hover:bg-amber-500/10" },
   },
+  atomiverse: {
+    kicker: "from-lime-400 via-emerald-300 to-lime-400",
+    title: "from-green-500 via-lime-400 to-emerald-500",
+    subhead: "from-lime-400 via-green-300 to-emerald-400",
+    heading: "from-lime-400 via-emerald-400 to-green-400",
+    headingSpan: "from-lime-400 to-emerald-400",
+    icon: "text-lime-500",
+    iconHover: "group-hover:text-lime-400",
+    dot: "bg-lime-500 shadow-[0_0_10px_rgba(132,204,22,0.5)]",
+    accentText: "text-lime-400",
+    glowLine: "via-lime-500/20",
+    chip: { color: "text-lime-500", bg: "hover:bg-lime-500/10" },
+  },
 } satisfies Record<string, ProductAccent>;
 
 /**

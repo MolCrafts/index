@@ -134,6 +134,22 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           url: "https://molcrafts.org",
         },
       });
+    } else if (path.startsWith("/atomiverse")) {
+      script.innerHTML = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        name: "Atomiverse",
+        applicationCategory: "Scientific",
+        programmingLanguage: ["C++", "CUDA", "Python"],
+        description:
+          "Atomiverse is a C++/CUDA molecular simulation engine spanning classical MD, SCF/DFT, plane-wave methods, and ab-initio MD on one Driver API.",
+        codeRepository: "https://github.com/MolCrafts/Atomiverse",
+        isPartOf: {
+          "@type": "SoftwareApplication",
+          name: "MolCrafts",
+          url: "https://molcrafts.org",
+        },
+      });
     }
 
     // Remove any existing schema script

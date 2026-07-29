@@ -39,6 +39,7 @@ npm run typecheck  # TypeScript type-check (tsc --noEmit)
 
 | Project | Role |
 |---------|------|
+| [Atomiverse](https://github.com/MolCrafts/Atomiverse) | C++ / CUDA molecular simulation engine (MD, SCF/DFT, AIMD) |
 | [molpy](https://github.com/MolCrafts/molpy)     | Python toolkit for molecular workflows |
 | [molrs](https://github.com/MolCrafts/molrs)     | Rust core — data structures, I/O, force fields, WASM |
 | [molpack](https://github.com/MolCrafts/molpack) | Packmol-grade molecular packing (Rust + Python) |
