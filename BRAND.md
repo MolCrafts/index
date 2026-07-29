@@ -1,21 +1,34 @@
-# MolCrafts brand contract
+# MolCrafts brand tokens
 
-Canonical table lives with the docs theme:
+**No React in the docs theme. Manual token sync only.**
 
-→ [molcrafts-zensical-theme/BRAND.md](https://github.com/MolCrafts/molcrafts-zensical-theme/blob/master/BRAND.md)
+## Source files (must be identical)
 
-## This site (index)
+| Repo | Path |
+|------|------|
+| zensical-theme | `…/templates/assets/stylesheets/tokens.css` |
+| **this repo** | `src/styles/brand-tokens.css` |
 
-Tokens: `src/styles/tailwind.css`
+Edit → copy the **entire file** to the other repo. Do not add an npm/Python dependency between the packages.
 
-- Interactive UI → forest HSL (`--primary`)
-- Display gradients → `--brand-*` (forest + sand + cyan spark)
-- Product pages → `src/lib/productAccents.ts`
+## Local mapping
+
+| File | Role |
+|------|------|
+| `src/styles/brand-tokens.css` | Shared anchors (hex + HSL channels) |
+| `src/styles/tailwind.css` | Maps anchors → shadcn-style `--primary`, `--background`, … |
+| `src/lib/productAccents.ts` | Per-product marketing accents only |
+
+## Sync checklist
+
+1. Change `brand-tokens.css` (or theme `tokens.css`)
+2. Copy to the sibling path
+3. In a monorepo checkout, theme tests assert the two files match:
+
+   ```bash
+   cd ../molcrafts-zensical-theme && uv run --extra dev tox -e py
+   ```
 
 ## Deploy
 
-Cloudflare Pages project **`index`**
-
-- Production branch: `master`
-- Domain: `molcrafts.org`
-- Source repo: `MolCrafts/index`
+Cloudflare Pages project **index** → `molcrafts.org` (`MolCrafts/index` @ `master`).

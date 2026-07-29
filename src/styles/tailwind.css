@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./brand-tokens.css";
 
 /* Re-enable v3-style class-based dark mode under v4. */
 @custom-variant dark (&:is(.dark *));
@@ -82,95 +83,86 @@
 }
 
 /*
- * MolCrafts brand contract — middle ground with molcrafts-zensical-theme.
- *
- * Shared hex anchors (theme CSS: --molcrafts-*):
- *   forest #18432b · forest-light #2a6744 · forest-dark #0e2b1b
- *   cream  #fbf6e4 · sand #f2da9d · sand-strong #c8841d
- *   slate  #101811 (docs dark paper)
- *
- * Surfaces: marketing site stays digital; docs stay print-manual cream.
- * Both share forest + sand. Cyan is display spark only (not buttons).
+ * UI token mapping onto shared brand anchors (./brand-tokens.css).
+ * Anchors: keep brand-tokens.css identical to zensical-theme tokens.css.
  */
 @layer base {
   :root {
-    --background: 45 55% 97%;
-    --foreground: 148 30% 12%;
+    --background: var(--molcrafts-cream-soft-hsl);
+    --foreground: var(--molcrafts-ink-hsl);
     --card: 0 0% 100%;
-    --card-foreground: 148 30% 12%;
+    --card-foreground: var(--molcrafts-ink-hsl);
     --popover: 0 0% 100%;
-    --popover-foreground: 148 30% 12%;
-    /* Interactive = forest family (#2a6744) */
-    --primary: 148 42% 28%;
-    --primary-foreground: 45 55% 97%;
+    --popover-foreground: var(--molcrafts-ink-hsl);
+    --primary: var(--molcrafts-forest-light-hsl);
+    --primary-foreground: var(--molcrafts-cream-soft-hsl);
     --secondary: 45 35% 93%;
-    --secondary-foreground: 148 30% 16%;
+    --secondary-foreground: var(--molcrafts-ink-hsl);
     --muted: 45 25% 93%;
-    --muted-foreground: 148 8% 38%;
+    --muted-foreground: var(--molcrafts-muted-hsl);
     --accent: 40 55% 92%;
-    --accent-foreground: 148 30% 16%;
+    --accent-foreground: var(--molcrafts-ink-hsl);
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 148 12% 86%;
     --input: 148 12% 86%;
-    --ring: 148 42% 28%;
+    --ring: var(--molcrafts-forest-light-hsl);
 
-    --success: 148 45% 28%;
-    --success-foreground: 148 45% 18%;
+    --success: var(--molcrafts-forest-light-hsl);
+    --success-foreground: var(--molcrafts-forest-hsl);
     --success-soft: 148 35% 94%;
-    --warning: 36 75% 45%;
+    --warning: var(--molcrafts-sand-strong-hsl);
     --warning-foreground: 30 70% 24%;
     --warning-soft: 40 70% 94%;
     --info: 192 70% 40%;
     --info-foreground: 192 70% 22%;
     --info-soft: 192 50% 95%;
 
-    --canvas: 45 40% 96%;
-    --radius: 0.4rem;
+    --canvas: var(--molcrafts-cream-hsl);
+    --radius: var(--molcrafts-radius);
 
     --background-rgb: 251, 246, 228;
     --accent-rgb: 31, 192, 241;
 
-    --brand-primary-from: #2a6744;
-    --brand-primary-via: #55a572;
-    --brand-primary-to: #18432b;
-    --brand-secondary-from: #c8841d;
-    --brand-secondary-via: #f2da9d;
-    --brand-secondary-to: #c8841d;
-    --brand-display-from: #2a6744;
-    --brand-display-via: #1fc0f1;
-    --brand-display-to: #2a6744;
+    --brand-primary-from: var(--molcrafts-forest-light);
+    --brand-primary-via: var(--molcrafts-forest-bright);
+    --brand-primary-to: var(--molcrafts-forest);
+    --brand-secondary-from: var(--molcrafts-sand-strong);
+    --brand-secondary-via: var(--molcrafts-sand);
+    --brand-secondary-to: var(--molcrafts-sand-strong);
+    --brand-display-from: var(--molcrafts-forest-light);
+    --brand-display-via: var(--molcrafts-cyan-spark);
+    --brand-display-to: var(--molcrafts-forest-light);
     --brand-accent-from: #60a5fa;
     --brand-accent-via: #3b82f6;
     --brand-accent-to: #1d4ed8;
-    --brand-molrec-from: #c8841d;
-    --brand-molrec-via: #f2da9d;
-    --brand-molrec-to: #c8841d;
+    --brand-molrec-from: var(--molcrafts-sand-strong);
+    --brand-molrec-via: var(--molcrafts-sand);
+    --brand-molrec-to: var(--molcrafts-sand-strong);
   }
 
   .dark {
-    /* Theme slate paper #101811 */
-    --background: 130 20% 8%;
-    --foreground: 100 20% 92%;
-    --card: 130 16% 11%;
-    --card-foreground: 100 20% 92%;
-    --popover: 130 18% 10%;
-    --popover-foreground: 100 20% 92%;
-    --primary: 148 45% 34%;
-    --primary-foreground: 45 55% 96%;
+    --background: var(--molcrafts-slate-hsl);
+    --foreground: var(--molcrafts-fg-dark-hsl);
+    --card: var(--molcrafts-paper-dark-hsl);
+    --card-foreground: var(--molcrafts-fg-dark-hsl);
+    --popover: var(--molcrafts-slate-hsl);
+    --popover-foreground: var(--molcrafts-fg-dark-hsl);
+    --primary: var(--molcrafts-forest-mid-hsl);
+    --primary-foreground: var(--molcrafts-cream-soft-hsl);
     --secondary: 130 12% 16%;
-    --secondary-foreground: 100 15% 94%;
+    --secondary-foreground: var(--molcrafts-fg-dark-hsl);
     --muted: 130 10% 15%;
-    --muted-foreground: 120 8% 62%;
+    --muted-foreground: var(--molcrafts-muted-dark-hsl);
     --accent: 130 12% 15%;
-    --accent-foreground: 40 50% 88%;
+    --accent-foreground: var(--molcrafts-sand-hsl);
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 130 12% 18%;
-    --input: 130 12% 18%;
-    --ring: 148 40% 42%;
+    --border: var(--molcrafts-border-dark-hsl);
+    --input: var(--molcrafts-border-dark-hsl);
+    --ring: var(--molcrafts-forest-mid-hsl);
 
-    --success: 148 40% 42%;
+    --success: var(--molcrafts-forest-mid-hsl);
     --success-foreground: 148 40% 88%;
     --success-soft: 148 30% 14%;
     --warning: 38 70% 52%;
@@ -185,15 +177,15 @@
     --background-rgb: 16, 24, 17;
     --accent-rgb: 142, 218, 157;
 
-    --brand-primary-from: #55a572;
-    --brand-primary-via: #8ecfa0;
-    --brand-primary-to: #2f7d50;
-    --brand-secondary-from: #f2da9d;
+    --brand-primary-from: var(--molcrafts-forest-bright);
+    --brand-primary-via: var(--molcrafts-forest-soft);
+    --brand-primary-to: var(--molcrafts-forest-mid);
+    --brand-secondary-from: var(--molcrafts-sand);
     --brand-secondary-via: #f2c27c;
-    --brand-secondary-to: #f2da9d;
-    --brand-display-from: #55a572;
-    --brand-display-via: #8ce4ff;
-    --brand-display-to: #55a572;
+    --brand-secondary-to: var(--molcrafts-sand);
+    --brand-display-from: var(--molcrafts-forest-bright);
+    --brand-display-via: var(--molcrafts-cyan-spark-soft);
+    --brand-display-to: var(--molcrafts-forest-bright);
   }
 }
 
