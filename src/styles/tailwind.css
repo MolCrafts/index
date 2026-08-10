@@ -53,21 +53,34 @@
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-gradient-x: gradient-x 4s linear infinite;
+  /* Wordmark / brand text sweep — keep snappy (was 4s, felt sluggish). */
+  --animate-gradient-x: gradient-x 1.75s linear infinite;
 
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
   }
 
   @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
 
   @keyframes gradient-x {
-    0% { background-position: 200% center; }
-    100% { background-position: -200% center; }
+    0% {
+      background-position: 200% center;
+    }
+    100% {
+      background-position: -200% center;
+    }
   }
 }
 
@@ -122,26 +135,36 @@
     --radius: var(--molcrafts-radius);
 
     --background-rgb: 251, 246, 228;
-    --accent-rgb: 31, 192, 241;
+    /*
+     * Display accent — site cyan (not Tailwind blues).
+     * #03a3d7 is the wordmark/display cyan; #1fc0f1 is spark in brand-tokens.
+     */
+    --accent-rgb: 3, 163, 215;
 
-    --brand-primary-from: var(--molcrafts-forest-light);
-    --brand-primary-via: var(--molcrafts-forest-bright);
-    --brand-primary-to: var(--molcrafts-forest);
+    /*
+     * Brand ramps are identity — same in light and dark (toggle does not rewrite).
+     * Wordmark (gradient-text-primary): brand cyan ramp + sweep.
+     *   #03a3d7 → #8ce4ff → #03a3d7  (historic index contract, not #3b82f6)
+     */
+    --brand-primary-from: #03a3d7;
+    --brand-primary-via: #8ce4ff;
+    --brand-primary-to: #03a3d7;
     --brand-secondary-from: var(--molcrafts-sand-strong);
     --brand-secondary-via: var(--molcrafts-sand);
     --brand-secondary-to: var(--molcrafts-sand-strong);
     --brand-display-from: var(--molcrafts-forest-light);
     --brand-display-via: var(--molcrafts-cyan-spark);
     --brand-display-to: var(--molcrafts-forest-light);
-    --brand-accent-from: #60a5fa;
-    --brand-accent-via: #3b82f6;
-    --brand-accent-to: #1d4ed8;
+    --brand-accent-from: #03a3d7;
+    --brand-accent-via: #8ce4ff;
+    --brand-accent-to: #03a3d7;
     --brand-molrec-from: var(--molcrafts-sand-strong);
     --brand-molrec-via: var(--molcrafts-sand);
     --brand-molrec-to: var(--molcrafts-sand-strong);
   }
 
   .dark {
+    /* Surfaces only — brand ramps / accent-rgb inherit from :root. */
     --background: var(--molcrafts-slate-hsl);
     --foreground: var(--molcrafts-fg-dark-hsl);
     --card: var(--molcrafts-paper-dark-hsl);
@@ -173,19 +196,7 @@
     --info-soft: 192 35% 16%;
 
     --canvas: 130 18% 7%;
-
     --background-rgb: 16, 24, 17;
-    --accent-rgb: 142, 218, 157;
-
-    --brand-primary-from: var(--molcrafts-forest-bright);
-    --brand-primary-via: var(--molcrafts-forest-soft);
-    --brand-primary-to: var(--molcrafts-forest-mid);
-    --brand-secondary-from: var(--molcrafts-sand);
-    --brand-secondary-via: #f2c27c;
-    --brand-secondary-to: var(--molcrafts-sand);
-    --brand-display-from: var(--molcrafts-forest-bright);
-    --brand-display-via: var(--molcrafts-cyan-spark-soft);
-    --brand-display-to: var(--molcrafts-forest-bright);
   }
 }
 

@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { slideUp, staggerContainer } from "../lib/animations";
+import {
+  sectionBandRow,
+  sectionContainer,
+  sectionLabel,
+  sectionLabelRule,
+  sectionShellBand,
+} from "../lib/sectionStyles";
 import { cn } from "../lib/utils";
 
 // Brand display accent — theme-aware via the --accent-rgb token (see tailwind.css).
@@ -9,8 +16,8 @@ const accentAlpha = (alpha: number) => `rgba(var(--accent-rgb), ${alpha})`;
 
 export const Cta = () => {
   return (
-    <section id="cta" className="py-16 md:py-20 relative overflow-hidden">
-      <div className="container mx-auto px-4 lg:px-8 max-w-5xl relative z-10">
+    <section id="cta" className={sectionShellBand}>
+      <div className={sectionContainer}>
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -18,49 +25,51 @@ export const Cta = () => {
           viewport={{ once: true, margin: "-80px" }}
           className="flex flex-col gap-3"
         >
-          <div className="grid md:grid-cols-2 md:items-end gap-6">
-            <motion.div variants={slideUp} className="flex flex-col gap-3 shrink-0">
-              <div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm">
-                <div className="w-12 h-[1px] bg-primary opacity-50" />
-                Explore
+          <div className={sectionBandRow}>
+            <motion.div variants={slideUp} className="flex shrink-0 flex-col gap-3">
+              <div className={sectionLabel}>
+                <div className={sectionLabelRule} aria-hidden="true" />
+                Start here
               </div>
-              <p className="text-xl md:text-2xl text-foreground font-light leading-snug">
-                Wander in, use what you need.
+              <p className="text-xl font-light leading-snug text-foreground md:text-2xl">
+                Pick the package you need and install it.
               </p>
             </motion.div>
 
+            {/* Was the seventh link to the bare GitHub org on one page. The positioning
+                doc ranks docs above the org list as a conversion action. */}
             <motion.a
-              href="https://github.com/MolCrafts"
+              href="https://docs.molcrafts.org/"
               target="_blank"
               rel="noreferrer noopener"
               variants={slideUp}
-              className="group flex items-center gap-4 shrink-0 no-underline md:justify-self-end"
+              className="group flex shrink-0 items-center gap-4 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:justify-self-end"
             >
               <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-105"
                 style={{
                   backgroundColor: accentAlpha(0.12),
                   boxShadow: `0 0 24px ${accentAlpha(0.19)}`,
                 }}
               >
-                <Github className="w-5 h-5" style={{ color: ACCENT }} />
+                <BookOpen className="h-5 w-5" style={{ color: ACCENT }} />
               </div>
 
               <div className="flex flex-col">
                 <span
-                  className="text-[10px] font-bold tracking-[0.35em] uppercase"
+                  className="text-[10px] font-bold uppercase tracking-[0.35em]"
                   style={{ color: ACCENT }}
                 >
-                  github.com/MolCrafts
+                  docs.molcrafts.org
                 </span>
                 <span className="text-base font-light text-foreground transition-colors group-hover:text-primary">
-                  Browse all repos
+                  Read the docs
                 </span>
               </div>
 
               <ArrowUpRight
                 className={cn(
-                  "w-4 h-4 ml-1 transition-transform",
+                  "ml-1 h-4 w-4 transition-transform",
                   "group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
                 )}
                 style={{ color: ACCENT }}
@@ -68,16 +77,16 @@ export const Cta = () => {
             </motion.a>
           </div>
 
-          <motion.div variants={slideUp} className="hidden md:flex items-center gap-2">
+          <motion.div variants={slideUp} className="hidden items-center gap-2 md:flex">
             <div
-              className="flex-1 h-px"
+              className="h-px flex-1"
               style={{
                 background: `linear-gradient(90deg, transparent 0%, ${accentAlpha(0.19)} 30%, ${accentAlpha(0.8)} 100%)`,
                 boxShadow: `0 0 12px ${accentAlpha(0.5)}, 0 0 24px ${accentAlpha(0.25)}`,
               }}
             />
             <div
-              className="w-1.5 h-1.5 rounded-full shrink-0"
+              className="h-1.5 w-1.5 shrink-0 rounded-full"
               style={{
                 backgroundColor: ACCENT,
                 boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${accentAlpha(0.5)}`,

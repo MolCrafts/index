@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef } from "react";
-import { DataIcon, IntegrationIcon, WorkflowIcon } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -69,7 +70,7 @@ export const MolVisLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
             >
-              Shape What You See.
+              See it before you trust it.
             </motion.h3>
 
             <motion.h1
@@ -97,7 +98,7 @@ export const MolVisLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Interactive molecular visualization toolkit
+              Interactive 3D molecular visualization for web, VS Code, and Jupyter
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -123,51 +124,34 @@ export const MolVisLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Visual <span className={ACCENT.headingSpanText}>Excellence</span>
+              What you can do in the <span className={ACCENT.headingSpanText}>viewer</span>
             </motion.h2>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {[
+          <ProductCapabilities
+            accentText={ACCENT.headingSpanText}
+            items={[
               {
-                icon: <WorkflowIcon className="w-8 h-8" />,
-                title: "Browser, Editor, and Notebook Ready",
+                title: "Browser, editor, and notebook",
                 description:
-                  "MolVis runs in the browser, your editor, and notebooks, with hardware-accelerated 3D rendering and a fast molecular data core.",
+                  "Runs in the browser, your editor, and notebooks, with hardware-accelerated 3D rendering over a fast molecular data core.",
               },
               {
-                icon: <DataIcon className="w-8 h-8" />,
-                title: "Interactive Rendering Modes",
+                title: "Interactive rendering",
                 description:
-                  "View, select, edit, manipulate, measure, and scrub trajectories through one interactive 3D graphics toolkit.",
+                  "View, select, edit, manipulate, measure, and scrub trajectories through one interactive 3D toolkit.",
               },
               {
-                icon: <IntegrationIcon className="w-8 h-8" />,
-                title: "Multiple Interfaces",
+                title: "Multiple interfaces",
                 description:
-                  "The same codebase ships a core package, a web app, a notebook widget, and an editor extension with a modular modifier pipeline.",
+                  "One codebase ships a core package, a web app, a notebook widget, and an editor extension with a modular modifier pipeline.",
               },
-            ].map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+            ]}
+          />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molvis" />
     </div>
   );
 };

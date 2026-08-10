@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef } from "react";
-import { DataIcon, IntegrationIcon, WorkflowIcon } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -110,7 +111,7 @@ export const MolrecLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              A Backend-Neutral Record Specification for Atomistic Data
+              Backend-neutral record contract for atomistic data
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -137,49 +138,30 @@ export const MolrecLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Unified <span className={ACCENT.headingSpanText}>Infrastructure</span>
+              One format, any <span className={ACCENT.headingSpanText}>backend</span>
             </motion.h2>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {[
+          <ProductCapabilities
+            accentText={ACCENT.headingSpanText}
+            items={[
               {
-                icon: <DataIcon className="w-8 h-8" />,
-                title: "Backend-Neutral Storage",
+                title: "Backend-neutral storage",
                 description:
                   "The spec defines semantics, not storage. Any array store or database backend can implement the same record model.",
               },
               {
-                icon: <WorkflowIcon className="w-8 h-8" />,
-                title: "Language-Agnostic Semantics",
+                title: "Language-agnostic semantics",
                 description:
-                  "A single semantic layer lets one tool interpret another tool's atomistic records without guessing what arrays or dataset names mean.",
+                  "One semantic layer lets a tool interpret another tool's atomistic records without guessing what arrays or dataset names mean.",
               },
               {
-                icon: <IntegrationIcon className="w-8 h-8" />,
-                title: "First-Class Collections & Grids",
+                title: "Collections and grids",
                 description:
-                  "Frames can hold atoms, bonds, angles, beads, fragments, and volumetric grids as first-class record elements.",
+                  "Frames hold atoms, bonds, angles, beads, fragments, and volumetric grids as first-class record elements.",
               },
-            ].map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+            ]}
+          />
         </motion.div>
       </section>
 
@@ -197,7 +179,7 @@ export const MolrecLanding = () => {
                 viewport={{ once: true }}
               >
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 font-['Playfair_Display',serif] italic text-zinc-100">
-                  The Atomistic Data Backbone.
+                  One record shape every tool can read.
                 </h2>
                 <p className="text-lg text-zinc-400 mb-8 leading-relaxed font-light">
                   MolRec defines what a molecular record means, not how it must be stored. From
@@ -213,7 +195,7 @@ export const MolrecLanding = () => {
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-3">
                       <div className={cn("w-1.5 h-1.5 rounded-full", ACCENT.dot)} />
-                      <span className="text-zinc-300 font-medium text-sm tracking-wide lowercase">
+                      <span className="text-zinc-300 font-medium text-sm tracking-wide">
                         {item}
                       </span>
                     </li>
@@ -253,6 +235,8 @@ export const MolrecLanding = () => {
           </div>
         </div>
       </section>
+
+      <ProductLinks slug="molrec" />
     </div>
   );
 };

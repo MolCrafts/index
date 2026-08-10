@@ -9,6 +9,7 @@ import {
   SimulationIcon,
   WorkflowIcon,
 } from "../../components/FeatureIcons";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -41,7 +42,8 @@ const FEATURES = [
   {
     icon: <WorkflowIcon className="w-8 h-8" />,
     title: "Ab-initio MD",
-    description: "Molecular dynamics driven by SCF forces — one Component tree for classical and AIMD.",
+    description:
+      "Molecular dynamics driven by SCF forces — one Component tree for classical and AIMD.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
@@ -166,7 +168,7 @@ export const AtomiverseLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              C++ / CUDA molecular simulation engine
+              Simulation engine for molecular dynamics and electronic structure
             </motion.h2>
 
             <motion.p
@@ -314,6 +316,8 @@ export const AtomiverseLanding = () => {
           </p>
         </motion.div>
       </section>
+
+      <ProductLinks slug="atomiverse" />
     </div>
   );
 };

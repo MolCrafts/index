@@ -3,6 +3,8 @@ import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { DataIcon, IntegrationIcon, WorkflowIcon } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -130,7 +132,7 @@ export const MolrsLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              A molecular modeling toolkit with Rust and Python interfaces
+              Rust core for molecular modeling — data structures, I/O, and compute
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -157,16 +159,15 @@ export const MolrsLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              One core, many{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                surfaces
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
               MolRs is a multi-interface core — Rust crate, Python bindings, npm package, and C FFI
@@ -314,28 +315,11 @@ export const MolrsLanding = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molrs" />
     </div>
   );
 };

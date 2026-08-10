@@ -10,6 +10,8 @@ import {
   SimulationIcon,
   WorkflowIcon,
 } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -24,8 +26,7 @@ const FEATURES = [
   {
     icon: <WorkflowIcon className="w-8 h-8" />,
     title: "Universal Submitor",
-    description:
-      "One Submitor API for local, slurm, pbs, and lsf, simplifying hybrid workloads out of the box.",
+    description: "One submission API for local, SLURM, PBS, and LSF.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -104,39 +105,6 @@ eval_job = slurm.submit_job(
     argv=["python", "eval.py"],
     after_success=[train.job_id],
 )`,
-  },
-  {
-    title: "Configuration Profiles",
-    filename: "config.toml",
-    description:
-      "Use ~/.molq/config.toml to define shared HPC environment configurations independently from local application code.",
-    code: `[profiles.gpu]
-scheduler = "slurm"
-cluster_name = "hpc"
-
-[profiles.gpu.defaults.resources]
-cpu_count = 8
-memory = "34359738368"
-
-[profiles.gpu.defaults.scheduling]
-queue = "gpu"
-
-[profiles.gpu.retry]
-max_attempts = 3`,
-  },
-  {
-    title: "First-Class CLI",
-    filename: "cli.sh",
-    description:
-      "Monitor, submit, inspect or clean up queued environments with an extensive command line interface.",
-    code: `# Submit utilizing a preconfigured profile
-molq submit slurm --profile gpu python train.py
-
-# Daemon reconciliation process
-molq daemon slurm --profile gpu --once
-
-# Prune executed queue data safely
-molq cleanup slurm --profile gpu --dry-run`,
   },
 ];
 
@@ -221,7 +189,7 @@ export const MolqLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Unified Job Queue for Python Workloads
+              One submission API for local, SLURM, PBS, and LSF
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -248,16 +216,15 @@ export const MolqLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              Submit it{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                anywhere
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
               These examples illustrate how MolQ maintains an identical API whether queueing jobs
@@ -404,33 +371,16 @@ export const MolqLanding = () => {
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              The API above shows how the toolkit feels to use. The features below show how MolQ
-              handles all the heavy lifting of job scheduling, retry mechanics, and telemetry.
+              Scheduling, retry mechanics, and telemetry — the parts you would otherwise rewrite per
+              cluster.
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molq" />
     </div>
   );
 };

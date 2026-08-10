@@ -10,6 +10,8 @@ import {
   SimulationIcon,
   WorkflowIcon,
 } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -58,66 +60,32 @@ const FEATURES = [
   },
 ];
 
+/**
+ * Illustrative only — the shape of the workflow, not a tutorial. Exact signatures live in
+ * the docs, which is also the only place they can be kept correct: an earlier version of
+ * this page shipped calls to APIs that do not exist in molpy.
+ */
 const API_SNIPPETS = [
   {
-    title: "Structure → Engine Deck",
+    title: "Structure to engine deck",
     filename: "structure.py",
-    description: "Parse a structure, assign atom types, and export a ready-to-run engine deck.",
+    description: "Parse a structure, assign types, and export something an engine can run.",
     code: `import molpy as mp
 
-mol   = mp.parser.parse_molecule("CCO")          # parse from notation
-ff    = mp.io.read_xml_forcefield("oplsaa.xml")
-typed = mp.typifier.OplsAtomisticTypifier(ff).typify(mol)
-
-mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
+mol   = mp.parse("...")        # a structure, from notation or a file
+typed = mp.typify(mol, ff)     # assign atom types from a force field
+mp.io.write(typed, "output/")  # engine-ready deck`,
   },
   {
-    title: "Build from Notation",
-    filename: "build.py",
-    description: "Build a chain from a notation string, type it, and export.",
-    code: `import molpy as mp
-from molpy.builder import polymer
-
-# chain, degree of polymerization = 10
-chain = polymer("{[<]CCOCC[>]}|10|")
-
-ff    = mp.io.read_xml_forcefield("forcefield.xml")
-typed = mp.typifier.OplsAtomisticTypifier(ff).typify(chain)
-mp.io.write_lammps_system("output/", typed.to_frame(), ff)`,
-  },
-  {
-    title: "Sampled System",
-    filename: "system.py",
-    description: "Sample a distribution and pack the result into a periodic box.",
-    code: `import numpy as np
-import molpy as mp
-from molpy.builder import polymer_system
-from molpy.pack import Molpack, InsideBoxConstraint
-
-# sample a disperse population, seeded for reproducibility
-chains = polymer_system(
-    "{[<]CCOCC[>]}|schulz_zimm(1500,3000)||5e5|",
-    random_seed=42,
-)
-
-packer = Molpack(workdir="peo_bulk")
-box = InsideBoxConstraint(length=np.full(3, 80.0), origin=np.zeros(3))
-for chain in chains:
-    packer.add_target(chain.to_frame(), number=1, constraint=box)
-
-packed = packer.optimize(max_steps=10000, seed=42)`,
-  },
-  {
-    title: "Inspectable Force Field",
-    filename: "forcefield.py",
-    description: "Force fields stay as Python data — query types and parameters before export.",
+    title: "Inspect before you export",
+    filename: "inspect.py",
+    description: "Force fields stay ordinary Python data — check them before anything runs.",
     code: `import molpy as mp
 
-ff = mp.io.read_xml_forcefield("oplsaa.xml")
-bond_style = ff.get_style_by_name("harmonic", mp.BondStyle)
-ct_ct = bond_style.get_type_by_name("CT-CT", mp.BondType)
+ff = mp.io.read_forcefield("...")
 
-print(ct_ct["k0"], ct_ct["r0"])`,
+# parameters are queryable in Python, not buried in an opaque blob
+print(ff.styles)`,
   },
 ];
 
@@ -174,7 +142,7 @@ export const MolpyLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
             >
-              Built from Blocks.
+              One structure, every engine.
             </motion.h3>
 
             <motion.h1
@@ -202,7 +170,7 @@ export const MolpyLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              A programmable Python toolkit for molecular modelling
+              A programmable toolkit for molecular simulation workflows
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -229,16 +197,15 @@ export const MolpyLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              From structure to{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                deck
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
               Topology, force fields, frames, and engine I/O — explicit and composable in Python.
@@ -377,28 +344,11 @@ export const MolpyLanding = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molpy" />
     </div>
   );
 };

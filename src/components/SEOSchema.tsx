@@ -22,7 +22,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             name: "MolCrafts",
             url: "https://molcrafts.org",
             description:
-              "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
+              "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
             sameAs: ["https://github.com/MolCrafts"],
           },
           {
@@ -41,9 +41,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebSite",
             "@id": "https://molcrafts.org/#website",
             url: "https://molcrafts.org",
-            name: "MolCrafts – AI Infrastructure for Molecular Science",
+            name: "MolCrafts – AI-assisted infra for molecular science",
             description:
-              "MolCrafts is a next-generation open foundation for collaborative molecular science: methods, data, workflows, and AI agents on common ground.",
+              "MolCrafts builds AI-assisted infra for molecular science. Packages install independently and share one record format, so results stay reusable across people, tools, and agents.",
             publisher: {
               "@id": "https://molcrafts.org/#organization",
             },
@@ -52,9 +52,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebPage",
             "@id": "https://molcrafts.org/#webpage",
             url: "https://molcrafts.org",
-            name: "MolCrafts – AI Infrastructure for Molecular Science",
+            name: "MolCrafts – AI-assisted infra for molecular science",
             description:
-              "MolCrafts is a next-generation open foundation for collaborative molecular science: methods, data, workflows, and AI agents on common ground.",
+              "MolCrafts builds AI-assisted infra for molecular science. Packages install independently and share one record format, so results stay reusable across people, tools, and agents.",
             isPartOf: {
               "@id": "https://molcrafts.org/#website",
             },
@@ -73,7 +73,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         applicationCategory: "Scientific",
         programmingLanguage: "Python",
         description:
-          "MolPy is a programmable Python toolkit for building, editing, typing, and exporting molecular systems.",
+          "Programmable toolkit for molecular simulation workflows — parse, build, edit, type, analyze, pack, and I/O.",
         codeRepository: "https://github.com/MolCrafts/molpy",
         isPartOf: {
           "@type": "SoftwareApplication",
@@ -89,7 +89,8 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         name: "MolRec",
         applicationCategory: "Scientific Software",
         operatingSystem: "Cross-platform",
-        description: "MolRec is a backend-neutral record specification for atomistic data.",
+        description:
+          "Backend-neutral record contract for atomistic data — frames, trajectories, observables, status, and metadata.",
         codeRepository: "https://github.com/MolCrafts/molrec",
         programmingLanguage: ["Markdown", "Text"],
         license: "BSD-3-Clause",
@@ -108,7 +109,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         applicationCategory: "Scientific",
         programmingLanguage: "JavaScript",
         description:
-          "MolVis is an interactive molecular visualization toolkit for the web, desktop, and Jupyter notebooks.",
+          "Interactive 3D molecular visualization for the web, VS Code, and Jupyter — inspect, edit, measure, play trajectories.",
         codeRepository: "https://github.com/MolCrafts/molvis",
         isPartOf: {
           "@type": "SoftwareApplication",
@@ -125,7 +126,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         applicationCategory: "Scientific",
         programmingLanguage: ["Rust", "Python"],
         description:
-          "MolPack is a molecular packing engine in pure Rust, with a CLI binary and Python bindings for building initial configurations for molecular dynamics simulations.",
+          "Packs molecules into a simulation box, from a CLI, Rust, or Python — with a native Python API and opt-in parallelism.",
         codeRepository: "https://github.com/MolCrafts/molpack",
         license: "BSD-3-Clause",
         isPartOf: {
@@ -142,7 +143,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
         applicationCategory: "Scientific",
         programmingLanguage: ["C++", "CUDA", "Python"],
         description:
-          "Atomiverse is a C++/CUDA molecular simulation engine spanning classical MD, SCF/DFT, plane-wave methods, and ab-initio MD on one Driver API.",
+          "Simulation engine for molecular dynamics and electronic structure, on CPU and GPU.",
         codeRepository: "https://github.com/MolCrafts/Atomiverse",
         isPartOf: {
           "@type": "SoftwareApplication",
@@ -158,7 +159,12 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
       existingScript.remove();
     }
 
-    // Add the new schema
+    // Routes without a branch above leave innerHTML empty. Appending that emits
+    // <script type="application/ld+json"></script>, which is a parse error for validators.
+    if (!script.innerHTML) {
+      return;
+    }
+
     document.head.appendChild(script);
 
     return () => {

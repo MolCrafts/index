@@ -3,6 +3,8 @@ import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { DataIcon, IntegrationIcon, WorkflowIcon } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -18,19 +20,19 @@ const FEATURES = [
     icon: <WorkflowIcon className="w-8 h-8" />,
     title: "Execution and Representation",
     description:
-      "`molix` owns the training and evaluation lifecycle — trainer, hooks, and data pipeline — while `molrep` owns reusable equivariant representation modules.",
+      "One package owns the training and evaluation lifecycle — trainer, hooks, and data pipeline. Another owns reusable representation modules.",
   },
   {
     icon: <DataIcon className="w-8 h-8" />,
     title: "Composition and Potentials",
     description:
-      "`molpot` turns learned representations into compositional, physics-aware outputs: energy, force, and stress derivation alongside classical potential terms.",
+      "Learned representations become compositional, physics-aware outputs: energy, force, and stress derivation alongside classical potential terms.",
   },
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
     title: "Reference Models",
     description:
-      "`molzoo` assembles reference encoder families from the shared stack without collapsing the package boundaries.",
+      "Reference encoder families are assembled from the shared stack, without collapsing the boundaries between packages.",
   },
 ];
 
@@ -39,7 +41,7 @@ const API_SNIPPETS = [
     title: "Execution Layer",
     filename: "train.py",
     description:
-      "`molix.Trainer` wraps any nn.Module with a hook-driven training loop. You supply the model, the loss, and an optimizer factory.",
+      "The trainer wraps any model with a hook-driven training loop. You supply the model, the loss, and an optimizer factory.",
     code: `import torch
 from molix.core.trainer import Trainer
 
@@ -57,25 +59,13 @@ print(state["train/loss"])`,
     title: "Reference Models",
     filename: "encoders.py",
     description:
-      "`molzoo` ships reference encoder families assembled from shared representation blocks. Each shares one interface and writes per-layer node features into the batch.",
+      "Reference encoder families ship assembled from shared representation blocks. Each shares one interface and writes per-layer node features into the batch.",
     code: `# Every reference family in molzoo shares one encoder interface:
 #   encoder(batch) -> batch with per-layer node features.
 # Pick a family, then drop it into the Trainer above —
 # swapping the architecture never touches the training loop.
 
 batch = encoder(batch)   # per-layer node features (N, layers, dim)`,
-  },
-  {
-    title: "Built-in Datasets",
-    filename: "data.py",
-    description:
-      "Built-in datasets share one packed, mmap-friendly cache. Batches arrive as nested TensorDicts split into atoms / edges / graphs.",
-    code: `# Built-in datasets share one packed, mmap-friendly cache.
-# Batches are nested TensorDicts with a fixed namespace layout.
-batch["atoms", "Z"]           # atomic numbers   (N,)
-batch["atoms", "pos"]         # positions        (N, 3)
-batch["edges", "edge_index"]  # source -> target (E, 2)
-batch["graphs", "energy"]     # per-graph target (B,)`,
   },
 ];
 
@@ -160,7 +150,7 @@ export const MolnexLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              A molecular ML framework organized as four cooperating packages
+              Machine-learning framework for interatomic potentials
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -187,16 +177,15 @@ export const MolnexLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              Swap a piece, keep the{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                rest
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
               The API surface is intentionally layered. The goal is reusable training
@@ -345,28 +334,11 @@ export const MolnexLanding = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molnex" />
     </div>
   );
 };

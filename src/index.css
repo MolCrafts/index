@@ -33,7 +33,7 @@ body::before {
   pointer-events: none;
 }
 
-/* HeroCards background shadow */
+/* Hero background shadow */
 .shadow {
   position: absolute;
   background: hsl(var(--primary) / 0%);
@@ -254,23 +254,147 @@ section::before {
   @apply bg-gradient-to-br from-white via-zinc-200 to-zinc-500 text-transparent bg-clip-text;
 }
 
+/*
+ * Brand text gradients — sweep is defined here (not only @theme) so it
+ * always resolves; dark toggle must not redefine --brand-* ramps.
+ */
+@keyframes brand-gradient-x {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
 .gradient-text-primary,
 .gradient-text-secondary,
 .gradient-text-display,
 .gradient-text-molrec {
   background-clip: text;
   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
   background-size: 200% auto;
-  animation: var(--animate-gradient-x);
+  /* Slower sweep reads more premium than a fast loop. */
+  animation: brand-gradient-x 4.5s linear infinite;
+}
+
+/* Soft atmospheric field behind the page (brand cyan, layered depth). */
+.page-atmosphere {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+      ellipse 90% 55% at 50% -12%,
+      rgba(var(--accent-rgb), 0.16),
+      transparent 58%
+    ), radial-gradient(ellipse 55% 45% at 100% 35%, rgba(var(--accent-rgb), 0.08), transparent 52%),
+    radial-gradient(ellipse 45% 40% at 0% 65%, hsl(var(--primary) / 10%), transparent 48%),
+    radial-gradient(ellipse 40% 30% at 70% 100%, rgba(var(--accent-rgb), 0.05), transparent 50%);
+}
+
+.dark .page-atmosphere {
+  background: radial-gradient(
+      ellipse 90% 55% at 50% -12%,
+      rgba(var(--accent-rgb), 0.14),
+      transparent 58%
+    ), radial-gradient(ellipse 55% 45% at 100% 28%, rgba(52, 211, 153, 0.06), transparent 52%),
+    radial-gradient(ellipse 50% 40% at 0% 75%, rgba(var(--accent-rgb), 0.08), transparent 48%),
+    radial-gradient(ellipse 40% 30% at 60% 100%, rgba(var(--accent-rgb), 0.05), transparent 50%);
+}
+
+/* Label rule with a soft brand tip — used on section eyebrows. */
+.section-label-rule {
+  height: 1px;
+  width: 3.5rem;
+  flex-shrink: 0;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary) / 95%),
+    hsl(var(--primary) / 40%),
+    transparent
+  );
+  box-shadow: 0 0 14px hsl(var(--primary) / 40%), 0 0 28px hsl(var(--primary) / 18%);
+}
+
+/* Hero / band primary link — glass chip with cyan edge light. */
+.premium-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  /* enables group-hover on child icons when class is composed with Tailwind `group` */
+  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  background: rgba(var(--accent-rgb), 0.06);
+  padding: 0.7rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #03a3d7;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.06) inset, 0 8px 28px -12px
+    rgba(var(--accent-rgb), 0.35);
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s
+    ease;
+}
+
+.premium-link:hover {
+  border-color: rgba(var(--accent-rgb), 0.5);
+  background: rgba(var(--accent-rgb), 0.12);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.1) inset, 0 12px 36px -10px
+    rgba(var(--accent-rgb), 0.45);
+  transform: translateY(-1px);
+}
+
+.premium-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px rgba(var(--accent-rgb), 0.55);
+}
+
+/* Ghost companion next to premium-link (e.g. GitHub). */
+.premium-link-ghost {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--border) / 70%);
+  background: hsl(var(--background) / 40%);
+  padding: 0.7rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #03a3d7;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.premium-link-ghost:hover {
+  border-color: rgba(var(--accent-rgb), 0.35);
+  background: rgba(var(--accent-rgb), 0.06);
+  transform: translateY(-1px);
+}
+
+.premium-link-ghost:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px rgba(var(--accent-rgb), 0.55);
 }
 
 .gradient-text-primary {
+  /* MolCrafts wordmark: brand cyan ramp (#03a3d7 ↔ #8ce4ff) + sweep */
   background-image: linear-gradient(
-    to right,
-    var(--brand-primary-from),
-    var(--brand-primary-via),
-    var(--brand-primary-to)
+    90deg,
+    var(--brand-primary-from) 0%,
+    var(--brand-primary-via) 40%,
+    var(--brand-primary-to) 70%,
+    var(--brand-primary-from) 100%
   );
 }
 
@@ -440,37 +564,42 @@ section::before {
   width: 400px;
   height: 400px;
   filter: blur(80px);
-  opacity: 0.06;
+  opacity: 0.1;
   z-index: -2;
   border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
-  background: hsl(var(--primary) / 50%);
+  background: hsl(var(--primary) / 55%);
   animation: molecule-morph 20s ease-in-out infinite alternate;
   transform-origin: center center;
 }
 
 .dark .molecule-blob {
-  opacity: 0.04;
+  opacity: 0.08;
   background: #34d399;
 }
 
 .molecular-glow {
   position: absolute;
   filter: blur(60px);
-  opacity: 0.04;
+  opacity: 0.08;
   z-index: -2;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
-    hsl(var(--primary) / 60%),
-    hsl(var(--primary) / 30%) 40%,
+    rgba(var(--accent-rgb), 0.55),
+    rgba(var(--accent-rgb), 0.22) 40%,
     transparent 70%
   );
   animation: molecular-pulse 15s ease-in-out infinite alternate;
 }
 
 .dark .molecular-glow {
-  opacity: 0.03;
-  background: radial-gradient(circle at center, #34d399, #10b981 40%, transparent 70%);
+  opacity: 0.07;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--accent-rgb), 0.5),
+    #10b981 45%,
+    transparent 70%
+  );
 }
 
 @keyframes molecule-morph {
@@ -641,6 +770,11 @@ canvas * {
   .gradient-text-display,
   .gradient-text-molrec {
     animation: none !important;
+  }
+
+  .premium-link,
+  .premium-link-ghost {
+    transition: none !important;
   }
 
   html {

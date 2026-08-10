@@ -10,6 +10,8 @@ import {
   SimulationIcon,
   WorkflowIcon,
 } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -90,34 +92,6 @@ cfg = loader.load()
 meta = cfg.meta("db.port")
 print(meta)
 # {"source": "cli", "history": ("defaults", "cli")}`,
-  },
-  {
-    title: "Variable Interpolation",
-    filename: "interpolation.py",
-    description:
-      "Link configuration paths dynamically or inject system environment variables into nested properties.",
-    code: `from molcfg import ConfigLoader, DictSource
-
-cfg = ConfigLoader([
-    DictSource({
-        "server": {"host": "127.0.0.1", "port": 8080},
-        "url": "http://\${server.host}:\${server.port}/api",
-        "secret": "\${env:API_SECRET}"
-    })
-]).load()
-
-print(cfg["url"])
-# "http://127.0.0.1:8080/api"`,
-  },
-  {
-    title: "One Dependency",
-    filename: "install.sh",
-    description:
-      "Keep your docker images lean and your environment clean. A single runtime dependency (pyyaml) — nothing else.",
-    code: `# Installation is as simple as pip installing
-pip install molcrafts-molcfg
-
-# Only one runtime dependency: pyyaml`,
   },
 ];
 
@@ -202,7 +176,7 @@ export const MolcfgLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Layered Configuration Library for Python
+              Layered configuration — loading, merging, validation, source tracking
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -229,20 +203,20 @@ export const MolcfgLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              Where every value{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                came from
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              Layered loading, source tracking, interpolation, schema validation, and immutable
-              merge behavior — with a single runtime dependency.
+              The configuration layer the MolCrafts packages run on: layered loading, schema
+              validation, immutable merges, and source tracking for every value. Useful on its own,
+              in any Python project.
             </p>
           </motion.div>
 
@@ -381,34 +355,16 @@ export const MolcfgLanding = () => {
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              The API above shows how the toolkit feels to use. The features below show how the
-              package is designed to handle every edge case when dealing with configuration in your
-              Python package.
+              Every edge case a real configuration hits: merge order, validation, and where a value
+              actually came from.
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molcfg" />
     </div>
   );
 };

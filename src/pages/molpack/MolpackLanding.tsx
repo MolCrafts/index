@@ -8,6 +8,8 @@ import {
   SimulationIcon,
   WorkflowIcon,
 } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -22,7 +24,7 @@ const FEATURES = [
   {
     icon: <IntegrationIcon className="w-8 h-8" />,
     title: "Drop-in Keyword Scripts",
-    description: "Reads a standard `.inp` keyword script — bring existing decks unchanged.",
+    description: "Reads a standard keyword script — bring existing decks unchanged.",
   },
   {
     icon: <SimulationIcon className="w-8 h-8" />,
@@ -59,7 +61,7 @@ const API_SNIPPETS = [
     title: "Drop-in Keyword Script",
     filename: "mixture.inp",
     description:
-      "A standard `.inp` keyword format — bring your existing scripts; the binary takes a file or stdin.",
+      "A standard keyword format — bring your existing scripts; the binary takes a file or stdin.",
     language: "bash",
     code: `# molpack mixture.inp   (or:  molpack < mixture.inp)
 tolerance 2.0
@@ -80,8 +82,7 @@ end structure`,
   {
     title: "Pack From Python",
     filename: "pack_water.py",
-    description:
-      "Read a frame with MolRs, declare a Target with restraints, call `Molpack().pack(...)`.",
+    description: "Read a frame with MolRs, declare a Target with restraints, and call pack.",
     language: "python",
     code: `import molrs
 from molpack import InsideBoxRestraint, Molpack, Target
@@ -100,45 +101,6 @@ result = (
     .with_seed(42)
     .pack([water], max_loops=200)
 )`,
-  },
-  {
-    title: "Native Rust API",
-    filename: "pack.rs",
-    description:
-      "Same engine as a Rust crate — build Targets from raw coords, compose restraints, get a typed result.",
-    language: "rust",
-    code: `use molpack::{InsideBoxRestraint, Molpack, Target};
-
-let positions = [[0.0, 0.0, 0.0], [0.96, 0.0, 0.0], [-0.24, 0.93, 0.0]];
-let radii = [1.52, 1.20, 1.20];
-
-let target = Target::from_coords(&positions, &radii, 100)
-    .with_name("water")
-    .with_restraint(InsideBoxRestraint::new([0.0; 3], [40.0; 3], [false; 3]));
-
-let result = Molpack::new()
-    .with_tolerance(2.0)
-    .with_seed(42)
-    .pack(&[target], 200)?;`,
-  },
-  {
-    title: "Mix Restraints",
-    filename: "restraints.inp",
-    description:
-      "Combine fixed placements and region restraints across structures in a single deck.",
-    language: "bash",
-    code: `# One fixed solute, many solvent molecules in a box
-output system.pdb
-
-structure solute.pdb
-  number 1
-  fixed 20. 20. 20. 0. 0. 0.
-end structure
-
-structure water.pdb
-  number 800
-  inside box 0. 0. 0. 40. 40. 40.
-end structure`,
   },
 ];
 
@@ -222,7 +184,7 @@ export const MolpackLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Extensible Initial-configuration Packing Package
+              Molecular packing in Rust, with a native Python API
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -249,16 +211,15 @@ export const MolpackLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              One engine, three{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                surfaces
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
               The same engine, three ways in: a CLI binary, a Rust crate, a Python package.
@@ -392,33 +353,16 @@ export const MolpackLanding = () => {
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              From a single `.inp` script to a typed Rust API — one packing engine, surfaced where
+              From a single keyword script to a typed Rust API — one packing engine, surfaced where
               you need it.
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="molpack" />
     </div>
   );
 };

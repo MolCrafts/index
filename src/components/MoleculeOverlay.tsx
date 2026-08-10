@@ -138,17 +138,21 @@ const LEFT_MOTION = {
     rotate: [-8, 8],
   },
   transition: {
-    opacity: { duration: 1, ease: "easeOut" },
-    scale: { duration: 1, ease: "easeOut" },
-    y: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+    opacity: { duration: 1, ease: "easeOut" as const },
+    scale: { duration: 1, ease: "easeOut" as const },
+    y: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" as const },
     rotate: {
       duration: 10,
       repeat: Number.POSITIVE_INFINITY,
       repeatType: "reverse" as const,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
-  exit: { opacity: 0, scale: 0.88, transition: { duration: 1, ease: "easeIn" } },
+  exit: {
+    opacity: 0,
+    scale: 0.88,
+    transition: { duration: 1, ease: "easeIn" as const },
+  },
 };
 
 const RIGHT_MOTION = {
@@ -160,17 +164,21 @@ const RIGHT_MOTION = {
     rotate: [6, -6],
   },
   transition: {
-    opacity: { duration: 1, ease: "easeOut" },
-    scale: { duration: 1, ease: "easeOut" },
-    y: { duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+    opacity: { duration: 1, ease: "easeOut" as const },
+    scale: { duration: 1, ease: "easeOut" as const },
+    y: { duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" as const },
     rotate: {
       duration: 11,
       repeat: Number.POSITIVE_INFINITY,
       repeatType: "reverse" as const,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
-  exit: { opacity: 0, scale: 0.88, transition: { duration: 1, ease: "easeIn" } },
+  exit: {
+    opacity: 0,
+    scale: 0.88,
+    transition: { duration: 1, ease: "easeIn" as const },
+  },
 };
 
 const HINT_CLASSES =

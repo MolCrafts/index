@@ -1,53 +1,76 @@
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
-import {
-  Boxes,
-  ChevronRight,
-  LayoutDashboard,
-  Library,
-  Monitor,
-  Users,
-  Workflow,
-  Wrench,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { fadeIn, staggerContainer } from "../lib/animations";
-import { ecosystemCategories } from "../lib/ecosystem";
+import { contactHref } from "../lib/contact";
+import { sectionContainer, sectionSubLabel } from "../lib/sectionStyles";
 import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
 
-const categoryMeta: Record<string, { icon: typeof Boxes; color: string; bg: string }> = {
-  Core: {
-    icon: Boxes,
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-  },
-  Workflow: {
-    icon: Workflow,
-    color: "text-indigo-400",
-    bg: "bg-indigo-500/10",
-  },
-  Interfaces: {
-    icon: Monitor,
-    color: "text-purple-400",
-    bg: "bg-purple-500/10",
-  },
-  Libraries: {
-    icon: Library,
-    color: "text-emerald-400",
-    bg: "bg-emerald-500/10",
-  },
-  Tools: {
-    icon: Wrench,
-    color: "text-zinc-400",
-    bg: "bg-zinc-500/10",
-  },
-};
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
 
-const defaultCategoryMeta = {
-  icon: LayoutDashboard,
-  color: "text-muted-foreground",
-  bg: "bg-muted/40",
-};
+/**
+ * Deliberately does NOT re-list the packages. The nav dropdown and the homepage
+ * Projects section already carry the full catalog; a third copy is what made this
+ * footer read as noise.
+ */
+const COLUMNS: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Explore",
+    links: [
+      { label: "Projects", href: "/#projects" },
+      { label: "What we do", href: "/#what-we-do" },
+      { label: "Documentation", href: "https://docs.molcrafts.org/", external: true },
+      { label: "GitHub", href: "https://github.com/MolCrafts", external: true },
+    ],
+  },
+  {
+    title: "Work with us",
+    links: [
+      { label: "Consulting", href: contactHref("Consulting") },
+      { label: "Enterprise", href: contactHref("Enterprise") },
+      { label: "Follow updates", href: "/#newsletter" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      {
+        label: "License",
+        href: "https://github.com/MolCrafts/index/blob/master/LICENSE",
+        external: true,
+      },
+    ],
+  },
+];
+
+function FooterNavLink({ link }: { link: FooterLink }) {
+  return (
+    <a
+      href={link.href}
+      target={link.external ? "_blank" : undefined}
+      rel={link.external ? "noreferrer noopener" : undefined}
+      className={cn(
+        "group inline-flex items-center gap-1 text-sm font-medium text-foreground/80 no-underline",
+        "transition-colors hover:text-foreground",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+      )}
+    >
+      {link.label}
+      {link.external && (
+        <ArrowUpRight
+          className="h-3.5 w-3.5 shrink-0 opacity-40 transition-opacity group-hover:opacity-90"
+          aria-hidden="true"
+        />
+      )}
+      {link.external && <span className="sr-only">(opens in a new tab)</span>}
+    </a>
+  );
+}
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -56,93 +79,72 @@ export const Footer = () => {
   return (
     <footer
       id="footer"
-      className="w-full bg-gradient-to-b from-background to-card/10 mt-auto border-t border-zinc-800/40"
+      className={cn(
+        "mt-auto w-full border-t border-border/50 bg-background/80 backdrop-blur-sm",
+        "shadow-[0_-1px_0_0_rgba(var(--accent-rgb),0.06)]",
+      )}
     >
-      <motion.section
-        className="container py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-8"
+      <motion.div
+        className={cn(sectionContainer, "grid gap-12 py-16 md:grid-cols-12 md:gap-10 md:py-20")}
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
       >
-        {/* Brand column */}
-        <motion.div className="flex flex-col gap-4" variants={fadeIn}>
-          <a href="/" className="font-bold text-xl flex items-center gap-2">
+        <motion.div className="flex flex-col gap-5 md:col-span-4" variants={fadeIn}>
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-xl font-bold no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
             <LogoIcon />
             <span className="gradient-text-primary">MolCrafts</span>
           </a>
-          <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-            Next-generation open foundation for collaborative molecular science — humans and AI
-            agents on shared ground.
+          <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-base">
+            We build AI-assisted infra for molecular science.
           </p>
           <a
             href="https://github.com/MolCrafts"
             rel="noreferrer noopener"
             target="_blank"
-            aria-label="View on GitHub"
-            className="self-start text-zinc-400 hover:text-zinc-100 transition-colors"
+            aria-label="MolCrafts on GitHub (opens in a new tab)"
+            className="self-start text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <GitHubLogoIcon className="w-5 h-5" />
+            <GitHubLogoIcon className="h-5 w-5" />
           </a>
         </motion.div>
 
-        {/* Category columns */}
-        {ecosystemCategories.map((category) => {
-          const meta = categoryMeta[category.title] ?? defaultCategoryMeta;
-          const Icon = meta.icon;
-          return (
-            <motion.div key={category.title} className="flex flex-col gap-3" variants={fadeIn}>
-              <div className="flex items-center gap-2">
-                <div className={cn("w-7 h-7 rounded-md flex items-center justify-center", meta.bg)}>
-                  <Icon className={cn("w-4 h-4", meta.color)} />
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
-                  {category.title}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2">
-                {category.items.map((item) => (
-                  <motion.a
-                    key={item.title}
-                    href={item.href}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noreferrer noopener" : undefined}
-                    whileHover={{ x: 3 }}
-                    className="group flex items-center justify-between rounded-lg border border-zinc-800/50 bg-zinc-900/30 px-3 py-2 hover:bg-zinc-900/60 hover:border-zinc-700 transition-colors"
-                  >
-                    <span className={cn("text-sm font-semibold", item.color)}>{item.title}</span>
-                    <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
-                  </motion.a>
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:col-span-8 md:gap-8">
+          {COLUMNS.map((column) => (
+            <motion.nav
+              key={column.title}
+              className="flex flex-col gap-4"
+              variants={fadeIn}
+              aria-label={column.title}
+            >
+              <span className={cn(sectionSubLabel, "text-muted-foreground")}>{column.title}</span>
+              <ul className="m-0 flex list-none flex-col gap-3 p-0">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <FooterNavLink link={link} />
+                  </li>
                 ))}
-              </div>
-            </motion.div>
-          );
-        })}
+              </ul>
+            </motion.nav>
+          ))}
+        </div>
+      </motion.div>
 
-        {/* Community column */}
-        <motion.div className="flex flex-col gap-3" variants={fadeIn}>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md flex items-center justify-center bg-cyan-500/10">
-              <Users className="w-4 h-4 text-cyan-400" />
-            </div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
-              Community
-            </span>
-          </div>
-          <p className="text-sm text-muted-foreground italic leading-relaxed">
-            Built in public.
-            <br />
-            Organized for reuse.
-          </p>
-        </motion.div>
-      </motion.section>
-
-      <div className="container pb-8 pt-6 flex items-center justify-between text-sm text-muted-foreground border-t border-zinc-800/30">
-        <span>&copy; {currentYear} MolCrafts. All rights reserved.</span>
+      <div
+        className={cn(
+          sectionContainer,
+          "flex flex-col gap-3 border-t border-border/40 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between",
+        )}
+      >
+        <span>&copy; {currentYear} MolCrafts</span>
         <button
           type="button"
           onClick={scrollToTop}
-          className="hover:text-foreground transition-colors"
+          className="self-start text-left transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:self-auto"
         >
           Back to top
         </button>

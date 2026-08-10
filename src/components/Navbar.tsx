@@ -12,6 +12,8 @@ import { useEffect, useRef, useState } from "react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ChevronDown, Menu } from "lucide-react";
 import { ecosystemCategories } from "../lib/ecosystem";
+import { pathProductSlug } from "../lib/routes";
+import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
@@ -33,10 +35,16 @@ export const Navbar = () => {
   }, []);
 
   const isSubpage = currentPath !== "/";
-  const packageName = isSubpage ? currentPath.split("/")[1] : "";
-  const docsLink = packageName
-    ? `https://docs.molcrafts.org/${packageName}/`
-    : "#";
+  /**
+   * Gate on a real product slug, not on `isSubpage`. The old version built the docs URL
+   * from `currentPath.split("/")[1]`, so any 404 path — `/foobar` — produced a prominent
+   * link to `docs.molcrafts.org/foobar/`, a guaranteed dead end shown to a visitor who is
+   * already lost. Anything that is not a known product falls back to the docs root.
+   */
+  const productSlug = pathProductSlug(currentPath);
+  const docsLink = productSlug
+    ? `https://docs.molcrafts.org/${productSlug}/`
+    : "https://docs.molcrafts.org/";
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -51,12 +59,16 @@ export const Navbar = () => {
 
   return (
     <motion.header
-      className="sticky border-b top-0 z-50 w-full bg-background/80 backdrop-blur-xl dark:border-b-zinc-800/50 border-zinc-200"
+      className={cn(
+        "sticky top-0 z-50 w-full border-b border-border/50",
+        "bg-background/70 backdrop-blur-2xl backdrop-saturate-150",
+        "shadow-[0_1px_0_0_rgba(var(--accent-rgb),0.06)]",
+      )}
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container h-16 px-4 mx-auto flex justify-between items-center relative">
+      <div className="container relative mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
         {/* Logo */}
         <div className="flex items-center">
           <motion.a
@@ -75,11 +87,12 @@ export const Navbar = () => {
         <nav className="hidden md:flex items-center gap-2 h-full">
           <motion.a
             href="/"
-            className={`text-sm font-medium px-4 py-2 rounded-md transition-colors ${
+            className={cn(
+              "rounded-md px-4 py-2 text-sm font-medium transition-colors",
               currentPath === "/"
-                ? "text-primary bg-primary/5"
-                : "text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
-            }`}
+                ? "bg-primary/5 text-primary"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+            )}
             whileHover={{ y: -1 }}
           >
             Home
@@ -89,15 +102,24 @@ export const Navbar = () => {
           <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <button
               type="button"
-              className={`flex items-center gap-1 text-sm font-medium px-4 py-2 rounded-md transition-colors ${
+              /* Hover alone left this unreachable by keyboard and by touch, which made the
+                 whole product catalog unreachable from the nav on mobile. */
+              onClick={() => setDropdownOpen((open) => !open)}
+              aria-expanded={dropdownOpen}
+              aria-haspopup="true"
+              className={cn(
+                "flex items-center gap-1 rounded-md px-4 py-2 text-sm font-medium transition-colors",
                 dropdownOpen
-                  ? "text-foreground bg-zinc-100 dark:bg-zinc-800/50"
-                  : "text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
-              }`}
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+              )}
             >
               Projects
               <ChevronDown
-                className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                className={cn(
+                  "h-4 w-4 transition-transform duration-200",
+                  dropdownOpen && "rotate-180",
+                )}
               />
             </button>
 
@@ -113,18 +135,22 @@ export const Navbar = () => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 w-max p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] z-50 overflow-hidden"
+                  className={cn(
+                    "absolute top-full left-1/2 z-50 w-max -translate-x-1/2 overflow-hidden rounded-2xl p-5",
+                    "border border-border/40 bg-background/85 backdrop-blur-2xl backdrop-saturate-150",
+                    "shadow-[0_24px_80px_-20px_rgba(0,0,0,0.45),0_0_0_1px_rgba(var(--accent-rgb),0.06)]",
+                  )}
                 >
-                  {/* Glow inside dropdown */}
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
+                  {/* Ambient glow — no frame */}
+                  <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full bg-[rgba(var(--accent-rgb),0.12)] blur-[70px]" />
 
-                  <div className="relative flex flex-row flex-wrap gap-6 px-2 py-1 max-w-[min(90vw,72rem)]">
+                  <div className="relative flex max-w-[min(90vw,72rem)] flex-row flex-wrap gap-8 px-1 py-1">
                     {ecosystemCategories.map((category, catIdx) => (
-                      <div key={category.title} className="flex flex-col gap-1 w-40">
-                        <div className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
+                      <div key={category.title} className="flex w-44 flex-col gap-1">
+                        <div className="mb-1 px-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                           {category.title}
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-0.5">
                           {category.items.map((item, itemIdx) => (
                             <motion.a
                               key={item.title}
@@ -134,16 +160,18 @@ export const Navbar = () => {
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{
-                                delay: (catIdx * category.items.length + itemIdx) * 0.05,
+                                delay: (catIdx * category.items.length + itemIdx) * 0.04,
                               }}
-                              className={`flex items-baseline gap-2 px-3 py-2 rounded-lg transition-all ${item.bg} group`}
+                              className="group flex items-baseline gap-2 px-1 py-1.5 transition-all"
                             >
                               <span
-                                className={`text-sm font-semibold transition-colors group-hover:translate-x-1 duration-200 ${item.color}`}
+                                className={`text-sm font-semibold duration-200 group-hover:translate-x-1 ${item.color}`}
                               >
                                 {item.title}
                               </span>
-                              <span className="text-xs text-muted-foreground">· {item.role}</span>
+                              <span className="text-[11px] text-muted-foreground/80">
+                                {item.role}
+                              </span>
                             </motion.a>
                           ))}
                         </div>
@@ -155,25 +183,27 @@ export const Navbar = () => {
             </AnimatePresence>
           </div>
 
-          {isSubpage ? (
+          {!isSubpage && (
             <motion.a
-              href={docsLink}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="text-sm font-medium px-4 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors"
+              href="#participate"
+              className="rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               whileHover={{ y: -1 }}
             >
-              Docs
-            </motion.a>
-          ) : (
-            <motion.a
-              href="#manifesto"
-              className="text-sm font-medium px-4 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors"
-              whileHover={{ y: -1 }}
-            >
-              Manifesto
+              Work with us
             </motion.a>
           )}
+
+          {/* Docs used to render only on subpages, so the homepage nav never offered the
+              single most valuable destination for this audience. Now always present. */}
+          <motion.a
+            href={docsLink}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            whileHover={{ y: -1 }}
+          >
+            Docs
+          </motion.a>
         </nav>
 
         {/* Right Side Actions */}
@@ -196,7 +226,7 @@ export const Navbar = () => {
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle Menu</span>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] border-l dark:border-zinc-800">
+              <SheetContent side="right" className="w-[300px] border-l border-border">
                 <SheetHeader className="text-left mb-8">
                   <SheetTitle className="text-xl font-bold gradient-text-primary">
                     MolCrafts
@@ -240,35 +270,53 @@ export const Navbar = () => {
                     ))}
                   </div>
 
-                  {isSubpage ? (
-                    <a
-                      href={docsLink}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
-                    >
-                      Docs
-                    </a>
-                  ) : (
-                    <SheetClose asChild>
-                      <a
-                        href="#manifesto"
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
-                      >
-                        Manifesto
-                      </a>
-                    </SheetClose>
+                  {!isSubpage && (
+                    <>
+                      <SheetClose asChild>
+                        <a
+                          href="#projects"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
+                        >
+                          Projects
+                        </a>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <a
+                          href="#approach"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
+                        >
+                          Approach
+                        </a>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <a
+                          href="#participate"
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
+                        >
+                          Participate
+                        </a>
+                      </SheetClose>
+                    </>
                   )}
 
-                  <div className="mt-8 pt-6 border-t dark:border-zinc-800 flex flex-col gap-4">
+                  <a
+                    href={docsLink}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
+                  >
+                    Docs
+                  </a>
+
+                  <div className="mt-8 flex flex-col gap-4 border-t border-border pt-6">
                     <a
                       href="https://github.com/MolCrafts"
                       target="_blank"
-                      className="flex items-center gap-3 px-4 py-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-center justify-center font-bold text-sm"
-                      rel="noreferrer"
+                      className="flex items-center justify-center gap-3 rounded-xl bg-muted px-4 py-4 text-center text-sm font-bold transition-colors hover:bg-muted/80"
+                      rel="noreferrer noopener"
                     >
-                      <GitHubLogoIcon className="w-5 h-5" />
+                      <GitHubLogoIcon className="h-5 w-5" />
                       GitHub
                     </a>
                   </div>

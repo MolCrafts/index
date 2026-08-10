@@ -12,7 +12,8 @@ const MoleculeOverlay = lazy(() =>
 );
 
 function readSearchParams() {
-  if (typeof window === "undefined") return { from: null as string | null, doc: null as string | null };
+  if (typeof window === "undefined")
+    return { from: null as string | null, doc: null as string | null };
   const q = new URLSearchParams(window.location.search);
   return {
     from: q.get("from"),

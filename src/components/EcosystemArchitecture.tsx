@@ -1,6 +1,5 @@
 import atomOrbitalMoko from "@/assets/moko/atom_obital.png";
 import coffeeMoko from "@/assets/moko/coffee.png";
-import cookMoko from "@/assets/moko/cook.png";
 import flaskMoko from "@/assets/moko/flask.png";
 import happyMoko from "@/assets/moko/happy.png";
 import masterMoko from "@/assets/moko/master.png";
@@ -14,367 +13,207 @@ import molrecMoko from "@/assets/moko/molrec.png";
 import molrsMoko from "@/assets/moko/molrs.png";
 import movisMoko from "@/assets/moko/movis.png";
 import { motion } from "framer-motion";
-import { slideUp } from "../lib/animations";
+import { ArrowUpRight } from "lucide-react";
+import { slideUp, staggerContainer } from "../lib/animations";
+import { type EcosystemItem, ecosystemCategories } from "../lib/ecosystem";
+import {
+  sectionBody,
+  sectionContainer,
+  sectionHeader,
+  sectionLabel,
+  sectionLabelRule,
+  sectionLead,
+  sectionTitle,
+} from "../lib/sectionStyles";
+import { cn } from "../lib/utils";
 
-interface NodeDetail {
-  id: string;
-  title: string;
-  description: string;
-  href?: string;
-  external?: boolean;
-  color: string;
-  glow: string;
-  mokoSrc: string;
-  hex: string;
+/** Moko art keyed by product slug (href path or title fallback). */
+const MOKO_BY_SLUG: Record<string, string> = {
+  atomiverse: masterMoko,
+  molpy: molpyMoko,
+  molrs: molrsMoko,
+  molpack: molpackMoko,
+  molnex: molnexMoko,
+  molrec: molrecMoko,
+  molexp: flaskMoko,
+  molq: atomOrbitalMoko,
+  molhub: coffeeMoko,
+  molvis: movisMoko,
+  molplot: happyMoko,
+  molmcp: masterMoko,
+  molcfg: molcfgMoko,
+  mollog: mollogMoko,
+};
+
+function itemSlug(item: EcosystemItem): string {
+  if (item.href.startsWith("/")) return item.href.replace(/^\//, "").split("/")[0] ?? "";
+  return item.title.toLowerCase().replace(/\s+/g, "-");
 }
 
-const originalNodes: NodeDetail[] = [
-  {
-    id: "atomiverse",
-    title: "Atomiverse",
-    description:
-      "C++ / CUDA molecular engine: classical MD, SCF / DFT, plane-wave methods, and ab-initio MD on one Driver API.",
-    color: "text-lime-400",
-    glow: "bg-lime-500",
-    mokoSrc: masterMoko,
-    hex: "#84cc16",
-  },
-  {
-    id: "molpy",
-    title: "MolPy",
-    description:
-      "Python toolkit for molecular workflows: parsing, building, editing, typing, analyzing, packing, and simulation I/O.",
-    color: "text-blue-400",
-    glow: "bg-blue-500",
-    mokoSrc: molpyMoko,
-    hex: "#3b82f6",
-  },
-  {
-    id: "molrs",
-    title: "MolRs",
-    description:
-      "Rust core for molecular data structures, I/O, conformers, force fields, trajectory analysis, Python bindings, and WASM.",
-    color: "text-red-400",
-    glow: "bg-red-500",
-    mokoSrc: molrsMoko,
-    hex: "#ef4444",
-  },
-  {
-    id: "molpack",
-    title: "MolPack",
-    description:
-      "Packmol-grade molecular packing in Rust, with a Packmol-compatible CLI plus Rust and Python APIs.",
-    color: "text-orange-400",
-    glow: "bg-orange-500",
-    mokoSrc: molpackMoko,
-    hex: "#f97316",
-  },
-  {
-    id: "molnex",
-    title: "MolNex",
-    description:
-      "Layered molecular ML framework for training, representations, potential composition, and reference model families.",
-    color: "text-cyan-400",
-    glow: "bg-cyan-500",
-    mokoSrc: molnexMoko,
-    hex: "#06b6d4",
-  },
-  {
-    id: "molrec",
-    title: "MolRec",
-    description:
-      "Backend-neutral atomistic record contract for frames, trajectories, observables, status, metrics, and metadata.",
-    color: "text-amber-400",
-    glow: "bg-amber-500",
-    mokoSrc: molrecMoko,
-    hex: "#f59e0b",
-  },
-  {
-    id: "molexp",
-    title: "MolExp",
-    description:
-      "Agent-assisted experiment platform with typed workflow graphs, tracked runs, artifact lineage, FastAPI, and a React UI.",
-    color: "text-indigo-400",
-    glow: "bg-indigo-500",
-    mokoSrc: flaskMoko,
-    hex: "#6366f1",
-  },
-  {
-    id: "molq",
-    title: "MolQ",
-    description:
-      "Unified job queue for local execution and HPC schedulers including SLURM, PBS, and LSF.",
-    color: "text-pink-400",
-    glow: "bg-pink-500",
-    mokoSrc: atomOrbitalMoko,
-    hex: "#ec4899",
-  },
-  {
-    id: "molhub",
-    title: "MolHub",
-    description:
-      "Dataset access layer for molecular benchmarks, custom datasets, and uploads to public repositories.",
-    href: "https://github.com/MolCrafts/molhub",
-    external: true,
-    color: "text-lime-400",
-    glow: "bg-lime-500",
-    mokoSrc: coffeeMoko,
-    hex: "#84cc16",
-  },
-  {
-    id: "molvis",
-    title: "MolVis",
-    description:
-      "Interactive 3D inspection, editing, measurement, and trajectory playback for the web, VSCode, and Jupyter.",
-    color: "text-purple-400",
-    glow: "bg-purple-500",
-    mokoSrc: movisMoko,
-    hex: "#a855f7",
-  },
-  {
-    id: "molplot",
-    title: "MolPlot",
-    description:
-      "Unified scientific charting — one Vega-Lite spec, two renderers (web + matplotlib).",
-    href: "https://github.com/MolCrafts/molplot",
-    external: true,
-    color: "text-teal-400",
-    glow: "bg-teal-500",
-    mokoSrc: happyMoko,
-    hex: "#14b8a6",
-  },
-  {
-    id: "molmcp",
-    title: "MolMCP",
-    description:
-      "MCP server and graph-based codebase discovery for exposing MolCrafts capabilities to AI agents.",
-    href: "https://github.com/MolCrafts/molmcp",
-    external: true,
-    color: "text-violet-400",
-    glow: "bg-violet-500",
-    mokoSrc: masterMoko,
-    hex: "#8b5cf6",
-  },
-  {
-    id: "molcfg",
-    title: "MolCfg",
-    description:
-      "Layered configuration with source tracking, validation, profiles, interpolation, and thread-safe access.",
-    color: "text-emerald-400",
-    glow: "bg-emerald-500",
-    mokoSrc: molcfgMoko,
-    hex: "#10b981",
-  },
-  {
-    id: "mollog",
-    title: "MolLog",
-    description:
-      "Structured Python logging with stdlib-compatible APIs, JSON/Rich formatting, and context propagation.",
-    color: "text-sky-400",
-    glow: "bg-sky-500",
-    mokoSrc: mollogMoko,
-    hex: "#0ea5e9",
-  },
-  {
-    id: "molqrc",
-    title: "MolQRC",
-    description: "High-quality QR code generator library in Rust.",
-    href: "https://github.com/MolCrafts/molqrc",
-    external: true,
-    color: "text-fuchsia-400",
-    glow: "bg-fuchsia-500",
-    mokoSrc: mokoMoko,
-    hex: "#d946ef",
-  },
-  {
-    id: "harness",
-    title: "Harness",
-    description:
-      "Claude Code–first plugin marketplace and agent harness for MolCrafts development.",
-    href: "https://github.com/MolCrafts/molcrafts-harness",
-    external: true,
-    color: "text-zinc-300",
-    glow: "bg-zinc-500",
-    mokoSrc: cookMoko,
-    hex: "#a1a1aa",
-  },
-  {
-    id: "zensical",
-    title: "Zensical Theme",
-    description: "Shared Zensical theme extension for MolCrafts documentation sites.",
-    href: "https://github.com/MolCrafts/molcrafts-zensical-theme",
-    external: true,
-    color: "text-stone-300",
-    glow: "bg-stone-500",
-    mokoSrc: mokoMoko,
-    hex: "#a8a29e",
-  },
-];
+function mokoFor(item: EcosystemItem): string {
+  return MOKO_BY_SLUG[itemSlug(item)] ?? mokoMoko;
+}
 
-const categoryGroups = [
-  {
-    label: "Core",
-    hex: "#3b82f6",
-    nodeIds: ["atomiverse", "molpy", "molrs", "molpack", "molnex", "molrec"],
-  },
-  {
-    label: "Workflow",
-    hex: "#6366f1",
-    nodeIds: ["molexp", "molq", "molhub"],
-  },
-  {
-    label: "Interfaces",
-    hex: "#a855f7",
-    nodeIds: ["molvis", "molplot", "molmcp"],
-  },
-  {
-    label: "Libraries",
-    hex: "#10b981",
-    nodeIds: ["molcfg", "mollog", "molqrc"],
-  },
-  {
-    label: "Tools",
-    hex: "#a1a1aa",
-    nodeIds: ["harness", "zensical"],
-  },
-];
-
-export const EcosystemArchitecture = () => {
-  const getNodeHref = (node: NodeDetail) => node.href ?? `/${node.id}`;
-
-  const NodeCard = ({ node }: { node: NodeDetail }) => (
+/**
+ * Borderless product entry — glyph and name share a row, type sits under the name.
+ * Hover lifts the glyph and brightens copy; nothing draws a frame.
+ * Arrow only for external destinations (leaves the site).
+ */
+function ProjectEntry({ item }: { item: EcosystemItem }) {
+  return (
     <motion.a
-      href={getNodeHref(node)}
-      target={node.external ? "_blank" : undefined}
-      rel={node.external ? "noreferrer noopener" : undefined}
-      className="w-[220px] h-[220px] shrink-0 bg-zinc-900/50 border border-white/[0.06] rounded-2xl p-5 flex flex-col gap-4 cursor-pointer group no-underline relative overflow-hidden"
-      draggable="false"
-      whileHover={{
-        y: -8,
-        boxShadow: `0 16px 48px ${node.hex}28, 0 0 0 1px ${node.hex}22`,
-        borderColor: `${node.hex}30`,
-      }}
+      variants={slideUp}
+      href={item.href}
+      target={item.external ? "_blank" : undefined}
+      rel={item.external ? "noreferrer noopener" : undefined}
+      className={cn(
+        "group relative flex flex-col gap-3.5 rounded-2xl p-4 no-underline outline-none sm:p-5",
+        "transition-[background,box-shadow,transform] duration-300",
+        "hover:bg-card/45 hover:shadow-[0_24px_56px_-28px_rgba(0,0,0,0.5)]",
+        "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background",
+      )}
+      draggable={false}
+      whileHover={{ y: -4 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      {/* Colored top accent */}
-      <div
-        className="absolute top-0 left-6 right-6 h-px"
+      <span
+        className="pointer-events-none absolute -inset-x-2 -inset-y-1 -z-10 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background: `linear-gradient(90deg, transparent, ${node.hex}90, transparent)`,
+          background: `radial-gradient(circle at 30% 20%, ${item.hex}45, transparent 65%)`,
         }}
+        aria-hidden
       />
 
-      {/* Header row: large icon + title on same line */}
-      <div className="flex items-center gap-3 shrink-0">
-        <div
-          className="w-16 h-16 rounded-xl flex items-center justify-center shrink-0"
-          style={{ backgroundColor: `${node.hex}18` }}
-        >
-          <img
-            src={node.mokoSrc}
-            alt={node.title}
-            className="w-12 h-12 object-contain rounded-lg group-hover:scale-110 transition-transform duration-300"
-            draggable="false"
-          />
+      <div className="flex items-center gap-3.5">
+        <img
+          src={mokoFor(item)}
+          alt=""
+          className="h-14 w-14 shrink-0 object-contain transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16"
+          draggable={false}
+        />
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <span
+            className={cn("flex items-center gap-1.5 text-lg font-bold tracking-tight", item.color)}
+          >
+            {item.title}
+            {item.external && (
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-40 transition-opacity group-hover:opacity-90" />
+            )}
+          </span>
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground transition-colors group-hover:text-foreground/70">
+              {item.role}
+            </span>
+            {item.status && (
+              <span className="rounded-full border border-border/60 bg-muted/50 px-2 py-0.5 text-[9px] font-medium uppercase tracking-wider text-muted-foreground">
+                {item.status}
+              </span>
+            )}
+          </span>
         </div>
-        <h3 className={`text-lg font-bold tracking-tight ${node.color}`}>{node.title}</h3>
       </div>
 
-      {/* Description */}
-      <p className="text-xs text-zinc-500 font-light leading-relaxed line-clamp-4 flex-grow min-h-0">
-        {node.description}
+      <p className="text-sm font-light leading-relaxed text-muted-foreground transition-colors duration-300 group-hover:text-foreground/85 sm:text-[0.9375rem] sm:leading-[1.65]">
+        {item.description}
       </p>
     </motion.a>
   );
+}
 
-  const CategoryDivider = ({ label, hex }: { label: string; hex: string }) => (
-    <div className="flex flex-col items-center justify-center shrink-0 w-12 h-[220px] select-none gap-2 mx-1">
-      <div
-        className="w-px flex-1"
-        style={{
-          background: `linear-gradient(to bottom, transparent, ${hex}60)`,
-        }}
-      />
-      <span
-        className="text-[10px] font-bold tracking-[0.35em] uppercase [writing-mode:vertical-rl] rotate-180"
-        style={{ color: `${hex}cc` }}
-      >
-        {label}
-      </span>
-      <div
-        className="w-px flex-1"
-        style={{
-          background: `linear-gradient(to top, transparent, ${hex}60)`,
-        }}
-      />
-    </div>
-  );
-
-  const MarqueeSequence = () => (
-    <div className="flex gap-4 md:gap-5 pr-4 md:pr-5 items-center">
-      {categoryGroups.map((group) => (
-        <div key={group.label} className="flex gap-4 md:gap-5 items-center">
-          <CategoryDivider label={group.label} hex={group.hex} />
-          {group.nodeIds.map((id) => {
-            const node = originalNodes.find((n) => n.id === id);
-            return node ? <NodeCard key={id} node={node} /> : null;
-          })}
-        </div>
-      ))}
-    </div>
-  );
-
+export const EcosystemArchitecture = () => {
   return (
     <section
-      id="architecture"
-      className="py-20 md:py-32 relative bg-transparent overflow-hidden flex flex-col justify-center"
+      id="projects"
+      className="relative overflow-hidden bg-transparent pb-24 pt-4 md:pb-32 md:pt-6"
     >
-      {/* CSS for perfect seamless marquee loop */}
-      <style>{`
-                @keyframes marquee {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                }
-                .animate-marquee {
-                    animation: marquee 70s linear infinite;
-                }
-            `}</style>
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-64 opacity-50"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 100% at 50% 0%, rgba(var(--accent-rgb), 0.08), transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
 
-      <div className="container mx-auto px-4 lg:px-8 max-w-5xl z-10 mb-16">
-        <div className="flex flex-col gap-6">
-          <motion.div
-            variants={slideUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-sm mb-6">
-              <div className="w-12 h-[1px] bg-primary opacity-50" />
+      <div className={sectionContainer}>
+        <motion.div
+          variants={slideUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className={cn(
+            sectionHeader,
+            "mb-16 lg:mb-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-end lg:gap-16",
+          )}
+        >
+          <div className="flex flex-col gap-5 md:gap-6">
+            <div className={sectionLabel}>
+              <div className={sectionLabelRule} aria-hidden="true" />
               Projects
             </div>
-            <p className="text-2xl md:text-3xl text-foreground font-light leading-snug max-w-3xl">
-              Separate by design. Unified by purpose.
+            <p className={cn(sectionTitle, "lg:max-w-none")}>
+              Take one package. Or take the stack.
             </p>
-            <p className="mt-4 text-base text-muted-foreground font-light max-w-2xl">
-              User-facing <span className="text-foreground/80">mol*</span> products, plus{" "}
-              <span className="text-foreground/80">molcrafts-*</span> developer tools that keep the
-              ecosystem buildable, documentable, and agent-ready.
-            </p>
-          </motion.div>
-        </div>
-      </div>
+          </div>
+          <p className={cn(sectionLead, "lg:max-w-none lg:pb-1")}>
+            Each one installs and runs on its own — nothing drags in the rest. They agree on one
+            record format, so what comes out of one tool is readable by the next, and by an agent.
+          </p>
+        </motion.div>
 
-      {/* Full-width Automatic Marquee */}
-      <div className="w-full relative z-10 group overflow-hidden py-4">
-        {/* Visual fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-48 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-48 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
+        <div className="flex flex-col gap-16 md:gap-20">
+          {ecosystemCategories.map((group) => (
+            <div key={group.title} className="flex flex-col gap-8">
+              <div className="flex flex-col gap-2 border-t border-border/55 pt-6 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+                <h3 className="text-sm font-bold uppercase tracking-[0.28em] text-foreground/85">
+                  {group.title}
+                </h3>
+                <p className={cn(sectionBody, "max-w-xl text-sm sm:text-right")}>{group.blurb}</p>
+              </div>
 
-        <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused] items-center">
-          {/* Two sequences allow -50% translateX to loop perfectly */}
-          <MarqueeSequence />
-          <MarqueeSequence />
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-12 xl:gap-y-12"
+              >
+                {group.items.map((item) => (
+                  <ProjectEntry key={item.title} item={item} />
+                ))}
+              </motion.div>
+            </div>
+          ))}
         </div>
+
+        <motion.div
+          variants={slideUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mt-16 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border/55 pt-10 md:mt-20"
+        >
+          <a
+            href="https://docs.molcrafts.org/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="group inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-primary no-underline transition-opacity hover:opacity-90"
+          >
+            Read the docs
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
+          </a>
+          <a
+            href="https://github.com/MolCrafts"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-sm font-medium text-muted-foreground no-underline transition-colors hover:text-foreground"
+          >
+            All repositories on GitHub
+          </a>
+        </motion.div>
       </div>
     </section>
   );

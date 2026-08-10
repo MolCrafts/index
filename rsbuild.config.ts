@@ -2,6 +2,28 @@ import path from "node:path";
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 
+/**
+ * Google Analytics 4. Set `PUBLIC_GA_ID=G-XXXXXXXXXX` in the environment (or a `.env`
+ * file) to enable it. Absent — local dev, previews, forks — no tracker is emitted at all,
+ * so nobody's traffic is reported by accident.
+ */
+const GA_ID = process.env.PUBLIC_GA_ID;
+
+const analyticsTags = GA_ID
+  ? [
+      {
+        tag: "script" as const,
+        attrs: { async: true, src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}` },
+      },
+      {
+        tag: "script" as const,
+        /* send_page_view is off on purpose — this app routes client-side, so views are
+           sent from src/lib/analytics.ts, including the first one. */
+        children: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:false});`,
+      },
+    ]
+  : [];
+
 export default defineConfig({
   plugins: [pluginReact()],
   resolve: {
@@ -9,10 +31,31 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  server: {
+    /**
+     * Bind the exact address the browser connects to.
+     *
+     * rsbuild's port probe is a `bind()`, and bind conflicts are per-address, not
+     * per-port. The default host `0.0.0.0` binds IPv4 only, so a dev server already
+     * holding `[::1]:3000` (what another rsbuild project leaves behind) goes undetected:
+     * the probe succeeds, the port is not incremented, and `localhost` — which resolves
+     * to `::1` first — serves the *other* project's page.
+     *
+     * Binding "localhost" resolves to `::1` too, so any collision the browser could hit
+     * is a collision the probe hits first, and rsbuild auto-increments to a free port.
+     *
+     * Trade-off: the dev server is no longer reachable from other devices on the LAN.
+     * Set host to "0.0.0.0" temporarily when testing on a phone.
+     */
+    host: "localhost",
+  },
   html: {
+    /* No `lang` option here — rsbuild has none. The <html lang> attribute is added
+       in scripts/prerender-html.ts, which already rewrites the HTML per route. */
     favicon: "./src/assets/moko.svg",
-    title: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
+    title: "MolCrafts – AI-assisted infra for molecular science",
     tags: [
+      ...analyticsTags,
       {
         tag: "link",
         attrs: { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -37,7 +80,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:title",
-          content: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
+          content: "MolCrafts – AI-assisted infra for molecular science",
         },
       },
       {
@@ -45,7 +88,7 @@ export default defineConfig({
         attrs: {
           property: "og:description",
           content:
-            "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
+            "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
         },
       },
       { tag: "meta", attrs: { property: "og:type", content: "website" } },
@@ -61,22 +104,25 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:image:alt",
-          content: "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
+          content: "MolCrafts – AI-assisted infra for molecular science",
         },
       },
     ],
     meta: {
-      charset: "UTF-8",
+      /* Object form emits <meta charset="UTF-8">. The string form emitted
+         <meta name="charset" content="UTF-8">, which declares nothing — and every
+         description on this site contains an em dash. */
+      charset: { charset: "UTF-8" },
       viewport: "width=device-width, initial-scale=1.0",
       description:
-        "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
+        "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
       keywords:
-        "molcrafts, molecular science, AI infrastructure, collaborative science, molecular dynamics, MolPy, MolVis, MolRec, open-source",
-      author: "MolCrafts Team",
+        "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, python, rust, reproducible research",
+      author: "MolCrafts",
       "twitter:card": "summary_large_image",
-      "twitter:title": "MolCrafts – Next-Gen AI Infrastructure for Molecular Science",
+      "twitter:title": "MolCrafts – AI-assisted infra for molecular science",
       "twitter:description":
-        "Next-generation open foundation for collaborative molecular science — humans and AI agents on shared ground.",
+        "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
       "twitter:image": "https://molcrafts.org/og/index.png",
     },
   },

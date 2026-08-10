@@ -9,17 +9,17 @@ export const fadeIn: Variants = {
   },
 };
 
-// Slide up animation
+// Slide up animation — slightly longer ease for a calmer, premium entrance
 export const slideUp: Variants = {
-  hidden: { y: 30, opacity: 0 },
+  hidden: { y: 28, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
       type: "spring",
-      stiffness: 300,
-      damping: 30,
-      duration: 0.4,
+      stiffness: 220,
+      damping: 28,
+      mass: 0.85,
     },
   },
 };
@@ -30,7 +30,8 @@ export const staggerContainer: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.08,
+      delayChildren: 0.04,
     },
   },
 };

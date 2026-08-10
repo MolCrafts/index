@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { generateLlmsTxt } from "./generate-llms-txt.ts";
 import { generateOgImages } from "./generate-og.ts";
 import { prerenderHtml } from "./prerender-html.ts";
 
@@ -13,6 +14,8 @@ const run = async () => {
   await generateOgImages(path.join(distDir, "og"));
   process.stdout.write("Prerendering per-route HTML…\n");
   prerenderHtml(distDir);
+  process.stdout.write("Writing agent-readable index…\n");
+  generateLlmsTxt(distDir);
   process.stdout.write("Done.\n");
 };
 

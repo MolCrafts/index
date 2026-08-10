@@ -21,9 +21,7 @@ export type ProductSlug = (typeof PRODUCT_SLUGS)[number];
 export function pathProductSlug(pathname: string): ProductSlug | null {
   const slug = pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   if (!slug) return null;
-  return (PRODUCT_SLUGS as readonly string[]).includes(slug)
-    ? (slug as ProductSlug)
-    : null;
+  return (PRODUCT_SLUGS as readonly string[]).includes(slug) ? (slug as ProductSlug) : null;
 }
 
 /** Quick links shown on 404 and empty states. */

@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
+import { Approach } from "./components/Approach";
 import { Cta } from "./components/Cta";
 import { EcosystemArchitecture } from "./components/EcosystemArchitecture";
 import { Footer } from "./components/Footer";
@@ -8,9 +9,12 @@ import { Hero } from "./components/Hero";
 import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
 import { Newsletter } from "./components/Newsletter";
+import { Participate } from "./components/Participate";
 import { SEOSchema } from "./components/SEOSchema";
 import { Sponsors } from "./components/Sponsors";
-import { pathProductSlug, type ProductSlug } from "./lib/routes";
+import { WhatWeDo } from "./components/WhatWeDo";
+import { trackPageView } from "./lib/analytics";
+import { type ProductSlug, pathProductSlug } from "./lib/routes";
 import {
   AtomiverseLanding,
   MolVisLanding,
@@ -58,6 +62,12 @@ function App() {
     window.addEventListener("popstate", handleLocationChange);
     return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
+
+  /* Client-side routing means GA's automatic page_view fires once and misses every
+     navigation after it, so each route change reports its own view. */
+  useEffect(() => {
+    trackPageView(currentPath);
+  }, [currentPath]);
 
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
@@ -112,9 +122,12 @@ function App() {
       return (
         <>
           <Hero />
+          <WhatWeDo />
           <Manifesto />
+          <Approach />
           <EcosystemArchitecture />
           <Sponsors />
+          <Participate />
           <Newsletter />
           <Cta />
         </>
@@ -138,6 +151,7 @@ function App() {
   return (
     <>
       <SEOSchema path={currentPath} />
+      <div className="page-atmosphere" aria-hidden="true" />
 
       <AnimatePresence mode="wait">
         {!isLoading && (
@@ -146,8 +160,8 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="flex flex-col min-h-screen"
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-[1] flex min-h-screen flex-col"
           >
             <Navbar />
             <main className="flex-grow">{renderContent()}</main>

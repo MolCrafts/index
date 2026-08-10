@@ -10,6 +10,8 @@ import {
   SimulationIcon,
   WorkflowIcon,
 } from "../../components/FeatureIcons";
+import { ProductCapabilities } from "../../components/ProductCapabilities";
+import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
 import { cn } from "../../lib/utils";
@@ -89,38 +91,6 @@ logger.info("starting task")
 logger.info("ending task", elapsed=0.5)
 # Emits log with {"worker_id": "w-001", "message": "ending task", "elapsed": 0.5}`,
   },
-  {
-    title: "Pretty Terminal Output",
-    filename: "rich_log.py",
-    description:
-      "Make terminal output readable. Install the optional extra for colorized, formatted records.",
-    code: `import mollog
-from mollog import RichFormatter, StreamHandler
-
-handler = StreamHandler()
-handler.set_formatter(RichFormatter())
-mollog.configure(level="debug", handlers=[handler])
-
-log = mollog.get_logger("system")
-log.debug("Tracing complex payload rendering", user_id=412)
-log.error("Failed to connect to database")`,
-  },
-  {
-    title: "Scoped Logging",
-    filename: "scoped.py",
-    description: "For async applications and scoped workloads, use context-local bindings.",
-    code: `from mollog import Context, get_logger
-
-logger = get_logger("async_app")
-
-with Context.scope(request_id="1234abcd"):
-    logger.info("Handling web request...")
-    # The log automatically captures request_id="1234abcd"
-    # without explicitly appending it to the log call
-
-logger.info("Outside scope")
-# No request_id present`,
-  },
 ];
 
 const ACCENT = PRODUCT_ACCENTS.mollog;
@@ -176,7 +146,7 @@ export const MollogLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
             >
-              Logs that read like notebooks.
+              Logs you can query later.
             </motion.h3>
 
             <motion.h1
@@ -204,7 +174,7 @@ export const MollogLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Structured Logging for Python, stdlib-compatible
+              Structured logging for Python with a stdlib-compatible API
             </motion.h2>
           </motion.header>
         </motion.div>
@@ -231,20 +201,19 @@ export const MollogLanding = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              What the{" "}
+              Logs you can actually{" "}
               <span
                 className={cn(
                   "bg-gradient-to-r text-transparent bg-clip-text leading-relaxed",
                   ACCENT.headingSpan,
                 )}
               >
-                API
-              </span>{" "}
-              Feels Like
+                query
+              </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light">
-              MolLog keeps structured logging to its purest components, so telemetry stays clean and
-              easy to ingest.
+              The logging layer the MolCrafts packages run on: structured records a simulation run
+              can be reconstructed from later. Useful on its own, in any Python project.
             </p>
           </motion.div>
 
@@ -383,34 +352,16 @@ export const MollogLanding = () => {
               </span>
             </motion.h2>
             <p className="text-zinc-400 text-base md:text-lg leading-relaxed font-light max-w-4xl mx-auto">
-              The API above shows how the toolkit feels to use. The features below show how the
-              architecture allows comprehensive lifecycle and observability for complex python
-              packages.
+              Lifecycle and observability for packages large enough that print statements stopped
+              being enough.
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-            variants={staggerContainer}
-          >
-            {FEATURES.map((feature) => (
-              <motion.div
-                key={feature.title}
-                className="flex flex-col items-center text-center group"
-                variants={slideUp}
-              >
-                <div className={cn(ACCENT.icon, "mb-6", ACCENT.iconHover, "transition-colors")}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-3 text-zinc-100">
-                  {feature.title}
-                </h3>
-                <p className="text-zinc-500 leading-relaxed font-light">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProductCapabilities items={FEATURES} accentText={ACCENT.accentText} />
         </motion.div>
       </section>
+
+      <ProductLinks slug="mollog" />
     </div>
   );
 };
