@@ -1,18 +1,13 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { slideUp, staggerContainer } from "../lib/animations";
 import {
   sectionBandRow,
   sectionContainer,
   sectionLabel,
-  sectionLabelRule,
   sectionShellBand,
 } from "../lib/sectionStyles";
 import { cn } from "../lib/utils";
-
-// Brand display accent — theme-aware via the --accent-rgb token (see tailwind.css).
-const ACCENT = "rgb(var(--accent-rgb))";
-const accentAlpha = (alpha: number) => `rgba(var(--accent-rgb), ${alpha})`;
 
 export const Cta = () => {
   return (
@@ -23,76 +18,32 @@ export const Cta = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="flex flex-col gap-3"
+          className={cn(sectionBandRow, "border-t border-border/60 pt-10")}
         >
-          <div className={sectionBandRow}>
-            <motion.div variants={slideUp} className="flex shrink-0 flex-col gap-3">
-              <div className={sectionLabel}>
-                <div className={sectionLabelRule} aria-hidden="true" />
-                Start here
-              </div>
-              <p className="text-xl font-light leading-snug text-foreground md:text-2xl">
-                Pick the package you need and install it.
-              </p>
-            </motion.div>
-
-            {/* Was the seventh link to the bare GitHub org on one page. The positioning
-                doc ranks docs above the org list as a conversion action. */}
-            <motion.a
-              href="https://docs.molcrafts.org/"
-              target="_blank"
-              rel="noreferrer noopener"
-              variants={slideUp}
-              className="group flex shrink-0 items-center gap-4 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:justify-self-end"
-            >
-              <div
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-105"
-                style={{
-                  backgroundColor: accentAlpha(0.12),
-                  boxShadow: `0 0 24px ${accentAlpha(0.19)}`,
-                }}
-              >
-                <BookOpen className="h-5 w-5" style={{ color: ACCENT }} />
-              </div>
-
-              <div className="flex flex-col">
-                <span
-                  className="text-[10px] font-bold uppercase tracking-[0.35em]"
-                  style={{ color: ACCENT }}
-                >
-                  docs.molcrafts.org
-                </span>
-                <span className="text-base font-light text-foreground transition-colors group-hover:text-primary">
-                  Read the docs
-                </span>
-              </div>
-
-              <ArrowUpRight
-                className={cn(
-                  "ml-1 h-4 w-4 transition-transform",
-                  "group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
-                )}
-                style={{ color: ACCENT }}
-              />
-            </motion.a>
-          </div>
-
-          <motion.div variants={slideUp} className="hidden items-center gap-2 md:flex">
-            <div
-              className="h-px flex-1"
-              style={{
-                background: `linear-gradient(90deg, transparent 0%, ${accentAlpha(0.19)} 30%, ${accentAlpha(0.8)} 100%)`,
-                boxShadow: `0 0 12px ${accentAlpha(0.5)}, 0 0 24px ${accentAlpha(0.25)}`,
-              }}
-            />
-            <div
-              className="h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{
-                backgroundColor: ACCENT,
-                boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${accentAlpha(0.5)}`,
-              }}
-            />
+          <motion.div variants={slideUp} className="flex shrink-0 flex-col gap-2">
+            <p className={sectionLabel}>Start here</p>
+            <p className="text-xl font-medium leading-snug text-foreground md:text-2xl">
+              Start with the package that matches the job.
+            </p>
           </motion.div>
+
+          <motion.a
+            href="#projects"
+            variants={slideUp}
+            className={cn(
+              "group inline-flex shrink-0 items-center gap-2 justify-self-start rounded-md px-5 py-3 text-sm font-semibold no-underline md:justify-self-end",
+              "bg-primary text-primary-foreground shadow-[var(--molcrafts-shadow)]",
+              "transition-[transform,box-shadow,background-color] duration-200",
+              "hover:bg-primary/90 hover:-translate-y-px hover:shadow-[var(--molcrafts-shadow-lg)]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            )}
+          >
+            Browse the packages
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
+          </motion.a>
         </motion.div>
       </div>
     </section>

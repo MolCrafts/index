@@ -1,7 +1,7 @@
 import claudeLogoUrl from "@/assets/claude.svg";
 import { motion } from "framer-motion";
 import { slideUp } from "../lib/animations";
-import { sectionContainer, sectionLabel, sectionLabelRule } from "../lib/sectionStyles";
+import { sectionContainer, sectionLabel } from "../lib/sectionStyles";
 
 interface SponsorProps {
   name: string;
@@ -31,16 +31,13 @@ export const Sponsors = () => {
           viewport={{ once: true }}
           className="flex flex-col gap-10"
         >
-          <div className="flex flex-col gap-4">
-            <div className={sectionLabel}>
-              <div className={sectionLabelRule} aria-hidden="true" />
-              Support
-            </div>
+          <div className="flex flex-col gap-3">
+            <p className={sectionLabel}>Support</p>
             <h2 id="sponsors-heading" className="sr-only">
               Supporters
             </h2>
-            <p className="max-w-2xl text-base font-light leading-relaxed text-muted-foreground md:text-lg">
-              Organizations funding the open work.
+            <p className="max-w-2xl text-base font-normal leading-relaxed text-muted-foreground md:text-lg">
+              Open-source support
             </p>
           </div>
 

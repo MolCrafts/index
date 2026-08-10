@@ -6,7 +6,6 @@ import {
   sectionH3,
   sectionHeader,
   sectionLabel,
-  sectionLabelRule,
   sectionLead,
   sectionShell,
   sectionStack,
@@ -15,9 +14,8 @@ import {
 import { cn } from "../lib/utils";
 
 /**
- * The first thing after the Hero: what the company actually does, in concrete terms.
- * Deliberately distinct from its neighbours — Manifesto states beliefs, Approach states
- * how we work and where the boundaries are. This section only states activity.
+ * First concrete activity section after Hero.
+ * Distinct job: what we do — not beliefs (Manifesto) or boundaries (Approach).
  */
 const PILLARS = [
   {
@@ -37,16 +35,6 @@ const PILLARS = [
 export const WhatWeDo = () => {
   return (
     <section id="what-we-do" className={sectionShell} aria-labelledby="what-we-do-heading">
-      {/* Soft stage glow — depth without competing with type. */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[min(55%,420px)] opacity-70"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 80% at 50% 0%, rgba(var(--accent-rgb), 0.09), transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div className={sectionContainer}>
         <motion.div
           variants={staggerContainer}
@@ -57,41 +45,37 @@ export const WhatWeDo = () => {
         >
           <motion.div
             variants={slideUp}
-            className={cn(sectionHeader, "md:max-w-[min(100%,52rem)]")}
+            className={cn(sectionHeader, "md:max-w-[min(100%,40rem)]")}
           >
-            <div className={sectionLabel}>
-              <div className={sectionLabelRule} aria-hidden="true" />
-              What we do
-            </div>
+            <p className={sectionLabel}>What we do</p>
             <h2 id="what-we-do-heading" className={sectionTitle}>
               We build the software layer underneath molecular simulation.
             </h2>
             <p className={sectionLead}>
-              Not one product — a set of open-source packages covering the path from a structure on
-              your screen to a result someone else can rerun.
+              Not one product — open-source packages for the full path: build a system, run it, keep
+              the result reusable. Nine packages install today; use one, or the stack.
             </p>
           </motion.div>
 
           <motion.ul
             variants={staggerContainer}
-            className="m-0 grid list-none gap-10 p-0 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12 xl:gap-16"
+            className="m-0 grid list-none gap-0 border-t border-border/60 p-0 sm:grid-cols-2 lg:grid-cols-3"
           >
             {PILLARS.map((pillar, index) => (
               <motion.li
                 key={pillar.title}
                 variants={slideUp}
-                className="group relative flex flex-col gap-4 border-t border-border/50 pt-6"
+                className={cn(
+                  "flex flex-col gap-3 border-border/60 py-8 sm:px-6 lg:px-8",
+                  "border-b sm:border-b-0",
+                  index > 0 && "sm:border-l",
+                  index === 0 && "sm:pl-0",
+                  index === PILLARS.length - 1 && "sm:pr-0 lg:pr-0",
+                  /* On 2-col, third item spans cleanly without a lonely cell */
+                  index === 2 &&
+                    "sm:col-span-2 sm:border-l-0 sm:border-t sm:pl-0 lg:col-span-1 lg:border-l lg:border-t-0 lg:pl-8",
+                )}
               >
-                <span
-                  className="font-['Outfit',sans-serif] text-[11px] font-semibold tabular-nums tracking-[0.22em] text-primary/70"
-                  aria-hidden="true"
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <div
-                  className="h-px w-12 bg-gradient-to-r from-primary/70 via-primary/30 to-transparent transition-[width] duration-300 group-hover:w-20"
-                  aria-hidden="true"
-                />
                 <h3 className={sectionH3}>{pillar.title}</h3>
                 <p className={cn(sectionBody, "max-w-sm")}>{pillar.body}</p>
               </motion.li>

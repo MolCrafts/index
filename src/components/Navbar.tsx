@@ -79,7 +79,7 @@ export const Navbar = () => {
             whileTap={{ scale: 0.98 }}
           >
             <LogoIcon />
-            <span className="gradient-text-primary">MolCrafts</span>
+            <span className="text-foreground">MolCrafts</span>
           </motion.a>
         </div>
 
@@ -228,9 +228,7 @@ export const Navbar = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] border-l border-border">
                 <SheetHeader className="text-left mb-8">
-                  <SheetTitle className="text-xl font-bold gradient-text-primary">
-                    MolCrafts
-                  </SheetTitle>
+                  <SheetTitle className="text-xl font-bold text-foreground">MolCrafts</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-3">
                   <a
@@ -293,7 +291,7 @@ export const Navbar = () => {
                           href="#participate"
                           className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
                         >
-                          Participate
+                          Work with us
                         </a>
                       </SheetClose>
                     </>
