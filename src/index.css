@@ -9,8 +9,28 @@ html {
 
 body {
   background-color: hsl(var(--background));
+  background-image: radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.05), transparent 70%),
+    radial-gradient(circle at 50% 100%, hsl(var(--primary) / 0.05), transparent 70%);
   position: relative;
   overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0.2;
+  background-image: radial-gradient(circle at 10% 10%, hsl(var(--primary) / 2%), transparent 35%),
+    radial-gradient(circle at 90% 30%, hsl(var(--primary) / 2%), transparent 35%),
+    radial-gradient(circle at 60% 50%, hsl(var(--primary) / 1%), transparent 55%),
+    radial-gradient(circle at 20% 70%, hsl(var(--primary) / 2%), transparent 40%),
+    radial-gradient(circle at 80% 90%, hsl(var(--primary) / 2%), transparent 35%);
+  filter: blur(70px);
+  pointer-events: none;
 }
 
 /* Hero background shadow */
@@ -255,100 +275,116 @@ section::before {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  background-size: 100% auto;
-  /* Static brand ramp — infinite sweep reads as startup chrome, not premium. */
-  animation: none;
+  background-size: 200% auto;
+  /* Slower sweep reads more premium than a fast loop. */
+  animation: brand-gradient-x 4.5s linear infinite;
 }
 
-/*
- * Quiet page field — one soft top vignette from brand primary (forest).
- * Cyan fog stacks read as AI-startup template; keep atmosphere institutional.
- */
+/* Soft atmospheric field behind the page (brand cyan, layered depth). */
 .page-atmosphere {
   pointer-events: none;
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: radial-gradient(ellipse 80% 45% at 50% -8%, hsl(var(--primary) / 7%), transparent 58%);
+  background: radial-gradient(
+      ellipse 90% 55% at 50% -12%,
+      rgba(var(--accent-rgb), 0.16),
+      transparent 58%
+    ), radial-gradient(ellipse 55% 45% at 100% 35%, rgba(var(--accent-rgb), 0.08), transparent 52%),
+    radial-gradient(ellipse 45% 40% at 0% 65%, hsl(var(--primary) / 10%), transparent 48%),
+    radial-gradient(ellipse 40% 30% at 70% 100%, rgba(var(--accent-rgb), 0.05), transparent 50%);
 }
 
 .dark .page-atmosphere {
   background: radial-gradient(
-    ellipse 80% 45% at 50% -8%,
-    hsl(var(--primary) / 10%),
-    transparent 58%
-  );
+      ellipse 90% 55% at 50% -12%,
+      rgba(var(--accent-rgb), 0.14),
+      transparent 58%
+    ), radial-gradient(ellipse 55% 45% at 100% 28%, rgba(52, 211, 153, 0.06), transparent 52%),
+    radial-gradient(ellipse 50% 40% at 0% 75%, rgba(var(--accent-rgb), 0.08), transparent 48%),
+    radial-gradient(ellipse 40% 30% at 60% 100%, rgba(var(--accent-rgb), 0.05), transparent 50%);
 }
 
-/* Optional hairline for section marks — no glow. */
+/* Label rule with a soft brand tip — used on section eyebrows. */
 .section-label-rule {
   height: 1px;
-  width: 2.5rem;
+  width: 3.5rem;
   flex-shrink: 0;
   background: linear-gradient(
     90deg,
-    hsl(var(--primary) / 70%),
-    hsl(var(--primary) / 20%),
+    hsl(var(--primary) / 95%),
+    hsl(var(--primary) / 40%),
     transparent
   );
+  box-shadow: 0 0 14px hsl(var(--primary) / 40%), 0 0 28px hsl(var(--primary) / 18%);
 }
 
-/* Solid primary chip — kept for product pages that still reference it. */
+/* Hero / band primary link — glass chip with cyan edge light. */
 .premium-link {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border-radius: 0.4rem;
-  border: 1px solid transparent;
-  background: hsl(var(--primary));
+  border-radius: 9999px;
+  /* enables group-hover on child icons when class is composed with Tailwind `group` */
+  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  background: rgba(var(--accent-rgb), 0.06);
   padding: 0.7rem 1.25rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   text-decoration: none;
-  color: hsl(var(--primary-foreground));
-  box-shadow: var(--molcrafts-shadow);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  color: #03a3d7;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.06) inset, 0 8px 28px -12px
+    rgba(var(--accent-rgb), 0.35);
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s
+    ease;
 }
 
 .premium-link:hover {
-  background: hsl(var(--primary) / 90%);
-  box-shadow: var(--molcrafts-shadow-lg);
+  border-color: rgba(var(--accent-rgb), 0.5);
+  background: rgba(var(--accent-rgb), 0.12);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.1) inset, 0 12px 36px -10px
+    rgba(var(--accent-rgb), 0.45);
   transform: translateY(-1px);
 }
 
 .premium-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--primary) / 55%);
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px rgba(var(--accent-rgb), 0.55);
 }
 
+/* Ghost companion next to premium-link (e.g. GitHub). */
 .premium-link-ghost {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border-radius: 0.4rem;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--card) / 70%);
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--border) / 70%);
+  background: hsl(var(--background) / 40%);
   padding: 0.7rem 1.25rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   text-decoration: none;
-  color: hsl(var(--foreground));
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  color: #03a3d7;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
 .premium-link-ghost:hover {
-  border-color: hsl(var(--primary) / 35%);
-  background: hsl(var(--card));
+  border-color: rgba(var(--accent-rgb), 0.35);
+  background: rgba(var(--accent-rgb), 0.06);
   transform: translateY(-1px);
 }
 
 .premium-link-ghost:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--primary) / 55%);
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px rgba(var(--accent-rgb), 0.55);
 }
 
 .gradient-text-primary {

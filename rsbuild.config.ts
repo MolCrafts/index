@@ -53,7 +53,7 @@ export default defineConfig({
     /* No `lang` option here — rsbuild has none. The <html lang> attribute is added
        in scripts/prerender-html.ts, which already rewrites the HTML per route. */
     favicon: "./src/assets/moko.svg",
-    title: "MolCrafts – Open-source infrastructure for molecular simulation",
+    title: "MolCrafts – AI-assisted infra for molecular science",
     tags: [
       ...analyticsTags,
       {
@@ -80,7 +80,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:title",
-          content: "MolCrafts – Open-source infrastructure for molecular simulation",
+          content: "MolCrafts – AI-assisted infra for molecular science",
         },
       },
       {
@@ -88,7 +88,7 @@ export default defineConfig({
         attrs: {
           property: "og:description",
           content:
-            "MolCrafts is open-source infrastructure for molecular simulation workflows. Packages install independently and share one record format so results stay reusable across people, tools, and agents.",
+            "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
         },
       },
       { tag: "meta", attrs: { property: "og:type", content: "website" } },
@@ -104,7 +104,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:image:alt",
-          content: "MolCrafts – Open-source infrastructure for molecular simulation",
+          content: "MolCrafts – AI-assisted infra for molecular science",
         },
       },
     ],
@@ -115,14 +115,14 @@ export default defineConfig({
       charset: { charset: "UTF-8" },
       viewport: "width=device-width, initial-scale=1.0",
       description:
-        "MolCrafts is open-source infrastructure for molecular simulation workflows. Packages install independently and share one record format so results stay reusable across people, tools, and agents.",
+        "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
       keywords:
         "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, python, rust, reproducible research",
       author: "MolCrafts",
       "twitter:card": "summary_large_image",
-      "twitter:title": "MolCrafts – Open-source infrastructure for molecular simulation",
+      "twitter:title": "MolCrafts – AI-assisted infra for molecular science",
       "twitter:description":
-        "MolCrafts is open-source infrastructure for molecular simulation workflows. Packages install independently and share one record format so results stay reusable across people, tools, and agents.",
+        "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
       "twitter:image": "https://molcrafts.org/og/index.png",
     },
   },

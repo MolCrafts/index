@@ -24,11 +24,12 @@ export const generateLlmsTxt = (distDir: string) => {
   const lines: string[] = [
     "# MolCrafts",
     "",
-    "> Open-source infrastructure for molecular simulation: packages for building and",
-    "> running workflows, keeping every result reusable across people, tools, and agents.",
+    "> We build AI-assisted infra for molecular science: open-source packages for building",
+    "> and running molecular simulations, training models, and keeping every result",
+    "> traceable by people and agents alike.",
     "",
     "Each package installs and runs on its own — taking one does not pull in the rest.",
-    "They share one record format, so one tool's output is input to the next.",
+    "They agree on one record format, so one tool's output is readable by the next.",
     "",
   ];
 

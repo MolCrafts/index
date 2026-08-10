@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { slideUp, staggerContainer } from "../lib/animations";
 import {
   sectionBandRow,
   sectionContainer,
   sectionLabel,
+  sectionLabelRule,
   sectionShellBand,
 } from "../lib/sectionStyles";
 import { cn } from "../lib/utils";
+
+/** Section accent — intentional purple, not theme primary. */
+const ACCENT = "#a855f7";
 
 export const Newsletter = () => {
   return (
@@ -18,30 +22,70 @@ export const Newsletter = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className={cn(sectionBandRow, "border-t border-border/60 pt-10")}
+          className="flex flex-col gap-3"
         >
-          <motion.div variants={slideUp} className="flex shrink-0 flex-col gap-2">
-            <p className={sectionLabel}>Updates</p>
-            <p className="text-xl font-medium leading-snug text-foreground md:text-2xl">
-              Release notes when packages change.
-            </p>
-          </motion.div>
+          <div className={sectionBandRow}>
+            <motion.div variants={slideUp} className="flex shrink-0 flex-col gap-3">
+              <div className={sectionLabel}>
+                <div className={sectionLabelRule} aria-hidden="true" />
+                Updates
+              </div>
+              <p className="text-xl font-light leading-snug text-foreground md:text-2xl">
+                Follow the work as it ships.
+              </p>
+            </motion.div>
 
-          <motion.div variants={slideUp} className="flex shrink-0 items-center md:justify-self-end">
-            {/* Until a real email provider is wired, link to something that works. */}
-            <a
-              href="https://github.com/MolCrafts/index/releases"
-              target="_blank"
-              rel="noreferrer noopener"
-              className={cn(
-                "group inline-flex items-center gap-2 text-sm font-semibold text-primary no-underline",
-                "transition-opacity hover:opacity-85",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-              )}
+            <motion.div
+              variants={slideUp}
+              className="flex shrink-0 items-center gap-4 md:justify-self-end"
             >
-              Watch releases on GitHub
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
+              <div
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+                style={{
+                  backgroundColor: `${ACCENT}1f`,
+                  boxShadow: `0 0 24px ${ACCENT}30`,
+                }}
+                aria-hidden="true"
+              >
+                <Mail className="h-5 w-5" style={{ color: ACCENT }} />
+              </div>
+
+              {/* The previous email form had no endpoint: it set local state, cleared the
+                  field, and told the visitor "Subscribed". It collected addresses and threw
+                  them away. Until a real provider is wired up, this links to something that
+                  actually works and needs no backend. */}
+              <a
+                href="https://github.com/MolCrafts/index/releases"
+                target="_blank"
+                rel="noreferrer noopener"
+                className={cn(
+                  "group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.2em]",
+                  "no-underline transition-all hover:gap-3",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                )}
+                style={{ color: ACCENT }}
+              >
+                Watch releases on GitHub
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
+            </motion.div>
+          </div>
+
+          <motion.div variants={slideUp} className="hidden items-center gap-2 md:flex">
+            <div
+              className="h-px flex-1"
+              style={{
+                background: `linear-gradient(90deg, transparent 0%, ${ACCENT}30 30%, ${ACCENT}cc 100%)`,
+                boxShadow: `0 0 12px ${ACCENT}80, 0 0 24px ${ACCENT}40`,
+              }}
+            />
+            <div
+              className="h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{
+                backgroundColor: ACCENT,
+                boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${ACCENT}80`,
+              }}
+            />
           </motion.div>
         </motion.div>
       </div>

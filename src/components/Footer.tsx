@@ -2,7 +2,6 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { fadeIn, staggerContainer } from "../lib/animations";
-import { BRAND_TAGLINE } from "../lib/brandCopy";
 import { contactHref } from "../lib/contact";
 import { sectionContainer, sectionSubLabel } from "../lib/sectionStyles";
 import { cn } from "../lib/utils";
@@ -98,10 +97,10 @@ export const Footer = () => {
             className="inline-flex items-center gap-2 text-xl font-bold no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <LogoIcon />
-            <span className="text-foreground">MolCrafts</span>
+            <span className="gradient-text-primary">MolCrafts</span>
           </a>
           <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-base">
-            {BRAND_TAGLINE}
+            We build AI-assisted infra for molecular science.
           </p>
           <a
             href="https://github.com/MolCrafts"

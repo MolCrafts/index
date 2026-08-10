@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "../lib/brandCopy";
 
 interface SEOSchemaProps {
   path: string;
@@ -22,7 +21,8 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@id": "https://molcrafts.org/#organization",
             name: "MolCrafts",
             url: "https://molcrafts.org",
-            description: BRAND_DESCRIPTION,
+            description:
+              "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
             sameAs: ["https://github.com/MolCrafts"],
           },
           {
@@ -41,8 +41,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebSite",
             "@id": "https://molcrafts.org/#website",
             url: "https://molcrafts.org",
-            name: `MolCrafts – ${BRAND_TAGLINE}`,
-            description: BRAND_DESCRIPTION,
+            name: "MolCrafts – AI-assisted infra for molecular science",
+            description:
+              "MolCrafts builds AI-assisted infra for molecular science. Packages install independently and share one record format, so results stay reusable across people, tools, and agents.",
             publisher: {
               "@id": "https://molcrafts.org/#organization",
             },
@@ -51,8 +52,9 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebPage",
             "@id": "https://molcrafts.org/#webpage",
             url: "https://molcrafts.org",
-            name: `MolCrafts – ${BRAND_TAGLINE}`,
-            description: BRAND_DESCRIPTION,
+            name: "MolCrafts – AI-assisted infra for molecular science",
+            description:
+              "MolCrafts builds AI-assisted infra for molecular science. Packages install independently and share one record format, so results stay reusable across people, tools, and agents.",
             isPartOf: {
               "@id": "https://molcrafts.org/#website",
             },
