@@ -5,7 +5,7 @@
   &nbsp;molcrafts-index
 </h1>
 
-<p><strong>The MolCrafts ecosystem landing-page website — molcrafts.org</strong></p>
+<p><strong>The MolCrafts commercial company website — molcrafts.org</strong></p>
 
 <p>
   <img src="https://img.shields.io/badge/license-MIT-18432B?style=flat-square" alt="License">
@@ -13,14 +13,47 @@
 
 </div>
 
-`molcrafts-index` is the React/TypeScript single-page application that renders
-[molcrafts.org](https://molcrafts.org) — the home page for the MolCrafts open
-molecular software ecosystem. A single repository serves both the main landing
-page and a dedicated landing page for every product in the ecosystem.
+`molcrafts-index` is the React/TypeScript application behind
+[molcrafts.org](https://molcrafts.org). The root route is MolCrafts' commercial
+company homepage; the same repository also serves dedicated product landing
+pages.
 
 It is built with [Rsbuild](https://rsbuild.dev), React 18, TailwindCSS, and
 Radix UI primitives, with static HTML prerendering and Open Graph image
 generation at build time.
+
+## Homepage contract
+
+The root route is designed for company-level understanding and collaboration:
+
+- Tell a clear brand story around molecular and materials R&D, scientific
+  computing, AI applications, and professional collaboration.
+- Keep gradient typography and atmospheric glow as intentional MolCrafts brand
+  devices. The hero carries the strongest expression.
+- Keep product screenshots out of the hero. Screenshots and research imagery
+  appear only in the Applications showcase.
+- On desktop, the focused Application card enlarges and automatically rotates
+  through real images while neighboring cards recede. Mobile uses one active
+  card with swipe/tap navigation and equivalent image rotation.
+- Keep Docs links, install instructions, APIs, dependencies, release status,
+  architecture details, and fake terminal language off every homepage surface.
+- Lead visitors toward Applications, capabilities, collaboration, and Contact.
+  GitHub remains a secondary exit within the open-source route or footer.
+- Use only verifiable facts, real imagery, and confirmed supporters. Do not
+  invent customers, results, metrics, testimonials, or product UI.
+
+Canonical positioning and Chinese-copy rules live in
+[`.agents/product-marketing.md`](.agents/product-marketing.md).
+
+## Homepage narrative
+
+1. Hero — company thesis and primary action
+2. Brand statement — the point of view behind MolCrafts
+3. Capabilities — what the company can help research teams accomplish
+4. Applications — interactive, image-led application stories
+5. Collaboration — Open source, Consulting, and Enterprise paths
+6. Trust and support — verified signals only
+7. Closing CTA and footer — a direct route to Contact
 
 ## Development
 
@@ -33,34 +66,15 @@ npm run lint       # Biome lint over src/
 npm run typecheck  # TypeScript type-check (tsc --noEmit)
 ```
 
-## MolCrafts ecosystem
+## Repository map
 
-### Products (`mol*`)
-
-| Project | Role |
-|---------|------|
-| [Atomiverse](https://github.com/MolCrafts/Atomiverse) | C++ / CUDA molecular simulation engine (MD, SCF/DFT, AIMD) |
-| [molpy](https://github.com/MolCrafts/molpy)     | Python toolkit for molecular workflows |
-| [molrs](https://github.com/MolCrafts/molrs)     | Rust core — data structures, I/O, force fields, WASM |
-| [molpack](https://github.com/MolCrafts/molpack) | Packmol-grade molecular packing (Rust + Python) |
-| [molnex](https://github.com/MolCrafts/molnex)   | Layered molecular ML framework |
-| [molrec](https://github.com/MolCrafts/molrec)   | Backend-neutral atomistic record contract |
-| [molexp](https://github.com/MolCrafts/molexp)   | Agent-assisted experiment platform |
-| [molq](https://github.com/MolCrafts/molq)       | Unified job queue — local / SLURM / PBS / LSF |
-| [molhub](https://github.com/MolCrafts/molhub)   | Molecular benchmark datasets & uploaders |
-| [molvis](https://github.com/MolCrafts/molvis)   | Interactive 3D visualization (web / VSCode / Jupyter) |
-| [molplot](https://github.com/MolCrafts/molplot) | Unified scientific charting (Vega-Lite + matplotlib) |
-| [molmcp](https://github.com/MolCrafts/molmcp)   | MCP server for AI agents across the ecosystem |
-| [molcfg](https://github.com/MolCrafts/molcfg)   | Layered configuration library |
-| [mollog](https://github.com/MolCrafts/mollog)   | Structured logging, stdlib-compatible |
-| [molqrc](https://github.com/MolCrafts/molqrc)   | QR code generator library in Rust |
-
-### Developer tools (`molcrafts-*`)
-
-| Project | Role |
-|---------|------|
-| [molcrafts-harness](https://github.com/MolCrafts/molcrafts-harness) | Agent harness / Claude Code plugin marketplace |
-| [molcrafts-zensical-theme](https://github.com/MolCrafts/molcrafts-zensical-theme) | Shared Zensical docs theme |
+- `src/components/` — homepage and shared presentation components
+- `src/pages/` — dedicated product landing pages
+- `src/lib/` — route, product, contact, and visual registries
+- `src/styles/` — MolCrafts brand tokens and global presentation
+- `scripts/` — prerendering, metadata, and social-image generation
+- `.agents/product-marketing.md` — canonical homepage positioning and copy rules
+- `.claude/notes/` — passive project and architecture knowledge
 
 ## License
 

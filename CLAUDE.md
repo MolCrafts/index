@@ -26,9 +26,10 @@ mol_project:
 
 ## What this repo is
 
-MolCrafts' React/TypeScript brand and product website at `molcrafts.org`. It
-serves scientists, scientific-software builders, labs, sponsors, and
-collaborators through a statically prerendered Rsbuild application.
+MolCrafts' React/TypeScript commercial company and product website at
+`molcrafts.org`. The homepage presents the company, scientific capabilities,
+applications, and collaboration routes; dedicated product pages carry the
+technical product stories.
 
 ## Where things live
 
@@ -63,6 +64,9 @@ convenience. A carve-out exists only when the operator records it there.
 - **Never duplicate motion variants in components.** Reuse `src/lib/animations.ts`.
 - **Never hand-edit `src/components/ui/`.** Generate shadcn primitives and wrap them elsewhere.
 - **Never let brand tokens drift from the docs theme.** Keep the two token files byte-identical.
+- **Never modify more than one website page per task.** Scope shared changes to that page only.
+- **Never change user-facing copy without prior operator approval of the exact wording.**
+- **Never violate the commercial homepage contract.** Preserve gradient/glow, keep hero imagery-free, confine product imagery to Applications, and keep Docs/technical detail off `/`.
 - **Never add `console.log`, secrets, `any`, or an unexplained `@ts-ignore`.**
 - **Never bulk-reindent mixed-format files.** Keep diffs semantically scoped.
 - **Never break the product/docs/app URL contract.** Preserve the established host and path split.
@@ -84,4 +88,18 @@ For non-trivial work, prefer:
 <!-- mol:note:topic:preserve-marketing-copy -->
 ## Design work
 
-- Preserve all existing user-facing copy verbatim during visual work unless the operator explicitly requests copy editing. Beautification may change layout, typography, spacing, color, imagery, responsive behavior, and interaction—not wording.
+- `.agents/product-marketing.md` governs verified facts, audiences, brand voice,
+  and homepage content boundaries.
+- `.claude/notes/marketing-keywords.md` is the canonical identity,
+  differentiation, and construction frame for marketing copy; it supersedes
+  conflicting vocabulary or positioning in older harness material.
+- Treat `/` as a commercial company homepage: company narrative, scientific
+  capabilities, Applications, collaboration, trust, and Contact form its path.
+- Preserve gradient text and glow as required brand devices. Art-direct their
+  intensity and placement; never remove them as a generic anti-template cleanup.
+- Keep product imagery out of the hero. Product screenshots and research images
+  belong only in the Applications showcase, where a focused card enlarges and
+  rotates through real images with keyboard, mobile, and reduced-motion support.
+- Do not put Docs links or technical detail anywhere on the homepage, including
+  its navigation, body, CTA, and footer. Product pages, GitHub, and the separate
+  documentation host retain their own technical roles.

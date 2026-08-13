@@ -51,7 +51,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
       {
         title: "MolPy",
         href: "/molpy",
-        role: "Python toolkit",
+        role: "molecular toolkit",
         description: "Builds, types, and exports molecular systems.",
         color: PRODUCT_ACCENTS.molpy.chip.color,
         bg: PRODUCT_ACCENTS.molpy.chip.bg,
@@ -124,7 +124,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
       {
         title: "MolRs",
         href: "/molrs",
-        role: "Rust core",
+        role: "compute core",
         description: "Data structures, file I/O, and compute kernels under MolPy.",
         color: PRODUCT_ACCENTS.molrs.chip.color,
         bg: PRODUCT_ACCENTS.molrs.chip.bg,
@@ -152,7 +152,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
         title: "MolLog",
         href: "/mollog",
         role: "logging layer",
-        description: "Drop-in structured logging for Python.",
+        description: "Drop-in structured logging.",
         color: PRODUCT_ACCENTS.mollog.chip.color,
         bg: PRODUCT_ACCENTS.mollog.chip.bg,
         hex: "#0ea5e9",

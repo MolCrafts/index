@@ -14,14 +14,14 @@ export const routes: OgRoute[] = [
   {
     path: "/",
     slug: "index",
-    kicker: "Shaping Molecular Simulation for AI Era",
+    kicker: "Molecular and materials R&D",
     title: "MolCrafts",
-    subtitle: "We build AI-assisted infra for molecular science",
+    subtitle: "Scientific computing, AI applications, and research collaboration",
     gradient: ["#2a6744", "#55a572", "#18432b"],
     subGradient: ["#c8841d", "#f2da9d", "#c8841d"],
-    ogTitle: "MolCrafts – AI-assisted infra for molecular science",
+    ogTitle: "MolCrafts – Molecular and materials R&D",
     ogDescription:
-      "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
+      "MolCrafts brings scientific computing, AI, and research expertise to molecular and materials R&D, from application exploration to long-term collaboration.",
   },
   {
     path: "/molpy",

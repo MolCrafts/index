@@ -76,23 +76,6 @@ export const Cta = () => {
               />
             </motion.a>
           </div>
-
-          <motion.div variants={slideUp} className="hidden items-center gap-2 md:flex">
-            <div
-              className="h-px flex-1"
-              style={{
-                background: `linear-gradient(90deg, transparent 0%, ${accentAlpha(0.19)} 30%, ${accentAlpha(0.8)} 100%)`,
-                boxShadow: `0 0 12px ${accentAlpha(0.5)}, 0 0 24px ${accentAlpha(0.25)}`,
-              }}
-            />
-            <div
-              className="h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{
-                backgroundColor: ACCENT,
-                boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${accentAlpha(0.5)}`,
-              }}
-            />
-          </motion.div>
         </motion.div>
       </div>
     </section>

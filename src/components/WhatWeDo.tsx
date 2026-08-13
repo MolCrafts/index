@@ -22,7 +22,7 @@ import { cn } from "../lib/utils";
 const PILLARS = [
   {
     title: "Build and run",
-    body: "Construct and pack molecular systems, export them to simulation engines, and submit the runs to any scheduler — from Python or Rust.",
+    body: "Construct and pack molecular systems, export them to simulation engines, and submit the runs to any scheduler.",
   },
   {
     title: "Keep the context",

@@ -70,23 +70,6 @@ export const Newsletter = () => {
               </a>
             </motion.div>
           </div>
-
-          <motion.div variants={slideUp} className="hidden items-center gap-2 md:flex">
-            <div
-              className="h-px flex-1"
-              style={{
-                background: `linear-gradient(90deg, transparent 0%, ${ACCENT}30 30%, ${ACCENT}cc 100%)`,
-                boxShadow: `0 0 12px ${ACCENT}80, 0 0 24px ${ACCENT}40`,
-              }}
-            />
-            <div
-              className="h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{
-                backgroundColor: ACCENT,
-                boxShadow: `0 0 8px ${ACCENT}, 0 0 16px ${ACCENT}80`,
-              }}
-            />
-          </motion.div>
         </motion.div>
       </div>
     </section>

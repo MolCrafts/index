@@ -104,7 +104,7 @@ export const Participate = () => {
 
           <motion.ul
             variants={staggerContainer}
-            className="m-0 grid list-none gap-0 border-t border-border/55 p-0 md:grid-cols-3"
+            className="m-0 grid list-none gap-0 p-0 md:grid-cols-3"
           >
             {PATHS.map((path, index) => {
               const Icon = path.Icon;
@@ -113,9 +113,7 @@ export const Participate = () => {
                   key={path.title}
                   variants={slideUp}
                   className={cn(
-                    "flex flex-col border-border/55 py-8 md:px-6 md:py-10 lg:px-8",
-                    "border-b md:border-b-0",
-                    index > 0 && "md:border-l",
+                    "flex flex-col py-8 md:px-6 md:py-10 lg:px-8",
                     index === 0 && "md:pl-0",
                     index === PATHS.length - 1 && "md:pr-0",
                   )}

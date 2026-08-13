@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ecosystemCategories, ecosystemItems } from "../src/lib/ecosystem.ts";
+import { ecosystemItems } from "../src/lib/ecosystem.ts";
+import { en as homeCopy } from "../src/lib/home/copy/en.ts";
 import { PACKAGE_INSTALL } from "../src/lib/packages.ts";
 import { type OgRoute, routes } from "./og-meta.ts";
 
@@ -62,14 +63,52 @@ const escapeHtml = (v: string) =>
  *
  * The app is client-side rendered, so every built page shipped an empty body: about thirty
  * crawler-visible words per route, all of it head metadata. Google executes JavaScript;
- * most LLM crawlers do not, so none of the argument — the roster, the roles, the layers —
- * was reachable by the tools that increasingly decide whether a project gets recommended.
+ * many other crawlers do not, so the page's core message needs a useful HTML fallback.
  *
  * React's createRoot clears the container on mount, so this is replaced the moment the
  * bundle runs. Users never see it, except as something better than a blank screen while
  * the bundle downloads.
  */
 const rootContent = (route: OgRoute) => {
+  if (route.path === "/") {
+    const parts: string[] = [
+      `<h1>${escapeHtml(homeCopy.hero.title)} ${escapeHtml(homeCopy.hero.accent)}</h1>`,
+      `<p>${escapeHtml(homeCopy.hero.subtitle)}</p>`,
+      `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a> · <a href="mailto:hello@molcrafts.org">${escapeHtml(homeCopy.hero.secondaryCta)}</a></p>`,
+      `<h2>${escapeHtml(homeCopy.approach.title)}</h2>`,
+      `<p>${escapeHtml(homeCopy.approach.lead)}</p>`,
+      `<p>${escapeHtml(homeCopy.approach.statement)}</p>`,
+      `<h2>${escapeHtml(homeCopy.whatWeDo.title)}</h2>`,
+      `<p>${escapeHtml(homeCopy.whatWeDo.lead)}</p>`,
+      `<ul>${homeCopy.whatWeDo.pillars
+        .map(
+          (pillar) =>
+            `<li><strong>${escapeHtml(pillar.title)}</strong> — ${escapeHtml(pillar.body)}</li>`,
+        )
+        .join("")}</ul>`,
+      `<h2>${escapeHtml(homeCopy.projects.title)}</h2>`,
+      `<p>${escapeHtml(homeCopy.projects.lead)}</p>`,
+      `<ul>${Object.values(homeCopy.projects.items)
+        .map(
+          (application) =>
+            `<li><strong>${escapeHtml(application.title)}</strong> — ${escapeHtml(application.summary)}</li>`,
+        )
+        .join("")}</ul>`,
+      `<h2>${escapeHtml(homeCopy.participate.title)}</h2>`,
+      `<p>${escapeHtml(homeCopy.participate.lead)}</p>`,
+      `<ul>${Object.values(homeCopy.participate.paths)
+        .map(
+          (path) =>
+            `<li><strong>${escapeHtml(path.title)}</strong> — ${escapeHtml(path.description)}</li>`,
+        )
+        .join("")}</ul>`,
+      `<h2>${escapeHtml(homeCopy.cta.title)}</h2>`,
+      `<p>${escapeHtml(homeCopy.cta.lead)}</p>`,
+      `<p><a href="mailto:hello@molcrafts.org">${escapeHtml(homeCopy.cta.primaryCta)}</a> · <a href="/#applications">${escapeHtml(homeCopy.cta.secondaryCta)}</a></p>`,
+    ];
+    return `<main>${parts.join("")}</main>`;
+  }
+
   const parts: string[] = [`<h1>${escapeHtml(route.title)}</h1>`];
   parts.push(`<p>${escapeHtml(route.kicker)}</p>`);
   // Several routes open their description with the subtitle verbatim; printing both
@@ -79,30 +118,15 @@ const rootContent = (route: OgRoute) => {
   }
   parts.push(`<p>${escapeHtml(route.ogDescription)}</p>`);
 
-  if (route.path === "/") {
-    for (const category of ecosystemCategories) {
-      parts.push(`<h2>${escapeHtml(category.title)}</h2>`);
-      parts.push(`<p>${escapeHtml(category.blurb)}</p>`);
-      const items = category.items
-        .map((i) => {
-          const status = i.status ? ` (${escapeHtml(i.status)})` : "";
-          const href = i.href.startsWith("/") ? `${i.href}/` : i.href;
-          return `<li><a href="${escapeAttr(href)}"><strong>${escapeHtml(i.title)}</strong></a> — ${escapeHtml(i.role)}${status}. ${escapeHtml(i.description)}</li>`;
-        })
-        .join("");
-      parts.push(`<ul>${items}</ul>`);
-    }
-  } else {
-    const slug = route.slug;
-    const item = ecosystemItems.find((i) => i.href === `/${slug}`);
-    if (item) parts.push(`<p>${escapeHtml(item.role)} — ${escapeHtml(item.description)}</p>`);
-    const pkg = PACKAGE_INSTALL[slug];
-    if (pkg?.command) parts.push(`<p>Install: <code>${escapeHtml(pkg.command)}</code></p>`);
-    else if (pkg?.note) parts.push(`<p>${escapeHtml(pkg.note)}</p>`);
-    parts.push(
-      `<p><a href="https://docs.molcrafts.org/${escapeAttr(slug)}/">Documentation</a> · <a href="https://github.com/MolCrafts">Source on GitHub</a> · <a href="/#projects">All MolCrafts packages</a></p>`,
-    );
-  }
+  const slug = route.slug;
+  const item = ecosystemItems.find((i) => i.href === `/${slug}`);
+  if (item) parts.push(`<p>${escapeHtml(item.role)} — ${escapeHtml(item.description)}</p>`);
+  const pkg = PACKAGE_INSTALL[slug];
+  if (pkg?.command) parts.push(`<p>Install: <code>${escapeHtml(pkg.command)}</code></p>`);
+  else if (pkg?.note) parts.push(`<p>${escapeHtml(pkg.note)}</p>`);
+  parts.push(
+    `<p><a href="https://docs.molcrafts.org/${escapeAttr(slug)}/">Documentation</a> · <a href="https://github.com/MolCrafts">Source on GitHub</a> · <a href="/#applications">MolCrafts applications</a></p>`,
+  );
   return `<main>${parts.join("")}</main>`;
 };
 

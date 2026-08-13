@@ -9,9 +9,6 @@ const MoleculeOverlay = lazy(() =>
   })),
 );
 
-/** Brand display cyan (#03a3d7) — solid subtitle; wordmark uses the ramp. */
-const BRAND_CYAN = "#03a3d7";
-
 export const Hero = () => {
   return (
     <motion.section
@@ -22,22 +19,22 @@ export const Hero = () => {
       variants={fadeIn}
       aria-labelledby="main-heading"
     >
-      {/* Deep center stage glow — dual layer for depth */}
+      {/* Forest stage glow — cyan reserved for the wordmark only */}
       <div
-        className="pointer-events-none absolute left-1/2 top-[42%] h-[min(75vw,560px)] w-[min(95vw,820px)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70"
+        className="pointer-events-none absolute left-1/2 top-[42%] h-[min(75vw,560px)] w-[min(95vw,820px)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(3,163,215,0.22) 0%, rgba(3,163,215,0.08) 38%, transparent 68%)",
-          filter: "blur(10px)",
+            "radial-gradient(ellipse at center, hsl(var(--primary) / 0.18) 0%, hsl(var(--primary) / 0.06) 42%, transparent 70%)",
+          filter: "blur(12px)",
         }}
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute left-1/2 top-[48%] h-[min(40vw,280px)] w-[min(55vw,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
+        className="pointer-events-none absolute left-1/2 top-[48%] h-[min(40vw,280px)] w-[min(55vw,420px)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(140,228,255,0.16) 0%, transparent 70%)",
-          filter: "blur(20px)",
+            "radial-gradient(ellipse at center, hsl(var(--primary) / 0.1) 0%, transparent 72%)",
+          filter: "blur(24px)",
         }}
         aria-hidden="true"
       />
@@ -59,34 +56,6 @@ export const Hero = () => {
         aria-hidden="true"
       />
 
-      <div
-        className="molecular-glow"
-        style={{ top: "30%", left: "50%", width: "340px", height: "340px" }}
-        aria-hidden="true"
-      />
-      <div
-        className="molecular-glow"
-        style={{
-          top: "60%",
-          left: "30%",
-          width: "220px",
-          height: "220px",
-          animationDelay: "3s",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="molecular-glow"
-        style={{
-          top: "20%",
-          right: "20%",
-          width: "280px",
-          height: "280px",
-          animationDelay: "5s",
-        }}
-        aria-hidden="true"
-      />
-
       <Suspense fallback={null}>
         <MoleculeOverlay />
       </Suspense>
@@ -97,7 +66,7 @@ export const Hero = () => {
       >
         <motion.header className="flex w-full flex-col items-center justify-center">
           <motion.h3
-            className="mb-4 font-['Playfair_Display',serif] text-2xl font-medium italic text-primary sm:mb-6 sm:text-3xl md:text-4xl"
+            className="mb-4 font-['Playfair_Display',serif] text-2xl font-medium italic text-primary/85 sm:mb-6 sm:text-3xl md:text-4xl"
             initial={{ opacity: 0, y: -12, filter: "blur(6px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ delay: 0.12, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
@@ -105,7 +74,7 @@ export const Hero = () => {
             Shaping Molecular Simulation for AI Era
           </motion.h3>
 
-          {/* Cyan → blue gradient + sweep — only the wordmark */}
+          {/* Brand cyan ramp — the only full-strength cyan moment on the hero */}
           <motion.h1
             id="main-heading"
             className="mb-6 w-full text-center font-sans text-5xl font-extrabold leading-[1] tracking-tighter gradient-text-primary sm:mb-8 sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem]"
@@ -117,8 +86,7 @@ export const Hero = () => {
           </motion.h1>
 
           <motion.h2
-            className="mx-auto w-full max-w-4xl font-['Outfit',sans-serif] text-lg font-semibold uppercase tracking-[0.2em] sm:text-xl md:text-2xl"
-            style={{ color: BRAND_CYAN }}
+            className="mx-auto w-full max-w-4xl font-['Outfit',sans-serif] text-lg font-medium uppercase tracking-[0.18em] text-muted-foreground sm:text-xl md:text-2xl"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.38, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}

@@ -1,0 +1,10 @@
+{
+  "date": "2026-08-13",
+  "framework": "React 18 with Rsbuild",
+  "styling": "Tailwind CSS v4 with shared HSL brand tokens",
+  "fonts": ["Space Grotesk", "DM Sans", "JetBrains Mono"],
+  "palette": "MolCrafts forest, cyan, sand, and deep slate",
+  "motion": "Framer Motion with a project-level reduced-motion policy",
+  "spacing": "Tailwind spacing with a portable 4-point semantic scale",
+  "preserved": ["font stack", "brand palette", "gradient text", "glow", "fullpage narrative"]
+}

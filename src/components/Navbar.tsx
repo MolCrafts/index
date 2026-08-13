@@ -1,30 +1,27 @@
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ChevronDown, Menu } from "lucide-react";
-import { ecosystemCategories } from "../lib/ecosystem";
-import { pathProductSlug } from "../lib/routes";
+import { GITHUB_ORG_HREF } from "../lib/home/data";
+import { useLocalizedEcosystem } from "../lib/i18n/catalogCopy";
+import { useChromeCopy } from "../lib/i18n/chromeCopy";
 import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
+import { LocaleToggle } from "./LocaleToggle";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 
 export const Navbar = () => {
+  const chrome = useChromeCopy();
+  const ecosystemCategories = useLocalizedEcosystem();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [currentPath, setCurrentPath] = useState(
     typeof window !== "undefined" ? window.location.pathname : "/",
   );
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleLocationChange = () => {
@@ -33,18 +30,6 @@ export const Navbar = () => {
     window.addEventListener("popstate", handleLocationChange);
     return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
-
-  const isSubpage = currentPath !== "/";
-  /**
-   * Gate on a real product slug, not on `isSubpage`. The old version built the docs URL
-   * from `currentPath.split("/")[1]`, so any 404 path — `/foobar` — produced a prominent
-   * link to `docs.molcrafts.org/foobar/`, a guaranteed dead end shown to a visitor who is
-   * already lost. Anything that is not a known product falls back to the docs root.
-   */
-  const productSlug = pathProductSlug(currentPath);
-  const docsLink = productSlug
-    ? `https://docs.molcrafts.org/${productSlug}/`
-    : "https://docs.molcrafts.org/";
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -57,24 +42,63 @@ export const Navbar = () => {
     }, 300);
   };
 
+  const isHome = currentPath === "/" || currentPath === "";
+
+  if (isHome) {
+    return (
+      <motion.header
+        className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4"
+        initial={{ y: -16, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.48 }}
+      >
+        <div className="pointer-events-auto mx-auto flex h-14 w-full max-w-[90rem] items-center justify-between rounded-full border border-white/10 bg-[hsl(var(--background)/0.72)] px-3 font-brand shadow-[0_18px_50px_-28px_rgba(0,0,0,0.9)] backdrop-blur-xl [font-optical-sizing:auto] sm:px-4 md:w-[calc(100%-2rem)]">
+          <a
+            href="#hero"
+            className="flex items-center gap-2.5 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <LogoIcon className="!h-9 !w-9" />
+            <span className="home-gradient-text text-[0.9375rem] font-[650] tracking-[-0.02em]">
+              MolCrafts
+            </span>
+          </a>
+
+          <div className="flex items-center gap-1">
+            <LocaleToggle compact />
+            <ModeToggle />
+            <Button asChild variant="ghost" size="icon" className="ghost">
+              <a
+                href={GITHUB_ORG_HREF}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="GitHub"
+              >
+                <GitHubLogoIcon className="h-[1.1rem] w-[1.2rem]" aria-hidden="true" />
+                <span className="sr-only">GitHub</span>
+              </a>
+            </Button>
+          </div>
+        </div>
+      </motion.header>
+    );
+  }
+
   return (
     <motion.header
       className={cn(
-        "sticky top-0 z-50 w-full border-b border-border/50",
-        "bg-background/70 backdrop-blur-2xl backdrop-saturate-150",
-        "shadow-[0_1px_0_0_rgba(var(--accent-rgb),0.06)]",
+        "sticky top-0 z-50 w-full",
+        "border-b border-border/50 bg-background/70 shadow-[0_1px_0_0_rgba(var(--accent-rgb),0.06)] backdrop-blur-2xl backdrop-saturate-150",
       )}
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <div className="container relative mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
-        {/* Logo */}
         <div className="flex items-center">
           <motion.a
             rel="noreferrer noopener"
             href="/"
-            className="font-bold text-2xl flex items-center space-x-2"
+            className="flex items-center space-x-2 text-2xl font-bold"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -83,38 +107,21 @@ export const Navbar = () => {
           </motion.a>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2 h-full">
-          <motion.a
-            href="/"
-            className={cn(
-              "rounded-md px-4 py-2 text-sm font-medium transition-colors",
-              currentPath === "/"
-                ? "bg-primary/5 text-primary"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground",
-            )}
-            whileHover={{ y: -1 }}
-          >
-            Home
-          </motion.a>
-
-          {/* Ecosystem Dropdown with Hover Bridge */}
+        <nav className="hidden h-full min-w-0 items-center md:flex">
           <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <button
               type="button"
-              /* Hover alone left this unreachable by keyboard and by touch, which made the
-                 whole product catalog unreachable from the nav on mobile. */
               onClick={() => setDropdownOpen((open) => !open)}
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
               className={cn(
-                "flex items-center gap-1 rounded-md px-4 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-1 rounded-md px-2.5 py-2 text-sm font-medium transition-colors lg:whitespace-nowrap lg:px-4",
                 dropdownOpen
                   ? "bg-muted text-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
-              Projects
+              {chrome.projects}
               <ChevronDown
                 className={cn(
                   "h-4 w-4 transition-transform duration-200",
@@ -123,9 +130,8 @@ export const Navbar = () => {
               />
             </button>
 
-            {/* Hover Bridge - Invisible div to bridge any gap between button and menu */}
             {dropdownOpen && (
-              <div className="absolute top-full left-0 w-full h-8 z-10" aria-hidden="true" />
+              <div className="absolute left-0 top-full z-10 h-8 w-full" aria-hidden="true" />
             )}
 
             <AnimatePresence>
@@ -136,18 +142,20 @@ export const Navbar = () => {
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className={cn(
-                    "absolute top-full left-1/2 z-50 w-max -translate-x-1/2 overflow-hidden rounded-2xl p-5",
+                    "absolute left-1/2 top-full z-50 w-max -translate-x-1/2 overflow-hidden rounded-2xl p-5",
                     "border border-border/40 bg-background/85 backdrop-blur-2xl backdrop-saturate-150",
                     "shadow-[0_24px_80px_-20px_rgba(0,0,0,0.45),0_0_0_1px_rgba(var(--accent-rgb),0.06)]",
                   )}
                 >
-                  {/* Ambient glow — no frame */}
                   <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full bg-[rgba(var(--accent-rgb),0.12)] blur-[70px]" />
 
-                  <div className="relative flex max-w-[min(90vw,72rem)] flex-row flex-wrap gap-8 px-1 py-1">
+                  <div className="relative flex max-w-[min(92vw,76rem)] flex-row flex-wrap gap-x-8 gap-y-6 px-1 py-1">
                     {ecosystemCategories.map((category, catIdx) => (
-                      <div key={category.title} className="flex w-44 flex-col gap-1">
-                        <div className="mb-1 px-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                      <div
+                        key={category.title}
+                        className="flex min-w-[11rem] max-w-[18rem] flex-1 basis-44 flex-col gap-1"
+                      >
+                        <div className="type-label mb-1 px-1 text-[10px] font-bold text-muted-foreground">
                           {category.title}
                         </div>
                         <div className="flex flex-col gap-0.5">
@@ -162,14 +170,17 @@ export const Navbar = () => {
                               transition={{
                                 delay: (catIdx * category.items.length + itemIdx) * 0.04,
                               }}
-                              className="group flex items-baseline gap-2 px-1 py-1.5 transition-all"
+                              className="group flex min-w-0 items-baseline gap-2 px-1 py-1.5 transition-all"
                             >
                               <span
-                                className={`text-sm font-semibold duration-200 group-hover:translate-x-1 ${item.color}`}
+                                className={cn(
+                                  "shrink-0 text-sm font-semibold duration-200 group-hover:translate-x-1",
+                                  item.color,
+                                )}
                               >
                                 {item.title}
                               </span>
-                              <span className="text-[11px] text-muted-foreground/80">
+                              <span className="type-body min-w-0 break-words text-[11px] leading-snug text-muted-foreground/80">
                                 {item.role}
                               </span>
                             </motion.a>
@@ -182,69 +193,39 @@ export const Navbar = () => {
               )}
             </AnimatePresence>
           </div>
-
-          {!isSubpage && (
-            <motion.a
-              href="#participate"
-              className="rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              whileHover={{ y: -1 }}
-            >
-              Work with us
-            </motion.a>
-          )}
-
-          {/* Docs used to render only on subpages, so the homepage nav never offered the
-              single most valuable destination for this audience. Now always present. */}
-          <motion.a
-            href={docsLink}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            whileHover={{ y: -1 }}
-          >
-            Docs
-          </motion.a>
         </nav>
 
-        {/* Right Side Actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden items-center gap-3 md:flex">
             <Button asChild variant="ghost" size="icon" className="ghost">
-              <a rel="noreferrer noopener" href="https://github.com/MolCrafts" target="_blank">
+              <a rel="noreferrer noopener" href={GITHUB_ORG_HREF} target="_blank">
                 <GitHubLogoIcon className="h-[1.1rem] w-[1.2rem]" />
                 <span className="sr-only">GitHub</span>
               </a>
             </Button>
+            <LocaleToggle />
             <ModeToggle />
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="flex items-center gap-2 md:hidden">
+            <LocaleToggle />
             <ModeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="p-2 -mr-2">
+              <SheetTrigger className="-mr-2 p-2">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle Menu</span>
+                <span className="sr-only">{chrome.toggleMenu}</span>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] border-l border-border">
-                <SheetHeader className="text-left mb-8">
-                  <SheetTitle className="text-xl font-bold gradient-text-primary">
+              <SheetContent side="right" className="w-[min(22rem,90vw)] border-l border-border">
+                <SheetHeader className="mb-8 text-left">
+                  <SheetTitle className="gradient-text-primary text-xl font-bold">
                     MolCrafts
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-3">
-                  <a
-                    href="/"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-accent transition-all font-medium"
-                  >
-                    Home
-                  </a>
-
                   <div className="flex flex-col gap-4">
                     {ecosystemCategories.map((category) => (
                       <div key={category.title} className="flex flex-col gap-1">
-                        <div className="px-4 py-1 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                        <div className="type-label px-4 py-1 text-[10px] font-bold text-muted-foreground">
                           {category.title}
                         </div>
                         <div className="grid gap-1 px-2">
@@ -255,14 +236,14 @@ export const Navbar = () => {
                               target={item.external ? "_blank" : undefined}
                               rel={item.external ? "noreferrer noopener" : undefined}
                               onClick={() => setIsOpen(false)}
-                              className={
-                                "flex items-baseline gap-2 p-3 rounded-lg hover:bg-accent transition-all"
-                              }
+                              className="flex items-baseline gap-2 rounded-lg p-3 transition-all hover:bg-accent"
                             >
-                              <span className={`text-sm font-semibold ${item.color}`}>
+                              <span className={cn("text-sm font-semibold", item.color)}>
                                 {item.title}
                               </span>
-                              <span className="text-xs text-muted-foreground">· {item.role}</span>
+                              <span className="min-w-0 text-xs leading-snug text-muted-foreground">
+                                · {item.role}
+                              </span>
                             </a>
                           ))}
                         </div>
@@ -270,48 +251,9 @@ export const Navbar = () => {
                     ))}
                   </div>
 
-                  {!isSubpage && (
-                    <>
-                      <SheetClose asChild>
-                        <a
-                          href="#projects"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
-                        >
-                          Projects
-                        </a>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <a
-                          href="#approach"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
-                        >
-                          Approach
-                        </a>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <a
-                          href="#participate"
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
-                        >
-                          Participate
-                        </a>
-                      </SheetClose>
-                    </>
-                  )}
-
-                  <a
-                    href={docsLink}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all hover:bg-accent"
-                  >
-                    Docs
-                  </a>
-
                   <div className="mt-8 flex flex-col gap-4 border-t border-border pt-6">
                     <a
-                      href="https://github.com/MolCrafts"
+                      href={GITHUB_ORG_HREF}
                       target="_blank"
                       className="flex items-center justify-center gap-3 rounded-xl bg-muted px-4 py-4 text-center text-sm font-bold transition-colors hover:bg-muted/80"
                       rel="noreferrer noopener"

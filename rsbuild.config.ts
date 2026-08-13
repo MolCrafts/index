@@ -53,34 +53,18 @@ export default defineConfig({
     /* No `lang` option here — rsbuild has none. The <html lang> attribute is added
        in scripts/prerender-html.ts, which already rewrites the HTML per route. */
     favicon: "./src/assets/moko.svg",
-    title: "MolCrafts – AI-assisted infra for molecular science",
+    title: "MolCrafts – Molecular and materials R&D",
     tags: [
       ...analyticsTags,
-      {
-        tag: "link",
-        attrs: { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      },
-      {
-        tag: "link",
-        attrs: {
-          rel: "preconnect",
-          href: "https://fonts.gstatic.com",
-          crossorigin: "",
-        },
-      },
-      {
-        tag: "link",
-        attrs: {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital@1&display=swap",
-        },
-      },
+      /* Fonts are bundled locally via @fontsource imports in src/main.tsx.
+         Google Fonts links are gone on purpose: fonts.googleapis.com is blocked in
+         mainland China, so the hosted CSS left those visitors on fallback fonts. */
       // Open Graph — must use property= (not name=) so LinkedIn/Facebook render rich cards
       {
         tag: "meta",
         attrs: {
           property: "og:title",
-          content: "MolCrafts – AI-assisted infra for molecular science",
+          content: "MolCrafts – Molecular and materials R&D",
         },
       },
       {
@@ -88,7 +72,7 @@ export default defineConfig({
         attrs: {
           property: "og:description",
           content:
-            "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
+            "MolCrafts brings scientific computing, AI, and research expertise to molecular and materials R&D, from application exploration to long-term collaboration.",
         },
       },
       { tag: "meta", attrs: { property: "og:type", content: "website" } },
@@ -104,7 +88,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:image:alt",
-          content: "MolCrafts – AI-assisted infra for molecular science",
+          content: "MolCrafts – Molecular and materials R&D",
         },
       },
     ],
@@ -115,14 +99,14 @@ export default defineConfig({
       charset: { charset: "UTF-8" },
       viewport: "width=device-width, initial-scale=1.0",
       description:
-        "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
+        "MolCrafts brings scientific computing, AI, and research expertise to molecular and materials R&D, from application exploration to long-term collaboration.",
       keywords:
-        "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, python, rust, reproducible research",
+        "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, reproducible research",
       author: "MolCrafts",
       "twitter:card": "summary_large_image",
-      "twitter:title": "MolCrafts – AI-assisted infra for molecular science",
+      "twitter:title": "MolCrafts – Molecular and materials R&D",
       "twitter:description":
-        "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
+        "Scientific computing, AI applications, and research collaboration for molecular and materials R&D.",
       "twitter:image": "https://molcrafts.org/og/index.png",
     },
   },

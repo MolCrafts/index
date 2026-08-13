@@ -6,6 +6,10 @@ import { cn } from "./utils";
  * readable without stacking long paragraphs into a tall text column.
  */
 
+/**
+ * Continuous page surface — no per-section background paint (avoids hard seams).
+ * Parent `.home-body` / page root owns `bg-background`.
+ */
 export const sectionShell = "relative overflow-hidden py-24 md:py-32";
 
 /** Essay peaks (principles / work with us). */
@@ -21,30 +25,26 @@ export const sectionStack = "flex flex-col gap-16 md:gap-20";
 
 export const sectionHeader = "flex flex-col gap-5 md:gap-6";
 
-export const sectionLabel = cn(
-  "flex items-center gap-4 text-sm font-bold uppercase tracking-[0.3em] text-primary",
-);
+export const sectionLabel = cn("type-label flex items-center gap-4 text-sm font-bold text-primary");
 
 /** Prefer class `section-label-rule` in CSS for the glowing tip; keep utility as fallback. */
 export const sectionLabelRule = "section-label-rule";
 
 export const sectionTitle = cn(
-  "max-w-4xl text-3xl font-light leading-[1.15] tracking-tight text-foreground",
-  "md:text-4xl lg:text-[2.75rem] lg:leading-[1.12]",
+  "type-heading max-w-4xl text-3xl font-light text-foreground",
+  "md:text-4xl lg:text-[2.75rem]",
 );
 
 export const sectionLead = cn(
-  "max-w-3xl text-base font-light leading-relaxed text-muted-foreground",
-  "md:text-lg md:leading-[1.7]",
+  "type-body max-w-3xl text-base font-light text-muted-foreground md:text-lg",
 );
 
-export const sectionH3 = "text-lg font-medium tracking-tight text-foreground md:text-xl";
+export const sectionH3 = "type-heading text-lg font-medium text-foreground md:text-xl";
 
-export const sectionBody =
-  "text-base font-light leading-relaxed text-muted-foreground md:leading-[1.7]";
+export const sectionBody = "type-body text-base font-light text-muted-foreground";
 
 export const sectionSubLabel = cn(
-  "font-['Outfit',sans-serif] text-xs font-bold uppercase tracking-[0.28em] text-primary",
+  "type-label font-['Outfit',sans-serif] text-xs font-bold text-primary",
 );
 
 export const sectionBandRow = "grid gap-6 md:grid-cols-2 md:items-end";

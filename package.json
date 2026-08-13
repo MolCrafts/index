@@ -1,6 +1,6 @@
 {
   "name": "molcrafts-index",
-  "description": "MolCrafts website for an open molecular software ecosystem spanning workflows, records, visualization, and scientific infrastructure",
+  "description": "MolCrafts commercial website for molecular and materials R&D, scientific computing, AI applications, and research collaboration",
   "author": {
     "name": "Roy Kid",
     "email": "lijichen365@gmail.com",
@@ -22,7 +22,7 @@
   "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "dev": "rsbuild dev",
+    "dev": "PUBLIC_FORCE_FULL_MOTION=true rsbuild dev",
     "build": "rsbuild build",
     "postbuild": "tsx scripts/postbuild.ts",
     "lint": "biome check src",
@@ -30,6 +30,12 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource/dm-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/outfit": "^5.2.8",
+    "@fontsource/playfair-display": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.3.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-collapsible": "^1.1.11",
@@ -52,8 +58,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@fontsource/outfit": "^5.2.8",
-    "@fontsource/playfair-display": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
     "@rsbuild/core": "^1.2.19",
     "@rsbuild/plugin-react": "^1.1.1",

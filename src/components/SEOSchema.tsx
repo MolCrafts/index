@@ -12,7 +12,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
 
     // Determine which schema to use based on current path
     if (path === "/") {
-      // Organization and SoftwareApplication schema for homepage
+      // Commercial company schema for the homepage. Product routes carry software detail.
       script.innerHTML = JSON.stringify({
         "@context": "https://schema.org",
         "@graph": [
@@ -22,28 +22,16 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             name: "MolCrafts",
             url: "https://molcrafts.org",
             description:
-              "We build AI-assisted infra for molecular science — build and run simulations, train models, and keep every result traceable by people and agents alike.",
+              "MolCrafts brings scientific computing, AI, and research expertise to molecular and materials R&D, from application exploration to long-term collaboration.",
             sameAs: ["https://github.com/MolCrafts"],
-          },
-          {
-            "@type": "SoftwareApplication",
-            "@id": "https://molcrafts.org/#software",
-            name: "MolCrafts",
-            applicationCategory: "Scientific",
-            operatingSystem: "Cross-platform",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-            },
           },
           {
             "@type": "WebSite",
             "@id": "https://molcrafts.org/#website",
             url: "https://molcrafts.org",
-            name: "MolCrafts – AI-assisted infra for molecular science",
+            name: "MolCrafts – Molecular and materials R&D",
             description:
-              "MolCrafts builds AI-assisted infra for molecular science. Packages install independently and share one record format, so results stay reusable across people, tools, and agents.",
+              "Scientific computing, AI applications, and research collaboration for molecular and materials R&D.",
             publisher: {
               "@id": "https://molcrafts.org/#organization",
             },
@@ -52,14 +40,14 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
             "@type": "WebPage",
             "@id": "https://molcrafts.org/#webpage",
             url: "https://molcrafts.org",
-            name: "MolCrafts – AI-assisted infra for molecular science",
+            name: "MolCrafts – Molecular and materials R&D",
             description:
-              "MolCrafts builds AI-assisted infra for molecular science. Packages install independently and share one record format, so results stay reusable across people, tools, and agents.",
+              "Scientific computing, AI applications, and research collaboration for molecular and materials R&D.",
             isPartOf: {
               "@id": "https://molcrafts.org/#website",
             },
             about: {
-              "@id": "https://molcrafts.org/#software",
+              "@id": "https://molcrafts.org/#organization",
             },
           },
         ],

@@ -1,20 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
-import { Approach } from "./components/Approach";
-import { Cta } from "./components/Cta";
-import { EcosystemArchitecture } from "./components/EcosystemArchitecture";
 import { Footer } from "./components/Footer";
-import { Hero } from "./components/Hero";
-import { Manifesto } from "./components/Manifesto";
 import { Navbar } from "./components/Navbar";
-import { Newsletter } from "./components/Newsletter";
-import { Participate } from "./components/Participate";
 import { SEOSchema } from "./components/SEOSchema";
-import { Sponsors } from "./components/Sponsors";
-import { WhatWeDo } from "./components/WhatWeDo";
+import { HomePage } from "./components/home/HomePage";
 import { trackPageView } from "./lib/analytics";
 import { type ProductSlug, pathProductSlug } from "./lib/routes";
+import { cn } from "./lib/utils";
 import {
   AtomiverseLanding,
   MolVisLanding,
@@ -117,21 +110,11 @@ function App() {
     }
   }, [currentPath]);
 
+  const isHome = currentPath === "/" || currentPath === "";
+
   const renderContent = () => {
-    if (currentPath === "/" || currentPath === "") {
-      return (
-        <>
-          <Hero />
-          <WhatWeDo />
-          <Manifesto />
-          <Approach />
-          <EcosystemArchitecture />
-          <Sponsors />
-          <Participate />
-          <Newsletter />
-          <Cta />
-        </>
-      );
+    if (isHome) {
+      return <HomePage />;
     }
 
     // Explicit 404 route (used by docs edge router fallback)
@@ -151,21 +134,28 @@ function App() {
   return (
     <>
       <SEOSchema path={currentPath} />
-      <div className="page-atmosphere" aria-hidden="true" />
+      {!isHome && <div className="page-atmosphere" aria-hidden="true" />}
 
       <AnimatePresence mode="wait">
         {!isLoading && (
           <motion.div
             key={currentPath}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-[1] flex min-h-screen flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className={cn(
+              "relative z-[1] flex flex-col",
+              isHome
+                ? "dark h-[100svh] min-w-0 overflow-hidden bg-background text-foreground"
+                : "min-h-screen",
+            )}
           >
             <Navbar />
-            <main className="flex-grow">{renderContent()}</main>
-            <Footer />
+            <main className={isHome ? "min-h-0 min-w-0 flex-1 overflow-hidden" : "flex-grow"}>
+              {renderContent()}
+            </main>
+            {!isHome && <Footer />}
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,0 +1,29 @@
+[
+  {
+    "date": "2026-08-13",
+    "macrostructure": "Marquee Hero",
+    "theme": "custom",
+    "theme_axes": "dark / grotesk-sans / chromatic-cyan",
+    "vibe": "scientific depth, commercial clarity, luminous matter",
+    "enrichment": "E3 procedural molecular atmosphere",
+    "brief": "Restore the centred brand hero and merge the commercial message into screen two"
+  },
+  {
+    "date": "2026-08-13",
+    "macrostructure": "Split Studio",
+    "theme": "custom",
+    "theme_axes": "dark / grotesk-sans / chromatic-cyan",
+    "vibe": "scientific depth, commercial clarity, luminous matter",
+    "enrichment": "E5 scientific molecular illustration",
+    "brief": "MolCrafts commercial molecular and materials R&D homepage"
+  },
+  {
+    "date": "2026-08-13",
+    "macrostructure": "Independent application accordion",
+    "theme": "custom",
+    "theme_axes": "dark / grotesk-sans / chromatic-cyan",
+    "vibe": "scientific depth, commercial clarity, luminous matter",
+    "enrichment": "E5 hover-revealed molecular carousel",
+    "brief": "Separate and brighten application cards, collapse all cards at rest, and remove the visible playback control"
+  }
+]

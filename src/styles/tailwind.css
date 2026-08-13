@@ -46,6 +46,17 @@
   --color-info-soft: hsl(var(--info-soft));
 
   --color-canvas: hsl(var(--canvas));
+  --color-brand-kicker: color-mix(in oklab, hsl(var(--primary)) 70%, hsl(var(--foreground)));
+
+  /* Narrative home type stack. CJK fallbacks keep mixed-script lines on one family. */
+  --font-brand: "Geist Variable", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "DM Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: var(--font-body);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
