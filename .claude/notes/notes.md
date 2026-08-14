@@ -35,12 +35,28 @@ collaboration. Cloudflare Pages project `index` serves `molcrafts.org` from the
 
 ## Current verification
 
-The repository has no automated unit, integration, or browser test runner.
-The current non-mutating gate is `npm run lint && npm run typecheck`; the
-`mol_project.build.test` command intentionally mirrors that established gate
-until a test suite exists.
+The non-mutating gate is `npm run lint && npm run typecheck && npm test`.
+Rstest (`@rstest/core`) runs the unit suites under `tests/`; `npm run build`
+additionally exercises the postbuild prerender and OG generation, which is the
+only gate that covers `scripts/`. Both `lint` and `typecheck` cover `src/` and
+`scripts/` — `scripts/` sat outside them once, and a copy-shape rename shipped a
+build-breaking stale reference with the other two gates green.
+
+`regressions/` is reserved for browser-driven checks and does not exist yet;
+the homepage hot paths (fixed canvas, scroll-spy, the applications band) have
+no automated guard.
 
 ## Harness decisions
+
+- 2026-08-14: Replaced the homepage fullpage pager with one continuously
+  scrolling document. Each block is `min-h-svh` in normal flow; one fixed
+  `MoleculeField` plus the hero's former glows became the page-wide background
+  (`HomeAtmosphere`); scroll-spy and in-view gating replaced the pager's active
+  index; `src/lib/home/stage.ts` holds the shared container/type/rule rungs and
+  composes locale behaviour from `typeStyles.ts` rather than restating it.
+  Applications was rebuilt as a six-entry band. Real product captures do not
+  exist, so expanded entries carry brand panels — `.claude/notes/law.md` still
+  forbids invented product UI, and no carve-out was recorded.
 
 - 2026-08-10: Adopted the full Mol project contract at stage `experimental`.
 - 2026-08-10: Kept local Claude agents, skills, and settings untracked while

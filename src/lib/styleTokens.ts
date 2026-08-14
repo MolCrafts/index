@@ -5,14 +5,6 @@ export const BRAND_GRADIENT_TEXT =
 export const HOME_GRADIENT_TEXT =
   "bg-[linear-gradient(118deg,var(--brand-primary-from)_4%,var(--brand-primary-via)_52%,hsl(var(--primary))_108%)] bg-clip-text text-transparent";
 
-/**
- * Section content lifts into place when the fullpage settles on its snap section.
- * Driven by `data-arriving` on the SnapSection `group`, so the stage element stays
- * a direct flex child and section-level alignment keeps working.
- */
-export const HOME_STAGE_ARRIVE =
-  "origin-[50%_42%] group-data-[arriving=true]:animate-home-arrive motion-reduce:group-data-[arriving=true]:animate-none force-motion:group-data-[arriving=true]:animate-home-arrive";
-
 export const PRODUCT_HERO_SECTION =
   "relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-16 md:px-8 md:py-20 lg:px-16 lg:py-24";
 
@@ -36,6 +28,7 @@ export const MOLECULAR_GLOW =
 export const MOLECULE_IMAGE_GLOW =
   "animate-molecule-glow select-none [user-drag:none] motion-reduce:animate-none force-motion:animate-molecule-glow";
 
+/** Product-page atmosphere. `/` uses `HomeAtmosphere` instead. */
 export const PAGE_ATMOSPHERE =
   "pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_90%_55%_at_50%_-12%,hsl(var(--primary)/0.12),transparent_58%),radial-gradient(ellipse_55%_45%_at_100%_35%,rgba(var(--accent-rgb),0.04),transparent_52%),radial-gradient(ellipse_45%_40%_at_0%_65%,hsl(var(--primary)/0.1),transparent_48%),radial-gradient(ellipse_40%_30%_at_70%_100%,hsl(var(--primary)/0.05),transparent_50%)] dark:bg-[radial-gradient(ellipse_90%_55%_at_50%_-12%,hsl(var(--primary)/0.14),transparent_58%),radial-gradient(ellipse_55%_45%_at_100%_28%,rgba(var(--accent-rgb),0.04),transparent_52%),radial-gradient(ellipse_50%_40%_at_0%_75%,hsl(var(--primary)/0.1),transparent_48%),radial-gradient(ellipse_40%_30%_at_60%_100%,hsl(var(--primary)/0.06),transparent_50%)]";
 

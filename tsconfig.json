@@ -24,7 +24,10 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/types/*.d.ts"],
+  /* `scripts` consumes `src/lib` types (copy, ecosystem, routes) and runs at build
+     time. It stayed outside this gate once, and a copy-shape rename shipped a
+     build-breaking stale reference with `typecheck` and `lint` both green. */
+  "include": ["src", "src/types/*.d.ts", "scripts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

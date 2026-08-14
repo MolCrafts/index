@@ -1,10 +1,12 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { describe, expect, it } from "@rstest/core";
 import { ecosystemItems } from "@/lib/ecosystem";
+import { en } from "@/lib/home/copy/en";
+import { APPLICATIONS, applicationHref } from "@/lib/home/data";
 import { PACKAGE_INSTALL } from "@/lib/packages";
 import { PRODUCT_ACCENTS } from "@/lib/productAccents";
 import { PRODUCT_SLUGS } from "@/lib/routes";
+import { describe, expect, it } from "@rstest/core";
 import { routes as ogRoutes } from "../../scripts/og-meta";
 
 /**
@@ -71,5 +73,43 @@ describe("catalog integrity", () => {
   it("keeps ecosystem entries unique by href", () => {
     const hrefs = ecosystemItems.map((i) => i.href);
     expect(hrefs).toEqual([...new Set(hrefs)]);
+  });
+});
+
+/**
+ * The homepage application stage is an eighth registration surface. It was invisible
+ * to the guard above while its keys were a free-standing union, so a slug rename
+ * would have pointed the homepage at a 404 with a green build and green tests.
+ */
+describe("homepage application stage", () => {
+  it("names only routed product slugs", () => {
+    const routed = new Set<string>(PRODUCT_SLUGS);
+    expect(APPLICATIONS.map((a) => a.key).filter((key) => !routed.has(key))).toEqual([]);
+  });
+
+  it("derives every href from the slug", () => {
+    for (const app of APPLICATIONS) {
+      expect(applicationHref(app.key)).toBe(`/${app.key}`);
+    }
+  });
+
+  it("gives every entry the copy the stage renders", () => {
+    for (const app of APPLICATIONS) {
+      const copy = en.projects.items[app.key];
+      expect(copy.applicationTitle.length).toBeGreaterThan(0);
+      expect(copy.short.length).toBeGreaterThan(0);
+      expect(copy.long.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps the roster in the order the operator fixed", () => {
+    expect(APPLICATIONS.map((a) => a.key)).toEqual([
+      "molpy",
+      "molpack",
+      "molvis",
+      "molexp",
+      "molnex",
+      "atomiverse",
+    ]);
   });
 });

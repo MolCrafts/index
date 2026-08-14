@@ -23,40 +23,9 @@ export function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-/** Shared punchy ease — used by Reveal / product pages that import these variants. */
+/** Shared punchy ease — reached via `homeReveal`, the assist variants, and product pages. */
 export const MOTION_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-/** Homepage fullpage flip — silk glide, one screen per gesture. */
-export const HOME_FLIP_MS = 580;
-export const HOME_FLIP_LOCK_MS = 36;
-export const HOME_WHEEL_THRESHOLD = 28;
-/** After a flip, wait until the wheel/trackpad has been idle this long. */
-export const HOME_GESTURE_IDLE_MS = 200;
-
-/**
- * cubic-bezier(0.45, 0.05, 0.12, 1) — gentle takeoff, long settle.
- * Authored for the homepage page-turn; do not reuse as a generic ease.
- */
-export function easeHomeFlip(x: number): number {
-  if (x <= 0) return 0;
-  if (x >= 1) return 1;
-  const cx = 3 * 0.45;
-  const bx = 3 * (0.12 - 0.45) - cx;
-  const ax = 1 - cx - bx;
-  const cy = 3 * 0.05;
-  const by = 3 * (1 - 0.05) - cy;
-  const ay = 1 - cy - by;
-  let t = x;
-  for (let i = 0; i < 6; i++) {
-    const xt = ((ax * t + bx) * t + cx) * t - x;
-    const dxt = (3 * ax * t + 2 * bx) * t + cx;
-    if (Math.abs(dxt) < 1e-6) break;
-    t = Math.min(1, Math.max(0, t - xt / dxt));
-  }
-  return ((ay * t + by) * t + cy) * t;
-}
-
-// Fade in animation
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -80,7 +49,7 @@ export const slideUp: Variants = {
   },
 };
 
-// Staggered container animation
+/** Runs children in sequence; pair with a child variant that has its own states. */
 export const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -92,7 +61,6 @@ export const staggerContainer: Variants = {
   },
 };
 
-// Scale animation
 export const scaleIn: Variants = {
   hidden: { scale: 0.72, opacity: 0 },
   visible: {
@@ -107,25 +75,30 @@ export const scaleIn: Variants = {
   },
 };
 
-// Button hover animation
 export const buttonHover = {
   scale: 1.08,
   transition: { type: "spring", stiffness: 400, damping: 18 },
 };
 
-// Section transition animation
-export const sectionTransition: Variants = {
-  hidden: { opacity: 0, y: 64 },
+/**
+ * Homepage block reveal. The page scrolls continuously, so a block is often only
+ * part-way into view when it starts — the travel stays short and the fade does the
+ * work, otherwise every block visibly lurches as the reader scrolls past it.
+ */
+export const homeReveal: Variants = {
+  hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.55,
-      ease: MOTION_EASE,
-    },
+    transition: { duration: 0.62, ease: MOTION_EASE },
   },
 };
 
+/*
+ * The AI screen's variants share two states: `dormant` before the screen has been
+ * looked at, `illuminated` once it has. The section drives both from one
+ * `motionState`, so a variant added here must define the same two names.
+ */
 export const assistWordOutlineReveal: Variants = {
   dormant: { opacity: 0.42, scale: 0.985 },
   illuminated: {
@@ -186,7 +159,14 @@ export const assistAuraReveal: Variants = {
   },
 };
 
-interface AssistContextMotion {
+/**
+ * The payload `assistContextGather` requires on `custom`.
+ *
+ * `x`/`y` are the pixel offsets a label gathers in *from*; `peak` and `settled` are
+ * opacity keyframes — the label overshoots to `peak` then rests at `settled`.
+ * The variant destructures this, so a caller that omits `custom` throws at runtime.
+ */
+export interface AssistContextMotion {
   delay: number;
   peak: number;
   settled: number;

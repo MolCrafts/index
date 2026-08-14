@@ -11,67 +11,101 @@ import {
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { StageShell } from "../StageShell";
-import { useFullpage } from "../fullpage/FullpageProvider";
-import { SnapSection } from "../fullpage/SnapSection";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { HomeSection } from "../HomeSection";
+import { SectionMarker } from "../SectionMarker";
 
+/*
+ * Outermost ring: six statements on a hexagon around the headline, rotated so the
+ * vertices land left and right — that is where the empty space is, since the
+ * headline is a single wide line. Ellipse of rx 38% / ry 44%, vertices every 60°
+ * from 0°.
+ *
+ * Every label is a single line (`whitespace-nowrap`), so each block is only as wide
+ * as its own text and only one line tall, which is what keeps the ring clear of both
+ * the headline band and the product ring.
+ *
+ * Each entry positions the centre of the block; the wrapper carries the
+ * -translate-x/y-1/2 because Framer writes an inline transform on the paragraph
+ * itself, which would override the utility.
+ */
 const STATEMENT_POSITIONS = [
-  "left-[7%] top-[15%] [@media(max-height:30rem)]:top-[24%] xl:left-[10%] xl:top-[13%]",
-  "right-[7%] top-[16%] text-right [@media(max-height:30rem)]:top-[24%] xl:right-[10%] xl:top-[15%]",
-  "left-[7%] top-[64%] xl:left-[4%] xl:top-[43%]",
-  "right-[7%] top-[64%] text-right xl:right-[4%] xl:top-[43%]",
-  "bottom-[9%] left-[7%] xl:bottom-[10%] xl:left-[10%]",
-  "bottom-[8%] right-[7%] text-right xl:bottom-[9%] xl:right-[8%]",
+  "left-[88%] top-1/2", // 0°   — right vertex
+  "left-[69%] top-[11.9%]", // 60°
+  "left-[31%] top-[11.9%]", // 120°
+  "left-[12%] top-1/2", // 180° — left vertex
+  "left-[31%] top-[88.1%]", // 240°
+  "left-[69%] top-[88.1%]", // 300°
 ] as const;
 
+/*
+ * Two concentric ellipses around the headline. Positions are literal class strings
+ * rather than computed styles so Tailwind's scanner can see them; each is the
+ * centre of the label, hence the -translate-x/y-1/2 on the wrapper.
+ *
+ * Both rings clear the headline's horizontal band (roughly 46%–54% vertically,
+ * and wide because the line does not wrap), so nothing lands on the type.
+ * Type size grows from the inner ring outward.
+ */
 const CONCEPT_CONTEXT = [
-  { className: "left-[26%] top-[39%]", delay: 0.22, x: -56, y: -32 },
-  { className: "left-[37%] top-[33%]", delay: 0.34, x: -40, y: -48 },
-  { className: "right-[35%] top-[34%]", delay: 0.28, x: 48, y: -40 },
-  { className: "bottom-[37%] right-[25%]", delay: 0.4, x: 64, y: 36 },
+  { className: "left-[38.5%] top-[35.3%]", delay: 0.22, x: -44, y: -30 },
+  { className: "left-[61.5%] top-[35.3%]", delay: 0.28, x: 44, y: -30 },
+  { className: "left-[61.5%] top-[64.7%]", delay: 0.34, x: 44, y: 30 },
+  { className: "left-[38.5%] top-[64.7%]", delay: 0.4, x: -44, y: 30 },
 ] as const;
 
 const PRODUCT_CONTEXT = [
-  { className: "left-[23%] top-[27%]", delay: 0.18, x: -64, y: -48 },
-  { className: "right-[22%] top-[25%]", delay: 0.3, x: 64, y: -56 },
-  { className: "right-[16%] top-1/2", delay: 0.38, x: 72, y: 0 },
-  { className: "bottom-[25%] right-[30%]", delay: 0.46, x: 52, y: 48 },
-  { className: "bottom-[25%] left-[24%]", delay: 0.42, x: -56, y: 48 },
+  { className: "left-[31.5%] top-[31.9%]", delay: 0.18, x: -70, y: -52 },
+  { className: "left-[68.5%] top-[31.9%]", delay: 0.26, x: 70, y: -52 },
+  { className: "left-[78.8%] top-[56.3%]", delay: 0.34, x: 78, y: 18 },
+  { className: "left-1/2 top-[73%]", delay: 0.42, x: 0, y: 66 },
+  { className: "left-[21.2%] top-[56.3%]", delay: 0.5, x: -78, y: 18 },
 ] as const;
 
+/** Faint markers on a third, wider ellipse — pure texture, no copy. */
 const CONTEXT_NODES = [
-  { className: "left-[27%] top-[52%]", delay: 0.18, x: -80, y: 24 },
-  { className: "right-[38%] top-[27%]", delay: 0.31, x: 40, y: -64 },
-  { className: "right-[23%] top-[49%]", delay: 0.37, x: 84, y: -16 },
-  { className: "bottom-[31%] left-[38%]", delay: 0.46, x: -56, y: 56 },
+  { className: "left-[24%] top-[42%]", delay: 0.18, x: -80, y: 24 },
+  { className: "left-[76%] top-[42%]", delay: 0.31, x: 80, y: 24 },
+  { className: "left-[68%] top-[72%]", delay: 0.37, x: 60, y: 48 },
+  { className: "left-[32%] top-[72%]", delay: 0.46, x: -60, y: 48 },
 ] as const;
+
+/**
+ * Idle drift, applied to a child of each Framer entrance wrapper so the two never
+ * fight over the same element: a CSS animation outranks the inline style Framer
+ * writes, and would otherwise flatten the entrance. Alternating the two drift
+ * tracks by index keeps the field from moving in lockstep.
+ */
+const IDLE_DRIFT =
+  "animate-assist-drift motion-reduce:animate-none force-motion:animate-assist-drift";
+const IDLE_DRIFT_ALT =
+  "animate-assist-drift-alt motion-reduce:animate-none force-motion:animate-assist-drift-alt";
+const IDLE_NODE = "animate-assist-node motion-reduce:animate-none force-motion:animate-assist-node";
 
 /** A single editorial image of contextual AI, deliberately unlike the adjacent grids. */
 export function AssistSection() {
   const { assist } = useHomeCopy();
-  const { activeIndex, arrivingId, sectionIds } = useFullpage();
+  const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = prefersReducedMotion();
-  const active = sectionIds[activeIndex] === "assist";
-  const [hasEntered, setHasEntered] = useState(false);
-
-  useEffect(() => {
-    if (active && arrivingId === null) setHasEntered(true);
-  }, [active, arrivingId]);
+  /* The constellation gathers once, the first time the screen is properly in view —
+     not on every pass, which continuous scrolling would otherwise cause. */
+  const hasEntered = useInView(stageRef, { once: true, amount: 0.45 });
+  /* A live signal, unlike `hasEntered`. The drift and sweep loops are infinite, so
+     left ungated they cost the main thread continuously for a screen that is
+     usually thousands of pixels away. */
+  const onScreen = useInView(stageRef, { amount: 0.05 });
+  const idle = onScreen ? undefined : "[animation-play-state:paused]";
 
   const motionState = hasEntered || reduceMotion ? "illuminated" : "dormant";
 
   return (
-    <SnapSection
-      id="assist"
-      aria-labelledby="assist-heading"
-      className="h-[var(--home-view,100cqb)] justify-center after:hidden"
-    >
-      <StageShell field={0.2} veil="soft" className="flex min-h-full items-center justify-center">
+    <HomeSection id="assist" aria-labelledby="assist-heading" className="overflow-hidden">
+      <SectionMarker sectionId="assist" />
+      <div ref={stageRef} className="flex w-full flex-1 items-center justify-center">
         <div
           lang="en"
-          className="relative isolate mx-auto h-full w-full max-w-[90rem] overflow-hidden font-brand"
+          className="relative isolate mx-auto h-svh w-full max-w-[110rem] overflow-hidden font-brand"
         >
           <motion.div
             className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(34vw,32rem)] w-[min(78vw,76rem)] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.16)_0%,rgba(var(--accent-rgb),0.08)_38%,hsl(var(--primary)/0.055)_56%,transparent_74%)] blur-[26px]"
@@ -89,7 +123,7 @@ export function AssistSection() {
               <motion.span
                 key={label}
                 className={cn(
-                  "absolute whitespace-nowrap font-brand text-[clamp(0.75rem,0.82vw,0.875rem)] font-label leading-none tracking-[0.055em] text-[var(--brand-assist-concept)] [text-shadow:0_0_22px_rgba(var(--accent-rgb),0.2)]",
+                  "absolute -translate-x-1/2 -translate-y-1/2",
                   CONCEPT_CONTEXT[index].className,
                 )}
                 custom={{ ...CONCEPT_CONTEXT[index], peak: 0.76, settled: 0.56 }}
@@ -97,14 +131,22 @@ export function AssistSection() {
                 animate={motionState}
                 variants={assistContextGather}
               >
-                {label}
+                <span
+                  className={cn(
+                    "block whitespace-nowrap font-brand text-[clamp(0.85rem,0.95vw,1.05rem)] font-label leading-none tracking-[0.055em] text-[var(--brand-assist-concept)] [text-shadow:0_0_22px_rgba(var(--accent-rgb),0.2)]",
+                    index % 2 === 0 ? IDLE_DRIFT : IDLE_DRIFT_ALT,
+                    idle,
+                  )}
+                >
+                  {label}
+                </span>
               </motion.span>
             ))}
             {assist.products.map((label, index) => (
               <motion.span
                 key={label}
                 className={cn(
-                  "absolute whitespace-nowrap font-brand text-[clamp(0.8rem,0.9vw,0.95rem)] font-wordmark leading-none tracking-[-0.01em] text-[var(--brand-assist-from)] [text-shadow:0_0_22px_rgba(var(--accent-rgb),0.2)]",
+                  "absolute -translate-x-1/2 -translate-y-1/2",
                   PRODUCT_CONTEXT[index].className,
                 )}
                 custom={{ ...PRODUCT_CONTEXT[index], peak: 0.92, settled: 0.74 }}
@@ -112,41 +154,65 @@ export function AssistSection() {
                 animate={motionState}
                 variants={assistContextGather}
               >
-                {label}
+                <span
+                  className={cn(
+                    "block whitespace-nowrap font-brand text-[clamp(1.1rem,1.45vw,1.6rem)] font-wordmark leading-none tracking-[-0.01em] text-[var(--brand-assist-from)] [text-shadow:0_0_26px_rgba(var(--accent-rgb),0.24)]",
+                    index % 2 === 0 ? IDLE_DRIFT_ALT : IDLE_DRIFT,
+                    idle,
+                  )}
+                >
+                  {label}
+                </span>
               </motion.span>
             ))}
             {CONTEXT_NODES.map((context) => (
               <motion.span
                 key={context.className}
-                className={cn(
-                  "absolute size-[0.38rem] rounded-full border border-[color-mix(in_oklab,var(--brand-assist-from)_70%,transparent)] shadow-[0_0_18px_rgba(var(--accent-rgb),0.38)]",
-                  context.className,
-                )}
+                className={cn("absolute -translate-x-1/2 -translate-y-1/2", context.className)}
                 custom={{ ...context, peak: 0.58, settled: 0.32 }}
                 initial={reduceMotion ? "illuminated" : "dormant"}
                 animate={motionState}
                 variants={assistContextGather}
-              />
+              >
+                <span
+                  className={cn(
+                    "block size-[0.38rem] rounded-full border border-[color-mix(in_oklab,var(--brand-assist-from)_70%,transparent)] shadow-[0_0_18px_rgba(var(--accent-rgb),0.38)]",
+                    IDLE_NODE,
+                    idle,
+                  )}
+                />
+              </motion.span>
             ))}
           </div>
 
+          {/* The ring only fits once there is width for it. Its vertices sit at
+              `left-[12%]`/`left-[88%]` with single-line labels, so below `lg` the
+              outer two started off-canvas, the top pair overlapped each other, and
+              `overflow-x-hidden` truncated the result silently. The concept and
+              product rings are gated the same way. */}
           <motion.div
-            className="pointer-events-none absolute inset-0 z-20"
+            className="pointer-events-none absolute inset-0 z-20 hidden lg:block"
             initial={reduceMotion ? "illuminated" : "dormant"}
             animate={motionState}
             variants={assistStatementsReveal}
           >
             {assist.statements.map((statement, index) => (
-              <motion.p
+              // The wrapper owns the placement; Framer only animates the paragraph,
+              // so its inline transform never fights the centring translate.
+              <motion.div
                 key={statement}
                 className={cn(
-                  "absolute w-[min(42%,16rem)] text-balance text-[clamp(0.75rem,1.05vw,1.05rem)] font-book leading-[1.42] tracking-[-0.015em] text-foreground/78",
+                  "absolute -translate-x-1/2 -translate-y-1/2",
                   STATEMENT_POSITIONS[index],
                 )}
-                variants={assistMicroStatementReveal}
               >
-                {statement}
-              </motion.p>
+                <motion.p
+                  className="whitespace-nowrap font-body text-base font-normal leading-none tracking-tight text-foreground/85 lg:text-xl 2xl:text-2xl"
+                  variants={assistMicroStatementReveal}
+                >
+                  {statement}
+                </motion.p>
+              </motion.div>
             ))}
           </motion.div>
 
@@ -168,12 +234,20 @@ export function AssistSection() {
               </motion.span>
               <motion.h2
                 id="assist-heading"
-                className="col-start-1 row-start-1 whitespace-nowrap bg-[linear-gradient(112deg,var(--brand-assist-from)_4%,var(--brand-assist-via)_52%,var(--brand-assist-to)_98%)] bg-clip-text pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [text-shadow:0_24px_88px_rgba(var(--accent-rgb),0.2)] max-sm:whitespace-normal max-sm:leading-wordmark-wrap"
+                className={cn(
+                  idle,
+                  "col-start-1 row-start-1 animate-assist-sweep whitespace-nowrap bg-[linear-gradient(112deg,var(--brand-assist-from)_0%,var(--brand-assist-via)_28%,var(--brand-assist-to)_52%,var(--brand-assist-via)_76%,var(--brand-assist-from)_100%)] bg-[length:200%_auto] bg-clip-text pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [text-shadow:0_24px_88px_rgba(var(--accent-rgb),0.2)] motion-reduce:animate-none max-sm:whitespace-normal max-sm:leading-wordmark-wrap force-motion:animate-assist-sweep",
+                )}
                 initial={reduceMotion ? "illuminated" : "dormant"}
                 animate={motionState}
                 variants={assistWordFillReveal}
               >
-                <span className="inline-block bg-[linear-gradient(112deg,var(--brand-assist-subject-from)_4%,var(--brand-assist-subject-via)_55%,var(--brand-assist-subject-to)_100%)] bg-clip-text text-[1.18em] font-heavy tracking-[-0.04em] text-transparent drop-shadow-[0_18px_42px_rgba(var(--accent-rgb),0.22)] max-sm:block">
+                <span
+                  className={cn(
+                    idle,
+                    "inline-block animate-assist-sweep bg-[linear-gradient(112deg,var(--brand-assist-subject-from)_0%,var(--brand-assist-subject-via)_30%,var(--brand-assist-subject-to)_55%,var(--brand-assist-subject-via)_78%,var(--brand-assist-subject-from)_100%)] bg-[length:200%_auto] bg-clip-text text-[1.18em] font-heavy tracking-[-0.04em] text-transparent drop-shadow-[0_18px_42px_rgba(var(--accent-rgb),0.22)] motion-reduce:animate-none max-sm:block force-motion:animate-assist-sweep",
+                  )}
+                >
                   {assist.title.subject}
                 </span>{" "}
                 <span className="inline-block font-titling opacity-90 max-sm:mt-[0.12em] max-sm:block">
@@ -182,7 +256,7 @@ export function AssistSection() {
               </motion.h2>
             </div>
             <motion.p
-              className="mt-[clamp(0.7rem,1.3vw,1.2rem)] text-[clamp(1.05rem,1.45vw,1.35rem)] font-medium leading-[1.3] tracking-[0.01em] text-[color-mix(in_oklab,var(--brand-assist-concept)_78%,transparent)]"
+              className="mt-[clamp(0.8rem,1.5vw,1.4rem)] whitespace-nowrap text-[1.25rem] font-normal leading-[1.55] tracking-normal text-[color-mix(in_oklab,var(--brand-assist-concept)_78%,transparent)] sm:text-[clamp(1.25rem,1.65vw,1.5rem)]"
               initial={reduceMotion ? "illuminated" : "dormant"}
               animate={motionState}
               variants={assistSublineReveal}
@@ -203,7 +277,7 @@ export function AssistSection() {
             ))}
           </motion.div>
         </div>
-      </StageShell>
-    </SnapSection>
+      </div>
+    </HomeSection>
   );
 }

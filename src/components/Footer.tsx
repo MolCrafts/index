@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { fadeIn, staggerContainer } from "../lib/animations";
 import { contactHref } from "../lib/contact";
-import { sectionContainer, sectionSubLabel } from "../lib/sectionStyles";
 import { BRAND_GRADIENT_TEXT } from "../lib/styleTokens";
+import { TYPE_LABEL } from "../lib/typeStyles";
 import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
 import { Button } from "./ui/button";
@@ -73,6 +73,14 @@ function FooterNavLink({ link }: { link: FooterLink }) {
     </a>
   );
 }
+
+/*
+ * The last two rungs of the old homepage section language. Everything else in that
+ * module described a page that no longer exists, so the survivors live with their
+ * only caller instead of behind a shared module nobody else imports.
+ */
+const sectionContainer = "container relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-10";
+const sectionSubLabel = cn(TYPE_LABEL, "font-outfit text-xs font-bold text-primary");
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();

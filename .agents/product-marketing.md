@@ -290,13 +290,14 @@ unverified; do not claim measured performance until both are confirmed.
 
 ## Site requirements this positioning imposes
 
-1. **五秒内说明公司价值。** 首屏必须让人理解 MolCrafts 服务于分子与材料研发，并能看见
-   下一步是浏览应用或联系合作；不需要先理解软件体系。
+1. **五秒内说明公司价值。** 首屏是品牌幕布，让人理解 MolCrafts 服务于分子与材料研发；
+   下一步动作（浏览应用或联系合作）出现在紧接着的 Brand statement 屏，不需要先理解软件体系。
 2. **渐变与光晕有明确层级。** Hero 最强，Brand statement 选择性使用，Applications 的光晕
    跟随当前聚焦应用，Closing CTA 呼应 Hero。它们不能被删除，也不能每屏同强度复制。
 3. **截图只属于 Applications。** Hero、Capabilities、Collaboration 和 Trust 区不使用产品截图。
-4. **Applications 是首页核心交互。** 聚焦卡片放大并轮播真实图片，其他卡片退后；键盘和
-   reduced-motion 模式必须有等价、可理解的状态。
+4. **Applications 是首页核心交互。** 聚焦条目展开占据舞台，其他条目压缩为竖排标签；
+   指针、点击、键盘、触屏与 reduced-motion 模式必须有等价、可理解的状态。真实截图到位
+   之前，展开面板使用品牌图形，不使用任何伪造的产品界面。
 5. **商业叙事先于产品目录。** 首页可以在 Applications 中自然出现应用或产品名；AI editorial
    屏可使用五个已批准产品名作为环境标签。两处都不得铺设全量产品清单，也不得展示安装状态、
    技术层级或依赖图。
@@ -390,6 +391,14 @@ molq            ←  molexp
 
 ## Changelog
 *Newest first. One line per revision: what changed and why.*
+- v7 (2026-08-14) — **Continuous-scroll homepage and rebuilt Applications.** Replaced the
+  fullpage pager with one continuously scrolling document over a single fixed molecular
+  field; moved the hero's CTAs onto the Brand statement screen so the first viewport is a
+  pure brand curtain; rebuilt Applications as a six-entry stack band (MolPy, MolPack,
+  MolVis, MolExp, MolNex, Atomiverse) that expands on pointer, click, keyboard and touch,
+  replacing the focused-card carousel and its automatic image rotation. Real product
+  captures do not exist yet, so expanded entries carry brand panels — invented product UI
+  stays prohibited. This version amends requirements 1 and 4 of v6.
 - v6 (2026-08-13) — **Commercial homepage reset.** Replaced the developer-adoption/software
   directory framing with a commercial company homepage; made Chinese outcome-led copy the
   default; removed Docs and technical detail from every homepage surface; retained gradient

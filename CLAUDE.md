@@ -6,7 +6,7 @@ mol_project:
   build:
     install: "npm install"
     check: "npm run lint && npm run typecheck"
-    test: "npm run lint && npm run typecheck"
+    test: "npm run lint && npm run typecheck && npm test"
   arch:
     style: layered
     rules_section: "## Law (never violated)"
@@ -43,7 +43,7 @@ technical product stories.
 - Passive project knowledge: `.claude/notes/`
 - Active runtime specs: `.claude/specs/`
 - Local Claude runtime config: `.claude/agents/`, `.claude/skills/`, `.claude/settings.local.json`
-- Unit tests: `tests/` (vitest), mirroring `src/`. Browser-driven checks go in
+- Unit tests: `tests/` (rstest), mirroring `src/`. Browser-driven checks go in
   `regressions/`, never in `tests/`.
 - Verification: `npm run lint && npm run typecheck && npm test`.
 
@@ -100,8 +100,9 @@ For non-trivial work, prefer:
 - Preserve gradient text and glow as required brand devices. Art-direct their
   intensity and placement; never remove them as a generic anti-template cleanup.
 - Keep product imagery out of the hero. Product screenshots and research images
-  belong only in the Applications showcase, where a focused card enlarges and
-  rotates through real images with keyboard, mobile, and reduced-motion support.
+  belong only in the Applications showcase, where the focused entry expands into
+  the stage with pointer, keyboard, touch, and reduced-motion support. Until real
+  captures exist that showcase carries brand panels, never invented product UI.
 - Do not put Docs links or technical detail anywhere on the homepage, including
   its navigation, body, CTA, and footer. Product pages, GitHub, and the separate
   documentation host retain their own technical roles.

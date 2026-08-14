@@ -91,7 +91,7 @@ const rootContent = (route: OgRoute) => {
       `<ul>${Object.values(homeCopy.projects.items)
         .map(
           (application) =>
-            `<li><strong>${escapeHtml(application.title)}</strong> — ${escapeHtml(application.summary)}</li>`,
+            `<li><strong>${escapeHtml(application.applicationTitle)}</strong> — ${escapeHtml(application.long)}</li>`,
         )
         .join("")}</ul>`,
       `<h2>${escapeHtml(homeCopy.participate.title)}</h2>`,

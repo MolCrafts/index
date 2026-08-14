@@ -1,4 +1,3 @@
-import React from "react";
 import type { OgRoute } from "./og-meta.ts";
 
 const BG = "#020617";

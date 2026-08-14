@@ -229,15 +229,12 @@ interface MoleculeFieldProps {
   intensity?: number;
   className?: string;
   interactive?: boolean;
-  /** Soft technical grid under molecules. Default false for hero clarity. */
-  showGrid?: boolean;
 }
 
 export function MoleculeField({
   intensity = 1,
   className,
   interactive = true,
-  showGrid = false,
 }: MoleculeFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointerRef = useRef({ x: 0.5, y: 0.42, active: false });
@@ -303,36 +300,59 @@ export function MoleculeField({
     let w = 0;
     let h = 0;
     let dpr = 1;
-    /**
-     * The fullpage track keeps every section mounted, so without this gate all eight
-     * fields repaint a viewport-sized canvas each frame while only one is on screen.
-     *
-     * Visibility is measured from the canvas rect rather than an IntersectionObserver:
-     * the track moves its sections with a CSS transform, and IO does not reliably
-     * re-fire for that, which left the wrong fields painting.
+    /*
+     * The field covers the viewport and never leaves it, so `document.hidden` is the
+     * only thing that can make it invisible. An earlier rect-based off-screen gate
+     * dated from when each section owned a field; under a single fixed layer its
+     * condition was always true, so it only cost a layout read per frame.
      */
     let pageVisible = !document.hidden;
     let running = false;
-    let onScreen = true;
-    let lastVisibilityCheck = 0;
-    let clearedWhileHidden = false;
 
-    const VISIBILITY_CHECK_MS = 200;
-
-    const checkOnScreen = (now: number) => {
-      if (now - lastVisibilityCheck < VISIBILITY_CHECK_MS) return onScreen;
-      lastVisibilityCheck = now;
-      const rect = canvas.getBoundingClientRect();
-      const margin = window.innerHeight * 0.1;
-      onScreen =
-        rect.bottom > -margin &&
-        rect.top < window.innerHeight + margin &&
-        rect.right > 0 &&
-        rect.left < window.innerWidth;
-      return onScreen;
-    };
     const t0 = performance.now();
     const instances: Instance[] = [];
+
+    /*
+     * Per-atom glow was a fresh `createRadialGradient` plus two colour strings on
+     * every atom of every frame — roughly a hundred gradient objects a frame, and
+     * the bulk of this loop's garbage. The falloff only depends on the atom's
+     * colour, so it is baked once per colour and stamped with `drawImage`;
+     * per-atom depth is applied with `globalAlpha` instead.
+     */
+    const GLOW_SPRITE_PX = 64;
+    const glowSprites = new Map<string, HTMLCanvasElement>();
+    const glowSprite = (rgb: [number, number, number]) => {
+      const key = `${rgb[0]},${rgb[1]},${rgb[2]}`;
+      const cached = glowSprites.get(key);
+      if (cached) return cached;
+      const sprite = document.createElement("canvas");
+      sprite.width = GLOW_SPRITE_PX;
+      sprite.height = GLOW_SPRITE_PX;
+      const sctx = sprite.getContext("2d");
+      if (sctx) {
+        const mid = GLOW_SPRITE_PX / 2;
+        const grad = sctx.createRadialGradient(mid, mid, 0, mid, mid, mid);
+        grad.addColorStop(0, rgba(rgb, 1));
+        grad.addColorStop(1, rgba(rgb, 0));
+        sctx.fillStyle = grad;
+        sctx.fillRect(0, 0, GLOW_SPRITE_PX, GLOW_SPRITE_PX);
+      }
+      glowSprites.set(key, sprite);
+      return sprite;
+    };
+
+    /* Reused across frames so the draw loop allocates no arrays of its own. */
+    type DrawnInstance = {
+      inst: Instance;
+      rotY: number;
+      rotX: number;
+      cx: number;
+      cy: number;
+      depth: number;
+    };
+    const drawn: DrawnInstance[] = [];
+    const projected: ReturnType<typeof project>[] = [];
+    const order: number[] = [];
 
     const seed = () => {
       instances.length = 0;
@@ -352,11 +372,17 @@ export function MoleculeField({
       }
     };
 
+    /*
+     * Measured from the viewport, never from the parent. This layer is
+     * `position: fixed`, so any ancestor carrying a CSS transform becomes its
+     * containing block — the page-entrance transform in `App.tsx` does exactly that
+     * while mounting, which sized the backing store to the full document height and
+     * left ~8x of the painting permanently outside the visible band.
+     */
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const parent = canvas.parentElement;
-      w = parent?.clientWidth || window.innerWidth;
-      h = parent?.clientHeight || window.innerHeight;
+      w = window.innerWidth;
+      h = window.innerHeight;
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = `${w}px`;
@@ -365,17 +391,20 @@ export function MoleculeField({
       seed();
     };
 
+    /*
+     * The field is a slow drift behind text, and it is the page's only permanent
+     * per-frame cost — it can never be gated on visibility because it is always
+     * visible. Half the frames carry the motion just as well and cost half as much.
+     */
+    const FRAME_MS = 1000 / 30;
+    let lastFrame = 0;
+
     const draw = (now: number) => {
-      // Off-screen sections stay mounted; cost them a rect read, not a repaint.
-      if (!checkOnScreen(now)) {
-        if (!clearedWhileHidden) {
-          ctx.clearRect(0, 0, w, h);
-          clearedWhileHidden = true;
-        }
+      if (now - lastFrame < FRAME_MS) {
         if (running) raf = requestAnimationFrame(draw);
         return;
       }
-      clearedWhileHidden = false;
+      lastFrame = now;
 
       const elapsed = (now - t0) / 1000;
       const reduced = reducedRef.current;
@@ -401,48 +430,31 @@ export function MoleculeField({
       ctx.fillStyle = well;
       ctx.fillRect(0, 0, w, h);
 
-      if (showGrid) {
-        ctx.save();
-        ctx.globalAlpha = (pal.isDark ? 0.05 : 0.03) * inten;
-        const step = 72;
-        ctx.strokeStyle = rgba(pal.forest, 0.5);
-        ctx.lineWidth = 1;
-        for (let x = 0; x < w; x += step) {
-          ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, h);
-          ctx.stroke();
-        }
-        for (let y = 0; y < h; y += step) {
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(w, y);
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-
       const pullX = ptr.active && !reduced && interactive ? (ptr.x - 0.5) * 28 : 0;
       const pullY = ptr.active && !reduced && interactive ? (ptr.y - 0.5) * 22 : 0;
 
       // Depth-sort instances roughly by center z after rotation
-      const drawn = instances.map((inst, idx) => {
+      drawn.length = 0;
+      for (let idx = 0; idx < instances.length; idx++) {
+        const inst = instances[idx];
+        if (!inst) continue;
         const rotY = reduced ? inst.rot : inst.rot + elapsed * inst.rotSpeed;
         const rotX = reduced ? 0.35 : 0.35 + Math.sin(elapsed * 0.55 + inst.phase) * 0.45;
         const bob = reduced ? 0 : Math.sin(elapsed * inst.drift + inst.phase) * 14;
         const cx = inst.x * w + pullX * (0.4 + (idx % 3) * 0.15);
         const cy = inst.y * h + bob + pullY * (0.35 + (idx % 2) * 0.12);
-        return { inst, rotY, rotX, cx, cy, depth: Math.sin(rotY) };
-      });
+        drawn.push({ inst, rotY, rotX, cx, cy, depth: Math.sin(rotY) });
+      }
       drawn.sort((a, b) => a.depth - b.depth);
 
       for (const { inst, rotY, rotX, cx, cy } of drawn) {
         const tmpl = TEMPLATES[inst.template];
         if (!tmpl) continue;
         const scale = inst.scale * (0.85 + inten * 0.25);
-        const projected = tmpl.atoms.map((atom) =>
-          project(atom.x, atom.y, atom.z, rotY, rotX, scale, cx, cy),
-        );
+        projected.length = 0;
+        for (const atom of tmpl.atoms) {
+          projected.push(project(atom.x, atom.y, atom.z, rotY, rotX, scale, cx, cy));
+        }
 
         // Intra-molecule bonds only
         ctx.save();
@@ -465,23 +477,29 @@ export function MoleculeField({
         ctx.restore();
 
         // Atoms (painter's order by z)
-        const order = projected.map((p, i) => ({ p, i, z: p.z })).sort((a, b) => a.z - b.z);
+        order.length = 0;
+        for (let i = 0; i < projected.length; i++) order.push(i);
+        order.sort((a, b) => (projected[a]?.z ?? 0) - (projected[b]?.z ?? 0));
 
-        for (const { p, i } of order) {
+        for (const i of order) {
+          const p = projected[i];
           const atom = tmpl.atoms[i];
-          if (!atom) continue;
+          if (!p || !atom) continue;
           const col = atom.kind === 1 ? pal.cyan : atom.kind === 2 ? pal.sand : pal.forest;
           const depthFade = clamp(0.55 + p.z * 0.1, 0.35, 1) * inten;
           const radius = atom.r * scale * 0.55;
           const pulse = reduced ? 1 : 0.92 + Math.sin(elapsed * 1.6 + inst.phase + i) * 0.08;
 
-          const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 3.2);
-          glow.addColorStop(0, rgba(col, depthFade * (pal.isDark ? 0.35 : 0.22)));
-          glow.addColorStop(1, rgba(col, 0));
-          ctx.fillStyle = glow;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, radius * 3.2, 0, Math.PI * 2);
-          ctx.fill();
+          const glowRadius = radius * 3.2;
+          ctx.globalAlpha = depthFade * (pal.isDark ? 0.35 : 0.22);
+          ctx.drawImage(
+            glowSprite(col),
+            p.x - glowRadius,
+            p.y - glowRadius,
+            glowRadius * 2,
+            glowRadius * 2,
+          );
+          ctx.globalAlpha = 1;
 
           ctx.beginPath();
           ctx.fillStyle = rgba(col, depthFade * (pal.isDark ? 0.9 : 0.75));
@@ -517,10 +535,10 @@ export function MoleculeField({
       document.removeEventListener("visibilitychange", onPageVisibility);
       window.removeEventListener("resize", resize);
     };
-  }, [interactive, showGrid]);
+  }, [interactive]);
 
   return (
-    <div className={cn("pointer-events-none absolute inset-0 z-0", className)} aria-hidden="true">
+    <div className={cn("pointer-events-none fixed inset-0 z-0", className)} aria-hidden="true">
       <canvas ref={canvasRef} className="h-full w-full" />
     </div>
   );

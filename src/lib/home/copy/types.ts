@@ -7,11 +7,18 @@ export interface PillarCopy {
   readonly body: string;
 }
 
+/**
+ * One entry in the application stage.
+ *
+ * `short` is what the compact band shows; `long` is what the expanded stage adds.
+ * Both are held to a steady length across the roster so the band reads as one row
+ * and the expanded panel never jumps height when the reader moves between entries.
+ */
 export interface ApplicationCopy {
-  readonly title: string;
-  readonly summary: string;
-  readonly imageAlt: string;
-  readonly cta: string;
+  /** What you do with it, as a noun phrase — distinct from the product name. */
+  readonly applicationTitle: string;
+  readonly short: string;
+  readonly long: string;
 }
 
 export interface ParticipatePathCopy {
@@ -60,17 +67,17 @@ export interface HomeCopy {
   readonly projects: {
     readonly title: string;
     readonly lead: string;
-    readonly pause: string;
-    readonly play: string;
-    readonly previousImage: string;
-    readonly nextImage: string;
-    readonly imageCounter: string;
+    /** Link label on the expanded panel. */
+    readonly cta: string;
+    /** Accessible name for the applications band. */
+    readonly stageLabel: string;
     readonly items: {
-      readonly simulation: ApplicationCopy;
-      readonly prediction: ApplicationCopy;
-      readonly systemDesign: ApplicationCopy;
-      readonly visualAnalysis: ApplicationCopy;
-      readonly collaboration: ApplicationCopy;
+      readonly molpy: ApplicationCopy;
+      readonly molpack: ApplicationCopy;
+      readonly molvis: ApplicationCopy;
+      readonly molexp: ApplicationCopy;
+      readonly molnex: ApplicationCopy;
+      readonly atomiverse: ApplicationCopy;
     };
   };
   readonly participate: {

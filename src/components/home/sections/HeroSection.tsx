@@ -1,15 +1,16 @@
 import { MOTION_EASE, prefersReducedMotion } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
-import { BRAND_GRADIENT_TEXT, HOME_STAGE_ARRIVE } from "@/lib/styleTokens";
+import { BRAND_GRADIENT_TEXT } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { MoleculeField } from "../MoleculeField";
-import { SnapSection } from "../fullpage/SnapSection";
+import { HomeSection } from "../HomeSection";
 
 /**
- * The original MolCrafts brand curtain: centred wordmark, gradient and glow.
- * The commercial explanation now begins on the following screen.
+ * The MolCrafts brand curtain: centred wordmark, gradient and glow.
+ *
+ * The field and glows it used to own are now the page's shared background
+ * (`HomeAtmosphere`), so this block carries type alone.
  */
 export function HeroSection() {
   const { brandHero } = useHomeCopy();
@@ -17,31 +18,10 @@ export function HeroSection() {
   const reduceMotion = prefersReducedMotion();
 
   return (
-    <SnapSection
-      id="hero"
-      aria-labelledby="main-heading"
-      className="h-[var(--home-view,100cqb)] justify-center overflow-hidden"
-    >
-      <MoleculeField intensity={0.2} interactive className="z-0 opacity-45" />
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(38rem,68vw)] w-[min(62rem,92vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(var(--accent-rgb),0.16),hsl(var(--primary)/0.07)_42%,transparent_72%)] blur-[36px]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -left-[12%] top-[12%] z-0 size-[min(44rem,68vw)] rounded-full bg-[radial-gradient(circle,hsl(var(--primary)/0.24),transparent_68%)] blur-glow"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-[18%] -right-[10%] z-0 size-[min(50rem,72vw)] rounded-full bg-[radial-gradient(circle,rgba(var(--accent-rgb),0.2),transparent_70%)] blur-glow"
-        aria-hidden="true"
-      />
-
+    <HomeSection id="hero" aria-labelledby="main-heading" className="overflow-hidden">
       <motion.header
         lang={locale}
-        className={cn(
-          HOME_STAGE_ARRIVE,
-          "relative z-10 mx-auto flex w-full max-w-[100rem] flex-col items-center px-6 pb-24 pt-16 text-center font-brand [font-optical-sizing:auto] sm:px-10",
-        )}
+        className="relative z-10 mx-auto flex w-full max-w-[100rem] flex-col items-center px-6 pb-24 pt-16 text-center font-brand [font-optical-sizing:auto] sm:px-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: MOTION_EASE }}
@@ -114,6 +94,6 @@ export function HeroSection() {
           </motion.span>
         </motion.p>
       </motion.header>
-    </SnapSection>
+    </HomeSection>
   );
 }

@@ -32,9 +32,11 @@ The root route is designed for company-level understanding and collaboration:
   devices. The hero carries the strongest expression.
 - Keep product screenshots out of the hero. Screenshots and research imagery
   appear only in the Applications showcase.
-- On desktop, the focused Application card enlarges and automatically rotates
-  through real images while neighboring cards recede. Mobile uses one active
-  card with swipe/tap navigation and equivalent image rotation.
+- On a pointer-capable desktop, the Applications band expands the focused entry
+  into the whole stage while its neighbours compress to vertical labels; hover,
+  click, and keyboard focus all activate it. Narrower and touch viewports get a
+  chip row, one expanded entry, and the full roster as a list. Entries currently
+  open on a brand panel — real product captures have not been taken yet.
 - Keep Docs links, install instructions, APIs, dependencies, release status,
   architecture details, and fake terminal language off every homepage surface.
 - Lead visitors toward Applications, capabilities, collaboration, and Contact.
@@ -47,13 +49,16 @@ Canonical positioning and Chinese-copy rules live in
 
 ## Homepage narrative
 
-1. Hero — company thesis and primary action
-2. Brand statement — the point of view behind MolCrafts
-3. Capabilities — what the company can help research teams accomplish
-4. Applications — interactive, image-led application stories
-5. Collaboration — Open source, Consulting, and Enterprise paths
-6. Trust and support — verified signals only
-7. Closing CTA and footer — a direct route to Contact
+1. Hero — the brand curtain; wordmark, kicker, and subtitle only
+2. Brand statement (`#about`) — the point of view behind MolCrafts, and the
+   page's first call to action
+3. Capabilities (`#solutions`) — what the company can help research teams
+   accomplish
+4. AI editorial (`#assist`) — the approved ambient product constellation
+5. Applications — the interactive entry-point band
+6. Collaboration — Open source, Consulting, and Enterprise paths
+7. Trust and support — verified signals only
+8. Closing CTA and footer — a direct route to Contact
 
 ## Development
 
@@ -62,7 +67,9 @@ npm install        # install dependencies
 npm run dev        # start the Rsbuild dev server
 npm run build      # production build (runs postbuild prerender + OG generation)
 npm run preview    # preview the production build locally
-npm run lint       # Biome lint over src/
+npm run lint       # Biome lint over src/ and scripts/
+npm run typecheck  # tsc over src/ and scripts/
+npm test           # Rstest unit suite
 npm run typecheck  # TypeScript type-check (tsc --noEmit)
 ```
 

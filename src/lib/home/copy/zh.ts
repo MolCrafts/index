@@ -1,3 +1,4 @@
+import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
 import type { HomeCopy } from "./types";
 
@@ -53,43 +54,39 @@ export const zh: HomeCopy = {
   },
   assist: APPROVED_ASSIST_COPY,
   projects: {
-    title: "应用，从真实研究场景开始。",
-    lead: "把鼠标移到一个方向上，看看不同分子视角如何支持下一步判断。",
-    pause: "暂停轮播",
-    play: "继续轮播",
-    previousImage: "上一张",
-    nextImage: "下一张",
-    imageCounter: "张图",
+    ...APPROVED_APPLICATIONS_HEADING,
+    cta: "了解详情",
+    stageLabel: "MolCrafts 应用",
     items: {
-      simulation: {
-        title: "分子与材料模拟",
-        summary: "从结构出发，研究分子行为与材料响应。",
-        imageAlt: "用于分子与材料模拟研究的分子结构",
-        cta: "了解模拟应用",
+      molpy: {
+        applicationTitle: "体系构建",
+        short: "构建并定型分子体系",
+        long: "把一个结构变成引擎可以直接运行的定型体系，运行之前先看清楚。",
       },
-      prediction: {
-        title: "性质预测与材料筛选",
-        summary: "把数据与模型转化为更有方向的研发判断。",
-        imageAlt: "用于性质预测和材料筛选的分子结构",
-        cta: "了解预测应用",
+      molpack: {
+        applicationTitle: "装填准备",
+        short: "把分子装进模拟盒",
+        long: "按你指定的组成填满盒子，每一次运行都得到相同的结果。",
       },
-      systemDesign: {
-        title: "分子体系设计",
-        summary: "为复杂体系建立可计算、可比较的研究起点。",
-        imageAlt: "用于分子体系设计研究的分子结构",
-        cta: "了解体系设计",
+      molvis: {
+        applicationTitle: "可视检查",
+        short: "查看结构与轨迹",
+        long: "在浏览器、编辑器或 notebook 里查看一个结构，或者一整条轨迹。",
       },
-      visualAnalysis: {
-        title: "三维观察与分析",
-        summary: "从空间结构和动态变化中找到值得追问的信号。",
-        imageAlt: "用于三维观察和分析的分子结构",
-        cta: "了解可视分析",
+      molexp: {
+        applicationTitle: "实验追踪",
+        short: "运行并追踪实验",
+        long: "把流程描述一次就可以运行，每个输入与结果都留在它名下。",
       },
-      collaboration: {
-        title: "研究协作与复现",
-        summary: "让过程、选择与结果在团队中持续流动。",
-        imageAlt: "用于研究协作和结果复现的分子结构",
-        cta: "了解研究协作",
+      molnex: {
+        applicationTitle: "势函数训练",
+        short: "训练并组合势函数",
+        long: "用你自己的数据训练势函数，再与你已经信任的物理组合起来。",
+      },
+      atomiverse: {
+        applicationTitle: "模拟运行",
+        short: "运行动力学与电子结构",
+        long: "通过同一个接口触及分子动力学与电子结构，在 CPU 与 GPU 上运行。",
       },
     },
   },

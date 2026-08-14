@@ -116,27 +116,30 @@ function App() {
   return (
     <>
       <SEOSchema path={currentPath} />
+      {/* The homepage owns its own chrome: `HomeAtmosphere` replaces this background,
+          `HomeFooter` replaces the shared footer, and `/` is dark regardless of theme. */}
       {!isHome && <div className={PAGE_ATMOSPHERE} aria-hidden="true" />}
 
       <AnimatePresence mode="wait">
         {!isLoading && (
+          // The homepage enters on opacity alone. A translate would put a CSS
+          // transform on this element, which makes it the containing block for the
+          // `position: fixed` layers `HomeAtmosphere` mounts inside it — placing and
+          // sizing the page's whole background against the document instead of the
+          // viewport for the length of the entrance.
           <motion.div
             key={currentPath}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
+            initial={isHome ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            animate={isHome ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            exit={isHome ? { opacity: 0 } : { opacity: 0, y: -12 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               "relative z-1 flex flex-col",
-              isHome
-                ? "dark h-[100svh] min-w-0 overflow-hidden bg-background text-foreground"
-                : "min-h-screen",
+              isHome ? "dark min-h-screen min-w-0 bg-background text-foreground" : "min-h-screen",
             )}
           >
             <Navbar />
-            <main className={isHome ? "min-h-0 min-w-0 flex-1 overflow-hidden" : "flex-grow"}>
-              {renderContent()}
-            </main>
+            <main className={isHome ? "min-w-0 flex-1" : "flex-grow"}>{renderContent()}</main>
             {!isHome && <Footer />}
           </motion.div>
         )}

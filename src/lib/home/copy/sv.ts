@@ -1,3 +1,4 @@
+import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
 import type { HomeCopy } from "./types";
 
@@ -53,43 +54,39 @@ export const sv: HomeCopy = {
   },
   assist: APPROVED_ASSIST_COPY,
   projects: {
-    title: "Tillämpningar börjar i verkliga forskningssituationer.",
-    lead: "Fokusera ett område och se hur olika molekylära perspektiv kan stödja nästa beslut.",
-    pause: "Pausa bildspel",
-    play: "Fortsätt bildspel",
-    previousImage: "Föregående bild",
-    nextImage: "Nästa bild",
-    imageCounter: "bilder",
+    ...APPROVED_APPLICATIONS_HEADING,
+    cta: "Utforska",
+    stageLabel: "MolCrafts tillämpningar",
     items: {
-      simulation: {
-        title: "Molekyl- och materialsimulering",
-        summary: "Utgå från struktur för att studera molekylärt beteende och materialrespons.",
-        imageAlt: "Molekylstruktur för molekyl- och materialsimulering",
-        cta: "Utforska simulering",
+      molpy: {
+        applicationTitle: "Systemuppbyggnad",
+        short: "Bygg och typa molekylära system",
+        long: "Gör en struktur till ett typat system som en motor kan köra, och granska det först.",
       },
-      prediction: {
-        title: "Egenskapsprediktion och screening",
-        summary: "Gör data och modeller till mer riktade FoU-beslut.",
-        imageAlt: "Molekylstruktur för egenskapsprediktion och materialscreening",
-        cta: "Utforska prediktion",
+      molpack: {
+        applicationTitle: "Boxpreparation",
+        short: "Packa molekyler i en box",
+        long: "Fyll en box med den sammansättning du anger, och få samma resultat varje körning.",
       },
-      systemDesign: {
-        title: "Design av molekylära system",
-        summary: "Skapa en beräkningsbar och jämförbar startpunkt för komplexa system.",
-        imageAlt: "Molekylstruktur för design av molekylära system",
-        cta: "Utforska systemdesign",
+      molvis: {
+        applicationTitle: "Visuell granskning",
+        short: "Granska strukturer och trajektorier",
+        long: "Se en struktur eller en hel trajektoria i webbläsaren, din editor eller en notebook.",
       },
-      visualAnalysis: {
-        title: "3D-observation och analys",
-        summary: "Hitta signaler värda att följa i rumslig struktur och dynamisk förändring.",
-        imageAlt: "Molekylstruktur för tredimensionell observation och analys",
-        cta: "Utforska visuell analys",
+      molexp: {
+        applicationTitle: "Experimentspårning",
+        short: "Kör och spåra experiment",
+        long: "Beskriv ett arbetsflöde en gång, kör det, och håll varje indata och resultat kopplat.",
       },
-      collaboration: {
-        title: "Forskningssamarbete och reproducerbarhet",
-        summary: "Låt process, val och resultat fortsätta röra sig genom teamet.",
-        imageAlt: "Molekylstruktur för reproducerbar forskning i team",
-        cta: "Utforska samarbete",
+      molnex: {
+        applicationTitle: "Potentialträning",
+        short: "Träna och kombinera potentialer",
+        long: "Träna en potential på dina egna data, och kombinera den med fysik du redan litar på.",
+      },
+      atomiverse: {
+        applicationTitle: "Simuleringskörningar",
+        short: "Kör dynamik och elektronstruktur",
+        long: "Nå molekyldynamik och elektronstruktur genom ett gränssnitt, på CPU och på GPU.",
       },
     },
   },

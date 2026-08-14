@@ -1,3 +1,4 @@
+import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
 import type { HomeCopy } from "./types";
 
@@ -53,43 +54,39 @@ export const en: HomeCopy = {
   },
   assist: APPROVED_ASSIST_COPY,
   projects: {
-    title: "Applications begin with real research situations.",
-    lead: "Focus an area to see how different molecular views can support the next decision.",
-    pause: "Pause carousel",
-    play: "Resume carousel",
-    previousImage: "Previous image",
-    nextImage: "Next image",
-    imageCounter: "images",
+    ...APPROVED_APPLICATIONS_HEADING,
+    cta: "Explore",
+    stageLabel: "MolCrafts applications",
     items: {
-      simulation: {
-        title: "Molecular and materials simulation",
-        summary: "Begin with structure to study molecular behaviour and material response.",
-        imageAlt: "Molecular structure used in molecular and materials simulation",
-        cta: "Explore simulation",
+      molpy: {
+        applicationTitle: "System construction",
+        short: "Build and type molecular systems",
+        long: "Turn a structure into a typed system an engine can run, and inspect it first.",
       },
-      prediction: {
-        title: "Property prediction and screening",
-        summary: "Turn data and models into better-directed R&D decisions.",
-        imageAlt: "Molecular structure used in property prediction and material screening",
-        cta: "Explore prediction",
+      molpack: {
+        applicationTitle: "Box preparation",
+        short: "Pack molecules into a box",
+        long: "Fill a box with the composition you specify, and get the same result every run.",
       },
-      systemDesign: {
-        title: "Molecular system design",
-        summary: "Create a computable, comparable starting point for complex systems.",
-        imageAlt: "Molecular structure used in molecular system design",
-        cta: "Explore system design",
+      molvis: {
+        applicationTitle: "Visual inspection",
+        short: "Inspect structures and trajectories",
+        long: "Look at a structure or a full trajectory in the browser, your editor, or a notebook.",
       },
-      visualAnalysis: {
-        title: "3D observation and analysis",
-        summary: "Find signals worth pursuing in spatial structure and dynamic change.",
-        imageAlt: "Molecular structure used in three-dimensional observation and analysis",
-        cta: "Explore visual analysis",
+      molexp: {
+        applicationTitle: "Experiment tracking",
+        short: "Run and track experiments",
+        long: "Describe a workflow once, run it, and keep every input and result linked to it.",
       },
-      collaboration: {
-        title: "Research collaboration and reproducibility",
-        summary: "Keep process, choices, and results moving across a team.",
-        imageAlt: "Molecular structure used in collaborative reproducible research",
-        cta: "Explore collaboration",
+      molnex: {
+        applicationTitle: "Potential training",
+        short: "Train and compose potentials",
+        long: "Train a potential on your own data, and compose it with physics you already trust.",
+      },
+      atomiverse: {
+        applicationTitle: "Simulation runs",
+        short: "Run dynamics and electronic structure",
+        long: "Reach molecular dynamics and electronic structure through one interface, on CPU and on GPU.",
       },
     },
   },

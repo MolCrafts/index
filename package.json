@@ -25,7 +25,7 @@
     "dev": "PUBLIC_FORCE_FULL_MOTION=true rsbuild dev",
     "build": "rsbuild build",
     "postbuild": "tsx scripts/postbuild.ts",
-    "lint": "biome check src",
+    "lint": "biome check src scripts",
     "typecheck": "tsc --noEmit",
     "test": "rstest run",
     "test:watch": "rstest watch",
