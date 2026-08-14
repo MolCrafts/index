@@ -43,7 +43,9 @@ technical product stories.
 - Passive project knowledge: `.claude/notes/`
 - Active runtime specs: `.claude/specs/`
 - Local Claude runtime config: `.claude/agents/`, `.claude/skills/`, `.claude/settings.local.json`
-- Verification: `npm run lint && npm run typecheck`; no test runner is configured yet.
+- Unit tests: `tests/` (vitest), mirroring `src/`. Browser-driven checks go in
+  `regressions/`, never in `tests/`.
+- Verification: `npm run lint && npm run typecheck && npm test`.
 
 ## Law (never violated)
 
@@ -66,7 +68,7 @@ convenience. A carve-out exists only when the operator records it there.
 - **Never let brand tokens drift from the docs theme.** Keep the two token files byte-identical.
 - **Never modify more than one website page per task.** Scope shared changes to that page only.
 - **Never change user-facing copy without prior operator approval of the exact wording.**
-- **Never violate the commercial homepage contract.** Preserve gradient/glow, keep hero imagery-free, confine product imagery to Applications, and keep Docs/technical detail off `/`.
+- **Never violate the commercial homepage contract.** Preserve gradient/glow, keep hero imagery-free, confine product imagery to Applications, allow only the approved ambient product-name constellation in the AI editorial screen, and keep Docs/technical detail off `/`.
 - **Never add `console.log`, secrets, `any`, or an unexplained `@ts-ignore`.**
 - **Never bulk-reindent mixed-format files.** Keep diffs semantically scoped.
 - **Never break the product/docs/app URL contract.** Preserve the established host and path split.
