@@ -32,11 +32,18 @@ export const HOME_BLOCK = "py-16 sm:py-24";
  */
 const HEADING_BASE = `${TYPE_DISPLAY} font-display font-semibold text-foreground`;
 
+/**
+ * Headings sit in light rather than on a flat ground, the way the AI screen's
+ * does. Half its radius and alpha: enough to belong to the same page, not enough
+ * to compete with it.
+ */
+const HEADING_GLOW = "[text-shadow:0_18px_60px_rgba(var(--accent-rgb),0.14)]";
+
 /** Blocks that make a claim: About, Collaboration, Support, Contact. */
-export const HOME_H2_STATEMENT = `${HEADING_BASE} text-[clamp(2.6rem,4.6vw,4.4rem)] leading-display tracking-[-0.045em]`;
+export const HOME_H2_STATEMENT = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.6rem,4.6vw,4.4rem)] leading-display tracking-[-0.045em]`;
 
 /** Blocks that carry content beneath the heading: Capabilities, Applications. */
-export const HOME_H2_SECTION = `${HEADING_BASE} text-[clamp(2.1rem,3.4vw,3.2rem)] leading-display tracking-[-0.03em]`;
+export const HOME_H2_SECTION = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.1rem,3.4vw,3.2rem)] leading-display tracking-[-0.03em]`;
 
 /** Sub-heading inside a block — pillar titles, path titles, supporter names. */
 export const HOME_H3 = `${TYPE_HEADING} font-display text-2xl font-semibold text-foreground md:text-[1.75rem]`;

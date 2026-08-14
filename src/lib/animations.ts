@@ -86,11 +86,26 @@ export const buttonHover = {
  * work, otherwise every block visibly lurches as the reader scrolls past it.
  */
 export const homeReveal: Variants = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
   visible: {
     opacity: 1,
     y: 0,
+    filter: "blur(0px)",
     transition: { duration: 0.62, ease: MOTION_EASE },
+  },
+};
+
+/**
+ * The aura behind a block's header — the AI screen's device at roughly half
+ * strength, so every block sits in the same light while that screen stays the
+ * crescendo rather than the only lit thing on the page.
+ */
+export const blockAuraReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.86 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 1.35, ease: MOTION_EASE },
   },
 };
 
