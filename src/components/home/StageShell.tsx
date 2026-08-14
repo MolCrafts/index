@@ -1,3 +1,5 @@
+import { HOME_STAGE_ARRIVE } from "@/lib/styleTokens";
+import { TYPE_LABEL } from "@/lib/typeStyles";
 import { cn } from "@/lib/utils";
 import type { CSSProperties, ReactNode } from "react";
 import { MoleculeField } from "./MoleculeField";
@@ -35,20 +37,21 @@ export function StageShell({
     <>
       {grid && (
         <div
-          className="home-tech-grid pointer-events-none absolute inset-0 z-0 opacity-70 dark:opacity-90"
+          className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(hsl(var(--border)/0.3)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border)/0.3)_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-70 [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)] dark:opacity-90"
           aria-hidden="true"
         />
       )}
       {field > 0 && <MoleculeField intensity={field} interactive={false} className="z-0" />}
       {veil !== "none" && (
         <div
-          className={cn("pointer-events-none absolute inset-0 z-[1]", VEIL[veil])}
+          className={cn("pointer-events-none absolute inset-0 z-1", VEIL[veil])}
           aria-hidden="true"
         />
       )}
       <div
         className={cn(
-          "home-section-stage relative z-10 h-full min-h-full w-full min-w-0",
+          "relative z-10 h-full min-h-full w-full min-w-0",
+          HOME_STAGE_ARRIVE,
           className,
         )}
       >
@@ -70,7 +73,7 @@ export function MonoLabel({
 }) {
   return (
     <span
-      className={cn("type-label font-mono text-[10px] font-medium text-primary/85", className)}
+      className={cn(TYPE_LABEL, "font-mono text-micro font-medium text-primary/85", className)}
       style={style}
     >
       {children}

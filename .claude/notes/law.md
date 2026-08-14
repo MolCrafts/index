@@ -138,6 +138,10 @@ Do not place Docs or Documentation links, install instructions, APIs,
 dependencies, package status, architecture detail, or fake technical chrome on
 any homepage surface, including its navigation and footer. Dedicated product
 pages, GitHub, and `docs.molcrafts.org` keep their existing technical roles.
+The AI editorial section is the sole product-name carve-out: it may show
+`MolPy`, `MolExp`, `MolVis`, `MolPack`, and `Atomiverse` as non-interactive
+ambient context labels. Those labels must not include links, descriptions,
+status, installation, dependency, or architecture information.
 `.agents/product-marketing.md` is the canonical copy, hierarchy, and conversion
 contract for this route.
 
@@ -151,6 +155,12 @@ selected page requires it, and those changes must not alter another page's
 behavior or presentation. If a request spans multiple pages, split it into
 separate tasks and wait for a new operator instruction before starting the next
 page.
+
+The sole carve-out is an explicit operator request for a repository-wide style
+system migration. That task may update every route and shared component needed
+to replace legacy CSS with Tailwind and generated shadcn primitives, but it must
+remain presentation-only: preserve copy, public APIs, route behavior, and
+interactions. The copy-approval law continues to apply without exception.
 
 <!-- mol:law:id:copy-approval -->
 ## Never change user-facing copy without prior operator approval

@@ -521,10 +521,12 @@ export function FullpageProvider({ sectionIds, children, className }: FullpagePr
     <FullpageContext.Provider value={value}>
       <div
         ref={containerRef}
-        className={cn("home-fullpage-scroller relative h-full w-full overflow-hidden", className)}
+        className={cn(
+          "relative h-full w-full overflow-hidden overscroll-none scroll-auto [container-type:size] [scrollbar-width:none] [touch-action:pan-y_pinch-zoom] [&::-webkit-scrollbar]:hidden",
+          className,
+        )}
         data-fullpage-root
         data-paging={paging ? "true" : undefined}
-        style={{ overscrollBehavior: "none", touchAction: "pan-y pinch-zoom" }}
       >
         {children}
       </div>
@@ -548,7 +550,7 @@ export function FullpageTrack({
   }, [registerTrack]);
 
   return (
-    <div ref={ref} className={cn("home-fullpage-track", className)}>
+    <div ref={ref} className={cn("will-change-transform [backface-visibility:hidden]", className)}>
       {children}
     </div>
   );

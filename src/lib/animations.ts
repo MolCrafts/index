@@ -125,3 +125,99 @@ export const sectionTransition: Variants = {
     },
   },
 };
+
+export const assistWordOutlineReveal: Variants = {
+  dormant: { opacity: 0.42, scale: 0.985 },
+  illuminated: {
+    opacity: 0.1,
+    scale: 1,
+    transition: { delay: 0.18, duration: 1.18, ease: MOTION_EASE },
+  },
+};
+
+export const assistWordFillReveal: Variants = {
+  dormant: { opacity: 0, scale: 0.985, filter: "blur(22px)" },
+  illuminated: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { delay: 0.46, duration: 1.28, ease: MOTION_EASE },
+  },
+};
+
+export const assistSublineReveal: Variants = {
+  dormant: { opacity: 0, y: 8, filter: "blur(4px)" },
+  illuminated: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { delay: 1.08, duration: 0.62, ease: MOTION_EASE },
+  },
+};
+
+export const assistStatementsReveal: Variants = {
+  dormant: {},
+  illuminated: {
+    transition: {
+      delayChildren: 0.72,
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+export const assistMicroStatementReveal: Variants = {
+  dormant: { opacity: 0, scale: 0.97, filter: "blur(5px)" },
+  illuminated: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 0.62, ease: MOTION_EASE },
+  },
+};
+
+export const assistAuraReveal: Variants = {
+  dormant: { opacity: 0.15, scale: 0.78, x: "-50%", y: "-50%" },
+  illuminated: {
+    opacity: [0.15, 0.74, 0.52],
+    scale: 1,
+    x: "-50%",
+    y: "-50%",
+    transition: { duration: 1.8, ease: MOTION_EASE, times: [0, 0.58, 1] },
+  },
+};
+
+interface AssistContextMotion {
+  delay: number;
+  peak: number;
+  settled: number;
+  x: number;
+  y: number;
+}
+
+export const assistContextGather: Variants = {
+  dormant: ({ x, y }: AssistContextMotion) => ({
+    x,
+    y,
+    scale: 0.82,
+    filter: "blur(2px)",
+    opacity: 0.02,
+  }),
+  illuminated: ({ delay, peak, settled }: AssistContextMotion) => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    opacity: [0.02, peak, settled],
+    transition: { delay, duration: 1.45, ease: MOTION_EASE, times: [0, 0.56, 1] },
+  }),
+};
+
+export const assistMobileProductsReveal: Variants = {
+  dormant: { y: 12, filter: "blur(3px)", opacity: 0 },
+  illuminated: {
+    y: 0,
+    filter: "blur(0px)",
+    opacity: 0.76,
+    transition: { delay: 0.58, duration: 1.1, ease: MOTION_EASE },
+  },
+};

@@ -1,8 +1,16 @@
-import sadMoko from "@/assets/moko/sad.png";
+import sadMoko from "@/assets/moko/sad.webp";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Suspense, lazy, useMemo } from "react";
 import { fadeIn, slideUp } from "../lib/animations";
 import { FEATURED_LINKS } from "../lib/routes";
+import {
+  BRAND_GRADIENT_TEXT,
+  LEGACY_SHADOW,
+  MOLECULAR_GLOW,
+  MOLECULE_BLOB,
+  PRODUCT_HERO_SECTION,
+} from "../lib/styleTokens";
 import { cn } from "../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
@@ -31,25 +39,22 @@ export const NotFound = () => {
 
   return (
     <motion.section
-      className="w-full min-h-[calc(100vh-200px)] flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+      className={cn(PRODUCT_HERO_SECTION, "min-h-[calc(100vh-200px)]")}
       initial="hidden"
       animate="visible"
       variants={fadeIn}
     >
-      <div className="molecule-blob" style={{ top: "25%", left: "15%" }} aria-hidden="true" />
+      <div className={cn(MOLECULE_BLOB, "left-[15%] top-1/4")} aria-hidden="true" />
       <div
-        className="molecule-blob"
-        style={{ top: "35%", right: "20%", animationDelay: "7s" }}
+        className={cn(MOLECULE_BLOB, "right-[20%] top-[35%] [animation-delay:7s]")}
         aria-hidden="true"
       />
       <div
-        className="molecule-blob"
-        style={{ bottom: "30%", left: "25%", animationDelay: "4s" }}
+        className={cn(MOLECULE_BLOB, "bottom-[30%] left-1/4 [animation-delay:4s]")}
         aria-hidden="true"
       />
       <div
-        className="molecular-glow"
-        style={{ top: "30%", left: "50%", width: "300px", height: "300px" }}
+        className={cn(MOLECULAR_GLOW, "left-1/2 top-[30%] size-[18.75rem]")}
         aria-hidden="true"
       />
 
@@ -65,15 +70,7 @@ export const NotFound = () => {
           <motion.img
             src={sadMoko}
             alt=""
-            className="w-32 h-32 md:w-40 md:h-40 object-cover mb-2"
-            style={{
-              WebkitMaskImage:
-                "radial-gradient(circle at center, #000 42%, rgba(0,0,0,0.65) 60%, transparent 78%)",
-              maskImage:
-                "radial-gradient(circle at center, #000 42%, rgba(0,0,0,0.65) 60%, transparent 78%)",
-              filter:
-                "drop-shadow(0 0 28px rgba(16,185,129,0.28)) drop-shadow(0 0 12px rgba(140,228,255,0.18))",
-            }}
+            className="mb-2 size-32 object-cover [filter:drop-shadow(0_0_28px_color-mix(in_srgb,var(--color-emerald-500)_28%,transparent))_drop-shadow(0_0_12px_color-mix(in_srgb,var(--molcrafts-cyan-spark-soft)_18%,transparent))] [mask-image:radial-gradient(circle_at_center,#000_42%,rgb(0_0_0_/_0.65)_60%,transparent_78%)] md:size-40"
             initial={{ opacity: 0, scale: 0.88 }}
             animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
             transition={{
@@ -99,7 +96,10 @@ export const NotFound = () => {
           </motion.p>
 
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl font-sans font-extrabold tracking-tight leading-[1.1] mb-4 gradient-text-primary"
+            className={cn(
+              BRAND_GRADIENT_TEXT,
+              "mb-4 font-sans text-4xl font-extrabold leading-headline tracking-tight sm:text-5xl md:text-6xl",
+            )}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.4 }}
@@ -160,16 +160,13 @@ export const NotFound = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.4 }}
         >
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-base font-semibold text-primary-foreground outline outline-1 outline-primary outline-offset-[3px] transition-all hover:opacity-90 shadow-[0_0_18px_hsl(var(--primary)/0.35)]"
-          >
-            Return home
-          </a>
+          <Button asChild size="lg" className="px-8 shadow-[0_0_18px_hsl(var(--primary)/0.35)]">
+            <a href="/">Return home</a>
+          </Button>
         </motion.div>
       </motion.div>
 
-      <div className="shadow" aria-hidden="true" />
+      <div className={cn(LEGACY_SHADOW, "right-[10rem]")} aria-hidden="true" />
     </motion.section>
   );
 };

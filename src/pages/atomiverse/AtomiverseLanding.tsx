@@ -1,7 +1,5 @@
 import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   AnalysisIcon,
   DataIcon,
@@ -10,8 +8,18 @@ import {
   WorkflowIcon,
 } from "../../components/FeatureIcons";
 import { ProductLinks } from "../../components/ProductLinks";
+import { Button } from "../../components/ui/button";
+import { Card } from "../../components/ui/card";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import {
+  CODE_HIGHLIGHTER,
+  MOLECULAR_GLOW,
+  MOLECULE_BLOB,
+  PRODUCT_DISPLAY_HEADING,
+  PRODUCT_HERO_SECTION,
+} from "../../lib/styleTokens";
+import { SyntaxHighlighter } from "../../lib/syntaxHighlighter";
 import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
@@ -94,20 +102,18 @@ export const AtomiverseLanding = () => {
   return (
     <div className="flex flex-col w-full">
       <motion.section
-        className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+        className={PRODUCT_HERO_SECTION}
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
-        <div className="molecule-blob" style={{ top: "25%", left: "15%" }} aria-hidden="true" />
+        <div className={cn(MOLECULE_BLOB, "left-[15%] top-1/4")} aria-hidden="true" />
         <div
-          className="molecule-blob"
-          style={{ bottom: "30%", right: "20%", animationDelay: "4s" }}
+          className={cn(MOLECULE_BLOB, "bottom-[30%] right-[20%] [animation-delay:4s]")}
           aria-hidden="true"
         />
         <div
-          className="molecular-glow"
-          style={{ top: "30%", left: "50%", width: "300px", height: "300px" }}
+          className={cn(MOLECULAR_GLOW, "left-1/2 top-[30%] size-[18.75rem]")}
           aria-hidden="true"
         />
 
@@ -134,7 +140,7 @@ export const AtomiverseLanding = () => {
                 "text-2xl sm:text-3xl md:text-4xl",
                 GRADIENT_TEXT,
                 ACCENT.kicker,
-                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+                "font-playfair italic font-medium mb-4 sm:mb-6 pb-2",
               )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -145,7 +151,7 @@ export const AtomiverseLanding = () => {
 
             <motion.h1
               className={cn(
-                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-headline w-full mb-4 sm:mb-6 pb-4",
                 GRADIENT_TEXT,
                 ACCENT.title,
                 "pt-2",
@@ -159,7 +165,7 @@ export const AtomiverseLanding = () => {
 
             <motion.h2
               className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.16em] uppercase w-full max-w-4xl mx-auto",
+                cn(PRODUCT_DISPLAY_HEADING, "tracking-[0.16em]"),
                 GRADIENT_TEXT,
                 ACCENT.subhead,
                 "pb-2",
@@ -191,7 +197,7 @@ export const AtomiverseLanding = () => {
                 href="https://github.com/MolCrafts/Atomiverse"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center justify-center rounded-md bg-lime-500 px-8 py-3 text-base font-semibold text-zinc-950 outline outline-1 outline-lime-500 outline-offset-[3px] transition-all hover:bg-lime-400 shadow-[0_0_18px_rgba(132,204,22,0.35)]"
+                className="inline-flex items-center justify-center rounded-md bg-lime-500 px-8 py-3 text-base font-semibold text-zinc-950 outline outline-1 outline-lime-500 outline-offset-[3px] transition-all hover:bg-lime-400 shadow-[0_0_18px_color-mix(in_srgb,var(--color-lime-500)_35%,transparent)]"
               >
                 View on GitHub
               </a>
@@ -216,7 +222,7 @@ export const AtomiverseLanding = () => {
           >
             <h2
               className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase",
+                cn(PRODUCT_DISPLAY_HEADING, "mx-0 w-auto max-w-none"),
                 GRADIENT_TEXT,
                 ACCENT.heading,
               )}
@@ -255,7 +261,7 @@ export const AtomiverseLanding = () => {
           <motion.div className="text-center mb-12 max-w-3xl mx-auto" variants={slideUp}>
             <h2
               className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase",
+                cn(PRODUCT_DISPLAY_HEADING, "mx-0 w-auto max-w-none"),
                 GRADIENT_TEXT,
                 ACCENT.heading,
               )}
@@ -266,47 +272,44 @@ export const AtomiverseLanding = () => {
 
           <div className="flex flex-wrap justify-center gap-2 mb-6">
             {API_SNIPPETS.map((snippet, idx) => (
-              <button
+              <Button
                 key={snippet.filename}
                 type="button"
+                variant="ghost"
                 onClick={() => setActiveCodeIdx(idx)}
                 className={cn(
-                  "rounded-full px-4 py-1.5 text-sm font-medium border transition-colors",
+                  "h-auto rounded-full border px-4 py-1.5 text-sm font-medium transition-colors hover:bg-transparent",
                   idx === activeCodeIdx
-                    ? "border-lime-500/50 bg-lime-500/15 text-lime-200"
+                    ? "border-lime-500/50 bg-lime-500/15 text-lime-200 hover:bg-lime-500/15 hover:text-lime-200"
                     : "border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-zinc-200",
                 )}
               >
                 {snippet.title}
-              </button>
+              </Button>
             ))}
           </div>
 
-          <motion.div
-            className="rounded-2xl border border-zinc-800 overflow-hidden bg-[#0d1117] shadow-2xl"
-            variants={slideUp}
-          >
-            <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3">
-              <span className="font-mono text-xs text-zinc-500">
-                {API_SNIPPETS[activeCodeIdx].filename}
-              </span>
-              <span className="text-xs text-zinc-600">release-ready examples</span>
-            </div>
-            <p className="px-4 pt-4 text-sm text-zinc-400">
-              {API_SNIPPETS[activeCodeIdx].description}
-            </p>
-            <SyntaxHighlighter
-              language={API_SNIPPETS[activeCodeIdx].language}
-              style={vscDarkPlus}
-              customStyle={{
-                margin: 0,
-                padding: "1.25rem 1.5rem 1.5rem",
-                background: "transparent",
-                fontSize: "0.85rem",
-              }}
-            >
-              {API_SNIPPETS[activeCodeIdx].code}
-            </SyntaxHighlighter>
+          <motion.div className="rounded-2xl" variants={slideUp}>
+            <Card className="overflow-hidden rounded-2xl border-zinc-800 bg-code-repo shadow-2xl">
+              <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3">
+                <span className="font-mono text-xs text-zinc-500">
+                  {API_SNIPPETS[activeCodeIdx].filename}
+                </span>
+                <span className="text-xs text-zinc-600">release-ready examples</span>
+              </div>
+              <p className="px-4 pt-4 text-sm text-zinc-400">
+                {API_SNIPPETS[activeCodeIdx].description}
+              </p>
+              <div className="px-6 pb-6 pt-5 text-[0.85rem]">
+                <SyntaxHighlighter
+                  language={API_SNIPPETS[activeCodeIdx].language}
+                  className={CODE_HIGHLIGHTER}
+                  useInlineStyles={false}
+                >
+                  {API_SNIPPETS[activeCodeIdx].code}
+                </SyntaxHighlighter>
+              </div>
+            </Card>
           </motion.div>
 
           <p className="mt-8 text-center text-sm text-zinc-500">

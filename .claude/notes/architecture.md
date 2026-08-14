@@ -29,12 +29,11 @@ _Generated 2026-08-10 by /mol:map._
 - `src/lib/ecosystem.ts` — categorized product roster and marketing metadata.
 - `src/lib/packages.ts` — verified install/repository catalog.
 - `src/lib/productAccents.ts` — product color and gradient registry.
+- `src/lib/{styleTokens,typeStyles}.ts` — shared Tailwind class recipes for brand, atmosphere, code highlighting, and locale-aware typography.
 - `src/lib/animations.ts` — shared Framer Motion variants.
 - `src/lib/{analytics,contact,utils}.ts` — GA page-view adapter, contact-link source, and `cn()` class composition.
 - `src/styles/brand-tokens.css` — shared MolCrafts brand anchors, geometry, and shadows.
-- `src/styles/tailwind.css` — Tailwind v4 theme mapping, semantic UI tokens, light/dark surfaces, container utility, and shared keyframes.
-- `src/index.css` — site-wide typography, decorative backgrounds, gradient text, molecule effects, interaction helpers, and reduced-motion rules.
-- `src/App.css` — legacy/decorative loading, molecule, footer, and newsletter styles.
+- `src/styles/tailwind.css` — the sole stylesheet entry: Tailwind v4 bootstrap, semantic UI tokens, light/dark surfaces, base reset, container utility, and animation tokens.
 - `src/assets/moko/*`, `src/assets/molecules/*`, `src/assets/{moko.svg,claude.svg}` — branded character, molecular, logo, and sponsor imagery.
 - `scripts/og-meta.ts` — build-time per-route title, description, and color catalog.
 - `scripts/og-template.tsx` — Satori Open Graph card composition.
@@ -50,7 +49,8 @@ _Generated 2026-08-10 by /mol:map._
 
 - `src/App.tsx`: default `App`.
 - `src/pages/index.ts`: `MolpyLanding`, `MolrsLanding`, `MolpackLanding`, `MolnexLanding`, `MolexpLanding`, `MolqLanding`, `MolcfgLanding`, `MollogLanding`, `MolVisLanding`, `MolrecLanding`, `AtomiverseLanding`, `NotFound`.
-- Homepage components: `Hero`, `WhatWeDo`, `Manifesto`, `Approach`, `EcosystemArchitecture`, `Sponsors`, `Participate`, `Newsletter`, `Cta`.
+- Homepage components: `HomePage`, `FullpageProvider`, `FullpageTrack`, `SnapSection`, `StageShell`, `MoleculeField`, and the route's section components under `src/components/home/sections/`.
+- Legacy homepage compatibility exports: `Hero`, `WhatWeDo`, `Manifesto`, `Approach`, `EcosystemArchitecture`, `Sponsors`, `Participate`, `Newsletter`, and `Cta`.
 - Shell components: `Navbar`, `Footer`, `SEOSchema`, `LogoIcon`.
 - Shared product components: `Capability`, `ProductCapabilities`, `ProductLinks`, `MoleculeOverlay`.
 - Feature glyphs: `SimulationIcon`, `AnalysisIcon`, `WorkflowIcon`, `DataIcon`, `CollaborationIcon`, `IntegrationIcon`.
@@ -65,7 +65,7 @@ _Generated 2026-08-10 by /mol:map._
 - `src/lib/contact.ts`: `CONTACT_EMAIL`, `contactHref()`.
 - `src/lib/utils.ts`: `cn()`.
 - Build API: `OgRoute`, `routes`, `OgCard()`, `generateOgImages()`, `prerenderHtml()`, `generateLlmsTxt()`.
-- CSS contract: `--molcrafts-*` brand anchors; shadcn semantic color/radius tokens; `container`, gradient-text, section-spacing, molecule, focus, and reduced-motion utility classes.
+- Style contract: `--molcrafts-*` brand anchors; shadcn semantic color/radius tokens; Tailwind class recipes in `styleTokens.ts` and `typeStyles.ts`; no page- or component-specific stylesheet selectors.
 - Operational surface: npm `dev`, `build`, `postbuild`, `lint`, `typecheck`, and `preview` commands; `@/* → src/*` import alias; shadcn `new-york`/CSS-variable configuration.
 - Public route surface: `/`, eleven product slugs, `/404`, product docs at `docs.molcrafts.org/<slug>/`, repositories, `sitemap.xml`, `robots.txt`, generated `/og/*.png`, and `/llms.txt`.
 
@@ -77,7 +77,7 @@ _Generated 2026-08-10 by /mol:map._
 - Shared product components: naming=domain-oriented `ProductCapabilities` and `ProductLinks`; construction=data-driven semantic `dl`/section layouts; errors=unknown package slugs return `null`, unpublished packages show an explicit note instead of a fabricated command.
 - Navigation/theme: naming=PascalCase providers and controls; construction=React state plus shadcn/Radix primitives; errors=route parsing falls back to docs root and theme access throws when used outside its provider.
 - Catalog libraries: naming=uppercase immutable registries, singular interfaces, lower-camel query functions; construction=typed arrays/records serving runtime UI and build scripts; errors=nullable values and explicit status/note fields model absence.
-- Visual foundations: naming=semantic CSS custom properties plus product-keyed accents; construction=brand anchors → shadcn semantic tokens → Tailwind utilities/component composition; errors=CSS fallbacks are token-driven, with reduced-motion handling in global styles.
+- Visual foundations: naming=semantic CSS custom properties plus product-keyed accents; construction=brand anchors → shadcn semantic tokens → Tailwind utilities/component composition; errors=token fallbacks and Tailwind/Framer reduced-motion branches preserve usable static states.
 - shadcn primitives: naming=Radix-aligned component families; construction=`forwardRef`, `cva`, `asChild`, and `cn()`; errors=delegated to primitive behavior and React typing.
 - Motion: naming=shared conceptual variants; construction=Framer Motion variants imported by pages/components, with page-specific interaction state kept local; errors=no exceptional path.
 - Static generation: naming=verb-led exported pipeline primitives with private transformation helpers; construction=synchronous filesystem transforms coordinated by async `postbuild`; errors=top-level generators catch failures, report them, and exit nonzero.
@@ -101,7 +101,7 @@ _Generated 2026-08-10 by /mol:map._
 - `animations.ts`, `utils.ts`: cross-cutting presentation foundation layer.
 - `brand-tokens.css`: canonical brand-token foundation shared with the docs theme.
 - `tailwind.css`: semantic design-system mapping layer.
-- `index.css`, `App.css`: global/decorative presentation layer.
+- `src/lib/{styleTokens,typeStyles}.ts`: reusable Tailwind presentation recipes; page and component styling remains colocated in Tailwind class strings.
 - `og-meta.ts`: static route metadata registry layer.
 - `og-template.tsx`, `generate-og.ts`: social-preview rendering layer.
 - `prerender-html.ts`, `generate-llms-txt.ts`: static discoverability/content-generation layer.

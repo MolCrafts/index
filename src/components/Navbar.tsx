@@ -7,6 +7,8 @@ import { ChevronDown, Menu } from "lucide-react";
 import { GITHUB_ORG_HREF } from "../lib/home/data";
 import { useLocalizedEcosystem } from "../lib/i18n/catalogCopy";
 import { useChromeCopy } from "../lib/i18n/chromeCopy";
+import { BRAND_GRADIENT_TEXT, HOME_GRADIENT_TEXT } from "../lib/styleTokens";
+import { TYPE_BODY, TYPE_LABEL } from "../lib/typeStyles";
 import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
 import { LocaleToggle } from "./LocaleToggle";
@@ -52,13 +54,13 @@ export const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.48 }}
       >
-        <div className="pointer-events-auto mx-auto flex h-14 w-full max-w-[90rem] items-center justify-between rounded-full border border-white/10 bg-[hsl(var(--background)/0.72)] px-3 font-brand shadow-[0_18px_50px_-28px_rgba(0,0,0,0.9)] backdrop-blur-xl [font-optical-sizing:auto] sm:px-4 md:w-[calc(100%-2rem)]">
+        <div className="pointer-events-auto mx-auto flex h-14 w-full max-w-[90rem] items-center justify-between rounded-full border border-white/10 bg-[hsl(var(--background)/0.72)] px-3 font-brand shadow-nav backdrop-blur-xl [font-optical-sizing:auto] sm:px-4 md:w-[calc(100%-2rem)]">
           <a
             href="#hero"
             className="flex items-center gap-2.5 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <LogoIcon className="!h-9 !w-9" />
-            <span className="home-gradient-text text-[0.9375rem] font-[650] tracking-[-0.02em]">
+            <span className={cn(HOME_GRADIENT_TEXT, "text-note font-wordmark tracking-[-0.02em]")}>
               MolCrafts
             </span>
           </a>
@@ -103,14 +105,15 @@ export const Navbar = () => {
             whileTap={{ scale: 0.98 }}
           >
             <LogoIcon />
-            <span className="gradient-text-primary">MolCrafts</span>
+            <span className={BRAND_GRADIENT_TEXT}>MolCrafts</span>
           </motion.a>
         </div>
 
         <nav className="hidden h-full min-w-0 items-center md:flex">
           <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <button
+            <Button
               type="button"
+              variant="ghost"
               onClick={() => setDropdownOpen((open) => !open)}
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
@@ -128,7 +131,7 @@ export const Navbar = () => {
                   dropdownOpen && "rotate-180",
                 )}
               />
-            </button>
+            </Button>
 
             {dropdownOpen && (
               <div className="absolute left-0 top-full z-10 h-8 w-full" aria-hidden="true" />
@@ -144,7 +147,7 @@ export const Navbar = () => {
                   className={cn(
                     "absolute left-1/2 top-full z-50 w-max -translate-x-1/2 overflow-hidden rounded-2xl p-5",
                     "border border-border/40 bg-background/85 backdrop-blur-2xl backdrop-saturate-150",
-                    "shadow-[0_24px_80px_-20px_rgba(0,0,0,0.45),0_0_0_1px_rgba(var(--accent-rgb),0.06)]",
+                    "shadow-menu",
                   )}
                 >
                   <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full bg-[rgba(var(--accent-rgb),0.12)] blur-[70px]" />
@@ -155,7 +158,12 @@ export const Navbar = () => {
                         key={category.title}
                         className="flex min-w-[11rem] max-w-[18rem] flex-1 basis-44 flex-col gap-1"
                       >
-                        <div className="type-label mb-1 px-1 text-[10px] font-bold text-muted-foreground">
+                        <div
+                          className={cn(
+                            TYPE_LABEL,
+                            "mb-1 px-1 text-micro font-bold text-muted-foreground",
+                          )}
+                        >
                           {category.title}
                         </div>
                         <div className="flex flex-col gap-0.5">
@@ -180,7 +188,12 @@ export const Navbar = () => {
                               >
                                 {item.title}
                               </span>
-                              <span className="type-body min-w-0 break-words text-[11px] leading-snug text-muted-foreground/80">
+                              <span
+                                className={cn(
+                                  TYPE_BODY,
+                                  "min-w-0 text-mini !leading-snug text-muted-foreground/80",
+                                )}
+                              >
                                 {item.role}
                               </span>
                             </motion.a>
@@ -217,7 +230,7 @@ export const Navbar = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[min(22rem,90vw)] border-l border-border">
                 <SheetHeader className="mb-8 text-left">
-                  <SheetTitle className="gradient-text-primary text-xl font-bold">
+                  <SheetTitle className={cn(BRAND_GRADIENT_TEXT, "text-xl font-bold")}>
                     MolCrafts
                   </SheetTitle>
                 </SheetHeader>
@@ -225,7 +238,12 @@ export const Navbar = () => {
                   <div className="flex flex-col gap-4">
                     {ecosystemCategories.map((category) => (
                       <div key={category.title} className="flex flex-col gap-1">
-                        <div className="type-label px-4 py-1 text-[10px] font-bold text-muted-foreground">
+                        <div
+                          className={cn(
+                            TYPE_LABEL,
+                            "px-4 py-1 text-micro font-bold text-muted-foreground",
+                          )}
+                        >
                           {category.title}
                         </div>
                         <div className="grid gap-1 px-2">

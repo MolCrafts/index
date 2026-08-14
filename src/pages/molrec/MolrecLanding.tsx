@@ -2,8 +2,16 @@ import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef } from "react";
 import { ProductCapabilities } from "../../components/ProductCapabilities";
 import { ProductLinks } from "../../components/ProductLinks";
+import { Card } from "../../components/ui/card";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import {
+  MOLECULAR_GLOW,
+  MOLECULE_BLOB,
+  PRODUCT_DISPLAY_HEADING,
+  PRODUCT_HERO_SECTION,
+  PRODUCT_SECTION_AURA,
+} from "../../lib/styleTokens";
 import { cn } from "../../lib/utils";
 
 const ACCENT = PRODUCT_ACCENTS.molrec;
@@ -26,40 +34,28 @@ export const MolrecLanding = () => {
     <div className="flex flex-col w-full">
       {/* HERO SECTION */}
       <motion.section
-        className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+        className={PRODUCT_HERO_SECTION}
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
         {/* Background Blobs */}
         <div
-          className="molecule-blob"
-          style={{
-            top: "20%",
-            left: "10%",
-            background: "rgba(245, 158, 11, 0.1)",
-          }}
+          className={cn(MOLECULE_BLOB, "left-[10%] top-[20%] !bg-amber-500/10")}
           aria-hidden="true"
         />
         <div
-          className="molecule-blob"
-          style={{
-            bottom: "25%",
-            right: "15%",
-            animationDelay: "3s",
-            background: "rgba(245, 158, 11, 0.08)",
-          }}
+          className={cn(
+            MOLECULE_BLOB,
+            "bottom-1/4 right-[15%] !bg-amber-500/[0.08] [animation-delay:3s]",
+          )}
           aria-hidden="true"
         />
         <div
-          className="molecular-glow"
-          style={{
-            top: "40%",
-            left: "55%",
-            width: "350px",
-            height: "350px",
-            background: "radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%)",
-          }}
+          className={cn(
+            MOLECULAR_GLOW,
+            "left-[55%] top-[40%] size-[21.875rem] !bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-amber-500)_10%,transparent)_0%,transparent_70%)]",
+          )}
           aria-hidden="true"
         />
 
@@ -77,7 +73,7 @@ export const MolrecLanding = () => {
                 "text-2xl sm:text-3xl md:text-4xl",
                 GRADIENT_TEXT,
                 ACCENT.kicker,
-                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+                "font-playfair italic font-medium mb-4 sm:mb-6 pb-2",
               )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -88,7 +84,7 @@ export const MolrecLanding = () => {
 
             <motion.h1
               className={cn(
-                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-product-hero font-sans font-extrabold text-center mx-auto tracking-tighter leading-headline w-full mb-4 sm:mb-6 pb-4",
                 GRADIENT_TEXT,
                 ACCENT.title,
                 "pt-2",
@@ -101,12 +97,7 @@ export const MolrecLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.subhead,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.subhead, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -118,7 +109,7 @@ export const MolrecLanding = () => {
       </motion.section>
 
       {/* FEATURES SECTION */}
-      <section id="toolkit" className="space-section gradient-bg-1 relative py-24 sm:py-32">
+      <section id="toolkit" className={cn(PRODUCT_SECTION_AURA, "py-24 sm:py-32")}>
         <motion.div
           ref={sectionRef}
           className="container mx-auto px-4 relative z-10"
@@ -128,12 +119,7 @@ export const MolrecLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.heading,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.heading, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -166,10 +152,10 @@ export const MolrecLanding = () => {
       </section>
 
       {/* TECHNICAL SPEC SECTION */}
-      <section className="space-section relative py-20 bg-[#070707]">
+      <section className="relative bg-code-surface px-4 py-20 md:px-8 lg:px-12">
         <div className="container mx-auto px-4">
-          <div className="glass-card p-10 md:p-16 rounded-[2rem] overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 blur-[80px] rounded-full -mr-32 -mt-32" />
+          <Card className="relative overflow-hidden rounded-[2rem] border-white/10 bg-white/[0.03] p-10 py-10 backdrop-blur-xl transition-[transform,background-color,box-shadow] duration-400 hover:-translate-y-2 hover:bg-white/[0.05] hover:shadow-panel dark:bg-black/40 dark:hover:bg-zinc-900/50 dark:hover:shadow-panel-lifted md:p-16 md:py-16">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 blur-field rounded-full -mr-32 -mt-32" />
 
             <div className="lg:grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -178,7 +164,7 @@ export const MolrecLanding = () => {
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 font-['Playfair_Display',serif] italic text-zinc-100">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 font-playfair italic text-zinc-100">
                   One record shape every tool can read.
                 </h2>
                 <p className="text-lg text-zinc-400 mb-8 leading-relaxed font-light">
@@ -204,19 +190,20 @@ export const MolrecLanding = () => {
               </motion.div>
 
               <motion.div
-                className="mt-12 lg:mt-0 p-8 bg-zinc-950 rounded-2xl border border-zinc-800 font-mono text-sm shadow-2xl"
+                className="mt-12 rounded-2xl lg:mt-0"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                <div className="flex gap-2 mb-6">
-                  <div className="w-3 h-3 rounded-full bg-red-500/30" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/30" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/30" />
-                </div>
-                <pre className="text-amber-500/80 leading-relaxed overflow-x-auto">
-                  {`/
+                <Card className="rounded-2xl border-zinc-800 bg-zinc-950 p-8 font-mono text-sm shadow-2xl">
+                  <div className="flex gap-2 mb-6">
+                    <div className="w-3 h-3 rounded-full bg-red-500/30" />
+                    <div className="w-3 h-3 rounded-full bg-amber-500/30" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/30" />
+                  </div>
+                  <pre className="text-amber-500/80 leading-relaxed overflow-x-auto">
+                    {`/
 +-- meta                  # record-level metadata (required)
 +-- frame                 # canonical snapshot (required)
 |   +-- atoms/            #   named collection: atoms
@@ -229,10 +216,11 @@ export const MolrecLanding = () => {
 +-- metrics               # runtime metric stream (optional)
 +-- method                # scientific context (optional)
 +-- parameters            # workflow parameters (optional)`}
-                </pre>
+                  </pre>
+                </Card>
               </motion.div>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 

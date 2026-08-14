@@ -53,7 +53,7 @@ export function LocaleToggle({ compact = false }: { compact?: boolean }) {
             className={cn(
               compact && "text-sm font-medium",
               option === locale &&
-                (compact ? "font-[650] text-primary" : "font-semibold text-primary"),
+                (compact ? "font-wordmark text-primary" : "font-semibold text-primary"),
             )}
           >
             {LOCALE_LABELS[option]}

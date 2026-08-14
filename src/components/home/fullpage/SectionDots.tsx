@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { useChromeCopy } from "@/lib/i18n/chromeCopy";
+import { TYPE_LABEL } from "@/lib/typeStyles";
 import { cn } from "@/lib/utils";
 import { useFullpage } from "./FullpageProvider";
 
@@ -23,14 +25,16 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
         const meta = labels.find((l) => l.id === id);
         const active = index === activeIndex;
         return (
-          <button
+          <Button
             key={id}
             type="button"
+            variant="ghost"
+            size="icon"
             aria-label={meta?.label ?? id}
             aria-current={active ? "true" : undefined}
             onClick={() => goTo(index)}
             className={cn(
-              "pointer-events-auto group relative flex h-3 w-3 items-center justify-center rounded-full",
+              "pointer-events-auto group relative h-3 w-3 rounded-full p-0 hover:bg-transparent",
               "outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-rgb))] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             )}
           >
@@ -45,13 +49,14 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
             <span
               className={cn(
                 "pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 whitespace-nowrap",
-                "type-label bg-background/90 px-2 py-1 font-mono text-[10px] text-muted-foreground backdrop-blur-sm",
+                TYPE_LABEL,
+                "bg-background/90 px-2 py-1 font-mono text-micro text-muted-foreground backdrop-blur-sm",
                 "opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100",
               )}
             >
               {meta?.label ?? id}
             </span>
-          </button>
+          </Button>
         );
       })}
     </nav>

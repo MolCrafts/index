@@ -49,7 +49,7 @@ export const ProductCapabilities = ({
         >
           <dt
             className={cn(
-              "font-['Outfit',sans-serif] text-xs font-bold uppercase tracking-[0.22em]",
+              "font-outfit text-xs font-bold uppercase tracking-[0.22em]",
               "transition-opacity group-hover:opacity-80",
               accentText,
             )}

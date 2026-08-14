@@ -12,6 +12,7 @@ import { HOME_SECTION_IDS } from "@/lib/home/data";
 import { FullpageProvider, FullpageTrack } from "./fullpage/FullpageProvider";
 import { SectionDots } from "./fullpage/SectionDots";
 import { ApproachSection } from "./sections/ApproachSection";
+import { AssistSection } from "./sections/AssistSection";
 import { ClosingSection } from "./sections/ClosingSection";
 import { HeroSection } from "./sections/HeroSection";
 import { ParticipateSection } from "./sections/ParticipateSection";
@@ -28,13 +29,14 @@ export function HomePage() {
   const dotLabels = HOME_SECTION_IDS.map((id) => ({ id, label: sectionLabels[id] }));
 
   return (
-    <div className="home-narrative relative isolate h-full min-w-0 bg-background font-body text-foreground">
+    <div className="relative isolate h-full min-w-0 bg-background font-body text-foreground">
       <FullpageProvider sectionIds={HOME_SECTION_IDS} className="h-full">
         <SectionDots labels={dotLabels} />
         <FullpageTrack>
           <HeroSection />
           <ApproachSection />
           <WhatWeDoSection />
+          <AssistSection />
           <ProjectsSection />
           <ParticipateSection />
           <SponsorsSection />

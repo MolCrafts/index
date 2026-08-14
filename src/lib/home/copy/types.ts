@@ -47,6 +47,16 @@ export interface HomeCopy {
     readonly lead: string;
     readonly pillars: readonly PillarCopy[];
   };
+  readonly assist: {
+    readonly title: {
+      readonly subject: string;
+      readonly action: string;
+    };
+    readonly subline: string;
+    readonly statements: readonly [string, string, string, string, string, string];
+    readonly concepts: readonly [string, string, string, string];
+    readonly products: readonly [string, string, string, string, string];
+  };
   readonly projects: {
     readonly title: string;
     readonly lead: string;

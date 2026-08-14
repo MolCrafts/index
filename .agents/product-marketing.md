@@ -1,6 +1,6 @@
 # Product Marketing Context
 
-**Document version:** v6
+**Document version:** v7
 **Last updated:** 2026-08-13
 
 > MolCrafts 官网定位、中文文案和营销视觉的唯一有效规则。所有营销、首页设计与
@@ -26,6 +26,9 @@ MolCrafts 面向分子与材料研发，提供科学计算、AI 应用与专业�
 **Internal product context:**
 MolCrafts 仍拥有由多个开源产品组成的软件体系。产品名、发布状态、依赖和安装信息是
 产品页、文档与内部事实核验的输入，不是首页叙事骨架。
+唯一例外是 AI editorial 屏可将 `MolPy`、`MolExp`、`MolVis`、`MolPack` 与
+`Atomiverse` 作为非交互的环境标签，用来表现 AI 获得整个生态上下文；不得附加链接、
+说明、状态、安装、依赖或架构信息。
 
 **Business model:** — partially public. Read the boundary carefully.
 Open core. The open track (community, academic users, students, developers) drives
@@ -184,7 +187,8 @@ answered visibly.
 - 未经证实的数字、客户、奖项、合作、下载量、引文、口碑和效果承诺。
 
 **产品页边界：**
-产品页可以使用准确的产品名、类别词和经核验的技术信息；首页不继承这项许可。
+产品页可以使用准确的产品名、类别词和经核验的技术信息；首页原则上不继承这项许可。
+AI editorial 屏仅继承上述五个已批准产品名的环境标签例外，不继承任何技术信息许可。
 
 **Glossary:**
 | Term | Meaning |
@@ -222,9 +226,11 @@ answered visibly.
   独立文档站和产品页可以继续存在。
 - **首页不出现技术细节。** 技术组成、安装、API、依赖、发布状态与架构说明只属于产品页、
   GitHub、文档或内部资料。
+- AI editorial 屏可环绕展示 `MolPy`、`MolExp`、`MolVis`、`MolPack` 与 `Atomiverse`，
+  但它们只是无链接的生态上下文标签，不构成产品目录或技术说明。
 - 首页导航使用商业理解路径：Applications、Solutions、Collaboration、About、Contact；
   实际中文标签应自然简洁，避免 Projects/Docs 驱动的信息架构。
-- 首页顺序锁定为：Hero → Brand statement → Capabilities → Applications →
+- 首页顺序锁定为：Hero → Brand statement → Capabilities → AI editorial → Applications →
   Collaboration → Trust/support → Closing CTA / Footer。
 - Open source、Consulting、Enterprise 可以并列出现，但咨询、企业合作和 Contact 承担主要转化；
   GitHub 只作为开源路径或页脚中的次级出口。
@@ -291,8 +297,9 @@ unverified; do not claim measured performance until both are confirmed.
 3. **截图只属于 Applications。** Hero、Capabilities、Collaboration 和 Trust 区不使用产品截图。
 4. **Applications 是首页核心交互。** 聚焦卡片放大并轮播真实图片，其他卡片退后；键盘和
    reduced-motion 模式必须有等价、可理解的状态。
-5. **商业叙事先于产品目录。** 首页可以在 Applications 中自然出现应用或产品名，但不铺设
-   全量产品清单，不展示安装状态、技术层级或依赖图。
+5. **商业叙事先于产品目录。** 首页可以在 Applications 中自然出现应用或产品名；AI editorial
+   屏可使用五个已批准产品名作为环境标签。两处都不得铺设全量产品清单，也不得展示安装状态、
+   技术层级或依赖图。
 6. **首页无 Docs、无技术细节。** 导航、页内链接、页脚与 CTA 都遵守同一边界。
 7. **Contact 是主要动作。** 每个关键叙事段落最终应支持 Applications、Collaboration 或
    Contact，而不是把用户送进技术资料。
@@ -306,6 +313,8 @@ This is the verified internal/product-page roster. It may govern product routes 
 product-page exits, but it does **not** govern homepage navigation or footer IA. Only the
 Application subset may feed the homepage Applications showcase, where every item is
 described through a research use case or outcome rather than package category or status.
+The AI editorial screen may additionally use the five operator-approved product names as
+ambient, non-interactive context labels without inheriting any roster metadata.
 
 **Application** — what a scientist calls directly.
 

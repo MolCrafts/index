@@ -7,6 +7,7 @@ import { SEOSchema } from "./components/SEOSchema";
 import { HomePage } from "./components/home/HomePage";
 import { trackPageView } from "./lib/analytics";
 import { type ProductSlug, pathProductSlug } from "./lib/routes";
+import { PAGE_ATMOSPHERE } from "./lib/styleTokens";
 import { cn } from "./lib/utils";
 import {
   AtomiverseLanding,
@@ -22,7 +23,6 @@ import {
   MolrsLanding,
   NotFound,
 } from "./pages";
-import "./App.css";
 
 const PRODUCT_PAGES: Record<ProductSlug, ComponentType> = {
   molpy: MolpyLanding,
@@ -92,24 +92,6 @@ function App() {
     return () => document.removeEventListener("click", handleLinkClick);
   }, [currentPath]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const elements = document.querySelectorAll(".scroll-fade");
-      for (const element of elements) {
-        const position = element.getBoundingClientRect();
-        if (position.top < window.innerHeight - 100) {
-          element.classList.add("active");
-        }
-      }
-    };
-
-    if (currentPath === "/") {
-      window.addEventListener("scroll", handleScroll);
-      handleScroll();
-      return () => window.removeEventListener("scroll", handleScroll);
-    }
-  }, [currentPath]);
-
   const isHome = currentPath === "/" || currentPath === "";
 
   const renderContent = () => {
@@ -134,7 +116,7 @@ function App() {
   return (
     <>
       <SEOSchema path={currentPath} />
-      {!isHome && <div className="page-atmosphere" aria-hidden="true" />}
+      {!isHome && <div className={PAGE_ATMOSPHERE} aria-hidden="true" />}
 
       <AnimatePresence mode="wait">
         {!isLoading && (
@@ -145,7 +127,7 @@ function App() {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              "relative z-[1] flex flex-col",
+              "relative z-1 flex flex-col",
               isHome
                 ? "dark h-[100svh] min-w-0 overflow-hidden bg-background text-foreground"
                 : "min-h-screen",

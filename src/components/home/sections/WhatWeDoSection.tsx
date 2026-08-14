@@ -12,11 +12,11 @@ export function WhatWeDoSection() {
         veil="medium"
         className="flex min-h-full items-center justify-center"
       >
-        <div className="home-section-stage mx-auto w-full max-w-[78rem] px-6 py-20 sm:px-10 sm:py-24 md:px-12 lg:px-16">
+        <div className="mx-auto w-full max-w-[78rem] px-6 py-20 sm:px-10 sm:py-24 md:px-12 lg:px-16">
           <div className="grid items-center gap-6 md:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] md:gap-10 lg:gap-12">
             <h2
               id="solutions-heading"
-              className="max-w-[46rem] font-display text-5xl font-semibold leading-[1.02] tracking-[-0.04em] text-foreground md:text-[clamp(3.25rem,3.5vw,3.5rem)]"
+              className="max-w-[46rem] font-display text-5xl font-semibold leading-display tracking-[-0.04em] text-foreground md:text-[clamp(3.25rem,3.5vw,3.5rem)]"
             >
               {whatWeDo.title}
             </h2>

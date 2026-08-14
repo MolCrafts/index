@@ -1,3 +1,4 @@
+import { APPROVED_ASSIST_COPY } from "./assist";
 import type { HomeCopy } from "./types";
 
 /** Simplified Chinese is the primary voice of the commercial homepage. */
@@ -6,6 +7,7 @@ export const zh: HomeCopy = {
     hero: "首页",
     about: "关于 MolCrafts",
     solutions: "能力",
+    assist: "AI",
     applications: "应用",
     collaboration: "合作",
     trust: "支持",
@@ -49,6 +51,7 @@ export const zh: HomeCopy = {
       },
     ],
   },
+  assist: APPROVED_ASSIST_COPY,
   projects: {
     title: "应用，从真实研究场景开始。",
     lead: "把鼠标移到一个方向上，看看不同分子视角如何支持下一步判断。",

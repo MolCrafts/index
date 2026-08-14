@@ -43,13 +43,17 @@ export function SnapSection({
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       onPointerMove={onPointerMove}
-      className={cn("home-snap-section relative flex w-full shrink-0 flex-col", className)}
+      className={cn(
+        "group relative box-border flex min-h-[var(--home-view,100cqb)] w-full shrink-0 flex-col overflow-clip",
+        "after:pointer-events-none after:absolute after:inset-x-[14%] after:top-0 after:z-20 after:h-px after:origin-center after:scale-x-0 after:bg-[linear-gradient(90deg,transparent,hsl(var(--primary)/0.7),rgba(var(--accent-rgb),0.7),hsl(var(--primary)/0.7),transparent)] after:opacity-0",
+        "data-[active=true]:after:animate-home-wake motion-reduce:data-[active=true]:after:animate-none force-motion:data-[active=true]:after:animate-home-wake",
+        className,
+      )}
     >
       {allowScroll ? (
         <div
           data-scroll-allow
-          className="flex h-full min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-contain"
-          style={{ touchAction: "pan-y" }}
+          className="flex h-full min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-contain [touch-action:pan-y]"
         >
           {children}
         </div>

@@ -7,6 +7,7 @@ export const HOME_SECTION_IDS = [
   "hero",
   "about",
   "solutions",
+  "assist",
   "applications",
   "collaboration",
   "trust",

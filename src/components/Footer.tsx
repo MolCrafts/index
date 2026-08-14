@@ -4,8 +4,10 @@ import { ArrowUpRight } from "lucide-react";
 import { fadeIn, staggerContainer } from "../lib/animations";
 import { contactHref } from "../lib/contact";
 import { sectionContainer, sectionSubLabel } from "../lib/sectionStyles";
+import { BRAND_GRADIENT_TEXT } from "../lib/styleTokens";
 import { cn } from "../lib/utils";
 import { LogoIcon } from "./Icons";
+import { Button } from "./ui/button";
 
 interface FooterLink {
   label: string;
@@ -97,7 +99,7 @@ export const Footer = () => {
             className="inline-flex items-center gap-2 text-xl font-bold no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <LogoIcon />
-            <span className="gradient-text-primary">MolCrafts</span>
+            <span className={BRAND_GRADIENT_TEXT}>MolCrafts</span>
           </a>
           <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-base">
             We build AI-assisted infra for molecular science.
@@ -141,13 +143,14 @@ export const Footer = () => {
         )}
       >
         <span>&copy; {currentYear} MolCrafts</span>
-        <button
+        <Button
           type="button"
+          variant="ghost"
           onClick={scrollToTop}
-          className="self-start text-left transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:self-auto"
+          className="h-auto self-start p-0 text-left font-normal text-muted-foreground transition-colors hover:bg-transparent hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:self-auto"
         >
           Back to top
-        </button>
+        </Button>
       </div>
     </footer>
   );

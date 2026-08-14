@@ -4,6 +4,7 @@
 
 /* Re-enable v3-style class-based dark mode under v4. */
 @custom-variant dark (&:is(.dark *));
+@custom-variant force-motion (html.force-full-motion &);
 
 @theme {
   --color-border: hsl(var(--border));
@@ -48,6 +49,31 @@
   --color-canvas: hsl(var(--canvas));
   --color-brand-kicker: color-mix(in oklab, hsl(var(--primary)) 70%, hsl(var(--foreground)));
 
+  /*
+   * Product-page code panel. Always dark in both themes — a code surface reads as
+   * a terminal, not as page chrome — so these are fixed values, not theme tokens.
+   */
+  --color-code-surface: #070707;
+  --color-code-chrome: #0a0a0a;
+  --color-code-well: #030303;
+  /* GitHub-flavoured panel on the Atomiverse page. */
+  --color-code-repo: #0d1117;
+
+  /* Hero subtitle sheen — a specular sweep, not a brand ramp. */
+  --color-sheen-core: rgb(255 255 255 / 0.98);
+  --color-sheen-edge: rgb(189 240 255 / 0.92);
+
+  /*
+   * Depth shadows. Black, so they read the same on every surface, and named so a
+   * page never re-derives its own rgba(0,0,0,…) literal.
+   */
+  --shadow-nav: 0 18px 50px -28px rgb(0 0 0 / 0.9);
+  --shadow-menu: 0 24px 80px -20px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(var(--accent-rgb) / 0.06);
+  /* drop-shadow has its own namespace — --shadow-* would not resolve here. */
+  --drop-shadow-molecule: 0 24px 36px rgb(0 0 0 / 0.48);
+  --shadow-panel: 0 20px 40px -15px rgb(0 0 0 / 0.3);
+  --shadow-panel-lifted: 0 25px 50px -12px rgb(0 0 0 / 0.7);
+
   /* Narrative home type stack. CJK fallbacks keep mixed-script lines on one family. */
   --font-brand: "Geist Variable", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
@@ -57,6 +83,42 @@
     ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-sans: var(--font-body);
+  /* Product-page faces. Every landing page shares these two. */
+  --font-outfit: "Outfit", "PingFang SC", "Hiragino Sans GB", ui-sans-serif, system-ui, sans-serif;
+  --font-playfair: "Playfair Display", ui-serif, Georgia, Cambria, serif;
+
+  /*
+   * Variable-font weights between the default 100-step ramp.
+   * Names must not collide with any --font-* family above: Tailwind resolves
+   * `font-x` against the family namespace first, which would swallow the weight.
+   */
+  --font-weight-book: 450;
+  --font-weight-label: 520;
+  --font-weight-titling: 580;
+  --font-weight-strong: 620;
+  --font-weight-wordmark: 650;
+  --font-weight-heavy: 720;
+
+  /* Leading steps the brand type needs beyond the default ramp. */
+  --leading-wordmark: 0.88;
+  --leading-wordmark-wrap: 0.94;
+  --leading-display: 1.02;
+  --leading-headline: 1.1;
+  --leading-copy: 1.4;
+  --leading-prose: 1.65;
+
+  /* Product-page display size, and the fixed small sizes used by chrome and code. */
+  --text-product-hero: 7rem;
+  --text-snippet: 15px;
+  --text-mini: 11px;
+  --text-micro: 10px;
+  --text-chip: 0.6875rem;
+  --text-note: 0.9375rem;
+
+  /* Ambient glow blurs. */
+  --blur-glow: 52px;
+  --blur-halo: 60px;
+  --blur-field: 80px;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -66,6 +128,12 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
   /* Wordmark / brand text sweep — keep snappy (was 4s, felt sluggish). */
   --animate-gradient-x: gradient-x 1.75s linear infinite;
+  --animate-brand-gradient: brand-gradient-x 4.5s linear infinite;
+  --animate-molecule-morph: molecule-morph 20s ease-in-out infinite alternate;
+  --animate-molecular-pulse: molecular-pulse 15s ease-in-out infinite alternate;
+  --animate-molecule-glow: molecule-glow 3s ease-in-out infinite alternate;
+  --animate-home-arrive: home-arrive 0.58s cubic-bezier(0.45, 0.05, 0.12, 1) both;
+  --animate-home-wake: home-wake 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
   @keyframes accordion-down {
     from {
@@ -91,6 +159,86 @@
     }
     100% {
       background-position: -200% center;
+    }
+  }
+
+  @keyframes brand-gradient-x {
+    from {
+      background-position: 0% center;
+    }
+    to {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes molecule-morph {
+    0%,
+    100% {
+      border-radius: 50%;
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    25% {
+      border-radius: 65% 35% 55% 45% / 40% 60% 40% 60%;
+      transform: translate(30px, -20px) scale(0.9) rotate(90deg);
+    }
+    50% {
+      border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(-20px, 40px) scale(1.1) rotate(180deg);
+    }
+    75% {
+      border-radius: 55% 45% 70% 30% / 45% 55% 45% 55%;
+      transform: translate(20px, 10px) scale(0.95) rotate(270deg);
+    }
+  }
+
+  @keyframes molecular-pulse {
+    from {
+      opacity: 0.02;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.05;
+      transform: scale(1.2);
+    }
+    to {
+      opacity: 0.02;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes molecule-glow {
+    from {
+      filter: drop-shadow(0 0 3px rgba(128, 255, 212, 0.3))
+        drop-shadow(0 0 5px rgba(64, 164, 223, 0.15));
+    }
+    to {
+      filter: drop-shadow(0 0 6px rgba(128, 255, 212, 0.45))
+        drop-shadow(0 0 9px rgba(64, 164, 223, 0.25));
+    }
+  }
+
+  @keyframes home-arrive {
+    from {
+      transform: translateY(22px) scale(0.978);
+      opacity: 0.72;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @keyframes home-wake {
+    0% {
+      transform: scaleX(0.12);
+      opacity: 0;
+    }
+    40% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: scaleX(1);
+      opacity: 0.45;
     }
   }
 }
@@ -154,7 +302,7 @@
 
     /*
      * Brand ramps are identity — same in light and dark (toggle does not rewrite).
-     * Wordmark (gradient-text-primary): brand cyan ramp + sweep.
+     * Wordmark: brand cyan ramp + sweep.
      *   #03a3d7 → #8ce4ff → #03a3d7  (historic index contract, not #3b82f6)
      */
     --brand-primary-from: #03a3d7;
@@ -172,6 +320,19 @@
     --brand-molrec-from: var(--molcrafts-sand-strong);
     --brand-molrec-via: var(--molcrafts-sand);
     --brand-molrec-to: var(--molcrafts-sand-strong);
+
+    /*
+     * AI editorial screen — light cyan display ramps. Lighter than the wordmark
+     * ramp on purpose: that screen reads as luminous context, not as the mark.
+     * Ambient glows there reuse --accent-rgb / --primary instead of their own values.
+     */
+    --brand-assist-from: #86ddf4;
+    --brand-assist-via: #c4f2ff;
+    --brand-assist-to: #61c7df;
+    --brand-assist-subject-from: #20bde9;
+    --brand-assist-subject-via: #b8f1ff;
+    --brand-assist-subject-to: #2ab6d9;
+    --brand-assist-concept: #95debd;
   }
 
   .dark {
@@ -217,6 +378,18 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply relative m-0 min-h-screen w-full max-w-full overflow-x-hidden bg-background p-0 text-foreground;
+    background-image: radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.05), transparent 70%),
+      radial-gradient(circle at 50% 100%, hsl(var(--primary) / 0.05), transparent 70%);
+  }
+
+  html {
+    @apply max-w-full overflow-x-hidden scroll-smooth;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply break-words text-balance;
   }
 }

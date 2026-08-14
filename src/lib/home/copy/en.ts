@@ -1,3 +1,4 @@
+import { APPROVED_ASSIST_COPY } from "./assist";
 import type { HomeCopy } from "./types";
 
 export const en: HomeCopy = {
@@ -5,6 +6,7 @@ export const en: HomeCopy = {
     hero: "Home",
     about: "About MolCrafts",
     solutions: "Capabilities",
+    assist: "AI",
     applications: "Applications",
     collaboration: "Collaboration",
     trust: "Support",
@@ -49,6 +51,7 @@ export const en: HomeCopy = {
       },
     ],
   },
+  assist: APPROVED_ASSIST_COPY,
   projects: {
     title: "Applications begin with real research situations.",
     lead: "Focus an area to see how different molecular views can support the next decision.",

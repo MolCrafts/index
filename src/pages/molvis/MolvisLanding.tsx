@@ -4,6 +4,13 @@ import { ProductCapabilities } from "../../components/ProductCapabilities";
 import { ProductLinks } from "../../components/ProductLinks";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import {
+  MOLECULAR_GLOW,
+  MOLECULE_BLOB,
+  PRODUCT_DISPLAY_HEADING,
+  PRODUCT_HERO_SECTION,
+  PRODUCT_SECTION_AURA,
+} from "../../lib/styleTokens";
 import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
@@ -25,24 +32,21 @@ export const MolVisLanding = () => {
   return (
     <div className="flex flex-col w-full">
       <motion.section
-        className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+        className={PRODUCT_HERO_SECTION}
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
         <div
-          className="molecule-blob"
-          style={{ top: "35%", right: "25%", animationDelay: "2s" }}
+          className={cn(MOLECULE_BLOB, "right-1/4 top-[35%] [animation-delay:2s]")}
           aria-hidden="true"
         />
         <div
-          className="molecule-blob"
-          style={{ bottom: "15%", left: "15%", animationDelay: "6s" }}
+          className={cn(MOLECULE_BLOB, "bottom-[15%] left-[15%] [animation-delay:6s]")}
           aria-hidden="true"
         />
         <div
-          className="molecular-glow"
-          style={{ top: "50%", left: "60%", width: "200px", height: "200px" }}
+          className={cn(MOLECULAR_GLOW, "left-[60%] top-1/2 size-[12.5rem]")}
           aria-hidden="true"
         />
 
@@ -64,7 +68,7 @@ export const MolVisLanding = () => {
                 "text-2xl sm:text-3xl md:text-4xl",
                 GRADIENT_TEXT,
                 ACCENT.kicker,
-                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+                "font-playfair italic font-medium mb-4 sm:mb-6 pb-2",
               )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,7 +79,7 @@ export const MolVisLanding = () => {
 
             <motion.h1
               className={cn(
-                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-product-hero font-sans font-extrabold text-center mx-auto tracking-tighter leading-headline w-full mb-4 sm:mb-6 pb-4",
                 GRADIENT_TEXT,
                 ACCENT.title,
                 "pt-2",
@@ -88,12 +92,7 @@ export const MolVisLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.subhead,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.subhead, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -104,7 +103,7 @@ export const MolVisLanding = () => {
         </motion.div>
       </motion.section>
 
-      <section id="toolkit" className="space-section gradient-bg-1 relative py-24 sm:py-32">
+      <section id="toolkit" className={cn(PRODUCT_SECTION_AURA, "py-24 sm:py-32")}>
         <motion.div
           ref={sectionRef}
           className="container mx-auto px-4 relative z-10"
@@ -114,12 +113,7 @@ export const MolVisLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.heading,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.heading, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}

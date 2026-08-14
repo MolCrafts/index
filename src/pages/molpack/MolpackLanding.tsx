@@ -1,7 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CodePanel } from "../../components/CodePanel";
 import {
   DataIcon,
   IntegrationIcon,
@@ -10,8 +9,16 @@ import {
 } from "../../components/FeatureIcons";
 import { ProductCapabilities } from "../../components/ProductCapabilities";
 import { ProductLinks } from "../../components/ProductLinks";
+import { Button } from "../../components/ui/button";
 import { fadeIn, slideUp, staggerContainer } from "../../lib/animations";
 import { GRADIENT_TEXT, PRODUCT_ACCENTS } from "../../lib/productAccents";
+import {
+  MOLECULAR_GLOW,
+  MOLECULE_BLOB,
+  PRODUCT_DISPLAY_HEADING,
+  PRODUCT_HERO_SECTION,
+  PRODUCT_SECTION_AURA,
+} from "../../lib/styleTokens";
 import { cn } from "../../lib/utils";
 
 const MoleculeOverlay = lazy(() =>
@@ -119,20 +126,18 @@ export const MolpackLanding = () => {
     <div className="flex flex-col w-full">
       {/* HERO SECTION */}
       <motion.section
-        className="w-full min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg:px-16 space-section relative"
+        className={PRODUCT_HERO_SECTION}
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
-        <div className="molecule-blob" style={{ top: "25%", left: "15%" }} aria-hidden="true" />
+        <div className={cn(MOLECULE_BLOB, "left-[15%] top-1/4")} aria-hidden="true" />
         <div
-          className="molecule-blob"
-          style={{ bottom: "30%", right: "20%", animationDelay: "4s" }}
+          className={cn(MOLECULE_BLOB, "bottom-[30%] right-[20%] [animation-delay:4s]")}
           aria-hidden="true"
         />
         <div
-          className="molecular-glow"
-          style={{ top: "30%", left: "50%", width: "300px", height: "300px" }}
+          className={cn(MOLECULAR_GLOW, "left-1/2 top-[30%] size-[18.75rem]")}
           aria-hidden="true"
         />
 
@@ -150,7 +155,7 @@ export const MolpackLanding = () => {
                 "text-2xl sm:text-3xl md:text-4xl",
                 GRADIENT_TEXT,
                 ACCENT.kicker,
-                "font-['Playfair_Display',serif] italic font-medium mb-4 sm:mb-6 pb-2",
+                "font-playfair italic font-medium mb-4 sm:mb-6 pb-2",
               )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -161,7 +166,7 @@ export const MolpackLanding = () => {
 
             <motion.h1
               className={cn(
-                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-sans font-extrabold text-center mx-auto tracking-tighter leading-[1.1] w-full mb-4 sm:mb-6 pb-4",
+                "text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-product-hero font-sans font-extrabold text-center mx-auto tracking-tighter leading-headline w-full mb-4 sm:mb-6 pb-4",
                 GRADIENT_TEXT,
                 ACCENT.title,
                 "pt-2",
@@ -174,12 +179,7 @@ export const MolpackLanding = () => {
             </motion.h1>
 
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.subhead,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.subhead, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -201,12 +201,7 @@ export const MolpackLanding = () => {
         >
           <motion.div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto" variants={slideUp}>
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.heading,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.heading, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -232,11 +227,12 @@ export const MolpackLanding = () => {
 
               <div className="flex flex-col gap-10 relative">
                 {API_SNIPPETS.map((cap, idx) => (
-                  <button
+                  <Button
                     key={cap.title}
                     type="button"
+                    variant="ghost"
                     onClick={() => setActiveCodeIdx(idx)}
-                    className={`text-left pl-10 transition-all duration-300 relative group outline-none ${
+                    className={`group relative h-auto w-full justify-start whitespace-normal rounded-none p-0 pl-10 text-left transition-all duration-300 hover:bg-transparent ${
                       activeCodeIdx === idx ? "opacity-100" : "opacity-40 hover:opacity-80"
                     }`}
                   >
@@ -262,67 +258,27 @@ export const MolpackLanding = () => {
                         {cap.title}
                       </span>
                     </div>
-                    <p className="text-[15px] leading-relaxed text-zinc-400 font-light max-w-sm">
+                    <p className="text-snippet leading-relaxed text-zinc-400 font-light max-w-sm">
                       {cap.description}
                     </p>
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
 
-            <motion.div
-              key={activeCodeIdx}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="w-full lg:w-7/12 sticky top-32"
-            >
-              <div className="rounded-2xl overflow-hidden bg-[#070707] border border-zinc-800/60 shadow-2xl relative">
-                <div
-                  className={cn(
-                    "absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-transparent",
-                    ACCENT.glowLine,
-                  )}
-                />
-                <div className="flex px-6 py-4 border-b border-zinc-800/40 items-center justify-between bg-[#0A0A0A]">
-                  <div className="flex space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-zinc-700" />
-                    <div className="w-3 h-3 rounded-full bg-zinc-700" />
-                    <div className="w-3 h-3 rounded-full bg-zinc-700" />
-                  </div>
-                  <div className="text-[11px] text-zinc-500 font-mono tracking-[0.15em] uppercase font-medium">
-                    {API_SNIPPETS[activeCodeIdx].filename}
-                  </div>
-                </div>
-
-                <div
-                  className="p-6 md:p-8 overflow-x-auto text-[13px] sm:text-sm md:text-[15px] font-mono leading-relaxed bg-[#030303] min-h-[420px] flex items-center"
-                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                >
-                  <SyntaxHighlighter
-                    language={API_SNIPPETS[activeCodeIdx].language}
-                    style={vscDarkPlus}
-                    customStyle={{
-                      background: "transparent",
-                      padding: 0,
-                      margin: 0,
-                      width: "100%",
-                      textShadow: "none",
-                    }}
-                    wrapLines={true}
-                    showLineNumbers={false}
-                  >
-                    {API_SNIPPETS[activeCodeIdx].code}
-                  </SyntaxHighlighter>
-                </div>
-              </div>
-            </motion.div>
+            <CodePanel
+              snippetKey={activeCodeIdx}
+              filename={API_SNIPPETS[activeCodeIdx].filename}
+              language={API_SNIPPETS[activeCodeIdx].language}
+              code={API_SNIPPETS[activeCodeIdx].code}
+              glowLine={ACCENT.glowLine}
+            />
           </div>
         </motion.div>
       </section>
 
       {/* FEATURES SECTION */}
-      <section id="features" className="space-section gradient-bg-1 relative py-24 sm:py-32">
+      <section id="features" className={cn(PRODUCT_SECTION_AURA, "py-24 sm:py-32")}>
         <motion.div
           className="container mx-auto px-4 relative z-10"
           variants={staggerContainer}
@@ -332,12 +288,7 @@ export const MolpackLanding = () => {
         >
           <motion.div className="text-center mb-20" variants={slideUp}>
             <motion.h2
-              className={cn(
-                "text-lg sm:text-xl md:text-2xl font-['Outfit',sans-serif] font-semibold tracking-[0.2em] uppercase w-full max-w-4xl mx-auto",
-                GRADIENT_TEXT,
-                ACCENT.heading,
-                "pb-2",
-              )}
+              className={cn(PRODUCT_DISPLAY_HEADING, GRADIENT_TEXT, ACCENT.heading, "pb-2")}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}

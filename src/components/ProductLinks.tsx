@@ -29,7 +29,7 @@ export const ProductLinks = ({ slug }: { slug: string }) => {
         <motion.div variants={slideUp} className="flex flex-col gap-4">
           {product.command ? (
             <>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
+              <span className="text-mini font-semibold uppercase tracking-[0.24em] text-muted-foreground">
                 Install
               </span>
               <code className="w-fit max-w-full overflow-x-auto rounded-sm bg-zinc-900/70 px-4 py-3 font-mono text-sm text-zinc-100">

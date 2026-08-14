@@ -27,8 +27,6 @@ import "@fontsource/space-grotesk/500.css";
 import "@fontsource/space-grotesk/600.css";
 import "@fontsource/space-grotesk/700.css";
 import "./styles/tailwind.css";
-import "./styles/i18n-type.css";
-import "./index.css";
 
 /* Pin before first paint so CSS reduced-motion branches never win a frame. */
 document.documentElement.classList.toggle("force-full-motion", FORCE_FULL_MOTION);

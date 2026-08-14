@@ -21,7 +21,7 @@ export function ParticipateSection() {
           <div className="grid gap-5 md:grid-cols-[1.15fr_0.85fr] md:items-end md:gap-14">
             <h2
               id="collaboration-heading"
-              className="font-display text-[clamp(2.35rem,5vw,5rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-foreground"
+              className="font-display text-[clamp(2.35rem,5vw,5rem)] font-semibold leading-display tracking-tighter text-foreground"
             >
               {participate.title}
             </h2>

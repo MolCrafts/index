@@ -7,6 +7,7 @@ import dopamineMolecule from "@/assets/molecules/dopamine.webp";
 import ibuprofenMolecule from "@/assets/molecules/ibuprofen.webp";
 import nicotineMolecule from "@/assets/molecules/nicotine.webp";
 import quinineMolecule from "@/assets/molecules/quinine.webp";
+import { MOLECULE_IMAGE_GLOW } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
 
 const MOLECULES = [
@@ -182,7 +183,7 @@ const RIGHT_MOTION = {
 };
 
 const HINT_CLASSES =
-  "absolute left-1/2 top-full -translate-x-1/2 mt-3 whitespace-nowrap text-xs md:text-sm font-['Outfit',sans-serif] tracking-[0.2em] uppercase text-zinc-300/85 group-hover:text-fuchsia-300 transition-colors";
+  "absolute left-1/2 top-full -translate-x-1/2 mt-3 whitespace-nowrap text-xs md:text-sm font-outfit tracking-[0.2em] uppercase text-zinc-300/85 group-hover:text-fuchsia-300 transition-colors";
 
 interface MoleculeOverlayProps {
   href?: string;
@@ -256,7 +257,10 @@ export const MoleculeOverlay = ({
               <img
                 src={MOLECULES[leftSlot.imgIdx]}
                 alt="Molecule"
-                className="w-full h-full object-contain molecule-glow-effect transition-transform duration-300 group-hover:scale-105"
+                className={cn(
+                  MOLECULE_IMAGE_GLOW,
+                  "h-full w-full object-contain transition-transform duration-300 group-hover:scale-105",
+                )}
                 draggable="false"
               />
               <span className={HINT_CLASSES}>{hintLabel}</span>
@@ -267,7 +271,8 @@ export const MoleculeOverlay = ({
               src={MOLECULES[leftSlot.imgIdx]}
               alt="Molecule"
               className={cn(
-                "absolute pointer-events-none z-10 object-contain select-none molecule-glow-effect",
+                MOLECULE_IMAGE_GLOW,
+                "pointer-events-none absolute z-10 object-contain",
                 preset.left.sizeClass,
               )}
               style={positionStyle(leftSlot)}
@@ -293,7 +298,10 @@ export const MoleculeOverlay = ({
               <img
                 src={MOLECULES[rightSlot.imgIdx]}
                 alt="Molecule"
-                className="w-full h-full object-contain molecule-glow-effect transition-transform duration-300 group-hover:scale-105"
+                className={cn(
+                  MOLECULE_IMAGE_GLOW,
+                  "h-full w-full object-contain transition-transform duration-300 group-hover:scale-105",
+                )}
                 draggable="false"
               />
               <span className={HINT_CLASSES}>{hintLabel}</span>
@@ -304,7 +312,8 @@ export const MoleculeOverlay = ({
               src={MOLECULES[rightSlot.imgIdx]}
               alt="Molecule"
               className={cn(
-                "absolute pointer-events-none z-10 object-contain select-none molecule-glow-effect",
+                MOLECULE_IMAGE_GLOW,
+                "pointer-events-none absolute z-10 object-contain",
                 preset.right.sizeClass,
               )}
               style={positionStyle(rightSlot)}

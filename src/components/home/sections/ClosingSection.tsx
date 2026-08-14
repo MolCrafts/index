@@ -1,5 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { useHomeCopy } from "@/lib/home/copy";
 import { closingLinks } from "@/lib/home/data";
+import { HOME_GRADIENT_TEXT } from "@/lib/styleTokens";
+import { cn } from "@/lib/utils";
 import { ArrowRight, Github } from "lucide-react";
 import { LogoIcon } from "../../Icons";
 import { StageShell } from "../StageShell";
@@ -12,7 +15,11 @@ export function ClosingSection() {
   const year = new Date().getFullYear();
 
   return (
-    <SnapSection id="contact" aria-labelledby="contact-heading" className="home-snap-fill">
+    <SnapSection
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="h-[var(--home-view,100cqb)]"
+    >
       <StageShell field={0.24} veil="strong" className="flex h-full min-h-0 flex-col">
         <div className="mx-auto flex min-h-0 w-full max-w-[90rem] flex-1 flex-col justify-center px-6 pb-10 pt-24 sm:px-10 lg:px-16">
           <h2
@@ -25,13 +32,15 @@ export function ClosingSection() {
             {cta.lead}
           </p>
           <div className="mt-8 flex flex-wrap gap-3 md:mt-10">
-            <a href={closingLinks.contactHref} className="home-button home-button--primary">
-              {cta.primaryCta}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-            <a href={closingLinks.applicationsHref} className="home-button home-button--quiet">
-              {cta.secondaryCta}
-            </a>
+            <Button asChild size="lg" className="rounded-full">
+              <a href={closingLinks.contactHref}>
+                {cta.primaryCta}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="rounded-full bg-card/70">
+              <a href={closingLinks.applicationsHref}>{cta.secondaryCta}</a>
+            </Button>
           </div>
         </div>
 
@@ -39,7 +48,7 @@ export function ClosingSection() {
           <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
               <LogoIcon className="!h-9 !w-9" />
-              <span className="home-gradient-text font-display text-xl font-semibold">
+              <span className={cn(HOME_GRADIENT_TEXT, "font-display text-xl font-semibold")}>
                 MolCrafts
               </span>
             </div>
@@ -61,13 +70,14 @@ export function ClosingSection() {
                 <Github className="h-4 w-4" aria-hidden="true" />
                 {footer.github}
               </a>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => goTo(0, "start")}
-                className="min-h-11 text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
+                className="h-auto min-h-11 p-0 font-normal text-muted-foreground hover:bg-transparent hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {footer.backToTop}
-              </button>
+              </Button>
             </div>
           </div>
         </footer>
