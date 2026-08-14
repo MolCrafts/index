@@ -44,7 +44,12 @@ function clamp(n: number, a: number, b: number) {
   return Math.max(a, Math.min(b, n));
 }
 
-function hexRgb(hex: string): [number, number, number] {
+/**
+ * Parses a hex token value. Returns null rather than a literal brand colour so
+ * this file never becomes a second source of truth for the palette — the tokens
+ * in `tailwind.css` / `brand-tokens.css` are the only place a colour is written.
+ */
+function hexRgb(hex: string): [number, number, number] | null {
   const h = hex.replace("#", "").trim();
   const full =
     h.length === 3
@@ -53,17 +58,18 @@ function hexRgb(hex: string): [number, number, number] {
           .map((c) => c + c)
           .join("")
       : h;
+  if (!/^[0-9a-fA-F]{6}$/.test(full)) return null;
   const n = Number.parseInt(full, 16);
-  if (Number.isNaN(n)) return [3, 163, 215];
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
 
-function hslChannelsToRgb(channels: string): [number, number, number] {
+function hslChannelsToRgb(channels: string): [number, number, number] | null {
   const parts = channels.trim().split(/\s+/);
-  if (parts.length < 3) return [24, 67, 43];
-  const h = Number.parseFloat(parts[0] ?? "148");
-  const s = Number.parseFloat((parts[1] ?? "47").replace("%", "")) / 100;
-  const l = Number.parseFloat((parts[2] ?? "18").replace("%", "")) / 100;
+  if (parts.length < 3) return null;
+  const h = Number.parseFloat(parts[0]);
+  const s = Number.parseFloat(parts[1].replace("%", "")) / 100;
+  const l = Number.parseFloat(parts[2].replace("%", "")) / 100;
+  if (Number.isNaN(h) || Number.isNaN(s) || Number.isNaN(l)) return null;
   const a = s * Math.min(l, 1 - l);
   const f = (n: number) => {
     const k = (n + h / 30) % 12;
@@ -73,13 +79,23 @@ function hslChannelsToRgb(channels: string): [number, number, number] {
   return [f(0), f(8), f(4)];
 }
 
-function readPalette(): Palette {
+/**
+ * Reads the canvas palette straight off the design tokens. Returns null until the
+ * stylesheet has applied, so the field simply does not paint rather than inventing
+ * colours of its own.
+ */
+function readPalette(): Palette | null {
   const root = getComputedStyle(document.documentElement);
+  const forest = hslChannelsToRgb(root.getPropertyValue("--molcrafts-forest-hsl"));
+  const cyan = hexRgb(root.getPropertyValue("--brand-primary-from"));
+  const spark = hexRgb(root.getPropertyValue("--molcrafts-cyan-spark-soft"));
+  const sand = hexRgb(root.getPropertyValue("--molcrafts-sand"));
+  if (!forest || !cyan || !spark || !sand) return null;
   return {
-    forest: hslChannelsToRgb(root.getPropertyValue("--molcrafts-forest-hsl") || "148 47% 18%"),
-    cyan: hexRgb(root.getPropertyValue("--brand-primary-from").trim() || "#03a3d7"),
-    spark: hexRgb(root.getPropertyValue("--molcrafts-cyan-spark-soft").trim() || "#8ce4ff"),
-    sand: hexRgb(root.getPropertyValue("--molcrafts-sand").trim() || "#f2da9d"),
+    forest,
+    cyan,
+    spark,
+    sand,
     isDark: document.documentElement.classList.contains("dark"),
   };
 }
@@ -226,7 +242,7 @@ export function MoleculeField({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointerRef = useRef({ x: 0.5, y: 0.42, active: false });
   const reducedRef = useRef(false);
-  const paletteRef = useRef<Palette>(readPalette());
+  const paletteRef = useRef<Palette | null>(readPalette());
   const intensityRef = useRef(intensity);
 
   useEffect(() => {
@@ -287,6 +303,34 @@ export function MoleculeField({
     let w = 0;
     let h = 0;
     let dpr = 1;
+    /**
+     * The fullpage track keeps every section mounted, so without this gate all eight
+     * fields repaint a viewport-sized canvas each frame while only one is on screen.
+     *
+     * Visibility is measured from the canvas rect rather than an IntersectionObserver:
+     * the track moves its sections with a CSS transform, and IO does not reliably
+     * re-fire for that, which left the wrong fields painting.
+     */
+    let pageVisible = !document.hidden;
+    let running = false;
+    let onScreen = true;
+    let lastVisibilityCheck = 0;
+    let clearedWhileHidden = false;
+
+    const VISIBILITY_CHECK_MS = 200;
+
+    const checkOnScreen = (now: number) => {
+      if (now - lastVisibilityCheck < VISIBILITY_CHECK_MS) return onScreen;
+      lastVisibilityCheck = now;
+      const rect = canvas.getBoundingClientRect();
+      const margin = window.innerHeight * 0.1;
+      onScreen =
+        rect.bottom > -margin &&
+        rect.top < window.innerHeight + margin &&
+        rect.right > 0 &&
+        rect.left < window.innerWidth;
+      return onScreen;
+    };
     const t0 = performance.now();
     const instances: Instance[] = [];
 
@@ -322,9 +366,25 @@ export function MoleculeField({
     };
 
     const draw = (now: number) => {
+      // Off-screen sections stay mounted; cost them a rect read, not a repaint.
+      if (!checkOnScreen(now)) {
+        if (!clearedWhileHidden) {
+          ctx.clearRect(0, 0, w, h);
+          clearedWhileHidden = true;
+        }
+        if (running) raf = requestAnimationFrame(draw);
+        return;
+      }
+      clearedWhileHidden = false;
+
       const elapsed = (now - t0) / 1000;
       const reduced = reducedRef.current;
       const pal = paletteRef.current;
+      // Tokens not applied yet — skip the frame instead of painting invented colours.
+      if (!pal) {
+        if (running) raf = requestAnimationFrame(draw);
+        return;
+      }
       const inten = clamp(intensityRef.current, 0, 1);
       const ptr = pointerRef.current;
 
@@ -436,15 +496,25 @@ export function MoleculeField({
         }
       }
 
-      raf = requestAnimationFrame(draw);
+      if (running) raf = requestAnimationFrame(draw);
     };
+
+    const onPageVisibility = () => {
+      pageVisible = !document.hidden;
+      if (!pageVisible) cancelAnimationFrame(raf);
+      else if (running) raf = requestAnimationFrame(draw);
+    };
+    document.addEventListener("visibilitychange", onPageVisibility);
 
     resize();
     window.addEventListener("resize", resize);
+    running = true;
     raf = requestAnimationFrame(draw);
 
     return () => {
+      running = false;
       cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onPageVisibility);
       window.removeEventListener("resize", resize);
     };
   }, [interactive, showGrid]);
