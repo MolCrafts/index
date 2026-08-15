@@ -1,7 +1,6 @@
 import path from "node:path";
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
-import { RsdoctorRspackPlugin } from "@rsdoctor/rspack-plugin";
 
 /**
  * Google Analytics 4. Set `PUBLIC_GA_ID=G-XXXXXXXXXX` in the environment (or a `.env`
@@ -27,18 +26,6 @@ const analyticsTags = GA_ID
 
 export default defineConfig({
   plugins: [pluginReact()],
-  /**
-   * Bundle analysis. Off by default so normal builds stay fast; run
-   * `RSDOCTOR=true npm run build` to open the report.
-   */
-  tools: {
-    rspack: (config, { appendPlugins }) => {
-      if (process.env.RSDOCTOR === "true") {
-        appendPlugins(new RsdoctorRspackPlugin({ supports: { generateTileGraph: true } }));
-      }
-      return config;
-    },
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
