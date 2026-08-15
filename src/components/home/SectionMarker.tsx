@@ -1,11 +1,12 @@
+import { BrandCopy } from "@/components/BrandName";
 import { useHomeCopy } from "@/lib/home/copy";
-import { HOME_SECTION_IDS, type HomeSectionId } from "@/lib/home/data";
+import { HOME_NUMBERED_SECTION_IDS, type HomeNumberedSectionId } from "@/lib/home/data";
 import { HOME_CONTAINER } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
 import { MonoLabel } from "./MonoLabel";
 
 interface SectionMarkerProps {
-  sectionId: HomeSectionId;
+  sectionId: HomeNumberedSectionId;
   className?: string;
 }
 
@@ -16,8 +17,9 @@ interface SectionMarkerProps {
  * so it lands on the same point of every block — including the full-bleed AI
  * screen, which has no container to hang it from — and scrolls away with it. That
  * repetition is what tells a reader the blocks are one argument rather than eight
- * separate posters. The hero is deliberately unnumbered, so the visible run reads
- * 01 through 07.
+ * separate posters. The hero is deliberately unnumbered — it opens the page rather
+ * than steps through it — so the visible run reads 01 through 06. The prop type
+ * only admits a block that takes a number.
  *
  * The label reuses the approved section names already shown in the dots, so this
  * adds no new copy, and it is hidden from assistive tech because the heading and
@@ -29,7 +31,7 @@ interface SectionMarkerProps {
  */
 export function SectionMarker({ sectionId, className }: SectionMarkerProps) {
   const { sectionLabels } = useHomeCopy();
-  const step = HOME_SECTION_IDS.indexOf(sectionId);
+  const step = HOME_NUMBERED_SECTION_IDS.indexOf(sectionId) + 1;
 
   return (
     <div
@@ -43,7 +45,7 @@ export function SectionMarker({ sectionId, className }: SectionMarkerProps) {
       <MonoLabel className="block">
         <span className="text-[rgb(var(--accent-rgb))]">{String(step).padStart(2, "0")}</span>
         <span className="px-2 opacity-50">/</span>
-        {sectionLabels[sectionId]}
+        <BrandCopy text={sectionLabels[sectionId]} />
       </MonoLabel>
     </div>
   );

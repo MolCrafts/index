@@ -48,6 +48,13 @@ no automated guard.
 
 ## Harness decisions
 
+- 2026-08-14: Ran the full-site visual audit against the operator's
+  Apple-discipline brief; verdicts, the shared light-language direction, and
+  work tracking live in `.claude/notes/visual-audit.md`. Capabilities (02) was
+  rebuilt first: statement-scale heading, diagonal station cascade, and a
+  drawn thread of light with constructed quarter-circle geometry
+  (`src/lib/home/thread.ts`, unit-tested).
+
 - 2026-08-14: Replaced the homepage fullpage pager with one continuously
   scrolling document. Each block is `min-h-svh` in normal flow; one fixed
   `MoleculeField` plus the hero's former glows became the page-wide background
@@ -65,4 +72,5 @@ no automated guard.
   Homepage-specific locks live in `.agents/product-marketing.md`: gradient text
   and glow remain; hero product imagery is forbidden; imagery is reserved for
   the interactive Applications showcase; Docs and technical detail are absent
-  from every homepage surface; collaboration and Contact are the main conversion.
+  from every homepage surface; collaboration's three routes are the conversion
+  close, with no Contact screen.

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { ecosystemItems } from "@/lib/ecosystem";
 import { en } from "@/lib/home/copy/en";
-import { APPLICATIONS, applicationHref } from "@/lib/home/data";
+import { APPLICATIONS, applicationHref, resolveHomeHash } from "@/lib/home/data";
 import { PACKAGE_INSTALL } from "@/lib/packages";
 import { PRODUCT_ACCENTS } from "@/lib/productAccents";
 import { PRODUCT_SLUGS } from "@/lib/routes";
@@ -100,6 +100,15 @@ describe("homepage application stage", () => {
       expect(copy.short.length).toBeGreaterThan(0);
       expect(copy.long.length).toBeGreaterThan(0);
     }
+  });
+
+  it("resolves retired hashes onto the live blocks", () => {
+    expect(resolveHomeHash("contact")).toBe("collaboration");
+    expect(resolveHomeHash("#projects")).toBe("applications");
+    expect(resolveHomeHash("what-we-do")).toBe("solutions");
+    expect(resolveHomeHash("newsletter")).toBe("trust");
+    expect(resolveHomeHash("applications")).toBe("applications");
+    expect(resolveHomeHash("missing")).toBeNull();
   });
 
   it("keeps the roster in the order the operator fixed", () => {

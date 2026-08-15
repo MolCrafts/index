@@ -36,3 +36,6 @@ package-lock.json
 # Local environment overrides (see .env.example)
 .env
 .env.local
+
+# Playwright session dumps from visual review — not site assets
+.playwright-mcp/

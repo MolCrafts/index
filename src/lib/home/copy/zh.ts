@@ -1,5 +1,6 @@
 import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
+import { APPROVED_COLLABORATION_COPY } from "./collaboration";
 import type { HomeCopy } from "./types";
 
 /** Simplified Chinese is the primary voice of the commercial homepage. */
@@ -12,7 +13,6 @@ export const zh: HomeCopy = {
     applications: "应用",
     collaboration: "合作",
     trust: "支持",
-    contact: "联系",
   },
   brandHero: {
     kicker: "塑造 AI 时代的分子模拟",
@@ -90,45 +90,15 @@ export const zh: HomeCopy = {
       },
     },
   },
-  participate: {
-    title: "合作方式，跟着研究问题走。",
-    lead: "可以从公开工作开始，也可以围绕明确课题，建立更深入的研发合作。",
-    paths: {
-      openSource: {
-        title: "公开建设，持续共享",
-        audience: "开放研究",
-        description: "我们持续公开核心科学工作，让更多研究者能够了解、使用并参与。",
-        cta: "查看开源工作",
-      },
-      consulting: {
-        title: "让方法进入你的研究现场",
-        audience: "研究咨询",
-        description: "围绕一个具体问题，共同判断方法、验证路径，并把结果交到团队手中。",
-        cta: "讨论研究需求",
-      },
-      enterprise: {
-        title: "建立长期研发合作",
-        audience: "企业合作",
-        description: "面对持续性的分子与材料课题，与内部团队协作推进研究和能力建设。",
-        cta: "开启企业合作",
-      },
-    },
-  },
+  participate: APPROVED_COLLABORATION_COPY,
   sponsors: {
-    title: "开放工作，需要长期支持。",
-    lead: "MolCrafts 的公开建设获得 Claude for Open Source 支持。",
-    supporterNote: "支持开放科学工作的持续发生。",
-  },
-  cta: {
-    title: "你的下一项研究，可以从一次具体的讨论开始。",
-    lead: "告诉我们问题、目标和现有条件。我们会一起判断最合适的推进方式。",
-    primaryCta: "讨论你的研究",
-    secondaryCta: "再看一次应用",
+    title: "赞助者",
+    lead: "感谢下列开源计划与 MolCrafts 同行。",
   },
   footer: {
     tagline: "为分子与材料研发，做能真正进入现场的科学计算。",
     github: "GitHub",
-    license: "MIT License",
+    credit: "Built with ❤️",
     backToTop: "回到顶部",
   },
 };

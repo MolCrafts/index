@@ -7,9 +7,10 @@ import { ChevronDown, Menu } from "lucide-react";
 import { GITHUB_ORG_HREF } from "../lib/home/data";
 import { useLocalizedEcosystem } from "../lib/i18n/catalogCopy";
 import { useChromeCopy } from "../lib/i18n/chromeCopy";
-import { BRAND_GRADIENT_TEXT, HOME_GRADIENT_TEXT } from "../lib/styleTokens";
+import { BRAND_GRADIENT_TEXT } from "../lib/styleTokens";
 import { TYPE_BODY, TYPE_LABEL } from "../lib/typeStyles";
 import { cn } from "../lib/utils";
+import { BrandName } from "./BrandName";
 import { LogoIcon } from "./Icons";
 import { LocaleToggle } from "./LocaleToggle";
 import { ModeToggle } from "./mode-toggle";
@@ -60,9 +61,7 @@ export const Navbar = () => {
             className="flex items-center gap-2.5 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <LogoIcon className="!h-9 !w-9" />
-            <span className={cn(HOME_GRADIENT_TEXT, "text-note font-wordmark tracking-[-0.02em]")}>
-              MolCrafts
-            </span>
+            <BrandName className="font-display text-xl font-semibold" />
           </a>
 
           <div className="flex items-center gap-1">

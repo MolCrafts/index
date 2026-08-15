@@ -48,6 +48,9 @@
 
   --color-canvas: hsl(var(--canvas));
   --color-brand-kicker: color-mix(in oklab, hsl(var(--primary)) 70%, hsl(var(--foreground)));
+  /* Homepage type roles: green keywords, blue emphasis sentences. */
+  --color-home-keyword: var(--home-keyword);
+  --color-home-emphasis: var(--home-emphasis);
 
   /*
    * Product-page code panel. Always dark in both themes — a code surface reads as
@@ -129,6 +132,9 @@
   /* Wordmark / brand text sweep — keep snappy (was 4s, felt sluggish). */
   --animate-gradient-x: gradient-x 1.75s linear infinite;
   --animate-brand-gradient: brand-gradient-x 4.5s linear infinite;
+  /* Fill drifts; a brighter sheen then crosses the letters. */
+  --animate-wordmark-drift: wordmark-drift 8s ease-in-out infinite alternate;
+  --animate-wordmark-sheen: wordmark-sheen 5.6s ease-in-out infinite;
   --animate-molecule-morph: molecule-morph 20s ease-in-out infinite alternate;
   --animate-molecular-pulse: molecular-pulse 15s ease-in-out infinite alternate;
   --animate-molecule-glow: molecule-glow 3s ease-in-out infinite alternate;
@@ -143,6 +149,13 @@
   --animate-assist-drift-alt: assist-drift-alt 17s ease-in-out infinite alternate;
   --animate-assist-node: assist-node 7s ease-in-out infinite alternate;
   --animate-assist-sweep: assist-sweep 16s linear infinite;
+
+  /*
+   * Hero — the scroll's direction, spoken in light: a pulse that falls down a
+   * faint plumb line under the subtitle, over and over. Arrows are banned by
+   * the design contract, so gravity is carried by motion alone.
+   */
+  --animate-hero-descent: hero-descent 2.6s ease-in-out infinite;
 
   @keyframes accordion-down {
     from {
@@ -177,6 +190,34 @@
     }
     to {
       background-position: 200% center;
+    }
+  }
+
+  @keyframes wordmark-drift {
+    from {
+      background-position: 0% center;
+    }
+    to {
+      background-position: 100% center;
+    }
+  }
+
+  @keyframes wordmark-sheen {
+    0%,
+    16% {
+      background-position: 165% center;
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.82;
+    }
+    48% {
+      opacity: 0.55;
+    }
+    64%,
+    100% {
+      background-position: -55% center;
+      opacity: 0;
     }
   }
 
@@ -263,6 +304,23 @@
       background-position: 200% center;
     }
   }
+
+  @keyframes hero-descent {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    72% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(260%);
+      opacity: 0;
+    }
+  }
 }
 
 /* Restore v3 container shape (centered, 1.5rem padding, 1400px cap at 2xl). */
@@ -274,6 +332,20 @@
   @media (min-width: 1400px) {
     max-width: 1400px;
   }
+}
+
+/*
+ * Sponsor marks, one utility per file.
+ *
+ * A sponsor's logo ships in that sponsor's own brand colour, which would put a
+ * second palette on the page. Masking the shape and painting it with an ordinary
+ * background utility lets the mark take the page's ink and follow the theme, in
+ * light and dark alike. The url has to live here because the class is the only
+ * thing the component may carry — the file forbids inline style objects.
+ */
+@utility mask-sponsor-claude {
+  mask: url("../assets/claude.svg") center / contain no-repeat;
+  -webkit-mask: url("../assets/claude.svg") center / contain no-repeat;
 }
 
 /*
@@ -354,7 +426,16 @@
     --brand-assist-subject-from: #20bde9;
     --brand-assist-subject-via: #b8f1ff;
     --brand-assist-subject-to: #2ab6d9;
-    --brand-assist-concept: #95debd;
+    --brand-assist-concept: var(--molcrafts-forest-soft);
+
+    /*
+     * Homepage type roles. Light paper needs a deeper blue than display cyan
+     * so emphasis sentences and the wordmark still clear WCAG on cream.
+     */
+    --home-keyword: var(--molcrafts-forest-light);
+    --home-emphasis: #0a6f96;
+    --home-wordmark-from: #0a6f96;
+    --home-wordmark-via: #1488b3;
   }
 
   .dark {
@@ -391,6 +472,10 @@
 
     --canvas: 130 18% 7%;
     --background-rgb: 16, 24, 17;
+    --home-keyword: var(--molcrafts-forest-soft);
+    --home-emphasis: rgb(var(--accent-rgb));
+    --home-wordmark-from: #03a3d7;
+    --home-wordmark-via: #8ce4ff;
   }
 }
 
@@ -407,6 +492,7 @@
 
   html {
     @apply max-w-full overflow-x-hidden;
+    scroll-padding-top: 7rem;
   }
 
   /* Anchor jumps span up to seven viewport heights; only glide them for readers

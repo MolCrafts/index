@@ -109,10 +109,141 @@ export const blockAuraReveal: Variants = {
   },
 };
 
+/**
+ * The light that crosses the collaboration field once, on arrival.
+ *
+ * It travels open → embedded, in the reading direction of the three phases, and
+ * then it is gone: the screen's argument is that the relationship deepens along
+ * that line, and a looping sweep would turn the argument into a decoration.
+ */
+export const collaborationSweep: Variants = {
+  hidden: { opacity: 0, x: "-30%" },
+  visible: {
+    opacity: [0, 0.9, 0.9, 0],
+    x: "230%",
+    transition: {
+      x: { duration: 2.5, ease: [0.33, 0, 0.2, 1] },
+      opacity: { duration: 2.5, ease: "linear", times: [0, 0.16, 0.78, 1] },
+    },
+  },
+};
+
+/**
+ * The payload {@link collaborationPhaseWake} requires on `custom`.
+ *
+ * `delay` places the phase under the passing light; `rest` is the glow it keeps
+ * afterwards, which differs per phase — open is the sparsest and embedded the most
+ * settled. The variant destructures this, so a caller that omits `custom` throws at
+ * runtime.
+ */
+export interface CollaborationPhaseMotion {
+  delay: number;
+  rest: number;
+}
+
+export const collaborationPhaseWake: Variants = {
+  hidden: ({ rest }: CollaborationPhaseMotion) => ({ opacity: rest, scale: 0.9 }),
+  visible: ({ delay, rest }: CollaborationPhaseMotion) => ({
+    opacity: [rest, 1, rest],
+    scale: 1,
+    transition: { delay, duration: 1.25, ease: MOTION_EASE, times: [0, 0.38, 1] },
+  }),
+};
+
+/**
+ * The payload {@link approachRise} and {@link approachLineLay} require on
+ * `custom`: the element's place in the build sequence. The variants destructure
+ * this, so a caller that omits `custom` throws at runtime.
+ */
+export interface ApproachBuildMotion {
+  delay: number;
+}
+
+/** One element rising out of the ground and settling into place. */
+export const approachRise: Variants = {
+  dormant: { opacity: 0, y: 30, filter: "blur(6px)" },
+  illuminated: ({ delay }: ApproachBuildMotion) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { delay, duration: 0.6, ease: MOTION_EASE },
+  }),
+};
+
+/** A line being laid, left to right — the rule, and each promise's course. */
+export const approachLineLay: Variants = {
+  dormant: { opacity: 0, scaleX: 0 },
+  illuminated: ({ delay }: ApproachBuildMotion) => ({
+    opacity: 1,
+    scaleX: 1,
+    transition: { delay, duration: 0.55, ease: MOTION_EASE },
+  }),
+};
+
+/**
+ * Capabilities — the thread of light that carries the screen's argument.
+ *
+ * The line draws itself through the three stations in reading order: knowledge
+ * leaving one stage of the work and arriving at the next. It draws once, on
+ * arrival, and then stays lit — persistence is the message, so the light that
+ * carried it never fades back out.
+ */
+export const knowledgeThreadDraw: Variants = {
+  dormant: { pathLength: 0, opacity: 0 },
+  illuminated: {
+    pathLength: 1,
+    opacity: 0.65,
+    transition: {
+      pathLength: { delay: 0.3, duration: 1.7, ease: [0.33, 0, 0.2, 1] },
+      opacity: { delay: 0.3, duration: 0.4, ease: "linear" },
+    },
+  },
+};
+
+/**
+ * The payload {@link knowledgeStationWake} requires on `custom`: when the thread
+ * reaches the station. The variant destructures this, so a caller that omits
+ * `custom` throws at runtime.
+ */
+export interface KnowledgeStationMotion {
+  delay: number;
+}
+
+/**
+ * A station waking as the thread reaches it. Dim before the light arrives, not
+ * absent — the claims hold whether or not they are lit; the thread only reveals
+ * them in the order the work flows.
+ */
+export const knowledgeStationWake: Variants = {
+  dormant: { opacity: 0.14, y: 18, filter: "blur(5px)" },
+  illuminated: ({ delay }: KnowledgeStationMotion) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { delay, duration: 0.7, ease: MOTION_EASE },
+  }),
+};
+
+/** The screen's opening, in the two-state grammar the cascade below it drives. */
+export const knowledgeHeaderReveal: Variants = {
+  dormant: { opacity: 0, y: 24, filter: "blur(6px)" },
+  illuminated: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.62, ease: MOTION_EASE },
+  },
+};
+
 /*
- * The AI screen's variants share two states: `dormant` before the screen has been
- * looked at, `illuminated` once it has. The section drives both from one
- * `motionState`, so a variant added here must define the same two names.
+ * The AI screen's variants share three states: `dormant` before the screen has
+ * been looked at, `illuminated` once it has, and `settled` — the entrance's end
+ * state said statically, in scalars. Reduced motion renders `settled`, never
+ * `illuminated`: a variant whose value is a keyframe array resolves statically
+ * to its *first* frame, which for the gather rings is near-transparent — the
+ * screen's context rings vanish for every reduced-motion visitor. The section
+ * drives all three from one `motionState`, so a variant added here must define
+ * the same three names.
  */
 export const assistWordOutlineReveal: Variants = {
   dormant: { opacity: 0.42, scale: 0.985 },
@@ -121,6 +252,7 @@ export const assistWordOutlineReveal: Variants = {
     scale: 1,
     transition: { delay: 0.18, duration: 1.18, ease: MOTION_EASE },
   },
+  settled: { opacity: 0.1, scale: 1 },
 };
 
 export const assistWordFillReveal: Variants = {
@@ -131,6 +263,7 @@ export const assistWordFillReveal: Variants = {
     filter: "blur(0px)",
     transition: { delay: 0.46, duration: 1.28, ease: MOTION_EASE },
   },
+  settled: { opacity: 1, scale: 1, filter: "blur(0px)" },
 };
 
 export const assistSublineReveal: Variants = {
@@ -141,6 +274,7 @@ export const assistSublineReveal: Variants = {
     filter: "blur(0px)",
     transition: { delay: 1.08, duration: 0.62, ease: MOTION_EASE },
   },
+  settled: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
 
 export const assistStatementsReveal: Variants = {
@@ -151,6 +285,7 @@ export const assistStatementsReveal: Variants = {
       staggerChildren: 0.08,
     },
   },
+  settled: {},
 };
 
 export const assistMicroStatementReveal: Variants = {
@@ -161,6 +296,7 @@ export const assistMicroStatementReveal: Variants = {
     filter: "blur(0px)",
     transition: { duration: 0.62, ease: MOTION_EASE },
   },
+  settled: { opacity: 1, scale: 1, filter: "blur(0px)" },
 };
 
 export const assistAuraReveal: Variants = {
@@ -172,6 +308,7 @@ export const assistAuraReveal: Variants = {
     y: "-50%",
     transition: { duration: 1.8, ease: MOTION_EASE, times: [0, 0.58, 1] },
   },
+  settled: { opacity: 0.52, scale: 1, x: "-50%", y: "-50%" },
 };
 
 /**
@@ -205,6 +342,13 @@ export const assistContextGather: Variants = {
     opacity: [0.02, peak, settled],
     transition: { delay, duration: 1.45, ease: MOTION_EASE, times: [0, 0.56, 1] },
   }),
+  settled: ({ settled }: AssistContextMotion) => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    opacity: settled,
+  }),
 };
 
 export const assistMobileProductsReveal: Variants = {
@@ -215,4 +359,5 @@ export const assistMobileProductsReveal: Variants = {
     opacity: 0.76,
     transition: { delay: 0.58, duration: 1.1, ease: MOTION_EASE },
   },
+  settled: { y: 0, filter: "blur(0px)", opacity: 0.76 },
 };

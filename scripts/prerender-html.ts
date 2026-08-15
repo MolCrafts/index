@@ -72,9 +72,10 @@ const escapeHtml = (v: string) =>
 const rootContent = (route: OgRoute) => {
   if (route.path === "/") {
     const parts: string[] = [
-      `<h1>${escapeHtml(homeCopy.hero.title)} ${escapeHtml(homeCopy.hero.accent)}</h1>`,
-      `<p>${escapeHtml(homeCopy.hero.subtitle)}</p>`,
-      `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a> · <a href="mailto:hello@molcrafts.org">${escapeHtml(homeCopy.hero.secondaryCta)}</a></p>`,
+      `<h1>${escapeHtml(homeCopy.brandHero.title)}</h1>`,
+      `<p>${escapeHtml(homeCopy.brandHero.kicker)}</p>`,
+      `<p>${escapeHtml(homeCopy.brandHero.subtitle)}</p>`,
+      `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a></p>`,
       `<h2>${escapeHtml(homeCopy.approach.title)}</h2>`,
       `<p>${escapeHtml(homeCopy.approach.lead)}</p>`,
       `<p>${escapeHtml(homeCopy.approach.statement)}</p>`,
@@ -94,17 +95,14 @@ const rootContent = (route: OgRoute) => {
             `<li><strong>${escapeHtml(application.applicationTitle)}</strong> — ${escapeHtml(application.long)}</li>`,
         )
         .join("")}</ul>`,
-      `<h2>${escapeHtml(homeCopy.participate.title)}</h2>`,
-      `<p>${escapeHtml(homeCopy.participate.lead)}</p>`,
+      `<h2>${escapeHtml(`${homeCopy.participate.title.plain} ${homeCopy.participate.title.accent}`)}</h2>`,
+      `<p>${escapeHtml(homeCopy.participate.supporting)}</p>`,
       `<ul>${Object.values(homeCopy.participate.paths)
         .map(
           (path) =>
-            `<li><strong>${escapeHtml(path.title)}</strong> — ${escapeHtml(path.description)}</li>`,
+            `<li><strong>${escapeHtml(path.statement)}</strong> — ${escapeHtml(path.line)}</li>`,
         )
         .join("")}</ul>`,
-      `<h2>${escapeHtml(homeCopy.cta.title)}</h2>`,
-      `<p>${escapeHtml(homeCopy.cta.lead)}</p>`,
-      `<p><a href="mailto:hello@molcrafts.org">${escapeHtml(homeCopy.cta.primaryCta)}</a> · <a href="/#applications">${escapeHtml(homeCopy.cta.secondaryCta)}</a></p>`,
     ];
     return `<main>${parts.join("")}</main>`;
   }

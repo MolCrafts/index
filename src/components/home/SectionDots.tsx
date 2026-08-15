@@ -1,3 +1,4 @@
+import { BrandCopy } from "@/components/BrandName";
 import { Button } from "@/components/ui/button";
 import { useActiveSection } from "@/lib/home/useActiveSection";
 import { useChromeCopy } from "@/lib/i18n/chromeCopy";
@@ -25,7 +26,7 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
     <nav
       aria-label={chrome.sectionNav}
       className={cn(
-        "pointer-events-none fixed right-2 top-1/2 z-40 flex -translate-y-1/2 flex-col gap-1 sm:right-5 md:gap-2.5",
+        "pointer-events-none fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-2.5 md:flex",
         className,
       )}
     >
@@ -38,9 +39,8 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
             variant="ghost"
             size="icon"
             className={cn(
-              /* The dot stays small; the control around it is 24px so it clears the
-                 minimum touch target — `md:` includes touch tablets. */
-              "pointer-events-auto group relative flex h-6 w-6 items-center justify-center rounded-full p-0 hover:bg-transparent",
+              /* The mark stays a dot; the control around it is the 44px target. */
+              "pointer-events-auto group relative flex h-11 w-11 items-center justify-center rounded-full p-0 hover:bg-transparent",
               "outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-rgb))] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             )}
           >
@@ -61,7 +61,7 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
                   "opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100",
                 )}
               >
-                {label}
+                <BrandCopy text={label} />
               </span>
             </a>
           </Button>

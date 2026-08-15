@@ -2,20 +2,19 @@
  * Hallmark / commercial home
  * THESIS: A molecular and materials R&D company, not a software directory.
  * OWN-WORLD: Deep forest/cyan, luminous molecular matter, gradient type and restrained glows.
- * STORY: Company → capabilities → applications → collaboration → trust → contact.
+ * STORY: Company → capabilities → applications → collaboration → sponsors.
  * FIRST VIEWPORT: Centred MolCrafts brand curtain; no product capture or commercial detail.
  * FORM: One continuously scrolling document over a single fixed molecular field.
  * FINISH: the build ends with visual review, verification, and portable token records.
  */
 import { useHomeCopy } from "@/lib/home/copy";
-import { HOME_SECTION_IDS } from "@/lib/home/data";
+import { HOME_SECTION_IDS, resolveHomeHash } from "@/lib/home/data";
 import { useEffect, useMemo } from "react";
 import { HomeAtmosphere } from "./HomeAtmosphere";
 import { HomeFooter } from "./HomeFooter";
 import { SectionDots } from "./SectionDots";
 import { ApproachSection } from "./sections/ApproachSection";
 import { AssistSection } from "./sections/AssistSection";
-import { ClosingSection } from "./sections/ClosingSection";
 import { HeroSection } from "./sections/HeroSection";
 import { ParticipateSection } from "./sections/ParticipateSection";
 import { ProjectsSection } from "./sections/ProjectsSection";
@@ -40,7 +39,7 @@ export function HomePage() {
      sections exist — instantly, since the reader asked for that block, not for a
      journey down to it. */
   useEffect(() => {
-    const id = window.location.hash.slice(1);
+    const id = resolveHomeHash(window.location.hash);
     if (!id) return;
     /* `instant`, not `auto`: `auto` defers to `scroll-behavior: smooth` on `html`,
        which glides the reader through every block between the top and the one they
@@ -60,8 +59,9 @@ export function HomePage() {
         <AssistSection />
         <ProjectsSection />
         <ParticipateSection />
+        {/* A band, not a screen: the credit closes the page above the footer without
+            taking a screen of its own. */}
         <SponsorsSection />
-        <ClosingSection />
         <HomeFooter />
       </div>
     </div>

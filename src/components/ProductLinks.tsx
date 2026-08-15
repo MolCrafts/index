@@ -70,7 +70,7 @@ export const ProductLinks = ({ slug }: { slug: string }) => {
             View on GitHub
           </a>
           <a
-            href="/#projects"
+            href="/#applications"
             className="text-sm font-medium text-muted-foreground no-underline transition-colors hover:text-foreground sm:ml-auto"
           >
             All MolCrafts projects

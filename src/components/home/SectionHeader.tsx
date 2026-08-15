@@ -20,6 +20,13 @@ interface SectionHeaderProps {
   lead?: ReactNode;
   /** Claim screens take the larger rung; screens carrying content take the smaller. */
   scale?: keyof typeof SCALE;
+  /**
+   * `paragraph` — prose, set in its own measured column beside the heading.
+   * `line` — one sentence that reads as a line and must not break in the middle of
+   * itself; it takes the width it needs and the heading column yields. Narrow
+   * viewports still wrap it, because no phrase of this length fits a phone.
+   */
+  leadShape?: "paragraph" | "line";
   className?: string;
 }
 
@@ -33,14 +40,35 @@ export function SectionHeader({
   title,
   lead,
   scale = "section",
+  leadShape = "paragraph",
   className,
 }: SectionHeaderProps) {
   return (
-    <div className={cn(HOME_HEADER_GRID, "w-full min-w-0", className)}>
+    <div
+      className={cn(
+        HOME_HEADER_GRID,
+        "w-full min-w-0",
+        /* The shared lead track is capped at its `fr` share, so an unbroken line
+           overflows it and lands on the heading. A line sizes its own track and
+           the heading takes what is left. */
+        leadShape === "line" && "lg:grid-cols-[minmax(0,1fr)_max-content]",
+        className,
+      )}
+    >
       <h2 id={sectionHeadingId(sectionId)} className={cn(SCALE[scale], "min-w-0")}>
         {title}
       </h2>
-      {lead ? <p className={cn(HOME_LEAD, "max-w-xl md:justify-self-end")}>{lead}</p> : null}
+      {lead ? (
+        <p
+          className={cn(
+            HOME_LEAD,
+            "md:justify-self-end",
+            leadShape === "line" ? "lg:whitespace-nowrap" : "max-w-xl",
+          )}
+        >
+          {lead}
+        </p>
+      ) : null}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { APPLICATION_GITHUB_DESCRIPTIONS as APP_DESC } from "../src/lib/home/copy/applications";
+
 export interface OgRoute {
   path: string;
   slug: string;
@@ -32,8 +34,7 @@ export const routes: OgRoute[] = [
     gradient: ["#38bdf8", "#67e8f9", "#38bdf8"],
     subGradient: ["#60a5fa", "#93c5fd", "#60a5fa"],
     ogTitle: "MolPy – Programmable toolkit for molecular simulation workflows",
-    ogDescription:
-      "Python toolkit that builds, types, and exports molecular systems for simulation. Part of MolCrafts.",
+    ogDescription: `${APP_DESC.molpy}. Part of MolCrafts.`,
   },
   {
     path: "/molvis",
@@ -44,8 +45,7 @@ export const routes: OgRoute[] = [
     gradient: ["#e879f9", "#f9a8d4", "#e879f9"],
     subGradient: ["#c084fc", "#e9d5ff", "#c084fc"],
     ogTitle: "MolVis – Interactive 3D molecular visualization",
-    ogDescription:
-      "Inspect, edit, measure, and play trajectories on the web, VS Code, and Jupyter. Part of MolCrafts.",
+    ogDescription: `${APP_DESC.molvis}. Part of MolCrafts.`,
   },
   {
     path: "/molrec",
@@ -115,7 +115,7 @@ export const routes: OgRoute[] = [
     gradient: ["#a78bfa", "#d8b4fe", "#a78bfa"],
     subGradient: ["#818cf8", "#a5b4fc", "#818cf8"],
     ogTitle: "MolExp – Agent-assisted workflows with tracked runs and artifact lineage",
-    ogDescription: "Typed workflow graphs, tracked runs, artifact lineage. Part of MolCrafts.",
+    ogDescription: `${APP_DESC.molexp}. Part of MolCrafts.`,
   },
   {
     path: "/molnex",
@@ -126,8 +126,7 @@ export const routes: OgRoute[] = [
     gradient: ["#2dd4bf", "#6ee7b7", "#2dd4bf"],
     subGradient: ["#22d3ee", "#67e8f9", "#22d3ee"],
     ogTitle: "MolNex – Machine-learning framework for interatomic potentials",
-    ogDescription:
-      "Train and compose machine-learned potentials for molecular systems. Part of MolCrafts.",
+    ogDescription: `${APP_DESC.molnex}. Part of MolCrafts.`,
   },
   {
     path: "/molpack",
@@ -138,8 +137,7 @@ export const routes: OgRoute[] = [
     gradient: ["#fbbf24", "#fdba74", "#fbbf24"],
     subGradient: ["#fb923c", "#fdba74", "#fb923c"],
     ogTitle: "MolPack – Molecular packing with a native Python API",
-    ogDescription:
-      "Packs molecules into a simulation box. Native Python API, opt-in parallelism, and a Packmol-compatible CLI. Part of MolCrafts.",
+    ogDescription: `${APP_DESC.molpack}. Part of MolCrafts.`,
   },
   {
     path: "/atomiverse",
@@ -150,7 +148,6 @@ export const routes: OgRoute[] = [
     gradient: ["#84cc16", "#4ade80", "#84cc16"],
     subGradient: ["#a3e635", "#86efac", "#a3e635"],
     ogTitle: "Atomiverse – Simulation engine for molecular dynamics and electronic structure",
-    ogDescription:
-      "Simulation engine for molecular dynamics and electronic structure, on CPU and GPU. Part of MolCrafts.",
+    ogDescription: `${APP_DESC.atomiverse}. Part of MolCrafts.`,
   },
 ];

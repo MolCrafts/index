@@ -24,8 +24,8 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Explore",
     links: [
-      { label: "Projects", href: "/#projects" },
-      { label: "What we do", href: "/#what-we-do" },
+      { label: "Projects", href: "/#applications" },
+      { label: "What we do", href: "/#solutions" },
       { label: "Documentation", href: "https://docs.molcrafts.org/", external: true },
       { label: "GitHub", href: "https://github.com/MolCrafts", external: true },
     ],
@@ -35,7 +35,6 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "Consulting", href: contactHref("Consulting") },
       { label: "Enterprise", href: contactHref("Enterprise") },
-      { label: "Follow updates", href: "/#newsletter" },
     ],
   },
   {

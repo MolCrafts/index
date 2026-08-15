@@ -10,6 +10,7 @@ import {
   prefersReducedMotion,
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
+import { HOME_ASSIST_SENTENCE } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
@@ -17,26 +18,24 @@ import { HomeSection } from "../HomeSection";
 import { SectionMarker } from "../SectionMarker";
 
 /*
- * Outermost ring: six statements on a hexagon around the headline, rotated so the
- * vertices land left and right — that is where the empty space is, since the
- * headline is a single wide line. Ellipse of rx 38% / ry 44%, vertices every 60°
- * from 0°.
+ * Six sentences on a hexagon around the headline. The ellipse is tighter than
+ * the old 38/44 ring: the sentences are now display size, so a wider orbit
+ * clipped the left/right pair and dropped the bottom pair off the fold.
  *
- * Every label is a single line (`whitespace-nowrap`), so each block is only as wide
- * as its own text and only one line tall, which is what keeps the ring clear of both
- * the headline band and the product ring.
+ * Each sentence wraps inside a short measure instead of staying one line, which
+ * is what keeps a 2xl claim from colliding with the title.
  *
  * Each entry positions the centre of the block; the wrapper carries the
  * -translate-x/y-1/2 because Framer writes an inline transform on the paragraph
  * itself, which would override the utility.
  */
 const STATEMENT_POSITIONS = [
-  "left-[88%] top-1/2", // 0°   — right vertex
-  "left-[69%] top-[11.9%]", // 60°
-  "left-[31%] top-[11.9%]", // 120°
-  "left-[12%] top-1/2", // 180° — left vertex
-  "left-[31%] top-[88.1%]", // 240°
-  "left-[69%] top-[88.1%]", // 300°
+  "left-[84%] top-1/2", // 0°   — right
+  "left-[70%] top-[16%]", // 60°
+  "left-[30%] top-[16%]", // 120°
+  "left-[16%] top-1/2", // 180° — left
+  "left-[30%] top-[80%]", // 240°
+  "left-[70%] top-[80%]", // 300°
 ] as const;
 
 /*
@@ -97,7 +96,10 @@ export function AssistSection() {
   const onScreen = useInView(stageRef, { amount: 0.05 });
   const idle = onScreen ? undefined : "[animation-play-state:paused]";
 
-  const motionState = hasEntered || reduceMotion ? "illuminated" : "dormant";
+  /* Reduced motion renders `settled`, never `illuminated`: the entrance
+     variants carry keyframe arrays, and a keyframe array stated statically
+     resolves to its first frame — near-transparent for the gather rings. */
+  const motionState = reduceMotion ? "settled" : hasEntered ? "illuminated" : "dormant";
 
   return (
     <HomeSection id="assist" aria-labelledby="assist-heading" className="overflow-hidden">
@@ -110,7 +112,7 @@ export function AssistSection() {
           <motion.div
             className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(34vw,32rem)] w-[min(78vw,76rem)] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.16)_0%,rgba(var(--accent-rgb),0.08)_38%,hsl(var(--primary)/0.055)_56%,transparent_74%)] blur-[26px]"
             aria-hidden="true"
-            initial={reduceMotion ? "illuminated" : "dormant"}
+            initial={reduceMotion ? "settled" : "dormant"}
             animate={motionState}
             variants={assistAuraReveal}
           />
@@ -127,7 +129,7 @@ export function AssistSection() {
                   CONCEPT_CONTEXT[index].className,
                 )}
                 custom={{ ...CONCEPT_CONTEXT[index], peak: 0.76, settled: 0.56 }}
-                initial={reduceMotion ? "illuminated" : "dormant"}
+                initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistContextGather}
               >
@@ -150,7 +152,7 @@ export function AssistSection() {
                   PRODUCT_CONTEXT[index].className,
                 )}
                 custom={{ ...PRODUCT_CONTEXT[index], peak: 0.92, settled: 0.74 }}
-                initial={reduceMotion ? "illuminated" : "dormant"}
+                initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistContextGather}
               >
@@ -170,7 +172,7 @@ export function AssistSection() {
                 key={context.className}
                 className={cn("absolute -translate-x-1/2 -translate-y-1/2", context.className)}
                 custom={{ ...context, peak: 0.58, settled: 0.32 }}
-                initial={reduceMotion ? "illuminated" : "dormant"}
+                initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistContextGather}
               >
@@ -192,7 +194,7 @@ export function AssistSection() {
               product rings are gated the same way. */}
           <motion.div
             className="pointer-events-none absolute inset-0 z-20 hidden lg:block"
-            initial={reduceMotion ? "illuminated" : "dormant"}
+            initial={reduceMotion ? "settled" : "dormant"}
             animate={motionState}
             variants={assistStatementsReveal}
           >
@@ -207,7 +209,7 @@ export function AssistSection() {
                 )}
               >
                 <motion.p
-                  className="whitespace-nowrap font-body text-base font-normal leading-none tracking-tight text-foreground/85 lg:text-xl 2xl:text-2xl"
+                  className={cn(HOME_ASSIST_SENTENCE, "max-w-[12ch] text-center")}
                   variants={assistMicroStatementReveal}
                 >
                   {statement}
@@ -221,7 +223,7 @@ export function AssistSection() {
               <motion.span
                 aria-hidden="true"
                 className="col-start-1 row-start-1 whitespace-nowrap pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [-webkit-text-stroke:1px_color-mix(in_oklab,var(--brand-assist-from)_72%,transparent)] [text-shadow:0_0_42px_rgba(var(--accent-rgb),0.18)] max-sm:whitespace-normal max-sm:leading-wordmark-wrap"
-                initial={reduceMotion ? "illuminated" : "dormant"}
+                initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistWordOutlineReveal}
               >
@@ -238,7 +240,7 @@ export function AssistSection() {
                   idle,
                   "col-start-1 row-start-1 animate-assist-sweep whitespace-nowrap bg-[linear-gradient(112deg,var(--brand-assist-from)_0%,var(--brand-assist-via)_28%,var(--brand-assist-to)_52%,var(--brand-assist-via)_76%,var(--brand-assist-from)_100%)] bg-[length:200%_auto] bg-clip-text pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [text-shadow:0_24px_88px_rgba(var(--accent-rgb),0.2)] motion-reduce:animate-none max-sm:whitespace-normal max-sm:leading-wordmark-wrap force-motion:animate-assist-sweep",
                 )}
-                initial={reduceMotion ? "illuminated" : "dormant"}
+                initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistWordFillReveal}
               >
@@ -256,8 +258,8 @@ export function AssistSection() {
               </motion.h2>
             </div>
             <motion.p
-              className="mt-[clamp(0.8rem,1.5vw,1.4rem)] whitespace-nowrap text-[1.25rem] font-normal leading-[1.55] tracking-normal text-[color-mix(in_oklab,var(--brand-assist-concept)_78%,transparent)] sm:text-[clamp(1.25rem,1.65vw,1.5rem)]"
-              initial={reduceMotion ? "illuminated" : "dormant"}
+              className="mt-[clamp(0.8rem,1.5vw,1.4rem)] whitespace-nowrap text-[clamp(1.65rem,2.4vw,2.35rem)] font-normal leading-[1.45] tracking-normal text-[color-mix(in_oklab,var(--brand-assist-concept)_78%,transparent)]"
+              initial={reduceMotion ? "settled" : "dormant"}
               animate={motionState}
               variants={assistSublineReveal}
             >
@@ -268,7 +270,7 @@ export function AssistSection() {
           <motion.div
             className="pointer-events-none absolute inset-x-6 top-[56%] z-20 flex flex-wrap justify-center gap-x-[0.85rem] gap-y-[0.35rem] text-chip font-strong leading-[1.2] tracking-[-0.005em] text-[color-mix(in_oklab,var(--brand-assist-from)_76%,transparent)] lg:hidden"
             aria-hidden="true"
-            initial={reduceMotion ? "illuminated" : "dormant"}
+            initial={reduceMotion ? "settled" : "dormant"}
             animate={motionState}
             variants={assistMobileProductsReveal}
           >

@@ -1,7 +1,7 @@
 # Product Marketing Context
 
-**Document version:** v7
-**Last updated:** 2026-08-13
+**Document version:** v8
+**Last updated:** 2026-08-15
 
 > MolCrafts 官网定位、中文文案和营销视觉的唯一有效规则。所有营销、首页设计与
 > 首页实现工作都必须先读本文件。旧版“开放基金会”“软件目录”“开发者文档入口”
@@ -228,12 +228,11 @@ AI editorial 屏仅继承上述五个已批准产品名的环境标签例外，�
   GitHub、文档或内部资料。
 - AI editorial 屏可环绕展示 `MolPy`、`MolExp`、`MolVis`、`MolPack` 与 `Atomiverse`，
   但它们只是无链接的生态上下文标签，不构成产品目录或技术说明。
-- 首页导航使用商业理解路径：Applications、Solutions、Collaboration、About、Contact；
-  实际中文标签应自然简洁，避免 Projects/Docs 驱动的信息架构。
+- 首页 chrome 不列 Applications / Solutions / Collaboration / About / Contact。桌面端用
+  右侧区块轨；合作三路是转化收束。产品页保留自己的 Projects 目录。
 - 首页顺序锁定为：Hero → Brand statement → Capabilities → AI editorial → Applications →
-  Collaboration → Trust/support → Closing CTA / Footer。
-- Open source、Consulting、Enterprise 可以并列出现，但咨询、企业合作和 Contact 承担主要转化；
-  GitHub 只作为开源路径或页脚中的次级出口。
+  Collaboration → Trust/support → Footer。没有独立 Contact 屏；开源走 GitHub，咨询与
+  企业合作走合作屏的两条邮件路径。
 - 首页公开文案保持 affirmative-only：直接说 MolCrafts 是什么、能做什么、如何合作；
   不把内部边界规则写给访客看。
 
@@ -391,6 +390,10 @@ molq            ←  molexp
 
 ## Changelog
 *Newest first. One line per revision: what changed and why.*
+- v8 (2026-08-15) — **Collaboration is the finale.** Dropped the Closing CTA / Contact
+  screen; the three collaboration routes are the conversion close. Homepage chrome
+  stays wordmark + locale + GitHub. This version amends the v6 navigation and
+  order locks.
 - v7 (2026-08-14) — **Continuous-scroll homepage and rebuilt Applications.** Replaced the
   fullpage pager with one continuously scrolling document over a single fixed molecular
   field; moved the hero's CTAs onto the Brand statement screen so the first viewport is a

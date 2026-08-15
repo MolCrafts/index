@@ -1,21 +1,59 @@
-import { Button } from "@/components/ui/button";
+import {
+  type ApproachBuildMotion,
+  approachLineLay,
+  approachRise,
+  prefersReducedMotion,
+} from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import { heroLinks } from "@/lib/home/data";
-import { HOME_BODY, HOME_H3 } from "@/lib/home/stage";
-import { HOME_GRADIENT_TEXT } from "@/lib/styleTokens";
+import { HOME_BLOCK, HOME_BODY, HOME_CONTAINER, HOME_H3 } from "@/lib/home/stage";
+import { HOME_EMPHASIS, HOME_KEYWORD, HOME_TEXT_LINK } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
-import { HomeBlock } from "../HomeBlock";
-import { Reveal } from "../Reveal";
+import { motion } from "framer-motion";
+import { HomeSection } from "../HomeSection";
+import { SectionHeader } from "../SectionHeader";
+import { SectionMarker } from "../SectionMarker";
 
-/** The commercial claim and the brand statement. */
+/**
+ * The build sequence, stated in one place: the claim settles, then the two
+ * columns go up in parallel.
+ */
+const BUILD = {
+  titleLine: { delay: 0.2 },
+  titleAccent: { delay: 0.32 },
+  lead: { delay: 0.46 },
+  approachTitle: { delay: 0.6 },
+  statement: { delay: 0.72 },
+  cta: { delay: 0.86 },
+} as const satisfies Record<string, ApproachBuildMotion>;
+
+/**
+ * The three promises as three courses of a structure: the bottom course is the
+ * foundation — widest, brightest, laid first — and each one above it is
+ * narrower and lands later, so the stack visibly goes up brick over brick.
+ * Order follows the copy top-to-bottom; depth runs bottom-to-top.
+ */
+const COURSES = [
+  { width: "w-2/5", strength: "opacity-60", rise: 0.9, lay: 1.05 },
+  { width: "w-3/5", strength: "opacity-80", rise: 0.7, lay: 0.85 },
+  { width: "w-full", strength: "opacity-100", rise: 0.5, lay: 0.65 },
+] as const;
+
+/**
+ * The commercial claim and the brand statement.
+ *
+ * The three promises are the only lines on this screen — green courses of
+ * light, widest at the foundation. The way in is an underline, not a button,
+ * so nothing outshines the headline.
+ */
 export function ApproachSection() {
   const { hero, approach } = useHomeCopy();
+  const reduceMotion = prefersReducedMotion();
   const [titleBeforeOpenSource, titleAfterOpenSource] = hero.title.split("open-source");
 
   const claim = (
     <>
-      <span className="block">
+      <motion.span className="block" custom={BUILD.titleLine} variants={approachRise}>
         {titleAfterOpenSource === undefined ? (
           hero.title
         ) : (
@@ -25,42 +63,84 @@ export function ApproachSection() {
             {titleAfterOpenSource}
           </>
         )}
-      </span>
-      <span className={cn(HOME_GRADIENT_TEXT, "mt-3 block pb-2")}>{hero.accent}</span>
+      </motion.span>
+      <motion.span
+        className={cn(HOME_EMPHASIS, "mt-3 block pb-2")}
+        custom={BUILD.titleAccent}
+        variants={approachRise}
+      >
+        {hero.accent}
+      </motion.span>
     </>
   );
 
   return (
-    <HomeBlock id="about" title={claim} lead={approach.lead} scale="statement">
-      <div className="grid gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] md:gap-12">
-        <Reveal delay={0.08}>
-          <h3 className={HOME_H3}>{approach.title}</h3>
-          <p className={cn(HOME_BODY, "mt-4 max-w-[62ch]")}>{approach.statement}</p>
-          <Button
-            asChild
-            size="lg"
-            className="mt-7 rounded-full shadow-[0_18px_42px_-20px_hsl(var(--primary)/0.75)] hover:-translate-y-0.5"
-          >
-            <a href={heroLinks.primaryHref}>
-              {hero.primaryCta}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </Button>
-        </Reveal>
+    <HomeSection id="about">
+      <SectionMarker sectionId="about" />
+      <motion.div
+        className={cn(HOME_CONTAINER, HOME_BLOCK, "relative isolate")}
+        initial={reduceMotion ? "illuminated" : "dormant"}
+        whileInView="illuminated"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <SectionHeader
+          sectionId="about"
+          title={claim}
+          lead={
+            <motion.span className="block" custom={BUILD.lead} variants={approachRise}>
+              {approach.lead}
+            </motion.span>
+          }
+          scale="statement"
+        />
+        <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] md:gap-12">
+          <div>
+            <motion.h3 className={HOME_H3} custom={BUILD.approachTitle} variants={approachRise}>
+              {approach.title}
+            </motion.h3>
+            <motion.p
+              className={cn(HOME_BODY, "mt-4 max-w-[62ch]")}
+              custom={BUILD.statement}
+              variants={approachRise}
+            >
+              {approach.statement}
+            </motion.p>
+            {/* An underline of light, not a button: the route in stays quieter
+                than the claim it follows. */}
+            <motion.div custom={BUILD.cta} variants={approachRise}>
+              <a href={heroLinks.primaryHref} className={cn(HOME_TEXT_LINK, "mt-7")}>
+                <span className="border-b border-current pb-1">{hero.primaryCta}</span>
+              </a>
+            </motion.div>
+          </div>
 
-        <Reveal delay={0.16}>
-          <ul className="grid gap-0 self-start border-t border-border/55 sm:grid-cols-3 md:grid-cols-1 md:border-t-0">
-            {approach.promises.map((promise) => (
-              <li
+          {/* Three green courses of light; the stack bottom-aligns so the
+              foundation is the widest course. */}
+          <ul className="grid gap-7 self-end">
+            {approach.promises.map((promise, index) => (
+              <motion.li
                 key={promise}
-                className="border-b border-border/45 py-3.5 font-body text-base font-semibold leading-7 text-foreground sm:border-b-0 sm:border-r sm:px-3 sm:first:pl-0 sm:last:border-r-0 md:border-b md:border-r-0 md:px-0 md:first:pt-0 md:last:border-b-0"
+                custom={{ delay: COURSES[index].rise }}
+                variants={approachRise}
               >
-                {promise}
-              </li>
+                <span className={cn("font-body text-base font-semibold leading-7", HOME_KEYWORD)}>
+                  {promise}
+                </span>
+                <motion.span
+                  aria-hidden="true"
+                  className={cn(
+                    "mt-3 block h-0.5 origin-left rounded-full bg-gradient-to-r from-primary via-primary/70 to-transparent [box-shadow:0_0_12px_hsl(var(--primary)/0.45)]",
+                    COURSES[index].width,
+                    COURSES[index].strength,
+                  )}
+                  custom={{ delay: COURSES[index].lay }}
+                  variants={approachLineLay}
+                />
+              </motion.li>
             ))}
           </ul>
-        </Reveal>
-      </div>
-    </HomeBlock>
+        </div>
+      </motion.div>
+    </HomeSection>
   );
 }

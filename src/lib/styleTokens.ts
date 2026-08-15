@@ -1,9 +1,36 @@
 /** Shared Tailwind recipes for repeated brand treatments and page atmosphere. */
+
+/**
+ * MolCrafts wordmark — blue to light blue. Hero, chrome, and inline mentions
+ * all use this ramp. Green is the page primary and never enters the mark.
+ */
 export const BRAND_GRADIENT_TEXT =
   "animate-brand-gradient bg-[linear-gradient(90deg,var(--brand-primary-from)_0%,var(--brand-primary-via)_40%,var(--brand-primary-to)_70%,var(--brand-primary-from)_100%)] bg-[length:200%_auto] bg-clip-text text-transparent motion-reduce:animate-none force-motion:animate-brand-gradient";
 
-export const HOME_GRADIENT_TEXT =
-  "bg-[linear-gradient(118deg,var(--brand-primary-from)_4%,var(--brand-primary-via)_52%,hsl(var(--primary))_108%)] bg-clip-text text-transparent";
+/**
+ * Homepage wordmark. Uses `--home-wordmark-*` so light paper can deepen the
+ * blue without rewriting the product-page brand ramp.
+ */
+export const HOME_BRAND_GRADIENT =
+  "animate-wordmark-drift bg-[linear-gradient(100deg,var(--home-wordmark-from)_0%,var(--home-wordmark-via)_45%,var(--home-wordmark-from)_100%)] bg-[length:220%_auto] bg-clip-text text-transparent motion-reduce:animate-none force-motion:animate-wordmark-drift";
+
+/** Specular band that crosses the wordmark, then rests. */
+export const HOME_WORDMARK_SHEEN =
+  "animate-wordmark-sheen bg-[linear-gradient(105deg,transparent_22%,var(--color-sheen-core)_46%,var(--color-sheen-edge)_54%,transparent_78%)] bg-[length:240%_100%] bg-clip-text text-transparent mix-blend-screen motion-reduce:animate-none force-motion:animate-wordmark-sheen";
+
+/** Static wordmark ramp for running copy, where a sweep would fight the sentence. */
+export const HOME_WORDMARK =
+  "bg-[linear-gradient(90deg,var(--home-wordmark-from),var(--home-wordmark-via))] bg-clip-text text-transparent";
+
+/** Emphasis sentences — secondary blue, never a gradient. */
+export const HOME_EMPHASIS = "text-home-emphasis";
+
+/** Feature words and keywords — primary green. */
+export const HOME_KEYWORD = "text-home-keyword";
+
+/** Homepage text links. Forest is the interactive primary; cyan stays display-only. */
+export const HOME_TEXT_LINK =
+  "inline-flex min-h-11 items-center font-body text-sm font-semibold text-primary no-underline transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary";
 
 export const PRODUCT_HERO_SECTION =
   "relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-16 md:px-8 md:py-20 lg:px-16 lg:py-24";

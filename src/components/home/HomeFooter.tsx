@@ -1,7 +1,6 @@
+import { BrandCopy, BrandName } from "@/components/BrandName";
 import { useHomeCopy } from "@/lib/home/copy";
-import { closingLinks } from "@/lib/home/data";
-import { HOME_GRADIENT_TEXT } from "@/lib/styleTokens";
-import { cn } from "@/lib/utils";
+import { GITHUB_ORG_HREF } from "@/lib/home/data";
 import { Github } from "lucide-react";
 import { LogoIcon } from "../Icons";
 
@@ -10,7 +9,7 @@ import { LogoIcon } from "../Icons";
  *
  * `App.tsx` suppresses the shared `Footer` on `/` because this one is art-directed
  * for the dark homepage. It is rendered as a sibling of the blocks rather than
- * inside the closing one: a `footer` nested in a `section` loses its implicit
+ * inside the last one: a `footer` nested in a `section` loses its implicit
  * `contentinfo` role, which left the page with no such landmark at all.
  */
 export function HomeFooter() {
@@ -22,9 +21,7 @@ export function HomeFooter() {
       <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <LogoIcon className="!h-9 !w-9" />
-          <span className={cn(HOME_GRADIENT_TEXT, "font-display text-xl font-semibold")}>
-            MolCrafts
-          </span>
+          <BrandName className="font-display text-xl font-semibold" />
         </div>
         <p className="max-w-lg font-body text-sm leading-6 text-muted-foreground md:text-right">
           {footer.tagline}
@@ -32,11 +29,11 @@ export function HomeFooter() {
       </div>
       <div className="mx-auto mt-4 flex w-full max-w-[90rem] flex-wrap items-center justify-between gap-3 font-body text-xs text-muted-foreground">
         <span>
-          © {year} MolCrafts · {footer.license}
+          © {year} <BrandCopy text="MolCrafts" /> · {footer.credit}
         </span>
         <div className="flex items-center gap-5">
           <a
-            href={closingLinks.githubHref}
+            href={GITHUB_ORG_HREF}
             target="_blank"
             rel="noreferrer noopener"
             className="inline-flex min-h-11 items-center gap-2 text-muted-foreground no-underline hover:text-foreground"

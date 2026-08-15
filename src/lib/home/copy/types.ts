@@ -21,11 +21,16 @@ export interface ApplicationCopy {
   readonly long: string;
 }
 
+/**
+ * One depth of working with MolCrafts.
+ *
+ * `statement` is the phase itself, and the three are held to one rhythm so they
+ * read as a single continuum rather than three offers. `line` is what that depth
+ * means, and stays back until the reader brings the phase forward.
+ */
 export interface ParticipatePathCopy {
-  readonly title: string;
-  readonly audience: string;
-  readonly description: string;
-  readonly cta: string;
+  readonly statement: string;
+  readonly line: string;
 }
 
 export interface HomeCopy {
@@ -80,30 +85,33 @@ export interface HomeCopy {
       readonly atomiverse: ApplicationCopy;
     };
   };
+  /**
+   * Collaboration — the screen that answers how we work together, and the only one
+   * that answers it. Every commercial route lives here, and each depth is its own
+   * way in, which is what lets the page end without a contact screen.
+   */
   readonly participate: {
-    readonly title: string;
-    readonly lead: string;
+    /** Two lines, the second carried in the accent rather than in a heavier type. */
+    readonly title: {
+      readonly plain: string;
+      readonly accent: string;
+    };
+    readonly supporting: string;
     readonly paths: {
-      readonly openSource: ParticipatePathCopy;
-      readonly consulting: ParticipatePathCopy;
-      readonly enterprise: ParticipatePathCopy;
+      readonly startOpen: ParticipatePathCopy;
+      readonly buildTogether: ParticipatePathCopy;
+      readonly deployInHouse: ParticipatePathCopy;
     };
   };
+  /** The closing credit band. Each sponsor's own name is the only other text it carries. */
   readonly sponsors: {
     readonly title: string;
     readonly lead: string;
-    readonly supporterNote: string;
-  };
-  readonly cta: {
-    readonly title: string;
-    readonly lead: string;
-    readonly primaryCta: string;
-    readonly secondaryCta: string;
   };
   readonly footer: {
     readonly tagline: string;
     readonly github: string;
-    readonly license: string;
+    readonly credit: string;
     readonly backToTop: string;
   };
 }

@@ -1,5 +1,6 @@
 import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
+import { APPROVED_COLLABORATION_COPY } from "./collaboration";
 import type { HomeCopy } from "./types";
 
 export const sv: HomeCopy = {
@@ -11,7 +12,6 @@ export const sv: HomeCopy = {
     applications: "Tillämpningar",
     collaboration: "Samarbete",
     trust: "Stöd",
-    contact: "Kontakt",
   },
   brandHero: {
     kicker: "Vi formar molekylär simulering för AI-eran",
@@ -90,48 +90,15 @@ export const sv: HomeCopy = {
       },
     },
   },
-  participate: {
-    title: "Vårt arbetssätt följer forskningsfrågan.",
-    lead: "Börja i vårt öppna arbete eller bygg ett djupare FoU-samarbete kring en tydlig utmaning.",
-    paths: {
-      openSource: {
-        title: "Bygg öppet, dela långsiktigt",
-        audience: "Öppen forskning",
-        description:
-          "Vi utvecklar centralt vetenskapligt arbete öppet så att forskare kan följa, använda och bidra.",
-        cta: "Se öppet arbete",
-      },
-      consulting: {
-        title: "För in metoden i er forskning",
-        audience: "Forskningsrådgivning",
-        description:
-          "Formulera en konkret fråga, validera en väg och lägg resultatet i teamets händer.",
-        cta: "Diskutera ett forskningsbehov",
-      },
-      enterprise: {
-        title: "Bygg ett långsiktigt FoU-partnerskap",
-        audience: "Företagssamarbete",
-        description:
-          "Arbeta tillsammans med interna team kring varaktiga molekyl- och materialutmaningar.",
-        cta: "Inled ett företagssamtal",
-      },
-    },
-  },
+  participate: APPROVED_COLLABORATION_COPY,
   sponsors: {
-    title: "Öppet arbete behöver långsiktigt stöd.",
-    lead: "MolCrafts offentliga arbete stöds av Claude for Open Source.",
-    supporterNote: "Stöd för att öppen vetenskap ska kunna fortsätta.",
-  },
-  cta: {
-    title: "Nästa forskningsprojekt kan börja med ett konkret samtal.",
-    lead: "Berätta om frågan, målet och det ni redan har. Tillsammans hittar vi rätt väg framåt.",
-    primaryCta: "Diskutera er forskning",
-    secondaryCta: "Se tillämpningarna igen",
+    title: "Våra sponsorer",
+    lead: "Tack till de open source-program som följer MolCrafts.",
   },
   footer: {
     tagline: "Vetenskaplig beräkning skapad för verklig molekyl- och materialutveckling.",
     github: "GitHub",
-    license: "MIT License",
+    credit: "Built with ❤️",
     backToTop: "Till toppen",
   },
 };

@@ -1,38 +1,60 @@
-import claudeLogoUrl from "@/assets/claude.svg";
+import { BrandCopy } from "@/components/BrandName";
 import { useHomeCopy } from "@/lib/home/copy";
 import { sponsorItems } from "@/lib/home/data";
-import { HOME_H3 } from "@/lib/home/stage";
+import { HOME_BODY } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight } from "lucide-react";
 import { HomeBlock } from "../HomeBlock";
 import { Reveal } from "../Reveal";
 
-/** Trust — who backs the open-source work. */
+/**
+ * Support — the credit the page closes on.
+ *
+ * A band rather than a screen: it names who sponsors the open work, which is a
+ * line of record, not an argument the reader is asked to travel through. The
+ * roster sits on its own row under the rule, so the names read as a list.
+ */
 export function SponsorsSection() {
   const { sponsors } = useHomeCopy();
 
   return (
-    <HomeBlock id="trust" title={sponsors.title} lead={sponsors.lead} scale="statement">
+    <HomeBlock
+      id="trust"
+      title={sponsors.title}
+      lead={<BrandCopy text={sponsors.lead} />}
+      height="band"
+    >
       <Reveal delay={0.08}>
-        {sponsorItems.map((supporter) => (
-          <a
-            key={supporter.name}
-            href={supporter.href}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="group flex items-center gap-5 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            {/* Empty alt: the supporter's name sits right beside the mark. */}
-            <img src={claudeLogoUrl} alt="" width={48} height={48} className="h-12 w-12" />
-            <span>
-              <span className={cn(HOME_H3, "block")}>{supporter.name}</span>
-              <span className="mt-2 flex items-center gap-2 font-body text-sm text-muted-foreground group-hover:text-foreground">
-                {sponsors.supporterNote}
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </span>
-            </span>
-          </a>
-        ))}
+        <ul className="flex flex-wrap items-start gap-x-12 gap-y-8">
+          {sponsorItems.map((sponsor) => (
+            <li key={sponsor.name}>
+              {/* Mark over name, both inside the one link: a logo never stands on the
+                  page without the name it belongs to, and the whole credit is what
+                  the reader clicks. */}
+              <a
+                href={sponsor.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={cn(
+                  HOME_BODY,
+                  /* Centred, not flush left: the mark sits over the middle of the
+                     name it belongs to, so the pair reads as one credit. */
+                  "group flex flex-col items-center gap-3 no-underline outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary",
+                )}
+              >
+                {/* Masked, not drawn: the mark takes the page's own ink, so a
+                    sponsor's brand colour never lands on the closing band. */}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    sponsor.markClass,
+                    "h-12 w-12 bg-muted-foreground transition-colors group-hover:bg-foreground",
+                  )}
+                />
+                {sponsor.name}
+              </a>
+            </li>
+          ))}
+        </ul>
       </Reveal>
     </HomeBlock>
   );

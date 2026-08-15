@@ -1,5 +1,6 @@
-import { APPROVED_APPLICATIONS_HEADING } from "./applications";
+import { APPLICATION_GITHUB_DESCRIPTIONS, APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
+import { APPROVED_COLLABORATION_COPY } from "./collaboration";
 import type { HomeCopy } from "./types";
 
 export const en: HomeCopy = {
@@ -11,7 +12,6 @@ export const en: HomeCopy = {
     applications: "Applications",
     collaboration: "Collaboration",
     trust: "Support",
-    contact: "Contact",
   },
   brandHero: {
     kicker: "Shaping Molecular Simulation for the AI Era",
@@ -61,77 +61,44 @@ export const en: HomeCopy = {
       molpy: {
         applicationTitle: "System construction",
         short: "Build and type molecular systems",
-        long: "Turn a structure into a typed system an engine can run, and inspect it first.",
+        long: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
       },
       molpack: {
         applicationTitle: "Box preparation",
         short: "Pack molecules into a box",
-        long: "Fill a box with the composition you specify, and get the same result every run.",
+        long: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
       },
       molvis: {
         applicationTitle: "Visual inspection",
         short: "Inspect structures and trajectories",
-        long: "Look at a structure or a full trajectory in the browser, your editor, or a notebook.",
+        long: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
       },
       molexp: {
         applicationTitle: "Experiment tracking",
         short: "Run and track experiments",
-        long: "Describe a workflow once, run it, and keep every input and result linked to it.",
+        long: APPLICATION_GITHUB_DESCRIPTIONS.molexp,
       },
       molnex: {
         applicationTitle: "Potential training",
         short: "Train and compose potentials",
-        long: "Train a potential on your own data, and compose it with physics you already trust.",
+        long: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
       },
       atomiverse: {
         applicationTitle: "Simulation runs",
         short: "Run dynamics and electronic structure",
-        long: "Reach molecular dynamics and electronic structure through one interface, on CPU and on GPU.",
+        long: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
       },
     },
   },
-  participate: {
-    title: "The way we work follows the research question.",
-    lead: "Start with our open work or build a deeper R&D collaboration around a defined challenge.",
-    paths: {
-      openSource: {
-        title: "Build in public, share for the long term",
-        audience: "Open research",
-        description:
-          "We develop core scientific work in public so researchers can follow, use, and contribute.",
-        cta: "See open work",
-      },
-      consulting: {
-        title: "Bring the method into your research",
-        audience: "Research consulting",
-        description:
-          "Frame a specific question, validate a path, and put the outcome in the team’s hands.",
-        cta: "Discuss a research need",
-      },
-      enterprise: {
-        title: "Build a long-term R&D partnership",
-        audience: "Enterprise collaboration",
-        description:
-          "Work alongside internal teams on sustained molecular and materials challenges.",
-        cta: "Start an enterprise conversation",
-      },
-    },
-  },
+  participate: APPROVED_COLLABORATION_COPY,
   sponsors: {
-    title: "Open work needs lasting support.",
-    lead: "MolCrafts’ public work is supported by Claude for Open Source.",
-    supporterNote: "Supporting the continued practice of open science.",
-  },
-  cta: {
-    title: "Your next research project can begin with one concrete conversation.",
-    lead: "Tell us the question, the goal, and what you already have. We’ll work out the right way forward.",
-    primaryCta: "Discuss your research",
-    secondaryCta: "Revisit applications",
+    title: "Our sponsors",
+    lead: "With thanks to the open-source programs travelling with MolCrafts.",
   },
   footer: {
     tagline: "Scientific computing made to enter real molecular and materials R&D.",
     github: "GitHub",
-    license: "MIT License",
+    credit: "Built with ❤️",
     backToTop: "Back to top",
   },
 };

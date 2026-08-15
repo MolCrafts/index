@@ -7,6 +7,12 @@ interface HomeSectionProps {
   id: HomeSectionId;
   "aria-labelledby"?: string;
   "aria-label"?: string;
+  /**
+   * `screen` — a block of the argument, which takes a screen.
+   * `band` — a short strip that sizes to its own content, for a block that credits
+   * rather than argues and would read as empty space if it took a screen too.
+   */
+  height?: "screen" | "band";
   className?: string;
   children: ReactNode;
 }
@@ -25,6 +31,7 @@ export function HomeSection({
   id,
   "aria-labelledby": ariaLabelledby,
   "aria-label": ariaLabel,
+  height = "screen",
   className,
   children,
 }: HomeSectionProps) {
@@ -35,7 +42,8 @@ export function HomeSection({
       aria-labelledby={ariaLabelledby ?? sectionHeadingId(id)}
       aria-label={ariaLabel}
       className={cn(
-        "relative flex min-h-svh w-full min-w-0 scroll-mt-24 flex-col justify-center",
+        "relative flex w-full min-w-0 scroll-mt-28 flex-col justify-center",
+        height === "screen" && "min-h-svh",
         className,
       )}
     >

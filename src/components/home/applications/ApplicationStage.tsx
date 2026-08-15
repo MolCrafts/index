@@ -2,23 +2,13 @@ import { MOTION_EASE, homeReveal } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import type { ApplicationKey } from "@/lib/home/copy/types";
 import { APPLICATIONS, applicationHref } from "@/lib/home/data";
-import { HOME_BODY, HOME_H3 } from "@/lib/home/stage";
+import { HOME_BODY, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
+import { HOME_KEYWORD, HOME_TEXT_LINK } from "@/lib/styleTokens";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Boxes, BrainCircuit, Eye, FlaskConical, Orbit, Package } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { ProductMark } from "./ProductMark";
-
-const ICONS: Record<ApplicationKey, LucideIcon> = {
-  molpy: Boxes,
-  molpack: Package,
-  molvis: Eye,
-  molexp: FlaskConical,
-  molnex: BrainCircuit,
-  atomiverse: Orbit,
-};
 
 /** One shared timing, so expanding, compressing and the glow all move as one gesture. */
 const MORPH = { duration: 0.52, ease: MOTION_EASE } as const;
@@ -41,42 +31,55 @@ function Layer({ step, children }: { step: number; children: ReactNode }) {
   );
 }
 
-/** The description and link an expanded entry carries, shared by both layouts. */
+/**
+ * The description and link an expanded entry carries, shared by both layouts.
+ *
+ * `heading` is for the layouts where this column stands alone; beside the full
+ * brand mark the name and application would say everything twice, so the band
+ * drops them and the column carries only the body and the way in.
+ */
 function EntryDetail({
   applicationKey,
   compact = false,
+  heading = true,
 }: {
   applicationKey: ApplicationKey;
   compact?: boolean;
+  heading?: boolean;
 }) {
   const { projects } = useHomeCopy();
   const app = APPLICATIONS.find((entry) => entry.key === applicationKey);
   const copy = projects.items[applicationKey];
   if (!app) return null;
+  const steps = heading ? { body: 2, link: 3 } : { body: 0, link: 1 };
 
   return (
     <>
-      <Layer step={0}>
-        <h3 className={cn(HOME_H3, compact && "text-xl md:text-xl")}>{app.product}</h3>
+      {heading ? (
+        <>
+          <Layer step={0}>
+            <h3 className={cn(HOME_H3, compact && "text-xl md:text-xl")}>{app.product}</h3>
+          </Layer>
+          <Layer step={1}>
+            <span className={cn("mt-1.5 block font-body text-sm", HOME_KEYWORD)}>
+              {copy.applicationTitle}
+            </span>
+          </Layer>
+        </>
+      ) : null}
+      <Layer step={steps.body}>
+        {/* Standing alone the column is supporting copy; on the stage, where the
+            mark says the name and this column is the panel's main part, the
+            body takes the lead rung. */}
+        <p className={cn(heading ? cn(HOME_BODY, "mt-4") : HOME_LEAD)}>{copy.long}</p>
       </Layer>
-      <Layer step={1}>
-        <span className="mt-1.5 block font-body text-sm text-[rgb(var(--accent-rgb))]">
-          {copy.applicationTitle}
-        </span>
-      </Layer>
-      <Layer step={2}>
-        <p className={cn(HOME_BODY, "mt-4")}>{copy.long}</p>
-      </Layer>
-      <Layer step={3}>
-        <a
-          href={applicationHref(app.key)}
-          className={cn(
-            "relative z-30 mt-6 inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-[rgb(var(--accent-rgb))] no-underline hover:text-foreground",
-            FOCUS_RING,
-          )}
-        >
-          {projects.cta} {app.product}
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      <Layer step={steps.link}>
+        {/* A line of light, not a button and not an arrow: the underline takes the
+            link's own colour, so the whole affordance brightens as one. */}
+        <a href={applicationHref(app.key)} className={cn(HOME_TEXT_LINK, "relative z-30 mt-6")}>
+          <span className="border-b border-current pb-1">
+            {projects.cta} {app.product}
+          </span>
         </a>
       </Layer>
     </>
@@ -90,6 +93,12 @@ function EntryDetail({
  * Everything animates through Framer's `layout`, so moving between entries is one
  * continuous morph rather than a close followed by an open — the point of the screen
  * is that the parts belong to the same stack, and a hard cut would argue otherwise.
+ *
+ * The band is one continuous field, not a panel: no container border or fill, and
+ * it escapes the page measure to take the screen. Each waiting entry is a column
+ * of light under its product's name — the page's light vocabulary, where a line
+ * of light is a route the work can take — and the stage's glow travels to
+ * whichever entry the reader brings forward.
  *
  * The band is the reader's only route from `/` to a product page, so it activates on
  * click and keyboard as well as hover, and the whole thing is gated on a fine
@@ -107,12 +116,13 @@ export function ApplicationStage() {
   if (useBand) {
     return (
       <section
-        className="flex h-[clamp(21rem,44vh,28rem)] w-full overflow-hidden rounded-2xl border border-border/70 bg-foreground/[0.015]"
+        /* The band only exists at `lg`, where the container's gutter is `px-16`,
+           so `-mx-16` sets the stage flush with the page measure's outer edge. */
+        className="-mx-16 flex h-[clamp(24rem,52vh,32rem)] gap-3"
         aria-label={projects.stageLabel}
       >
         {APPLICATIONS.map((app) => {
           const copy = projects.items[app.key];
-          const Icon = ICONS[app.key];
           const active = app.key === activeKey;
           /* One class, not two: `cn` merges conflicting flex utilities and the last
              one wins, so an active item that also carried `flex-1` collapsed back to
@@ -124,69 +134,96 @@ export function ApplicationStage() {
               key={app.key}
               layout
               transition={{ layout: MORPH }}
-              className={cn(
-                "relative min-w-0 border-r border-border/70 transition-colors duration-300 last:border-r-0",
-                width,
-                active && "bg-foreground/[0.035]",
-              )}
+              className={cn("group relative min-w-0", width)}
             >
               {active && (
                 <motion.div
                   layoutId="application-stage-glow"
                   transition={{ layout: MORPH }}
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_0%,rgba(var(--accent-rgb),0.14),transparent_62%)] shadow-[0_0_60px_-12px_rgba(var(--accent-rgb),0.5)_inset]"
+                  /* A blurred solid ellipse, not a radial gradient: a gradient's
+                     farthest-corner falloff gets clipped at the element edge and
+                     draws a seam, while blur feathers every edge equally — the
+                     light has no boundary anywhere. */
+                  className="pointer-events-none absolute -inset-x-10 -inset-y-4 rounded-full bg-[rgb(var(--accent-rgb))]/12 blur-3xl"
                   aria-hidden="true"
                 />
               )}
 
-              {!active && (
-                <button
-                  type="button"
-                  aria-label={`${app.product} — ${copy.applicationTitle}`}
-                  onClick={() => setActiveKey(app.key)}
-                  onPointerEnter={() => setActiveKey(app.key)}
-                  onFocus={() => setActiveKey(app.key)}
-                  className={cn("absolute inset-0 z-20 h-full w-full cursor-pointer", FOCUS_RING)}
-                />
-              )}
-
-              <AnimatePresence mode="wait" initial={false}>
-                {active ? (
-                  <motion.div
-                    key="expanded"
-                    className="relative z-10 grid h-full min-h-0 grid-cols-[1.95fr_1fr]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.28, ease: MOTION_EASE }}
-                  >
-                    <div className="min-h-0 p-4">
-                      <ProductMark
-                        product={app.product}
-                        applicationTitle={copy.applicationTitle}
-                        icon={Icon}
-                      />
-                    </div>
-                    <div className="flex min-w-0 flex-col justify-center border-l border-border/60 p-6">
-                      <EntryDetail applicationKey={app.key} />
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="compact"
-                    className="relative z-10 flex h-full flex-col p-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.24, ease: MOTION_EASE }}
-                  >
-                    <Icon className="h-5 w-5 shrink-0 text-foreground/60" aria-hidden="true" />
-                    <span className="mt-4 font-display text-base font-semibold tracking-tight text-foreground/80 [writing-mode:vertical-rl]">
-                      {app.product}
-                    </span>
-                  </motion.div>
+              <button
+                type="button"
+                aria-label={`${app.product} — ${copy.applicationTitle}`}
+                aria-pressed={active}
+                onClick={() => setActiveKey(app.key)}
+                /* `move`, not `enter`: while the rack slides during a morph, a
+                   stationary cursor gets entered by whichever entry lands under
+                   it — activating that one restarts the morph and the two flip
+                   for ever. Only a pointer that is actually moving activates. */
+                onPointerMove={() => {
+                  if (!active) setActiveKey(app.key);
+                }}
+                onFocus={() => setActiveKey(app.key)}
+                /* Stays mounted when this entry is forward so keyboard focus is
+                   not destroyed. Pointer events drop so Explore stays clickable. */
+                className={cn(
+                  "absolute inset-0 z-20 h-full w-full",
+                  FOCUS_RING,
+                  active ? "pointer-events-none" : "cursor-pointer",
                 )}
-              </AnimatePresence>
+              />
+
+              {/* Clips the reflow while a panel's width is mid-morph; the glow
+                  stays outside it, so the light still bleeds past the entry. */}
+              <div className="h-full overflow-hidden">
+                <AnimatePresence mode="wait" initial={false}>
+                  {active ? (
+                    <motion.div
+                      key="expanded"
+                      /* Golden section: the mark takes the minor share, the
+                         body and the way in — the panel's main part — the
+                         major. */
+                      className="relative z-10 grid h-full min-h-0 grid-cols-[1fr_1.618fr] gap-6"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.28, ease: MOTION_EASE }}
+                    >
+                      <div className="min-h-0 py-2">
+                        <ProductMark
+                          product={app.product}
+                          applicationTitle={copy.applicationTitle}
+                        />
+                      </div>
+                      <div className="flex min-w-0 max-w-lg flex-col justify-center pr-6">
+                        <EntryDetail applicationKey={app.key} heading={false} />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="compact"
+                      className="relative z-10 flex h-full flex-col items-center"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.24, ease: MOTION_EASE }}
+                    >
+                      {/* The waiting entry is a column of light with the name as
+                          its lit node: the line brightens toward the centre,
+                          carries the name there, and falls away again. */}
+                      <span
+                        aria-hidden="true"
+                        className="w-px flex-1 bg-gradient-to-b from-transparent via-[rgb(var(--accent-rgb))]/12 to-[rgb(var(--accent-rgb))]/35"
+                      />
+                      <span className="my-5 font-display text-xl font-semibold tracking-tight text-foreground/60 transition-colors duration-300 [writing-mode:vertical-rl] group-hover:text-foreground/90">
+                        {app.product}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="w-px flex-1 bg-gradient-to-b from-[rgb(var(--accent-rgb))]/35 via-[rgb(var(--accent-rgb))]/12 to-transparent"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
           );
         })}
@@ -201,7 +238,6 @@ export function ApplicationStage() {
         aria-label={projects.stageLabel}
       >
         {APPLICATIONS.map((app) => {
-          const Icon = ICONS[app.key];
           const active = app.key === activeKey;
           return (
             <button
@@ -210,14 +246,13 @@ export function ApplicationStage() {
               onClick={() => setActiveKey(app.key)}
               aria-pressed={active}
               className={cn(
-                "flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border px-4 font-display text-sm font-semibold transition-colors",
+                "flex min-h-11 shrink-0 snap-start items-center rounded-full border px-4 font-display text-sm font-semibold transition-colors",
                 FOCUS_RING,
                 active
                   ? "border-[rgb(var(--accent-rgb))]/60 bg-[rgb(var(--accent-rgb))]/10 text-foreground"
                   : "border-border/70 text-muted-foreground",
               )}
             >
-              <Icon className="h-4 w-4" aria-hidden="true" />
               {app.product}
             </button>
           );
@@ -239,12 +274,11 @@ export function ApplicationStage() {
             <ProductMark
               product={app.product}
               applicationTitle={projects.items[app.key].applicationTitle}
-              icon={ICONS[app.key]}
               className="px-6"
             />
           </div>
           <div className="border-t border-border/60 p-5">
-            <EntryDetail applicationKey={app.key} compact />
+            <EntryDetail applicationKey={app.key} compact heading={false} />
           </div>
         </motion.div>
       ))}
