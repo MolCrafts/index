@@ -1,9 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ecosystemItems } from "../src/lib/ecosystem.ts";
 import { en as homeCopy } from "../src/lib/home/copy/en.ts";
-import { PACKAGE_INSTALL } from "../src/lib/packages.ts";
 import { type OgRoute, routes } from "./og-meta.ts";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -40,9 +38,8 @@ const setLang = (html: string, lang: string) =>
     : html.replace(/<html([^>]*)>/i, `<html$1 lang="${lang}">`);
 
 /**
- * Cloudflare Pages serves `/molpy/` and 308-redirects `/molpy`. Publishing the bare form
- * in og:url and the sitemap made every product URL a redirect hop, so the canonical form
- * carries the trailing slash.
+ * Cloudflare Pages serves `/` as the only marketing route. Product paths 301 to
+ * GitHub via `public/_redirects`. The homepage canonical keeps the trailing slash.
  */
 const canonicalUrl = (routePath: string) =>
   routePath === "/" ? `${SITE}/` : `${SITE}${routePath.replace(/\/$/, "")}/`;
@@ -69,69 +66,47 @@ const escapeHtml = (v: string) =>
  * bundle runs. Users never see it, except as something better than a blank screen while
  * the bundle downloads.
  */
-const rootContent = (route: OgRoute) => {
-  if (route.path === "/") {
-    const parts: string[] = [
-      `<h1>${escapeHtml(homeCopy.brandHero.title)}</h1>`,
-      `<p>${escapeHtml(homeCopy.brandHero.kicker)}</p>`,
-      `<p>${escapeHtml(homeCopy.brandHero.subtitle)}</p>`,
-      `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a></p>`,
-      `<h2>${escapeHtml(homeCopy.approach.title)}</h2>`,
-      `<p>${escapeHtml(homeCopy.approach.lead)}</p>`,
-      `<p>${escapeHtml(homeCopy.approach.statement)}</p>`,
-      `<h2>${escapeHtml(homeCopy.whatWeDo.title)}</h2>`,
-      `<p>${escapeHtml(homeCopy.whatWeDo.lead)}</p>`,
-      `<ul>${homeCopy.whatWeDo.pillars
-        .map(
-          (pillar) =>
-            `<li><strong>${escapeHtml(pillar.title)}</strong> — ${escapeHtml(pillar.body)}</li>`,
-        )
-        .join("")}</ul>`,
-      `<h2>${escapeHtml(homeCopy.projects.title)}</h2>`,
-      `<p>${escapeHtml(homeCopy.projects.lead)}</p>`,
-      `<ul>${Object.values(homeCopy.projects.items)
-        .map(
-          (application) =>
-            `<li><strong>${escapeHtml(application.applicationTitle)}</strong> — ${escapeHtml(application.long)}</li>`,
-        )
-        .join("")}</ul>`,
-      `<h2>${escapeHtml(`${homeCopy.participate.title.plain} ${homeCopy.participate.title.accent}`)}</h2>`,
-      `<p>${escapeHtml(homeCopy.participate.supporting)}</p>`,
-      `<ul>${Object.values(homeCopy.participate.paths)
-        .map(
-          (path) =>
-            `<li><strong>${escapeHtml(path.statement)}</strong> — ${escapeHtml(path.line)}</li>`,
-        )
-        .join("")}</ul>`,
-    ];
-    return `<main>${parts.join("")}</main>`;
-  }
-
-  const parts: string[] = [`<h1>${escapeHtml(route.title)}</h1>`];
-  parts.push(`<p>${escapeHtml(route.kicker)}</p>`);
-  // Several routes open their description with the subtitle verbatim; printing both
-  // would hand a crawler the same sentence twice.
-  if (!route.ogDescription.startsWith(route.subtitle)) {
-    parts.push(`<p>${escapeHtml(route.subtitle)}</p>`);
-  }
-  parts.push(`<p>${escapeHtml(route.ogDescription)}</p>`);
-
-  const slug = route.slug;
-  const item = ecosystemItems.find((i) => i.href === `/${slug}`);
-  if (item) parts.push(`<p>${escapeHtml(item.role)} — ${escapeHtml(item.description)}</p>`);
-  const pkg = PACKAGE_INSTALL[slug];
-  if (pkg?.command) parts.push(`<p>Install: <code>${escapeHtml(pkg.command)}</code></p>`);
-  else if (pkg?.note) parts.push(`<p>${escapeHtml(pkg.note)}</p>`);
-  parts.push(
-    `<p><a href="https://docs.molcrafts.org/${escapeAttr(slug)}/">Documentation</a> · <a href="https://github.com/MolCrafts">Source on GitHub</a> · <a href="/#applications">MolCrafts applications</a></p>`,
-  );
+const rootContent = () => {
+  const parts: string[] = [
+    `<h1>${escapeHtml(homeCopy.brandHero.title)}</h1>`,
+    `<p>${escapeHtml(homeCopy.brandHero.kicker)}</p>`,
+    `<p>${escapeHtml(homeCopy.brandHero.subtitle)}</p>`,
+    `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a></p>`,
+    `<h2>${escapeHtml(homeCopy.approach.title)}</h2>`,
+    `<p>${escapeHtml(homeCopy.approach.lead)}</p>`,
+    `<p>${escapeHtml(homeCopy.approach.statement)}</p>`,
+    `<h2>${escapeHtml(homeCopy.whatWeDo.title)}</h2>`,
+    `<p>${escapeHtml(homeCopy.whatWeDo.lead)}</p>`,
+    `<ul>${homeCopy.whatWeDo.pillars
+      .map(
+        (pillar) =>
+          `<li><strong>${escapeHtml(pillar.title)}</strong> — ${escapeHtml(pillar.body)}</li>`,
+      )
+      .join("")}</ul>`,
+    `<h2>${escapeHtml(homeCopy.projects.title)}</h2>`,
+    `<p>${escapeHtml(homeCopy.projects.lead)}</p>`,
+    `<ul>${Object.values(homeCopy.projects.items)
+      .map(
+        (application) =>
+          `<li><strong>${escapeHtml(application.applicationTitle)}</strong> — ${escapeHtml(application.long)}</li>`,
+      )
+      .join("")}</ul>`,
+    `<h2>${escapeHtml(`${homeCopy.participate.title.plain} ${homeCopy.participate.title.accent}`)}</h2>`,
+    `<p>${escapeHtml(homeCopy.participate.supporting)}</p>`,
+    `<ul>${Object.values(homeCopy.participate.paths)
+      .map(
+        (path) =>
+          `<li><strong>${escapeHtml(path.statement)}</strong> — ${escapeHtml(path.line)}</li>`,
+      )
+      .join("")}</ul>`,
+  ];
   return `<main>${parts.join("")}</main>`;
 };
 
-const setRootContent = (html: string, route: OgRoute) =>
+const setRootContent = (html: string) =>
   html.replace(
     /(<div id="root"[^>]*>)(\s*)(<\/div>)/i,
-    (_m, open, _ws, close) => `${open}${rootContent(route)}${close}`,
+    (_m, open, _ws, close) => `${open}${rootContent()}${close}`,
   );
 
 const buildHtml = (shell: string, route: OgRoute) => {
@@ -141,7 +116,7 @@ const buildHtml = (shell: string, route: OgRoute) => {
   let html = shell;
   html = setLang(html, "en");
   html = setCanonical(html, url);
-  html = setRootContent(html, route);
+  html = setRootContent(html);
   html = replaceTitle(html, route.ogTitle);
   html = replaceMeta(html, { attr: "name", key: "description" }, route.ogDescription);
   html = replaceMeta(html, { attr: "property", key: "og:title" }, route.ogTitle);

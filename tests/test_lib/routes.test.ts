@@ -16,7 +16,7 @@ describe("pathProductSlug", () => {
     expect(pathProductSlug("/molpy/guide/install")).toBe("molpy");
   });
 
-  it("is case-insensitive, so /MolPy still lands on the page", () => {
+  it("is case-insensitive, so /MolPy still resolves the retired slug", () => {
     expect(pathProductSlug("/MolPy")).toBe("molpy");
   });
 

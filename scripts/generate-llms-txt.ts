@@ -17,8 +17,7 @@ import { PACKAGE_INSTALL } from "../src/lib/packages.ts";
 
 const SITE = "https://molcrafts.org";
 
-const productSlug = (href: string) =>
-  href.startsWith("/") ? href.slice(1) : href.split("/").pop() || "";
+const repoName = (href: string) => href.split("/").pop() || "";
 
 export const generateLlmsTxt = (distDir: string) => {
   const lines: string[] = [
@@ -36,13 +35,12 @@ export const generateLlmsTxt = (distDir: string) => {
   for (const category of ecosystemCategories) {
     lines.push(`## ${category.title} — ${category.blurb}`, "");
     for (const item of category.items) {
-      const slug = productSlug(item.href);
-      const install = PACKAGE_INSTALL[slug]?.command;
+      const repo = repoName(item.href);
+      const install = Object.values(PACKAGE_INSTALL).find((pkg) => pkg.repo === repo)?.command;
       const bits = [`- **${item.title}** (${item.role}): ${item.description}`];
       if (install) bits.push(`  Install: \`${install}\``);
       else if (item.status) bits.push(`  Status: ${item.status} — no published package yet.`);
-      if (!item.external) bits.push(`  Page: ${SITE}/${slug}/`);
-      bits.push(`  Docs: https://docs.molcrafts.org/${slug}/`);
+      bits.push(`  Source: ${item.href}`);
       lines.push(...bits, "");
     }
   }

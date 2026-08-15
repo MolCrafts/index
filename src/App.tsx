@@ -1,42 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 import { SEOSchema } from "./components/SEOSchema";
 import { HomePage } from "./components/home/HomePage";
 import { trackPageView } from "./lib/analytics";
-import { type ProductSlug, pathProductSlug } from "./lib/routes";
+import { packageGithubHref } from "./lib/packages";
+import { pathProductSlug } from "./lib/routes";
 import { PAGE_ATMOSPHERE } from "./lib/styleTokens";
 import { cn } from "./lib/utils";
-import {
-  AtomiverseLanding,
-  MolVisLanding,
-  MolcfgLanding,
-  MolexpLanding,
-  MollogLanding,
-  MolnexLanding,
-  MolpackLanding,
-  MolpyLanding,
-  MolqLanding,
-  MolrecLanding,
-  MolrsLanding,
-  NotFound,
-} from "./pages";
-
-const PRODUCT_PAGES: Record<ProductSlug, ComponentType> = {
-  molpy: MolpyLanding,
-  molrs: MolrsLanding,
-  molpack: MolpackLanding,
-  molnex: MolnexLanding,
-  molrec: MolrecLanding,
-  molexp: MolexpLanding,
-  molq: MolqLanding,
-  molvis: MolVisLanding,
-  molcfg: MolcfgLanding,
-  mollog: MollogLanding,
-  atomiverse: AtomiverseLanding,
-};
+import { NotFound } from "./pages";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -93,21 +66,20 @@ function App() {
   }, [currentPath]);
 
   const isHome = currentPath === "/" || currentPath === "";
+  const retiredSlug = pathProductSlug(currentPath);
+
+  useEffect(() => {
+    if (!retiredSlug) return;
+    window.location.replace(packageGithubHref(retiredSlug));
+  }, [retiredSlug]);
 
   const renderContent = () => {
     if (isHome) {
       return <HomePage />;
     }
 
-    // Explicit 404 route (used by docs edge router fallback)
-    if (currentPath === "/404" || currentPath.startsWith("/404/")) {
-      return <NotFound />;
-    }
-
-    const slug = pathProductSlug(currentPath);
-    if (slug) {
-      const Page = PRODUCT_PAGES[slug];
-      return <Page />;
+    if (retiredSlug) {
+      return null;
     }
 
     return <NotFound />;

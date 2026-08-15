@@ -9,6 +9,8 @@
  * `null` means nothing is published yet, and the site must say so rather than print a
  * command that would fail.
  */
+export const GITHUB_ORG_HREF = "https://github.com/MolCrafts";
+
 export interface PackageInstall {
   /** Verified install command, or null when no artifact is published. */
   command: string | null;
@@ -16,6 +18,15 @@ export interface PackageInstall {
   note?: string;
   /** Repository name under github.com/MolCrafts. */
   repo: string;
+}
+
+/** The GitHub repository page for a catalog slug. */
+export function packageGithubHref(slug: string): string {
+  const pkg = PACKAGE_INSTALL[slug];
+  if (!pkg) {
+    throw new Error(`unknown package slug: ${slug}`);
+  }
+  return `${GITHUB_ORG_HREF}/${pkg.repo}`;
 }
 
 export const PACKAGE_INSTALL: Record<string, PackageInstall> = {

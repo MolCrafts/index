@@ -72,11 +72,14 @@ Do not hide a pipeline behind a `do_everything(config)` entry point. Expose the
 primitives and let the caller compose them.
 
 <!-- mol:law:id:product-registration -->
-## Never partially register a product page
+## Never leave a catalog product pointing at a site path
 
-A new product must update `src/lib/routes.ts`, `src/App.tsx` `PRODUCT_PAGES`,
-`src/pages/index.ts`, `src/lib/ecosystem.ts`, `scripts/og-meta.ts`, and
-`public/sitemap.xml` together. Add `src/lib/productAccents.ts` when the product
+Product marketing pages are retired. Every public catalog entry must link at
+its GitHub repository (`packageGithubHref`), including `ecosystem.ts`, the
+homepage Applications stage, 404 featured links, and `public/_redirects` for
+the old `/<slug>` URLs. If a product page is added again, update `routes.ts`,
+`App.tsx`, `src/pages/index.ts`, `ecosystem.ts`, `scripts/og-meta.ts`, and
+`public/sitemap.xml` together, and add `productAccents.ts` when the product
 needs a distinct marketing accent.
 
 <!-- mol:law:id:classname-cn -->

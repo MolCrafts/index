@@ -1,12 +1,1 @@
-export { MolpyLanding } from "./molpy/MolpyLanding";
-export { MolrecLanding } from "./molrec/MolrecLanding";
-export { MolVisLanding } from "./molvis/MolvisLanding";
-export { MolcfgLanding } from "./molcfg/MolcfgLanding";
-export { MollogLanding } from "./mollog/MollogLanding";
-export { MolqLanding } from "./molq/MolqLanding";
-export { MolrsLanding } from "./molrs/MolrsLanding";
-export { MolexpLanding } from "./molexp/MolexpLanding";
-export { MolnexLanding } from "./molnex/MolnexLanding";
-export { MolpackLanding } from "./molpack/MolpackLanding";
-export { AtomiverseLanding } from "./atomiverse/AtomiverseLanding";
 export { NotFound } from "./NotFound";

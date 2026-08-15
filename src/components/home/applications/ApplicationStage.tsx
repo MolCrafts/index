@@ -76,7 +76,12 @@ function EntryDetail({
       <Layer step={steps.link}>
         {/* A line of light, not a button and not an arrow: the underline takes the
             link's own colour, so the whole affordance brightens as one. */}
-        <a href={applicationHref(app.key)} className={cn(HOME_TEXT_LINK, "relative z-30 mt-6")}>
+        <a
+          href={applicationHref(app.key)}
+          target="_blank"
+          rel="noreferrer noopener"
+          className={cn(HOME_TEXT_LINK, "relative z-30 mt-6")}
+        >
           <span className="border-b border-current pb-1">
             {projects.cta} {app.product}
           </span>

@@ -1,6 +1,7 @@
 /** Locale-independent homepage structure. Visitor-facing copy lives in `./copy/`. */
 
 import { contactHref } from "../contact";
+import { GITHUB_ORG_HREF, packageGithubHref } from "../packages";
 import type { ProductSlug } from "../routes";
 import type { ApplicationKey, ParticipatePathKey } from "./copy/types";
 
@@ -62,7 +63,7 @@ export const HOME_NUMBERED_SECTION_IDS: readonly HomeNumberedSectionId[] = HOME_
   (id): id is HomeNumberedSectionId => id !== UNNUMBERED_SECTION_ID,
 );
 
-export const GITHUB_ORG_HREF = "https://github.com/MolCrafts";
+export { GITHUB_ORG_HREF };
 
 export const heroLinks = {
   primaryHref: "#applications",
@@ -71,10 +72,8 @@ export const heroLinks = {
 
 export interface ApplicationMeta {
   /**
-   * Also a routed product slug. Typing it as the intersection makes the compiler
-   * reject an entry that names a product the router does not serve — this roster is
-   * an eighth product-registration surface, and the catalog guard could not see it
-   * while the key was a free-standing union.
+   * Also a catalog slug with a GitHub repo. Typing it as the intersection makes
+   * the compiler reject an entry that names a product the catalog does not serve.
    */
   readonly key: ApplicationKey & ProductSlug;
   /** Product name as it is written everywhere else on the site. */
@@ -95,9 +94,9 @@ export const APPLICATIONS: readonly ApplicationMeta[] = [
   { key: "atomiverse", product: "Atomiverse" },
 ] as const;
 
-/** Derived, never hand-written, so a slug rename cannot leave the homepage on a 404. */
+/** Derived from the package registry, so a repo rename cannot leave a 404. */
 export function applicationHref(key: ApplicationMeta["key"]): string {
-  return `/${key}`;
+  return packageGithubHref(key);
 }
 
 export interface ParticipatePathMeta {

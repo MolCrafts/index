@@ -61,7 +61,8 @@ convenience. A carve-out exists only when the operator records it there.
 - **Never hide primary construction behind `make_*`, `build_*`, or `create_*`.**
 - **Never pass a god context bag.** Pass the fields the call needs.
 - **Never expose an all-in-one facade.** Let callers compose primitives.
-- **Never partially register a product page.** Update every catalog and generated surface together.
+- **Never leave a catalog product pointing at a site path.** Link every public
+  product at its GitHub repo (`packageGithubHref`) and keep `/<slug>` redirects.
 - **Never build `className` ad hoc.** Use `cn()` from `@/lib/utils`.
 - **Never duplicate motion variants in components.** Reuse `src/lib/animations.ts`.
 - **Never hand-edit `src/components/ui/`.** Generate shadcn primitives and wrap them elsewhere.

@@ -1,4 +1,5 @@
 import { APPLICATION_GITHUB_DESCRIPTIONS } from "@/lib/home/copy/applications";
+import { packageGithubHref } from "./packages";
 import { CHIP_ONLY_ACCENTS, PRODUCT_ACCENTS } from "./productAccents";
 
 export interface EcosystemItem {
@@ -53,7 +54,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
     items: [
       {
         title: "MolPy",
-        href: "/molpy",
+        href: packageGithubHref("molpy"),
+        external: true,
         role: "molecular toolkit",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
         color: PRODUCT_ACCENTS.molpy.chip.color,
@@ -61,7 +63,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolPack",
-        href: "/molpack",
+        href: packageGithubHref("molpack"),
+        external: true,
         role: "packing tool",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
         color: PRODUCT_ACCENTS.molpack.chip.color,
@@ -69,7 +72,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolNex",
-        href: "/molnex",
+        href: packageGithubHref("molnex"),
+        external: true,
         role: "ML framework",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
         status: "In development",
@@ -78,7 +82,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolExp",
-        href: "/molexp",
+        href: packageGithubHref("molexp"),
+        external: true,
         role: "workflow platform",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molexp,
         status: "In development",
@@ -87,7 +92,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolVis",
-        href: "/molvis",
+        href: packageGithubHref("molvis"),
+        external: true,
         role: "3D viewer",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
         color: PRODUCT_ACCENTS.molvis.chip.color,
@@ -95,7 +101,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolPlot",
-        href: "https://github.com/MolCrafts/molplot",
+        href: packageGithubHref("molplot"),
         external: true,
         role: "charting library",
         description: "One chart definition, for web and for print",
@@ -104,7 +110,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "Atomiverse",
-        href: "/atomiverse",
+        href: packageGithubHref("atomiverse"),
+        external: true,
         role: "simulation engine",
         description: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
         status: "Preparing release",
@@ -119,7 +126,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
     items: [
       {
         title: "MolRs",
-        href: "/molrs",
+        href: packageGithubHref("molrs"),
+        external: true,
         role: "compute core",
         description: "Data structures, file I/O, and compute kernels under MolPy",
         color: PRODUCT_ACCENTS.molrs.chip.color,
@@ -127,7 +135,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolQ",
-        href: "/molq",
+        href: packageGithubHref("molq"),
+        external: true,
         role: "job queue",
         description: "One submission API for local, SLURM, PBS, and LSF",
         color: PRODUCT_ACCENTS.molq.chip.color,
@@ -135,7 +144,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolCfg",
-        href: "/molcfg",
+        href: packageGithubHref("molcfg"),
+        external: true,
         role: "config layer",
         description: "Every value tracks where it came from",
         color: PRODUCT_ACCENTS.molcfg.chip.color,
@@ -143,7 +153,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolLog",
-        href: "/mollog",
+        href: packageGithubHref("mollog"),
+        external: true,
         role: "logging layer",
         description: "Drop-in structured logging",
         color: PRODUCT_ACCENTS.mollog.chip.color,
@@ -151,7 +162,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolMCP",
-        href: "https://docs.molcrafts.org/molmcp/",
+        href: packageGithubHref("molmcp"),
         external: true,
         role: "agent APIs",
         description: "Gives AI agents structured access to MolCrafts packages and docs",
@@ -160,7 +171,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
       },
       {
         title: "MolHub",
-        href: "https://github.com/MolCrafts/molhub",
+        href: packageGithubHref("molhub"),
         external: true,
         role: "dataset access",
         description: "Download benchmark datasets, upload your own",
@@ -176,7 +187,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
     items: [
       {
         title: "MolRec",
-        href: "/molrec",
+        href: packageGithubHref("molrec"),
+        external: true,
         role: "record contract",
         description: "One format, so tools read each other's output",
         status: "In development",
