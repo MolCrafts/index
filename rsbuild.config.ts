@@ -1,7 +1,9 @@
+import { createRequire } from "node:module";
 import path from "node:path";
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
-import { RsdoctorRspackPlugin } from "@rsdoctor/rspack-plugin";
+
+const require = createRequire(import.meta.url);
 
 /**
  * Google Analytics 4. Set `PUBLIC_GA_ID=G-XXXXXXXXXX` in the environment (or a `.env`
@@ -34,6 +36,7 @@ export default defineConfig({
   tools: {
     rspack: (config, { appendPlugins }) => {
       if (process.env.RSDOCTOR === "true") {
+        const { RsdoctorRspackPlugin } = require("@rsdoctor/rspack-plugin") as typeof import("@rsdoctor/rspack-plugin");
         appendPlugins(new RsdoctorRspackPlugin({ supports: { generateTileGraph: true } }));
       }
       return config;

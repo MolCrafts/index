@@ -21,6 +21,9 @@
   "private": true,
   "version": "1.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "PUBLIC_FORCE_FULL_MOTION=true rsbuild dev",
     "build": "rsbuild build",
