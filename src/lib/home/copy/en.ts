@@ -1,12 +1,13 @@
 import { APPLICATION_GITHUB_DESCRIPTIONS, APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
 import { APPROVED_COLLABORATION_COPY } from "./collaboration";
+import { APPROVED_FOUNDATION_COPY } from "./foundation";
 import type { HomeCopy } from "./types";
 
 export const en: HomeCopy = {
   sectionLabels: {
     hero: "Home",
-    about: "About MolCrafts",
+    about: "Foundation",
     solutions: "Capabilities",
     assist: "AI",
     applications: "Applications",
@@ -27,13 +28,7 @@ export const en: HomeCopy = {
     secondaryCta: "Discuss a project",
     scrollHint: "Continue",
   },
-  approach: {
-    title: "Built from the ground up.",
-    lead: "Science moves forward when its software can be understood, challenged, and built upon.",
-    statement:
-      "Designed around modern software architecture, free from legacy limitations, allowing the ecosystem to evolve with new methods, models, and AI-assisted science.",
-    promises: ["Inspect what you use", "Extend what you need", "Build on what you trust"],
-  },
+  approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
     title: "Knowledge carries forward.",
     lead: "MolCrafts gives molecular R&D a shared foundation for data, knowledge, and reproducible workflows — turning every project into assets the next one can build on.",

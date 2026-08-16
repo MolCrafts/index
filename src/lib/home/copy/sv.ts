@@ -1,12 +1,13 @@
 import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
 import { APPROVED_COLLABORATION_COPY } from "./collaboration";
+import { APPROVED_FOUNDATION_COPY_SV } from "./foundation";
 import type { HomeCopy } from "./types";
 
 export const sv: HomeCopy = {
   sectionLabels: {
     hero: "Hem",
-    about: "Om MolCrafts",
+    about: "Grund",
     solutions: "Förmågor",
     assist: "AI",
     applications: "Tillämpningar",
@@ -27,13 +28,7 @@ export const sv: HomeCopy = {
     secondaryCta: "Diskutera ett projekt",
     scrollHint: "Fortsätt",
   },
-  approach: {
-    title: "Ett resultat spelar roll när det för nästa beslut framåt.",
-    lead: "Vi samlar beräkning, AI och vetenskapligt omdöme i en sammanhängande FoU-process.",
-    statement:
-      "Varje samarbete börjar i forskningsfrågan och håller fokus på evidens som teamet kan använda.",
-    promises: ["Börja med frågan", "Bygg evidens som håller", "Arbeta sida vid sida"],
-  },
+  approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {
     title: "Gör svår forskning till arbete som går att driva vidare.",
     lead: "Vi väljer metod utifrån frågan och förenar simulering, prediktion och samarbete.",
