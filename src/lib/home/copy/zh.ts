@@ -1,13 +1,14 @@
 import { APPROVED_APPLICATIONS_HEADING } from "./applications";
 import { APPROVED_ASSIST_COPY } from "./assist";
 import { APPROVED_COLLABORATION_COPY } from "./collaboration";
+import { APPROVED_FOUNDATION_COPY_ZH } from "./foundation";
 import type { HomeCopy } from "./types";
 
 /** Simplified Chinese is the primary voice of the commercial homepage. */
 export const zh: HomeCopy = {
   sectionLabels: {
     hero: "首页",
-    about: "关于 MolCrafts",
+    about: "根基",
     solutions: "能力",
     assist: "AI",
     applications: "应用",
@@ -28,12 +29,7 @@ export const zh: HomeCopy = {
     secondaryCta: "讨论合作",
     scrollHint: "继续了解",
   },
-  approach: {
-    title: "研究不止需要算出来，还要能继续往前走。",
-    lead: "我们把计算、AI 与科研判断放进同一段研发进程。",
-    statement: "每一步都围绕问题、证据与下一次决策展开，让结果真正进入团队的研究现场。",
-    promises: ["从问题出发", "用证据推进", "与团队一起落地"],
-  },
+  approach: APPROVED_FOUNDATION_COPY_ZH,
   whatWeDo: {
     title: "把研究难题，变成可以推进的工作。",
     lead: "根据问题选择方法，把模拟、预测与研发协作连成一条清晰路径。",

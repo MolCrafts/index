@@ -151,33 +151,83 @@ export const collaborationPhaseWake: Variants = {
 };
 
 /**
- * The payload {@link approachRise} and {@link approachLineLay} require on
- * `custom`: the element's place in the build sequence. The variants destructure
- * this, so a caller that omits `custom` throws at runtime.
+ * The payload {@link approachRise} requires on `custom`: the element's place
+ * in the product-reveal sequence. The variant destructures this, so a caller
+ * that omits `custom` throws at runtime.
  */
 export interface ApproachBuildMotion {
   delay: number;
 }
 
-/** One element rising out of the ground and settling into place. */
+/**
+ * Headline, lead, and vision settling into the manifesto. `settled` is the
+ * same frame as the end of `illuminated`, so reduced motion can skip the
+ * keyframed object below without leaving these elements unreadable.
+ */
 export const approachRise: Variants = {
-  dormant: { opacity: 0, y: 30, filter: "blur(6px)" },
+  dormant: { opacity: 0, y: 22, filter: "blur(6px)" },
   illuminated: ({ delay }: ApproachBuildMotion) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay, duration: 0.6, ease: MOTION_EASE },
+    transition: { delay, duration: 0.48, ease: MOTION_EASE },
   }),
+  settled: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
 
-/** A line being laid, left to right — the rule, and each promise's course. */
-export const approachLineLay: Variants = {
-  dormant: { opacity: 0, scaleX: 0 },
-  illuminated: ({ delay }: ApproachBuildMotion) => ({
-    opacity: 1,
-    scaleX: 1,
-    transition: { delay, duration: 0.55, ease: MOTION_EASE },
+/**
+ * The luminous field behind the three claims.
+ *
+ * It forms as the first claim lands, expands as the second arrives, then
+ * rests at full scale while the third claim and the signals join. Keyframe
+ * arrays, so reduced motion must render `settled`, never `illuminated`.
+ */
+export const approachFieldReveal: Variants = {
+  dormant: { scale: 0.28, opacity: 0 },
+  illuminated: {
+    scale: [0.28, 0.58, 1.08, 1],
+    opacity: [0, 0.92, 1, 1],
+    transition: {
+      delay: 0.36,
+      duration: 2.05,
+      ease: [0.33, 0, 0.2, 1],
+      times: [0, 0.28, 0.64, 1],
+    },
+  },
+  settled: { scale: 1, opacity: 1 },
+};
+
+/**
+ * The payload {@link approachSignalJoin} requires on `custom`.
+ *
+ * `x`/`y` are the pixel offsets a signal gathers in from. The variant
+ * destructures this, so a caller that omits `custom` throws at runtime.
+ */
+export interface ApproachSignalMotion {
+  delay: number;
+  x: number;
+  y: number;
+}
+
+/**
+ * A context particle joining the settled field on the last statement. Sparse
+ * on purpose — this is not the AI screen's constellation.
+ */
+export const approachSignalJoin: Variants = {
+  dormant: ({ x, y }: ApproachSignalMotion) => ({
+    opacity: 0,
+    x,
+    y,
+    scale: 0.4,
   }),
+  illuminated: ({ delay }: ApproachSignalMotion) => ({
+    opacity: 0.8,
+    x: 0,
+    y: 0,
+    scale: 1,
+    transition: { delay, duration: 0.5, ease: MOTION_EASE },
+  }),
+  settled: { opacity: 0.65, x: 0, y: 0, scale: 1 },
 };
 
 /**
