@@ -1,12 +1,3 @@
-/**
- * Hallmark / commercial home
- * THESIS: A molecular and materials R&D company, not a software directory.
- * OWN-WORLD: Deep forest/cyan, luminous molecular matter, gradient type and restrained glows.
- * STORY: Company → capabilities → applications → collaboration → sponsors.
- * FIRST VIEWPORT: Centred MolCrafts brand curtain; no product capture or commercial detail.
- * FORM: One continuously scrolling document over a single fixed molecular field.
- * FINISH: the build ends with visual review, verification, and portable token records.
- */
 import { useHomeCopy } from "@/lib/home/copy";
 import { HOME_SECTION_IDS, resolveHomeHash } from "@/lib/home/data";
 import { useEffect, useMemo } from "react";

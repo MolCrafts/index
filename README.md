@@ -1,94 +1,101 @@
-<div align="center">
+# molcrafts-index
 
-<h1>
-  <img src=".github/assets/moko.svg" alt="" height="48" align="absmiddle">
-  &nbsp;molcrafts-index
-</h1>
+React/TypeScript application for [molcrafts.org](https://molcrafts.org).
+This document is the engineering map for maintainers and coding agents.
 
-<p><strong>The MolCrafts commercial company website — molcrafts.org</strong></p>
+## Requirements
 
-<p>
-  <img src="https://img.shields.io/badge/license-MIT-18432B?style=flat-square" alt="License">
-</p>
+- Node.js 22 (see `.node-version`)
+- npm
 
-</div>
+The repository intentionally does not commit `package-lock.json`; use
+`npm install`, not `npm ci`.
 
-`molcrafts-index` is the React/TypeScript application behind
-[molcrafts.org](https://molcrafts.org). The root route is MolCrafts' commercial
-company homepage; the same repository also serves dedicated product landing
-pages.
+## Commands
 
-It is built with [Rsbuild](https://rsbuild.dev), React 18, TailwindCSS, and
-Radix UI primitives, with static HTML prerendering and Open Graph image
-generation at build time.
+| Command | Purpose |
+| --- | --- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Start the local Rsbuild server |
+| `npm run build` | Build the site and run all post-build generators |
+| `npm run preview` | Serve the production output locally |
+| `npm run lint` | Run Biome over `src/` and `scripts/` |
+| `npm run typecheck` | Type-check application and build scripts |
+| `npm test` | Run the Rstest unit suite |
 
-## Homepage contract
-
-The root route is designed for company-level understanding and collaboration:
-
-- Tell a clear brand story around molecular and materials R&D, scientific
-  computing, AI applications, and professional collaboration.
-- Keep gradient typography and atmospheric glow as intentional MolCrafts brand
-  devices. The hero carries the strongest expression.
-- Keep product screenshots out of the hero. Screenshots and research imagery
-  appear only in the Applications showcase.
-- On a pointer-capable desktop, the Applications band expands the focused entry
-  into the whole stage while its neighbours compress to vertical labels; hover,
-  click, and keyboard focus all activate it. Narrower and touch viewports get a
-  chip row, one expanded entry, and the full roster as a list. Entries currently
-  open on a brand panel — real product captures have not been taken yet.
-- Keep Docs links, install instructions, APIs, dependencies, release status,
-  architecture details, and fake terminal language off every homepage surface.
-- Lead visitors toward Applications, capabilities, collaboration, and Contact.
-  GitHub remains a secondary exit within the open-source route or footer.
-- Use only verifiable facts, real imagery, and confirmed supporters. Do not
-  invent customers, results, metrics, testimonials, or product UI.
-
-Canonical positioning and Chinese-copy rules live in
-[`.agents/product-marketing.md`](.agents/product-marketing.md).
-
-## Homepage narrative
-
-1. Hero — the brand curtain; wordmark, kicker, and subtitle only
-2. Brand statement (`#about`) — the point of view behind MolCrafts, and the
-   page's first call to action
-3. Capabilities (`#solutions`) — what the company can help research teams
-   accomplish
-4. AI editorial (`#assist`) — the approved ambient product constellation
-5. Applications — the interactive entry-point band
-6. Collaboration — Open source, Consulting, and Enterprise paths
-7. Trust and support — verified signals only
-8. Closing CTA and footer — a direct route to Contact
-
-## Development
+Before merging, run:
 
 ```bash
-npm install        # install dependencies
-npm run dev        # start the Rsbuild dev server
-npm run build      # production build (runs postbuild prerender + OG generation)
-npm run preview    # preview the production build locally
-npm run lint       # Biome lint over src/ and scripts/
-npm run typecheck  # tsc over src/ and scripts/
-npm test           # Rstest unit suite
-npm run typecheck  # TypeScript type-check (tsc --noEmit)
+npm run lint
+npm run typecheck
+npm test
+npm run build
 ```
 
-## Repository map
+## Runtime architecture
 
-- `src/components/` — homepage and shared presentation components
-- `src/pages/` — dedicated product landing pages
-- `src/lib/` — route, product, contact, and visual registries
-- `src/styles/` — MolCrafts brand tokens and global presentation
-- `scripts/` — prerendering, metadata, and social-image generation
-- `.agents/product-marketing.md` — canonical homepage positioning and copy rules
-- `.claude/notes/` — passive project and architecture knowledge
+```text
+src/main.tsx
+  └─ providers and global styles
+     └─ src/App.tsx
+        ├─ /                 → components/home/HomePage.tsx
+        ├─ /<product-slug>   → package GitHub repository
+        └─ other paths       → pages/NotFound.tsx
+```
+
+- `src/components/home/` owns the homepage composition and sections.
+- `src/lib/home/copy/` owns localized homepage copy and copy types.
+- `src/lib/home/data.ts` owns homepage section and sponsor data.
+- `src/lib/ecosystem.ts` and `src/lib/packages.ts` own the product catalog
+  and repository targets.
+- `src/lib/routes.ts` owns retired product slugs and client-side redirects.
+- `src/styles/` owns Tailwind entry styles and shared brand tokens.
+- `src/components/ui/` contains the shadcn/Radix primitives used by product
+  components.
+
+The application uses a small client-side router in `src/App.tsx`; there is no
+route framework or server runtime.
+
+## Build pipeline
+
+`npm run build` runs Rsbuild and then `scripts/postbuild.ts`:
+
+1. generate Open Graph images;
+2. prerender route HTML;
+3. generate `llms.txt`.
+
+Generated output is written to `dist/` and is never committed. Static
+deployment files live in `public/`; `public/_redirects` mirrors the
+client-side product redirects for the hosting layer.
+
+## Engineering conventions
+
+- Use the `@/` alias for `src/`; it is shared by TypeScript, Rsbuild, Rstest,
+  and shadcn.
+- Compose class names with `cn()` from `src/lib/utils.ts`.
+- Reuse motion variants from `src/lib/animations.ts`.
+- Keep unit tests under `tests/`; browser regressions belong under
+  `regressions/`.
+- Keep build-time scripts in the TypeScript gate. They consume application
+  types and run during production builds.
+- Do not commit `dist/`, local tool state, browser captures, or agent runtime
+  configuration.
+
+## Environment
+
+`PUBLIC_GA_ID` optionally enables Google Analytics. Copy `.env.example` to
+`.env` for local overrides. Every `PUBLIC_*` value is shipped to the browser
+and must not contain secrets.
+
+## CI and deployment
+
+GitHub Actions uses Node 22 and runs install, lint, and typecheck. Local
+pre-commit hooks mirror lint and typecheck; tests and the production build are
+the merge gate.
+
+The production artifact is the `dist/` directory generated by
+`npm run build`.
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
-
-<hr>
-
-<div align="center">
-<sub>Crafted with 💚 by <a href="https://github.com/MolCrafts">MolCrafts</a></sub>
-</div>

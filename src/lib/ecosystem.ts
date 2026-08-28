@@ -25,8 +25,6 @@ export interface EcosystemCategory {
 /**
  * Homepage / nav / footer catalog.
  *
- * Grouping and roster are governed by `.agents/product-marketing.md` (Product roster).
- *
  * `status` is set from the package REGISTRY, never from a README badge. Badges were wrong
  * three times: MolPlot and MolMCP were shipping while flagged in-development, and MolExp
  * and MolNex were flagged shipping while absent from PyPI. Re-check with a registry call
@@ -34,7 +32,7 @@ export interface EcosystemCategory {
  * Layers follow Application / Infrastructure / Specification. Shipping packages lead each
  * layer; anything not yet installable carries an explicit `status`.
  *
- * Copy rules for `description`, from the same document:
+ * Copy rules for `description`:
  *   - lead with a concrete noun for what the thing IS, under ~12 words
  *   - no third-party library names, algorithms, or force fields
  *   - no internal sub-package names as explanation

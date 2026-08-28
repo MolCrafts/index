@@ -8,10 +8,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
-  /*
-   * Unit tests only. Browser-driven checks belong in `regressions/`, never here —
-   * see `.claude/notes/law.md`.
-   */
+  /* Unit tests only. Browser-driven checks belong in `regressions/`. */
   include: ["tests/**/*.test.ts"],
   testEnvironment: "node",
 });
