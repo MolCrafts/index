@@ -1,4 +1,4 @@
-import { HOME_H3 } from "@/lib/home/stage";
+import { HOME_H2_SECTION } from "@/lib/home/stage";
 import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
 
@@ -29,11 +29,17 @@ export function ProductMark({ product, applicationTitle, className }: ProductMar
         className,
       )}
     >
-      <span lang="en" className={cn(HOME_H3, "relative block")}>
+      <span
+        lang="en"
+        className={cn(
+          HOME_H2_SECTION,
+          "product-name relative block text-[clamp(2rem,4.45vw,4rem)]",
+        )}
+      >
         {product}
       </span>
       <span className="relative mt-5 block h-px w-16 bg-[rgb(var(--accent-rgb))]/45" />
-      <span className={cn("relative mt-5 block font-body text-sm", HOME_KEYWORD)}>
+      <span className={cn("product-role relative mt-5 block font-body text-sm", HOME_KEYWORD)}>
         {applicationTitle}
       </span>
     </div>

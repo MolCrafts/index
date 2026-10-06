@@ -1,15 +1,6 @@
 import type { ApplicationKey, HomeCopy } from "./types";
 
-/**
- * Operator-authored English copy for the application stage headline.
- *
- * Supplied verbatim in the section brief; other locales share it until their
- * translations are approved, exactly as {@link APPROVED_ASSIST_COPY} does. It is
- * assigned *into* each locale record rather than imported by the component, so
- * `HomeCopy` stays the single contract for this section — a bare exported constant
- * escapes the locale check and strands every non-component consumer, which is how
- * the prerenderer lost its typed handle on this heading.
- */
+/** Application stage headline, with equivalent translations below. */
 export const APPROVED_APPLICATIONS_HEADING = {
   title: "Take one. Or take the stack.",
   lead: "Built to work better together, designed to stand on their own.",
@@ -31,8 +22,18 @@ export const APPLICATION_GITHUB_DESCRIPTIONS: Record<ApplicationKey, string> = {
   molpy: "A fast, clean, and composable toolkit for molecular modeling",
   molpack: "Extensible molecule packing for initial configuration generation",
   molvis: "Interactive molecule visualization library",
-  molexp: "AI-assisted workflow management and knowledge system for computational research",
+  molab: "AI-assisted workflow management and knowledge system for computational research",
   molnex:
     "Unified ML framework for interatomic potentials, generative models, and property prediction",
   atomiverse: "The multi-scale molecular simulation engine",
 };
+
+export const APPLICATIONS_HEADING_ZH = {
+  title: "单独使用，或组合成技术栈。",
+  lead: "各自独立可用，也能相互配合。",
+} as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
+
+export const APPLICATIONS_HEADING_SV = {
+  title: "Välj ett verktyg. Eller hela stacken.",
+  lead: "Verktygen fungerar både tillsammans och var för sig.",
+} as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;

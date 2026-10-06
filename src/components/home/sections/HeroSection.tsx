@@ -37,7 +37,7 @@ export function HeroSection() {
         <motion.p
           className={cn(
             HOME_STATEMENT,
-            "mb-[clamp(2rem,2.5vw,2.5rem)] flex min-h-[2.8em] max-w-3xl items-end justify-center text-balance text-muted-foreground sm:min-h-[1.4em]",
+            "mb-[clamp(2rem,2.5vw,2.5rem)] flex min-h-[2.8em] max-w-3xl items-end justify-center text-balance font-mono text-note font-normal text-home-keyword sm:min-h-[1.4em]",
             locale === "zh" ? "tracking-normal" : "tracking-[-0.01em]",
           )}
           initial={{ opacity: 0, y: -12, filter: "blur(6px)" }}
@@ -65,7 +65,7 @@ export function HeroSection() {
         <motion.p
           className={cn(
             HOME_STATEMENT,
-            "relative isolate mt-[clamp(1.75rem,2vw,2rem)] flex min-h-[4.65em] max-w-[52rem] items-start justify-center text-balance text-muted-foreground lg:min-h-[1.55em]",
+            "relative isolate mt-[clamp(1.75rem,2vw,2rem)] flex min-h-[4.65em] max-w-[52rem] items-start justify-center text-balance lg:min-h-[1.55em]",
           )}
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}

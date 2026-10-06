@@ -13,7 +13,7 @@ import { LogoIcon } from "../Icons";
  * `contentinfo` role, which left the page with no such landmark at all.
  */
 export function HomeFooter() {
-  const { footer } = useHomeCopy();
+  const { footer, brandHero } = useHomeCopy();
   const year = new Date().getFullYear();
 
   return (
@@ -24,12 +24,12 @@ export function HomeFooter() {
           <BrandName className="font-display text-xl font-semibold" />
         </div>
         <p className="max-w-lg font-body text-sm leading-6 text-muted-foreground md:text-right">
-          {footer.tagline}
+          {brandHero.subtitle}
         </p>
       </div>
       <div className="mx-auto mt-4 flex w-full max-w-[90rem] flex-wrap items-center justify-between gap-3 font-body text-xs text-muted-foreground">
         <span>
-          © {year} <BrandCopy text="MolCrafts" /> · {footer.credit}
+          © {year} <BrandCopy text="MolCrafts" /> · {footer.credit.replace("❤️", "♥︎")}
         </span>
         <div className="flex items-center gap-5">
           <a

@@ -28,8 +28,12 @@ describe("product catalog registration", () => {
       expect(Object.keys(PACKAGE_INSTALL)).toContain(slug);
     });
 
-    it(`${slug} has an ecosystem entry linking at GitHub`, () => {
-      expect(ecosystemItems.find((i) => i.href === packageGithubHref(slug))).toBeDefined();
+    it(`${slug} is listed in the public catalog, or kept off it on purpose`, () => {
+      if (slug === "molcfg" || slug === "mollog" || slug === "molrec" || slug === "molexp") {
+        expect(ecosystemItems.some((item) => item.href.endsWith(`/${slug}`))).toBe(false);
+        return;
+      }
+      expect(ecosystemItems.some((item) => item.href === packageGithubHref(slug))).toBe(true);
     });
 
     it(`${slug} is redirected off the site`, () => {
@@ -107,7 +111,7 @@ describe("homepage application stage", () => {
       "molpy",
       "molpack",
       "molvis",
-      "molexp",
+      "molab",
       "molnex",
       "atomiverse",
     ]);

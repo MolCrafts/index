@@ -29,8 +29,12 @@ export interface EcosystemCategory {
  * three times: MolPlot and MolMCP were shipping while flagged in-development, and MolExp
  * and MolNex were flagged shipping while absent from PyPI. Re-check with a registry call
  * before changing one.
- * Layers follow Application / Infrastructure / Specification. Shipping packages lead each
+ * Layers follow Application / Infrastructure. Shipping packages lead each
  * layer; anything not yet installable carries an explicit `status`.
+ *
+ * MolCfg, MolLog, MolRec, and MolMCP stay installable and redirected, but they
+ * are not listed: the public menu is the homepage's product surface.
+ * MolExp was renamed to MolAb; `/molexp` still redirects to that repository.
  *
  * Copy rules for `description`:
  *   - lead with a concrete noun for what the thing IS, under ~12 words
@@ -79,14 +83,14 @@ export const ecosystemCategories: EcosystemCategory[] = [
         bg: PRODUCT_ACCENTS.molnex.chip.bg,
       },
       {
-        title: "MolExp",
-        href: packageGithubHref("molexp"),
+        title: "MolAb",
+        href: packageGithubHref("molab"),
         external: true,
         role: "workflow platform",
-        description: APPLICATION_GITHUB_DESCRIPTIONS.molexp,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molab,
         status: "In development",
-        color: PRODUCT_ACCENTS.molexp.chip.color,
-        bg: PRODUCT_ACCENTS.molexp.chip.bg,
+        color: PRODUCT_ACCENTS.molab.chip.color,
+        bg: PRODUCT_ACCENTS.molab.chip.bg,
       },
       {
         title: "MolVis",
@@ -141,33 +145,6 @@ export const ecosystemCategories: EcosystemCategory[] = [
         bg: PRODUCT_ACCENTS.molq.chip.bg,
       },
       {
-        title: "MolCfg",
-        href: packageGithubHref("molcfg"),
-        external: true,
-        role: "config layer",
-        description: "Every value tracks where it came from",
-        color: PRODUCT_ACCENTS.molcfg.chip.color,
-        bg: PRODUCT_ACCENTS.molcfg.chip.bg,
-      },
-      {
-        title: "MolLog",
-        href: packageGithubHref("mollog"),
-        external: true,
-        role: "logging layer",
-        description: "Drop-in structured logging",
-        color: PRODUCT_ACCENTS.mollog.chip.color,
-        bg: PRODUCT_ACCENTS.mollog.chip.bg,
-      },
-      {
-        title: "MolMCP",
-        href: packageGithubHref("molmcp"),
-        external: true,
-        role: "agent APIs",
-        description: "Gives AI agents structured access to MolCrafts packages and docs",
-        color: CHIP_ONLY_ACCENTS.molmcp.color,
-        bg: CHIP_ONLY_ACCENTS.molmcp.bg,
-      },
-      {
         title: "MolHub",
         href: packageGithubHref("molhub"),
         external: true,
@@ -176,22 +153,6 @@ export const ecosystemCategories: EcosystemCategory[] = [
         status: "In development",
         color: CHIP_ONLY_ACCENTS.molhub.color,
         bg: CHIP_ONLY_ACCENTS.molhub.bg,
-      },
-    ],
-  },
-  {
-    title: "Specification",
-    blurb: "What every layer agrees on.",
-    items: [
-      {
-        title: "MolRec",
-        href: packageGithubHref("molrec"),
-        external: true,
-        role: "record contract",
-        description: "One format, so tools read each other's output",
-        status: "In development",
-        color: PRODUCT_ACCENTS.molrec.chip.color,
-        bg: PRODUCT_ACCENTS.molrec.chip.bg,
       },
     ],
   },

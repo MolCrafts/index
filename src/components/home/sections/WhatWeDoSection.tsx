@@ -1,4 +1,3 @@
-import { BrandCopy } from "@/components/BrandName";
 import {
   type KnowledgeStationMotion,
   knowledgeHeaderReveal,
@@ -8,33 +7,25 @@ import {
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import { HOME_BLOCK, HOME_CONTAINER, HOME_STATEMENT } from "@/lib/home/stage";
-import { threadPath } from "@/lib/home/thread";
+
 import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useLayoutEffect, useRef, useState } from "react";
 import { HomeSection } from "../HomeSection";
 import { MonoLabel } from "../MonoLabel";
 import { SectionHeader } from "../SectionHeader";
 import { SectionMarker } from "../SectionMarker";
 
-/**
- * Where each station sits in the cascade, and when the thread reaches it.
- *
- * Each station starts on the column where the previous one still stands — the
- * overlap is the argument, work beginning on ground the last stage laid — and
- * the explicit rows keep the grid from packing the third station back up into
- * the first row's empty right half. Wake delays follow the thread's own timing
- * (delay 0.3, duration 1.7): each station lights as the line passes it.
- */
-const STATIONS: ReadonlyArray<{ cell: string; wake: KnowledgeStationMotion }> = [
-  { cell: "lg:col-start-1 lg:col-span-5 lg:row-start-1", wake: { delay: 0.4 } },
-  { cell: "lg:col-start-5 lg:col-span-5 lg:row-start-2", wake: { delay: 0.95 } },
-  { cell: "lg:col-start-8 lg:col-span-5 lg:row-start-3", wake: { delay: 1.55 } },
+/** Each station wakes as the measured curve reaches it. */
+const STATIONS: ReadonlyArray<KnowledgeStationMotion> = [
+  { delay: 0.7 },
+  { delay: 1.1 },
+  { delay: 1.55 },
 ];
 
 /** How far the thread stands off the text, and how far it runs past the ends. */
-const THREAD_FRAME = { inset: 20, overshoot: 28 } as const;
+const THREAD_FRAME = { overshoot: 32 } as const;
 
 /**
  * Capabilities — one statement and a thread of light through three stations.
@@ -54,13 +45,20 @@ const THREAD_FRAME = { inset: 20, overshoot: 28 } as const;
 export function WhatWeDoSection() {
   const { whatWeDo } = useHomeCopy();
   const reduceMotion = prefersReducedMotion();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const visible = useInView(stageRef, { amount: 0.25 });
+  const motionState = reduceMotion ? "settled" : visible ? "illuminated" : "dormant";
   const fieldRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
-  const [thread, setThread] = useState<{ d: string; width: number; height: number } | null>(null);
+  const [thread, setThread] = useState<{
+    d: string;
+    width: number;
+    height: number;
+    points: { x: number; y: number }[];
+  } | null>(null);
 
-  /* The thread is constructed, not drawn: the stations are measured and the
-     path derived from their boxes (`threadPath`), so locale, text wrap, and
-     resize all yield the same exact fillet geometry. */
+  /* Measure the resting layout: the curve stays in a dedicated band above
+     the copy, with horizontal tangents at every join. */
   useLayoutEffect(() => {
     const field = fieldRef.current;
     const list = listRef.current;
@@ -68,17 +66,27 @@ export function WhatWeDoSection() {
 
     const measure = () => {
       const items = Array.from(list.children) as HTMLElement[];
+      const vertical = getComputedStyle(list).display !== "flex";
+      const points = items.map((item) => ({
+        x: vertical ? item.offsetLeft - 24 : item.offsetLeft + item.offsetWidth / 2,
+        y: vertical ? item.offsetTop + 10 : item.offsetTop - THREAD_FRAME.overshoot,
+      }));
       setThread({
+        points,
         width: field.offsetWidth,
         height: field.offsetHeight,
-        d: threadPath(
-          items.map((item) => ({
-            left: item.offsetLeft,
-            top: item.offsetTop,
-            bottom: item.offsetTop + item.offsetHeight,
-          })),
-          THREAD_FRAME,
-        ),
+        d: points
+          .map((point, index) => {
+            if (!index) return `M ${point.x} ${point.y}`;
+            const prev = points[index - 1];
+            if (vertical) {
+              const mid = (prev.y + point.y) / 2;
+              return `C ${prev.x} ${mid}, ${point.x} ${mid}, ${point.x} ${point.y}`;
+            }
+            const mid = (prev.x + point.x) / 2;
+            return `C ${mid} ${prev.y}, ${mid} ${point.y}, ${point.x} ${point.y}`;
+          })
+          .join(" "),
       });
     };
 
@@ -100,34 +108,34 @@ export function WhatWeDoSection() {
            trading bottom padding for top on `md+`, where the content otherwise
            rises into the numbered rail's band at `top-24`. */
         className={cn(HOME_CONTAINER, HOME_BLOCK, "sm:py-16 md:pb-6 md:pt-36", "relative isolate")}
-        initial={reduceMotion ? "illuminated" : "dormant"}
-        whileInView="illuminated"
-        viewport={{ once: true, amount: 0.3 }}
+        ref={stageRef}
+        initial={reduceMotion ? "settled" : "dormant"}
+        animate={motionState}
       >
         <motion.div variants={knowledgeHeaderReveal}>
           <SectionHeader
             sectionId="solutions"
-            title={whatWeDo.title}
-            lead={<BrandCopy text={whatWeDo.lead} />}
+            title={whatWeDo.titleLines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+            lead={whatWeDo.lead}
             scale="statement"
+            className="capabilities-header"
           />
         </motion.div>
 
-        <div ref={fieldRef} className="relative isolate mt-10">
-          {/* The thread, behind the stations: down each station's leading edge,
-              across the centre of the row gap, and around exact quarter-circle
-              fillets between the two — never across the text. It overshoots
-              both ends: the work arrives from before this screen and continues
-              past it. */}
+        <div ref={fieldRef} className="capabilities-field relative isolate mt-12">
           {thread ? (
             <svg
-              className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full overflow-visible lg:block"
+              className="pointer-events-none absolute inset-0 -z-10 h-full w-full overflow-visible"
               viewBox={`0 0 ${thread.width} ${thread.height}`}
               aria-hidden="true"
             >
               <defs>
                 <linearGradient id="knowledge-thread" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--molcrafts-forest-soft)" />
+                  <stop offset="0%" stopColor="var(--home-green)" />
                   <stop offset="100%" stopColor="hsl(var(--primary))" />
                 </linearGradient>
               </defs>
@@ -135,20 +143,34 @@ export function WhatWeDoSection() {
                 d={thread.d}
                 fill="none"
                 stroke="url(#knowledge-thread)"
-                strokeWidth="2.5"
+                strokeWidth="1.3"
                 strokeLinecap="round"
-                className="[filter:drop-shadow(0_0_12px_hsl(var(--primary)/0.45))]"
+                className="opacity-50"
                 variants={knowledgeThreadDraw}
               />
+              {thread.points.map((point, i) => (
+                <motion.g
+                  key={whatWeDo.pillars[i].title}
+                  variants={knowledgeStationWake}
+                  custom={STATIONS[i]}
+                >
+                  <circle
+                    className="home-guide-node"
+                    cx={point.x}
+                    cy={point.y}
+                    r="3"
+                    fill="var(--home-green)"
+                  />
+                </motion.g>
+              ))}
             </svg>
           ) : null}
 
-          <ol ref={listRef} className="grid gap-y-12 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-8">
+          <ol ref={listRef} className="capabilities-stations grid gap-y-12">
             {whatWeDo.pillars.map((pillar, index) => (
               <motion.li
                 key={pillar.title}
-                className={STATIONS[index].cell}
-                custom={STATIONS[index].wake}
+                custom={STATIONS[index]}
                 variants={knowledgeStationWake}
               >
                 <MonoLabel className={cn("block", HOME_KEYWORD)}>{pillar.title}</MonoLabel>

@@ -1,4 +1,3 @@
-import { BrandCopy } from "@/components/BrandName";
 import { useHomeCopy } from "@/lib/home/copy";
 import { sponsorItems } from "@/lib/home/data";
 import { HOME_BODY } from "@/lib/home/stage";
@@ -17,12 +16,7 @@ export function SponsorsSection() {
   const { sponsors } = useHomeCopy();
 
   return (
-    <HomeBlock
-      id="trust"
-      title={sponsors.title}
-      lead={<BrandCopy text={sponsors.lead} />}
-      height="band"
-    >
+    <HomeBlock id="trust" title={sponsors.title} lead={sponsors.lead} height="band">
       <Reveal delay={0.08}>
         <ul className="flex flex-wrap items-start gap-x-12 gap-y-8">
           {sponsorItems.map((sponsor) => (
@@ -38,7 +32,7 @@ export function SponsorsSection() {
                   HOME_BODY,
                   /* Centred, not flush left: the mark sits over the middle of the
                      name it belongs to, so the pair reads as one credit. */
-                  "group flex flex-col items-center gap-3 no-underline outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary",
+                  "group flex flex-col items-center gap-3 lg:flex-row lg:gap-6 no-underline outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary",
                 )}
               >
                 {/* Masked, not drawn: the mark takes the page's own ink, so a

@@ -1,6 +1,6 @@
-import { APPROVED_APPLICATIONS_HEADING } from "./applications";
-import { APPROVED_ASSIST_COPY } from "./assist";
-import { APPROVED_COLLABORATION_COPY } from "./collaboration";
+import { APPLICATIONS_HEADING_SV } from "./applications";
+import { ASSIST_COPY_SV } from "./assist";
+import { COLLABORATION_COPY_SV } from "./collaboration";
 import { APPROVED_FOUNDATION_COPY_SV } from "./foundation";
 import type { HomeCopy } from "./types";
 
@@ -15,9 +15,9 @@ export const sv: HomeCopy = {
     trust: "Stöd",
   },
   brandHero: {
-    kicker: "Vi formar molekylär simulering för AI-eran",
+    kicker: "Standardisering av molekyl- och materialberäkning",
     title: "MolCrafts",
-    subtitle: "Vi bygger AI-assisterad infrastruktur för molekylär vetenskap.",
+    subtitle: "Accelerera din FoU med AI-assisterad vetenskaplig infrastruktur.",
   },
   hero: {
     title: "Molekylär forskning,",
@@ -30,68 +30,69 @@ export const sv: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {
-    title: "Gör svår forskning till arbete som går att driva vidare.",
-    lead: "Vi väljer metod utifrån frågan och förenar simulering, prediktion och samarbete.",
+    title: "Kunskap lever vidare.",
+    titleLines: ["Kunskap", "lever vidare."],
+    lead: "Bygg vidare på varje upptäckt.",
     pillars: [
       {
-        title: "Molekyl- och materialsimulering",
-        body: "Studera struktur, beteende och egenskaper genom en väg formad efter forskningsfrågan.",
+        title: "Samlad data",
+        body: "Molekyler, modeller och resultat med spårbara källor.",
       },
       {
-        title: "AI-driven prediktion",
-        body: "Samla data, modeller och vetenskapligt omdöme för screening och egenskapsstudier.",
+        title: "Sammanlänkad kunskap",
+        body: "Koppla metoder och resultat till de data de förklarar.",
       },
       {
-        title: "Anpassat FoU-samarbete",
-        body: "Gå från metodvalidering till arbetssätt tillsammans med teamet bakom forskningen.",
+        title: "Reproducerbar forskning",
+        body: "Kör om, anpassa och utöka arbetsflöden.",
       },
     ],
   },
-  assist: APPROVED_ASSIST_COPY,
+  assist: ASSIST_COPY_SV,
   projects: {
-    ...APPROVED_APPLICATIONS_HEADING,
+    ...APPLICATIONS_HEADING_SV,
     cta: "Utforska",
     stageLabel: "MolCrafts tillämpningar",
     items: {
       molpy: {
         applicationTitle: "Systemuppbyggnad",
         short: "Bygg och typa molekylära system",
-        long: "Gör en struktur till ett typat system som en motor kan köra, och granska det först.",
+        long: "En komponerbar verktygslåda för molekylmodellering",
       },
       molpack: {
         applicationTitle: "Boxpreparation",
         short: "Packa molekyler i en box",
-        long: "Fyll en box med den sammansättning du anger, och få samma resultat varje körning.",
+        long: "Utökningsbar molekylpackning för att skapa startkonfigurationer",
       },
       molvis: {
         applicationTitle: "Visuell granskning",
         short: "Granska strukturer och trajektorier",
-        long: "Se en struktur eller en hel trajektoria i webbläsaren, din editor eller en notebook.",
+        long: "Bibliotek för interaktiv molekylvisualisering",
       },
-      molexp: {
+      molab: {
         applicationTitle: "Experimentspårning",
         short: "Kör och spåra experiment",
-        long: "Beskriv ett arbetsflöde en gång, kör det, och håll varje indata och resultat kopplat.",
+        long: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
       },
       molnex: {
         applicationTitle: "Potentialträning",
         short: "Träna och kombinera potentialer",
-        long: "Träna en potential på dina egna data, och kombinera den med fysik du redan litar på.",
+        long: "Ett ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
       },
       atomiverse: {
         applicationTitle: "Simuleringskörningar",
         short: "Kör dynamik och elektronstruktur",
-        long: "Nå molekyldynamik och elektronstruktur genom ett gränssnitt, på CPU och på GPU.",
+        long: "En motor för molekylsimulering på flera skalor",
       },
     },
   },
-  participate: APPROVED_COLLABORATION_COPY,
+  participate: COLLABORATION_COPY_SV,
   sponsors: {
     title: "Våra sponsorer",
-    lead: "Tack till de open source-program som följer MolCrafts.",
+    lead: "Tack till programmen som stödjer vårt arbete med öppen källkod.",
   },
   footer: {
-    tagline: "Vetenskaplig beräkning skapad för verklig molekyl- och materialutveckling.",
+    tagline: "Accelerera din FoU med AI-assisterad vetenskaplig infrastruktur.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Till toppen",

@@ -16,7 +16,7 @@ import { MoleculeField } from "./MoleculeField";
 export function HomeAtmosphere() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
-      <MoleculeField intensity={0.2} interactive className="opacity-45" />
+      <MoleculeField intensity={0.12} interactive className="opacity-45" />
 
       <div className="absolute left-1/2 top-1/2 h-[min(38rem,68vw)] w-[min(62rem,92vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(var(--accent-rgb),0.16),hsl(var(--primary)/0.07)_42%,transparent_72%)] blur-[36px]" />
       <div className="absolute -left-[12%] top-[12%] size-[min(44rem,68vw)] rounded-full bg-[radial-gradient(circle,hsl(var(--primary)/0.24),transparent_68%)] blur-glow" />

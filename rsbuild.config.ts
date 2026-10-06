@@ -72,7 +72,7 @@ export default defineConfig({
         attrs: {
           property: "og:description",
           content:
-            "MolCrafts brings scientific computing, AI, and research expertise to molecular and materials R&D, from application exploration to long-term collaboration.",
+            "Open-source tools for molecular modeling, simulation, machine learning, and AI-assisted research workflows.",
         },
       },
       { tag: "meta", attrs: { property: "og:type", content: "website" } },
@@ -99,7 +99,7 @@ export default defineConfig({
       charset: { charset: "UTF-8" },
       viewport: "width=device-width, initial-scale=1.0",
       description:
-        "MolCrafts brings scientific computing, AI, and research expertise to molecular and materials R&D, from application exploration to long-term collaboration.",
+        "Open-source tools for molecular modeling, simulation, machine learning, and AI-assisted research workflows.",
       keywords:
         "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, reproducible research",
       author: "MolCrafts",

@@ -10,6 +10,7 @@ export const PRODUCT_SLUGS = [
   "molpack",
   "molnex",
   "molrec",
+  "molab",
   "molexp",
   "molq",
   "molvis",

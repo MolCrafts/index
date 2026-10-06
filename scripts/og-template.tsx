@@ -1,8 +1,7 @@
-import type { OgRoute } from "./og-meta.ts";
+import { OG_PALETTE, OG_SURFACE, type OgRoute } from "./og-meta.ts";
 
-const BG = "#020617";
-const FONT_OUTFIT = "Outfit";
-const FONT_PLAYFAIR = "Playfair Display";
+const BG = OG_SURFACE;
+const FONT_BODY = "DM Sans";
 
 const gradientText = (stops: [string, string, string]) => ({
   backgroundImage: `linear-gradient(90deg, ${stops[0]}, ${stops[1]}, ${stops[2]})`,
@@ -23,7 +22,7 @@ export const OgCard = (route: OgRoute) => {
         flexDirection: "column",
         backgroundColor: BG,
         position: "relative",
-        fontFamily: FONT_OUTFIT,
+        fontFamily: FONT_BODY,
         overflow: "hidden",
       }}
     >
@@ -74,12 +73,12 @@ export const OgCard = (route: OgRoute) => {
           padding: "0 80px",
         }}
       >
-        {/* Kicker — Playfair italic, subtitle-gradient colored */}
+        {/* Kicker — DM Sans italic, subtitle-gradient colored */}
         <div
           style={{
-            fontFamily: FONT_PLAYFAIR,
+            fontFamily: FONT_BODY,
             fontStyle: "italic",
-            fontWeight: 500,
+            fontWeight: 400,
             fontSize: 44,
             marginBottom: 28,
             ...gradientText(route.subGradient),
@@ -88,10 +87,10 @@ export const OgCard = (route: OgRoute) => {
           {route.kicker}
         </div>
 
-        {/* Title — Outfit extrabold, title gradient */}
+        {/* Title — DM Sans bold, title gradient */}
         <div
           style={{
-            fontFamily: FONT_OUTFIT,
+            fontFamily: FONT_BODY,
             fontWeight: 700,
             fontSize: 188,
             lineHeight: 1,
@@ -106,7 +105,7 @@ export const OgCard = (route: OgRoute) => {
         {/* Subtitle — uppercase, tracking-wide, subtitle gradient */}
         <div
           style={{
-            fontFamily: FONT_OUTFIT,
+            fontFamily: FONT_BODY,
             fontWeight: 600,
             fontSize: 26,
             letterSpacing: "0.18em",
@@ -132,22 +131,22 @@ export const OgCard = (route: OgRoute) => {
       >
         <div
           style={{
-            fontFamily: FONT_OUTFIT,
+            fontFamily: FONT_BODY,
             fontWeight: 600,
             fontSize: 22,
             letterSpacing: "0.22em",
             textTransform: "uppercase",
-            color: "#e4e4e7",
+            color: OG_PALETTE.white,
           }}
         >
           MolCrafts
         </div>
         <div
           style={{
-            fontFamily: FONT_OUTFIT,
+            fontFamily: FONT_BODY,
             fontWeight: 400,
             fontSize: 20,
-            color: "#71717a",
+            color: `${OG_PALETTE.white}b3`,
           }}
         >
           molcrafts.org

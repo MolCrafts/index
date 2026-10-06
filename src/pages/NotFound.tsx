@@ -104,7 +104,7 @@ export const NotFound = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.4 }}
           >
-            This path is empty.
+            Page not found.
           </motion.h1>
 
           <motion.p
@@ -114,8 +114,8 @@ export const NotFound = () => {
             transition={{ delay: 0.25, duration: 0.4 }}
           >
             {doc
-              ? `We could not find documentation for ${doc}. It may not be published yet, or the URL moved under docs.molcrafts.org.`
-              : "That page is not part of the MolCrafts brand site. Check the path, or jump to a product below."}
+              ? `We could not find documentation for ${doc}. It may not be published yet, or its address may have changed.`
+              : "We could not find this page. Check the URL or explore the tools below."}
           </motion.p>
 
           {attempted && (

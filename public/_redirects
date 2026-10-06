@@ -13,9 +13,12 @@
 /molrec    https://github.com/MolCrafts/molrec    301
 /molrec/   https://github.com/MolCrafts/molrec    301
 /molrec/*  https://github.com/MolCrafts/molrec    301
-/molexp    https://github.com/MolCrafts/molexp    301
-/molexp/   https://github.com/MolCrafts/molexp    301
-/molexp/*  https://github.com/MolCrafts/molexp    301
+/molab    https://github.com/MolCrafts/molab    301
+/molab/   https://github.com/MolCrafts/molab    301
+/molab/*  https://github.com/MolCrafts/molab    301
+/molexp    https://github.com/MolCrafts/molab    301
+/molexp/   https://github.com/MolCrafts/molab    301
+/molexp/*  https://github.com/MolCrafts/molab    301
 /molq    https://github.com/MolCrafts/molq    301
 /molq/   https://github.com/MolCrafts/molq    301
 /molq/*  https://github.com/MolCrafts/molq    301

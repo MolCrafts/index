@@ -38,7 +38,14 @@ export function HomeBlock({ id, title, lead, scale, height = "screen", children 
       {/* A band has no centred screen for the rail to sit above, so the number rides
           in its top gutter rather than a third of the way down the block. */}
       <SectionMarker sectionId={id} className={band ? "top-6" : undefined} />
-      <div className={cn(HOME_CONTAINER, band ? HOME_BAND : HOME_BLOCK, "relative isolate")}>
+      <div
+        className={cn(
+          HOME_CONTAINER,
+          band ? HOME_BAND : HOME_BLOCK,
+          "relative isolate",
+          id === "trust" && "lg:grid lg:grid-cols-[1fr_auto] lg:items-center lg:gap-20 lg:py-20",
+        )}
+      >
         <BlockAura />
         <Reveal>
           {/* A band's lead is a credit line, not a paragraph: it stays unbroken. */}
@@ -49,7 +56,10 @@ export function HomeBlock({ id, title, lead, scale, height = "screen", children 
             scale={scale}
             leadShape={band ? "line" : "paragraph"}
           />
-          <div className={HOME_RULE} aria-hidden="true" />
+          <div
+            className={cn(HOME_RULE, (id === "trust" || id === "applications") && "hidden")}
+            aria-hidden="true"
+          />
         </Reveal>
         {children}
       </div>

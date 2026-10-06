@@ -18,8 +18,8 @@ export type BrandMarkPart =
 export const BrandMark = {
   TEXT: "MolCrafts",
 
-  split(source: string): ReadonlyArray<BrandMarkPart> {
-    if (source.length === 0) {
+  split(source?: string): ReadonlyArray<BrandMarkPart> {
+    if (!source || source.length === 0) {
       return [{ kind: "text", value: "", at: 0 }];
     }
     const parts: BrandMarkPart[] = [];

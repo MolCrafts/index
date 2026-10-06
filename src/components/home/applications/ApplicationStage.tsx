@@ -1,9 +1,9 @@
 import { MOTION_EASE, homeReveal } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import type { ApplicationKey } from "@/lib/home/copy/types";
-import { APPLICATIONS, applicationHref } from "@/lib/home/data";
+import { APPLICATIONS } from "@/lib/home/data";
 import { HOME_BODY, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
-import { HOME_KEYWORD, HOME_TEXT_LINK } from "@/lib/styleTokens";
+import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -32,11 +32,11 @@ function Layer({ step, children }: { step: number; children: ReactNode }) {
 }
 
 /**
- * The description and link an expanded entry carries, shared by both layouts.
+ * The description an expanded entry carries, shared by both layouts.
  *
  * `heading` is for the layouts where this column stands alone; beside the full
  * brand mark the name and application would say everything twice, so the band
- * drops them and the column carries only the body and the way in.
+ * drops them and the column carries only the body.
  */
 function EntryDetail({
   applicationKey,
@@ -51,7 +51,7 @@ function EntryDetail({
   const app = APPLICATIONS.find((entry) => entry.key === applicationKey);
   const copy = projects.items[applicationKey];
   if (!app) return null;
-  const steps = heading ? { body: 2, link: 3 } : { body: 0, link: 1 };
+  const bodyStep = heading ? 2 : 0;
 
   return (
     <>
@@ -67,25 +67,19 @@ function EntryDetail({
           </Layer>
         </>
       ) : null}
-      <Layer step={steps.body}>
+      <Layer step={bodyStep}>
         {/* Standing alone the column is supporting copy; on the stage, where the
             mark says the name and this column is the panel's main part, the
             body takes the lead rung. */}
-        <p className={cn(heading ? cn(HOME_BODY, "mt-4") : HOME_LEAD)}>{copy.long}</p>
-      </Layer>
-      <Layer step={steps.link}>
-        {/* A line of light, not a button and not an arrow: the underline takes the
-            link's own colour, so the whole affordance brightens as one. */}
-        <a
-          href={applicationHref(app.key)}
-          target="_blank"
-          rel="noreferrer noopener"
-          className={cn(HOME_TEXT_LINK, "relative z-30 mt-6")}
+        <p
+          className={cn(
+            heading
+              ? cn(HOME_BODY, "mt-4")
+              : cn(HOME_LEAD, "lg:text-[clamp(1.125rem,1.67vw,1.5rem)]"),
+          )}
         >
-          <span className="border-b border-current pb-1">
-            {projects.cta} {app.product}
-          </span>
-        </a>
+          {copy.long}
+        </p>
       </Layer>
     </>
   );
@@ -123,7 +117,7 @@ export function ApplicationStage() {
       <section
         /* The band only exists at `lg`, where the container's gutter is `px-16`,
            so `-mx-16` sets the stage flush with the page measure's outer edge. */
-        className="-mx-16 flex h-[clamp(24rem,52vh,32rem)] gap-3"
+        className="application-band mt-16 flex h-[clamp(24rem,52vh,32rem)] gap-3"
         aria-label={projects.stageLabel}
       >
         {APPLICATIONS.map((app) => {
@@ -184,7 +178,7 @@ export function ApplicationStage() {
                     <motion.div
                       key="expanded"
                       /* Golden section: the mark takes the minor share, the
-                         body and the way in — the panel's main part — the
+                         body — the panel's main part — the
                          major. */
                       className="relative z-10 grid h-full min-h-0 grid-cols-[1fr_1.618fr] gap-6"
                       initial={{ opacity: 0 }}
@@ -218,7 +212,7 @@ export function ApplicationStage() {
                         aria-hidden="true"
                         className="w-px flex-1 bg-gradient-to-b from-transparent via-[rgb(var(--accent-rgb))]/12 to-[rgb(var(--accent-rgb))]/35"
                       />
-                      <span className="my-5 font-display text-xl font-semibold tracking-tight text-foreground/60 transition-colors duration-300 [writing-mode:vertical-rl] group-hover:text-foreground/90">
+                      <span className="waiting-product my-5 font-display text-xl font-semibold tracking-tight text-home-keyword transition-opacity duration-300 [writing-mode:vertical-rl] group-hover:opacity-80">
                         {app.product}
                       </span>
                       <span
