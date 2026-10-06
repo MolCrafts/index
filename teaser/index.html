@@ -1,0 +1,497 @@
+<title>MolCrafts Teaser</title>
+<meta name="description" content="A 15-second MolCrafts brand teaser: from one molecule to the whole stack.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one 16:9 stage, letterboxed on the MolCrafts night field, with a slim transport bar beneath. */
+  :root {
+    --night: #0b120d;
+    --slate: #101811;
+    --forest: #18432b;
+    --cream: #fbf6e4;
+    --muted: #8a9a8e;
+    --blue: #03a3d7;
+    --font-brand: "Geist", "Geist Variable", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--night);
+    color: var(--cream);
+    font-family: var(--font-brand);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding-inline: 16px;
+    padding-block: 16px;
+    box-sizing: border-box;
+  }
+  .stage {
+    width: min(100%, calc((100vh - 120px) * 16 / 9));
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(142 207 160 / 0.08);
+    background: var(--slate);
+  }
+  canvas { display: block; width: 100%; height: 100%; }
+  .bar {
+    width: min(100%, calc((100vh - 120px) * 16 / 9));
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .bar button {
+    font: inherit;
+    color: var(--cream);
+    background: rgb(142 207 160 / 0.08);
+    border: 1px solid rgb(142 207 160 / 0.18);
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .bar button:hover { background: rgb(142 207 160 / 0.16); }
+  .bar button:focus-visible, .bar input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .bar input[type="range"] { flex: 1; min-width: 0; accent-color: var(--blue); }
+  .time { font-variant-numeric: tabular-nums; min-width: 9ch; text-align: right; }
+  body.capture { padding: 0; gap: 0; }
+  body.capture .stage { width: 1920px; height: 1080px; max-width: none; border-radius: 0; box-shadow: none; }
+  body.capture .bar { display: none; }
+</style>
+
+<div class="stage"><canvas id="c" width="1920" height="1080" aria-label="MolCrafts teaser animation"></canvas></div>
+<div class="bar">
+  <button id="play" type="button">Pause</button>
+  <button id="replay" type="button">Replay</button>
+  <input id="scrub" type="range" min="0" max="15000" step="1" value="0" aria-label="Timeline">
+  <span class="time" id="time">0.0 / 15.0s</span>
+</div>
+
+<script>
+(() => {
+  const W = 1920, H = 1080, DURATION = 15;
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const capture = /[?&]capture\b/.test(location.search);
+  if (capture) document.body.classList.add("capture");
+
+  // Brand palette (src/styles/brand-tokens.css + home tokens).
+  const C = {
+    night: "#0b120d", slate: "#101811", forest: "#18432b", forestBright: "#55a572",
+    green: "#8ecfa0", cream: "#fbf6e4", sand: "#f2da9d", sandStrong: "#e0a33f",
+    muted: "#8a9a8e", blue: "#03a3d7", blueTint: "#81d4ee", spark: "#1fc0f1",
+  };
+  const BRAND = '"Geist", "Geist Variable", system-ui, sans-serif';
+  const MONO = '"JetBrains Mono", ui-monospace, monospace';
+
+  // Products, in the order a study flows through them. Accents from src/lib/productAccents.ts.
+  const PRODUCTS = [
+    { name: "MolPy", role: "molecular toolkit", color: "#3b82f6" },
+    { name: "MolPack", role: "packing tool", color: "#f97316" },
+    { name: "Atomiverse", role: "simulation engine", color: "#84cc16" },
+    { name: "MolNex", role: "ML framework", color: "#06b6d4" },
+    { name: "MolVis", role: "3D viewer", color: "#a855f7" },
+    { name: "MolAb", role: "workflow platform", color: "#6366f1" },
+  ];
+
+  // ---------- math ----------
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const prog = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const outCubic = (k) => 1 - Math.pow(1 - k, 3);
+  const inOutCubic = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+  const outBack = (k) => { const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+  function rng(seed) {
+    return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+
+  // ---------- caffeine skeleton (bond length 1) ----------
+  const d = (deg) => [Math.cos((deg * Math.PI) / 180), Math.sin((deg * Math.PI) / 180)];
+  const atoms = [
+    { p: d(330), e: "C" }, { p: d(270), e: "C" }, { p: d(210), e: "N" }, { p: d(150), e: "C" },
+    { p: d(90), e: "N" }, { p: d(30), e: "C" },
+    { p: [1.817, 0.809], e: "N" }, { p: [2.405, 0], e: "C" }, { p: [1.817, -0.809], e: "N" },
+    { p: [0, -2], e: "O" }, { p: [-1.732, -1], e: "C" }, { p: [-1.732, 1], e: "O" },
+    { p: [0, 2], e: "C" }, { p: [2.126, -1.76], e: "C" },
+  ];
+  const bonds = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0,2],[5,6],[6,7,2],[7,8],[8,0],[1,9,2],[2,10],[3,11,2],[4,12],[8,13]];
+  const ELEM = { C: { r: 13, c: C.green }, N: { r: 17, c: C.blue }, O: { r: 17, c: C.sandStrong } };
+  {
+    const cx = atoms.reduce((s, a) => s + a.p[0], 0) / atoms.length;
+    const cy = atoms.reduce((s, a) => s + a.p[1], 0) / atoms.length;
+    const r = rng(7);
+    for (const a of atoms) {
+      a.p = [a.p[0] - cx, a.p[1] - cy];
+      const ang = r() * Math.PI * 2, dist = 700 + r() * 500;
+      a.from = [Math.cos(ang) * dist, Math.sin(ang) * dist * 0.6];
+      a.delay = r() * 0.5;
+    }
+  }
+
+  // ---------- ambient particles ----------
+  const dust = [];
+  { const r = rng(42); for (let i = 0; i < 110; i++) dust.push({ x: r() * W, y: r() * H, vx: (r() - 0.5) * 18, vy: -6 - r() * 14, s: 0.6 + r() * 1.8, a: 0.08 + r() * 0.22, ph: r() * 6.28 }); }
+
+  // ---------- assets ----------
+  const moko = new Image();
+  moko.src = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CgoKPHN2ZwogICB3aWR0aD0iMTU5LjIyNDgxbW0iCiAgIGhlaWdodD0iMTUwLjc3MjUybW0iCiAgIHZpZXdCb3g9IjAgMCAxNTkuMjI0ODEgMTUwLjc3MjUyIgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmcxIgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjQgKDg2YThhZDcsIDIwMjQtMTAtMTEpIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzCiAgICAgaWQ9ImRlZnMxIiAvPjxnCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNi44MjQ1OTEsLTY1LjIxMzIwOCkiPjxwYXRoCiAgICAgICBzdHlsZT0iZmlsbDojMmQ5MzU3O2ZpbGwtb3BhY2l0eToxIgogICAgICAgZD0ibSA2My4wMjMwODksMjE1LjQ3OTcxIGMgLTEuOTYwNTU1LC0xLjAzNzQ5IC01LjU2MzcyNCwtNS41NDU4OSAtNi44NzI0NTcsLTguNTk5MDQgLTAuNDg3NTUsLTEuMTM3NDEgLTEuMDU5MzE2LC0xLjYwNTM2IC0xLjA2OTc4OSwtMC44NzU1NSAtMC4wMDI2LDAuMTgxOSAtMC4xNzYwMjgsMS40NjE4MiAtMC4zODUzNzMsMi44NDQyNyAtMC40NTE5MjQsMi45ODQzNyAtMS4wMDU0MjYsMy43MDQxNyAtMi44NDgzOTEsMy43MDQxNyAtMS43MTExNDQsMCAtMy4yNTY4NzYsLTAuOTQxODYgLTUuODY0Nzk4LC0zLjU3MzU4IC0yLjk0Njg3MiwtMi45NzM3NiAtNS4xMzExODksLTUuOTc3MDggLTYuOTA3NjM4LC05LjQ5NzYzIGwgLTEuMzQ4MDI0LC0yLjY3MTUgLTUuMjczMTIsLTAuMTMyMjkgLTUuMjczMTIxLC0wLjEzMjI5IC0wLjE4NzM1NCwtMS4wNTgzNCBjIC0wLjQ0NTYwMiwtMi41MTcxMyAwLjAyMTI1LC03Ljc0NzA3IDEuMDY2Mzg0LC0xMS45NDYzNCAxLjE5OTc2OSwtNC44MjA1NiAzLjgyMzY3NywtMTAuNjkyOTcgNi42OTE2NTksLTE0Ljk3NjIxIDIuNTcwODczLC0zLjgzOTUxIDQuMjg4MjA3LC01Ljg3NTQyIDEwLjYyNTU4NSwtMTIuNTk2NzIgMy42MDAxNzgsLTMuODE4MjggNC41NzkyNTIsLTUuNTMzNzggNS40MzA5ODcsLTkuNTE1OTkgMC4yOTAzOTgsLTEuMzU3NzMgMC41OTg5NDksLTIuNTM5NTUgMC42ODU2NjgsLTIuNjI2MjcgMC4yMDQ2MjIsLTAuMjA0NjIgNy4xMjA5MDMsLTEuNDM5NjEgMTIuMTkxMjQsLTIuMTc2ODkgNC40MTA4MDYsLTAuNjQxMzggNS4zMTkzMDMsLTAuOTAxODUgNS43MTMzMSwtMS42MzgwNiAwLjM0NTMzOSwtMC42NDUyNyAwLjA4MzA4LC0xLjQ3MTMzIC0wLjUyODc3NywtMS42NjU1MyAtMS4zMjA0ODgsLTAuNDE5MTEgLTI4LjU1OTI1MSw0LjI0MzU5IC0zMS42NDU3NjYsNS40MTcwOCAtMS4wMjI5OTYsMC4zODg5NCAtMi4zMTEyNzgsMC4zMjA2NSAtMi45OTU4MDQsLTAuMTU4ODEgLTAuODk5NDcxLC0wLjYzMDAyIC0wLjY5NjAwMywtMS45MDMwNSAwLjQyNDQxLC0yLjY1NTM5IDEuMTI3NzM2LC0wLjc1NzI1IDYuMzkxODk1LC0yLjAxNSAxMi4zNjM4NzgsLTIuOTU0MDcgbCA0Ljc2MjQ5OSwtMC43NDg4OCAtMC4wOTY2MywtMi45MjUyMyBjIC0wLjA1ODE4LC0xLjc2MTM1IDAuMDA4LC0yLjk4OTkgMC4xNjYzNTQsLTMuMDg3NzcgMC4yNzA3MSwtMC4xNjczIDcuNDcyMDA3LDAuNTc5ODQgMTIuNjM1NDA1LDEuMzEwOTQgMy41NTEyMTEsMC41MDI4MiA0LjU2ODAyOSwwLjQzMzc1IDUuMDgyMjYzLC0wLjM0NTI1IDAuMzUwNzMxLC0wLjUzMTMxIDAuMzI5NDMsLTAuNjM4NjYgLTAuMjM5NjQ3LC0xLjIwNzc0IC0wLjY4NTYwOSwtMC42ODU2MSAtMC44MTI5OCwtMC43MDcyNCAtMTMuNzExMjksLTIuMzI5MDcgLTMuNTY1MjYxLC0wLjQ0ODMgLTcuMjU2MTk4LC0wLjkxNyAtOC4yMDIwODMsLTEuMDQxNTYgLTAuOTQ1ODg2LC0wLjEyNDU2IC0zLjgwMzM4NSwtMC40MTYxMiAtNi4zNSwtMC42NDc5MSAtNi45NjMxODksLTAuNjMzOCAtOC4yMDIwODMsLTAuOTk1MiAtOC4yMDIwODMsLTIuMzkyNjYgMCwtMC44MDEzOCAwLjc0NTc4MywtMS4zOTkyOSAxLjk5MTI4NywtMS41OTY0NCAxLjIzMzM0MSwtMC4xOTUyMyA4LjA2NTc2MiwwLjI0MzQ0IDEyLjkyMzgxOSwwLjgyOTc3IDEuODg3NzM2LDAuMjI3ODQgMy41MDY2NDgsMC4zMTAxMyAzLjYzMjE0NiwwLjE4NDYzIDAuMTI0NTI4LC0wLjEyNDUzIDAuNDE0MzI3LC0yLjA2ODU3IDAuNjQzOTk4LC00LjMyMDEgMS4xMDgxMTYsLTEwLjg2MzE3IDQuMDk5NjE5LC0yMC4xNTUyOTIgOS4yODIyMzcsLTI4LjgzMjIzIDIuMzc3OTg4LC0zLjk4MTMyIDQuMjUwMTI5LC02LjM3NDM2NCA3Ljg0NDk1NSwtMTAuMDI3NzMzIDguOTM0ODMsLTkuMDgwMzM5IDE5LjQ3ODc3MSwtMTQuMTU5NjUgMzEuOTA1OTQyLC0xNS4zNjk5ODcgNy4yNTM5NywtMC43MDY0OTYgMTUuODM0MDQsMC4yMTE2NTkgMjIuMzQyMDEsMi4zOTA4MjQgMy4yMzQ4MSwxLjA4MzE1OSA4Ljc3NjUyLDMuNzcxODg5IDExLjU2Mjc3LDUuNjEwMDI4IDE0LjU4MDA5LDkuNjE4NzMyIDIzLjkxMjQ3LDI2LjY2NjQzOCAyNS43NDU2Myw0Ny4wMzAxOTggbCAwLjMyMTU0LDMuNTcxODggMS4xODc3NywtMC4wMjYyIGMgMC42NTMyNywtMC4wMTQ0IDMuMTE4NzUsLTAuMjMxMDcgNS40Nzg4NSwtMC40ODE0NCAyLjM2MDA5LC0wLjI1MDM3IDUuODI5OTEsLTAuNDc2NyA3LjcxMDcxLC0wLjUwMjk0IDMuMDMxNTgsLTAuMDQyMyAzLjQ4MjkxLDAuMDA5IDMuOTc3MTUsMC40NTYzIDAuNjgyMzEsMC42MTY4NSAwLjcxODM0LDEuNTE3MzggMC4wODM3LDIuMDkxNzIgLTAuNjUyMjksMC41OTAzMiAtMi4zMTA4LDAuODc5OTUgLTcuODYwNTUsMS4zNzI3MyAtMi42MTkzNywwLjIzMjU4IC03LjMyMjM0LDAuNzY4NjkgLTEwLjQ1MTA0LDEuMTkxMzUgLTMuMTI4NywwLjQyMjY2IC04LjE4ODg1LDEuMDgxODMgLTExLjI0NDc5LDEuNDY0OCAtMy4yNDA0NCwwLjQwNjEgLTUuODA0MzcsMC44NTQ5MiAtNi4xNTE1NiwxLjA3Njg1IC0wLjY4NzQ1LDAuNDM5NCAtMC43ODgyLDEuNDY2MzYgLTAuMTkyMzgsMS45NjA4NSAwLjQ2MDkzLDAuMzgyNTMgMC43ODcyOCwwLjM1ODMgMTAuNDQ0OTgsLTAuNzc1NTcgMy41NjUyNiwtMC40MTg1OCA2LjU3MTU5LC0wLjcwNzA4IDYuNjgwNzMsLTAuNjQxMTEgMC4xMDkxNCwwLjA2NiAwLjE5ODQ0LDEuMzQ4NTEgMC4xOTg0NCwyLjg1MDA3IDAsMS44NzIyNyAwLjEwMzkyLDIuODA5OSAwLjMzMDczLDIuOTg0MDUgMC4xODE5LDAuMTM5NjYgMi40MTQzMiwwLjU3OTkyIDQuOTYwOTMsMC45NzgzNSA1LjYzOTM0LDAuODgyMzEgMTAuODQ5MDcsMi4xNDgwMiAxMS45ODc0OCwyLjkxMjM4IDEuNjQ1MzgsMS4xMDQ3NCAxLjAzOTA4LDMuMDYzODggLTAuOTQ4MTgsMy4wNjM4OCAtMC40MTIwNiwwIC0xLjc4NDU2LC0wLjI5MDU5IC0zLjA0OTk4LC0wLjY0NTc1IC00LjY3NDQxLC0xLjMxMTk1IC0yOS4xNDE2NiwtNS4zODMyNCAtMzAuMjQ1NzQsLTUuMDMyODIgLTAuNjExNjgsMC4xOTQxNCAtMC44NjU1NiwxLjAyMjU1IC0wLjUxNDQzLDEuNjc4NjMgMC4zNTU0NiwwLjY2NDE4IDEuMzIyNTksMC45NTUyOCA0LjkxMTQ4LDEuNDc4MjggNS43NjQ2LDAuODQwMDggMTIuNzA2NTEsMi4wNzkwMyAxMy4wMjM3MywyLjMyNDQxIDAuMTc4MDUsMC4xMzc3MyAwLjM5Njg5LDAuNjg0OTQgMC40ODYzMSwxLjIxNjAyIDAuODg3NzYsNS4yNzIzMSAxLjg2NDA4LDcuMDIzODEgNi43NDY5LDEyLjEwMzc5IDIuMTI0NTQsMi4yMTAzMiA0Ljc5Nzg1LDUuMTMyODIgNS45NDA2OSw2LjQ5NDQ1IDUuOTMzODksNy4wNjk4OSAxMC4wNjQwOCwxNS45NTgzOSAxMS4yMzE3MSwyNC4xNzE1MyAwLjM3ODk0LDIuNjY1NTMgMC4zNTA4OCw4LjE1MTQ0IC0wLjA0MzcsOC41NDYwNCAtMC4yMjQyOCwwLjIyNDI4IC0xLjc2ODQ1LDAuMzE3NSAtNS4yNTkyNywwLjMxNzUgLTMuNjMyMDksMCAtNS4wMTM3OSwwLjA4NzYgLTUuMjEzNTMsMC4zMzA3MyAtMC4xNDk0NywwLjE4MTkgLTAuODc4MDMsMS41MjEzNSAtMS42MTkwMiwyLjk3NjU2IC0xLjcwNjE2LDMuMzUwNjYgLTQuMTAxOTUsNi41NDUyNSAtNi45ODA4Miw5LjMwODMzIC0yLjU4ODM2LDIuNDg0MjUgLTMuOTEyMTIsMy4yNTkzOCAtNS41NjYzNiwzLjI1OTM4IC0xLjkwODYsMCAtMi40MDc3NywtMC43MjEyMiAtMi44MzY5LC00LjA5ODg3IC0wLjE5NDI3LC0xLjUyOTE3IC0wLjQ0NzksLTIuNzgwMyAtMC41NjM2LC0yLjc4MDMgLTAuMTE1NzEsMCAtMC41ODQ1MSwwLjc0NDE0IC0xLjA0MTc4LDEuNjUzNjUgLTEuOTAxMDcsMy43ODEyIC00Ljk5Njc2LDcuNDU2MDMgLTYuOTc4NTMsOC4yODQwNyAtMi4yNzcwMiwwLjk1MTQgLTQuMDc5NzMsMC4wNTY3IC00Ljc0Mjg5LC0yLjM1Mzg1IC0wLjIwNjcsLTAuNzUxMzkgLTAuNzAyNzEsLTMuMDAzMjcgLTEuMTAyMjQsLTUuMDA0MTggLTAuMzk5NTMsLTIuMDAwOTEgLTAuODA2MDIsLTMuNjM4MDIgLTAuOTAzMzMsLTMuNjM4MDIgLTAuMDk3MywwIC0wLjYzNDQ5LDEuMjA4MjYgLTEuMTkzNzUsMi42ODUwMyAtMS42NzQ2MSw0LjQyMTg5IC0zLjY4NTM3LDYuOTQxODUgLTUuODE0ODgsNy4yODc0MiAtMC45MTQ4LDAuMTQ4NDYgLTEuMDUzOCwwLjA3MDEgLTIuMzk3NjIsLTEuMzUwOTIgLTIuMzUxMTgsLTIuNDg2MzUgLTQuODQ4MjUsLTguMDA4NzUgLTYuMzAyOTksLTEzLjkzOTQxIGwgLTAuNjEwMTIsLTIuNDg3MzMgLTE5Ljk4NTMzLC0wLjA2NzggYyAtMTUuNzkxNTc3LC0wLjA1MzYgLTIwLjAzOTk3NSwwLjAwMiAtMjAuMjQ1NzQzLDAuMjY0NTggLTAuMTQzMjI4LDAuMTgyODEgLTAuNDAxMzEsMS4wNzAyNyAtMC41NzM1MTcsMS45NzIxNCAtMC45MTM3MjQsNC43ODUyNCAtMy45MDY0MDMsMTEuNTQxNjQgLTYuMjA3MDc4LDE0LjAxMzM3IC0xLjI5MTMyMSwxLjM4NzMyIC0xLjUyOTg5NiwxLjUzMjc3IC0yLjUxNDI4OCwxLjUzMjc3IC0wLjk0NTA4MywwIC0xLjI1ODIyLC0wLjE2ODA3IC0yLjM4OTc5MywtMS4yODI2MyAtMS41MDUyNywtMS40ODI2MyAtMi40NTI4MDYsLTMuMTEzOTUgLTMuNTg3MTQzLC02LjE3NTc4IC0wLjQ0Mzk1LC0xLjE5ODMyIC0wLjkyMjMxNSwtMi4xODYxMiAtMS4wNjMwMzIsLTIuMTk1MTEgLTAuMTQwNzE3LC0wLjAwOSAtMC41MjY3MzcsMS4yNjkxMiAtMC44NTc4MjEsMi44NDAyMyAtMS4zNzc4MjksNi41MzgyOCAtMS40MDk3NjksNi42NDc2NSAtMi4xODMsNy40NzU0IC0wLjYyMDMyOCwwLjY2NDA2IC0wLjk1MzY4MSwwLjgwMzA3IC0xLjkwMjcxMSwwLjc5MzQzIC0wLjYzMjg0LC0wLjAwNiAtMS41NjczMzcsLTAuMjMyMjIgLTIuMDc2NjU5LC0wLjUwMTc0IHogbSAyLjM4OTAwMSwtNC40NjIwNiBjIDAuMTg5MjA2LC0wLjM5MjE4IDAuMzg4MDU2LC0xLjkwMzY4IDAuNDQxODkxLC0zLjM1ODg4IDAuMjczOTgxLC03LjQwNjA2IDAuNjE1MTcxLC0xMi44MTQ4OSAwLjg0Njc5NSwtMTMuNDI0MTEgMC4zMjc3ODksLTAuODYyMTUgMS4zMTI3MjMsLTEuNzg5NDMgMS45MDA2ODIsLTEuNzg5NDMgMS4xMzUzNjUsMCAxLjkwNTAxMiwxLjY3MDMxIDQuOTk4NSwxMC44NDc5MSAwLjkxMDU2OSwyLjcwMTQzIDIuMjYyMTU4LDUuOTg2NjggMi44MDE4Nyw2LjgxMDM4IDAuODg4NzIxLDEuMzU2MzYgMS43NzMyODUsMC4zMjM2MiAzLjAxMDk1OCwtMy41MTUzMyAxLjEyMTQ2NSwtMy40Nzg1MSAxLjU1MTgyOCwtNS41MzE2NiAxLjg5Mzk3NywtOS4wMzU2NyAwLjU1Nzg0NSwtNS43MTMwMSAwLjAwMjMsLTguODI1NzggLTIuMTM3NTk0LC0xMS45NzY4OSAtMS45MjA1NTEsLTIuODI4MTQgLTQuODI0NjIyLC00LjY3NTgzIC05LjAwMjMzMSwtNS43Mjc2NyAtMi41MTM1ODQsLTAuNjMyODUgLTEwLjcxNzMxNSwtMC43MTA3OSAtMTMuNjI2MDQxLC0wLjEyOTQ1IC04LjUwOTMyNiwxLjcwMDY3IC0xMy44MTQyODcsNS45NTIyNSAtMTQuMzMwOTc0LDExLjQ4NTMzIC0wLjM0OTczMiwzLjc0NTIgMS4zODQzMSw5LjI0MzUxIDQuMjI5OTAyLDEzLjQxMjIyIDEuMDYzMDU5LDEuNTU3MzUgMy42MDkwMSw0LjIzMzMzIDQuMDI3NjIzLDQuMjMzMzMgMC41NzAwNTIsMCAwLjY0OTI3NywtMC43MTEyNSAwLjY1ODE0OCwtNS45MDg2MiAwLjAxMzUxLC03LjkxNDYyIDAuNDYzNTYzLC05Ljk3NTg2IDIuMjIzNzIsLTEwLjE4NDY1IDEuMTAwNjc4LC0wLjEzMDU2IDEuNjc1NTg1LDAuNjAyOSAyLjQzNjU4NCwzLjEwODU1IDIuMTk1NzI3LDcuMjI5NjIgNS4yNzY5ODgsMTMuMzYyOTEgNy43NjUwNzIsMTUuNDU2NSAwLjkyNzIwOCwwLjc4MDE5IDEuMzczNDkyLDAuNzA3NDEgMS44NjEyMTgsLTAuMzAzNTIgeiBtIDg0LjU1NDkyLC0wLjA5MzQgYyAyLjE2Mjk0LC0yLjQwNDAyIDQuNzc3MjEsLTcuNTg0NiA2LjQ1NjksLTEyLjc5NTMzIDEuNTEwMDgsLTQuNjg0NTcgMS44MDY2MSwtNS4yNjY3OCAyLjczNjYzLC01LjM3MzE2IDEuMDczODYsLTAuMTIyODMgMS45Mjc5NywwLjc4MzQ3IDIuMjkzMzEsMi40MzM0NSAwLjE2NTI2LDAuNzQ2NCAwLjM2ODYyLDQuMDc2NDEgMC40NTE5LDcuNCAwLjE2NzY5LDYuNjkyNDcgMC4yNDU1LDYuOTQ3MzIgMS42OTk0NSw1LjU2Njk5IDIuNzI3MDYsLTIuNTg5IDUuNjQzMDcsLTcuNjcwOSA2LjYyMTMzLC0xMS41MzkzOSAwLjc4NTM5LC0zLjEwNTggMC42MTAwOSwtNi45MTY3OSAtMC40MDg5NiwtOC44OTEwNSAtMS43Nzg5OCwtMy40NDY0OCAtNi4xNTk1NSwtNi4yNDMxOSAtMTIuMTE5MjEsLTcuNzM3MzIgLTMuMTU1MTMsLTAuNzkxMDIgLTkuNDg1MDUsLTAuOTg2OCAtMTMuMTQ3OSwtMC40MDY2NiAtNi4wODU1NywwLjk2Mzg2IC0xMC41NTMxNiwzLjk4ODI0IC0xMi4yMjMyMSw4LjI3NDY0IC0wLjgyMjg1LDIuMTExOTMgLTEuMDMzOTYsOC4xNDgwNyAtMC40MTI0OSwxMS43OTM5OCAwLjQ3MzkzLDIuNzgwMzcgMi4wMTA0OSw4LjIxNTUyIDIuNzMyMDQsOS42NjM4NSAwLjY0ODI4LDEuMzAxMjYgMS4zMTUyLDEuNjc3MTcgMS44MDUyMSwxLjAxNzUyIDAuNjMzMTYsLTAuODUyMzcgMS45MjksLTQuMTkyNTggNC4xMDIyOSwtMTAuNTc0MjUgMi4xMzA0MSwtNi4yNTU3NyAyLjY5ODA5LC03LjMxMjI1IDMuOTI5MDgsLTcuMzEyMjUgMC41OTAyOSwwIDEuNDkyMDEsMC45NDkyOSAxLjg4NDk0LDEuOTg0MzcgMC4xNzc4MiwwLjQ2ODQzIDAuMzg2NTUsMy44MzI4MSAwLjUwOTI5LDguMjA4ODYgMC4xNjg5Nyw2LjAyNDAzIDAuMjg4NDMsNy41NzA2OCAwLjYzNjc5LDguMjQ0MzMgMC42NzI1MiwxLjMwMDUyIDEuMzEwMDksMS4zMTEyOCAyLjQ1MjYxLDAuMDQxNCB6IG0gLTM5LjUyMzI5LC03NC4xMjU5OSBjIDQuOTQ1NTIsLTEuNTcwNDkgNy45MzExOSwtNS4wNTI2MyA3Ljk3ODM3LC05LjMwNTA2IDAuMDMxNiwtMi44NTA5MiAtMC42MjA1LC00LjQwOTA4IC0yLjcyMjQyLC02LjUwNDc1IC0yLjU3MTI3LC0yLjU2MzYyIC01Ljg4MzU5LC0zLjk1MzIxIC05LjQwNjY1LC0zLjk0NjI5IC00LjU3MzkzLDAuMDA5IC05LjQ5NDYyMywyLjg2NDU4IC0xMS4xNjQ3NDcsNi40NzkxNSAtMC42MDQzMzMsMS4zMDc5MyAtMC43MzUxNDIsMS45NjExIC0wLjc0Mjc4NSwzLjcwODk0IC0wLjAwODIsMS44NzMwMSAwLjA5MjM3LDIuMzI4MDEgMC44NTg3MDksMy44ODUzNiAyLjQ1MzQxMSw0Ljk4NTgxIDkuMzE1MjUzLDcuNTUxMjYgMTUuMTk5NTIzLDUuNjgyNjUgeiBNIDg2LjQ3OTI5MywxMjAuMTc2MDcgYyAzLjY1ODk2OCwtMS4zNjg5OSA2LjE2NjQwNiwtNS44MTcyNyA2LjE3Mzk4NywtMTAuOTUyODYgMC4wMDc0LC00Ljk5MTU4IC0yLjIzNTA0MSwtOS4yNjQxMzggLTUuNzA2ODU3LC0xMC44NzM1MDEgLTIuMDMxMzI1LC0wLjk0MTYyMiAtMy40MDc3NDgsLTEuMDQxNjAzIC01LjE3NjgzNywtMC4zNzYwMzYgLTMuODQzMzk3LDEuNDQ1OTYxIC02LjE5MTYsNS4yODAzNzcgLTYuNDkwNjI1LDEwLjU5ODYzNyAtMC4zMzA0NjIsNS44Nzc0IDIuMDU5NTcyLDEwLjIxOTM0IDYuNDk4Mzk3LDExLjgwNTU2IDEuNDEyODQzLDAuNTA0ODggMi45OTQ2MTcsMC40MzY5OSA0LjcwMTkzNSwtMC4yMDE4IHogbSAtMS4zNjM0OTcsLTIuODA1MyBjIC0yLjU3OTM0OCwtMC40NzIyNSAtMy45OTg2MTcsLTIuNzIyMDIgLTMuNzg5NDUyLC02LjAwNjg5IDAuMzc1MzYyLC01Ljg5NDk1IDYuMDE0MjI0LC03LjUyOTI3IDguMDQ5NDcyLC0yLjMzMjk4IDAuNjY4NzA2LDEuNzA3MyAwLjQyMDI0NCw0LjkyNzI5IC0wLjQ4Mjc0MSw2LjI1NjE1IC0xLjAzOTk2OCwxLjUzMDQ1IC0yLjQ3NTA5NSwyLjMyMjEzIC0zLjc3NzI3OSwyLjA4MzcyIHogbSA0Ni4xMDYyOTQsMi45OTc5IGMgMy45MzU4NiwtMS4zODg2NSA2LjEwMTcxLC00Ljk2NzExIDYuMzUxMzEsLTEwLjQ5Mzc2IDAuMTQxNjMsLTMuMTM2MTQgLTAuMTk2NzIsLTQuNzU2MDggLTEuNTU1NjcsLTcuNDQ4MTUgLTMuMzg5NDksLTYuNzE0NTM3IC0xMS4xOTc1MywtNi4zMzU4MzIgLTE0LjQ5OTk4LDAuNzAzMjggLTEuMTE5NDIsMi4zODYwMSAtMS40MzA4Miw0LjA4MzcyIC0xLjI4MzAyLDYuOTk0ODIgMC4yMDkxOSw0LjEyMDAxIDEuNzkzMTcsNy4yNjYyNyA0Ljc1NjQ4LDkuNDQ3NzMgMS41MTA5MSwxLjExMjI3IDEuNjc5MiwxLjE3MDU2IDMuMzc5OCwxLjE3MDU2IDAuOTg0MzQsMCAyLjI2NzMzLC0wLjE2ODUyIDIuODUxMDgsLTAuMzc0NDggeiBtIC01LjA3MTA5LC0zLjA3NjAzIGMgLTIuMTYwNjMsLTAuNjQ2MzEgLTMuNTM3MTEsLTMuNDE1NyAtMy4xOTI0MSwtNi40MjI5MyAwLjMwNzUxLC0yLjY4MjkxIDEuNDU5NCwtNC4zODQ0MiAzLjI5OTkxLC00Ljg3NDUxIDEuMjc4NjksLTAuMzQwNDkgMi4yODk1NCwtMTBlLTQgMy40OTEwNywxLjE3MjE4IDIuOTExMTIsMi44NDI2MyAyLjE3MjUsOC41NDU1MyAtMS4yOTk3NiwxMC4wMzU0NCAtMC45NTMxOCwwLjQwOSAtMS4xOTk2LDAuNDE4NjMgLTIuMjk4ODEsMC4wODk4IHoiCiAgICAgICBpZD0icGF0aDM1OCIgLz48L2c+PC9zdmc+Cg==";
+  const MOKO_ASPECT = 150.77 / 159.22;
+
+  // ---------- drawing helpers ----------
+  function text(str, x, y, o = {}) {
+    ctx.save();
+    ctx.globalAlpha *= o.alpha ?? 1;
+    ctx.font = o.font;
+    ctx.fillStyle = o.color ?? C.cream;
+    ctx.textAlign = o.align ?? "center";
+    ctx.textBaseline = o.baseline ?? "alphabetic";
+    ctx.letterSpacing = o.ls ?? "0px";
+    if (o.glow) { ctx.shadowColor = o.glow; ctx.shadowBlur = o.blur ?? 30; }
+    ctx.fillText(str, x, y);
+    ctx.restore();
+  }
+
+  // The MolCrafts wordmark: blue-to-light-blue ramp with a letter-shaped bloom.
+  function wordmark(x, y, size, alpha, reveal = 1, sheen = -1) {
+    if (alpha <= 0 || reveal <= 0) return;
+    ctx.save();
+    ctx.font = `650 ${size}px ${BRAND}`;
+    ctx.letterSpacing = `${-size * 0.035}px`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const w = ctx.measureText("MolCrafts").width;
+    ctx.beginPath();
+    ctx.rect(x - w / 2 - size * 0.2, y - size, (w + size * 0.4) * reveal, size * 2);
+    ctx.clip();
+    ctx.globalAlpha = alpha;
+    const g = ctx.createLinearGradient(x - w / 2, 0, x + w / 2, 0);
+    g.addColorStop(0, C.blue); g.addColorStop(0.55, C.blueTint); g.addColorStop(1, C.blue);
+    ctx.shadowColor = "rgba(3,163,215,0.55)"; ctx.shadowBlur = size * 0.35;
+    ctx.fillStyle = g;
+    ctx.fillText("MolCrafts", x, y);
+    ctx.shadowBlur = 0;
+    if (sheen >= 0 && sheen <= 1) {
+      const sx = x - w / 2 - 200 + (w + 400) * sheen;
+      const s = ctx.createLinearGradient(sx - 120, 0, sx + 120, 0);
+      s.addColorStop(0, "rgba(255,255,255,0)"); s.addColorStop(0.5, "rgba(255,255,255,0.85)"); s.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.globalCompositeOperation = "source-atop";
+      ctx.fillStyle = s;
+      ctx.fillText("MolCrafts", x, y);
+    }
+    ctx.restore();
+  }
+
+  // Moko in a cream burrow. `pop` 0..1 raises the mole out of the hole.
+  function burrow(x, y, r, alpha, pop = 1) {
+    if (alpha <= 0 || r <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.shadowColor = "rgba(142,207,160,0.45)"; ctx.shadowBlur = r * 0.6;
+    ctx.fillStyle = C.cream;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.clip();
+    const mw = r * 1.42, mh = mw * MOKO_ASPECT;
+    const top = y + r * 0.92 - mh + (1 - pop) * mh * 1.05;
+    if (moko.complete && moko.naturalWidth) ctx.drawImage(moko, x - mw / 2, top, mw, mh);
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.9;
+    ctx.strokeStyle = C.green; ctx.lineWidth = Math.max(2, r * 0.045);
+    ctx.beginPath(); ctx.arc(x, y, r + r * 0.12, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  }
+
+  function atom(x, y, r, color, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.1, x, y, r);
+    g.addColorStop(0, "#ffffff"); g.addColorStop(0.25, color); g.addColorStop(1, color);
+    ctx.shadowColor = color; ctx.shadowBlur = r * 1.6;
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  function bond(a, b, k, alpha, order = 1, color = "rgba(251,246,228,0.55)", width = 4) {
+    if (k <= 0) return;
+    const ex = lerp(a[0], b[0], k), ey = lerp(a[1], b[1], k);
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+    const nx = -(b[1] - a[1]) / len, ny = (b[0] - a[0]) / len;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = "round";
+    const offs = order === 2 ? [-5, 5] : [0];
+    for (const o of offs) {
+      ctx.beginPath(); ctx.moveTo(a[0] + nx * o, a[1] + ny * o); ctx.lineTo(ex + nx * o, ey + ny * o); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // ---------- scenes ----------
+  function background(t) {
+    ctx.fillStyle = C.night;
+    ctx.fillRect(0, 0, W, H);
+    const gx = W / 2 + Math.sin(t * 0.35) * 160, gy = H * 0.52 + Math.cos(t * 0.27) * 60;
+    const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, 980);
+    g.addColorStop(0, "rgba(42,103,68,0.55)"); g.addColorStop(0.45, "rgba(24,67,43,0.25)"); g.addColorStop(1, "rgba(11,18,13,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // Faint lattice: the grid of a simulation box.
+    ctx.save();
+    ctx.fillStyle = "rgba(142,207,160,0.07)";
+    const off = (t * 6) % 60;
+    for (let y = -60 + off; y < H + 60; y += 60) for (let x = 30; x < W; x += 60) { ctx.fillRect(x, y, 2, 2); }
+    ctx.restore();
+    for (const p of dust) {
+      const x = ((p.x + p.vx * t) % W + W) % W, y = ((p.y + p.vy * t) % H + H) % H;
+      ctx.globalAlpha = p.a * (0.6 + 0.4 * Math.sin(t * 1.4 + p.ph));
+      ctx.fillStyle = C.green;
+      ctx.beginPath(); ctx.arc(x, y, p.s, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    const v = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, H * 1.05);
+    v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.6)");
+    ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+  }
+
+  // 0 – 5.3s: atoms assemble into a molecule, then the wordmark rises beneath it.
+  function sceneBrand(t) {
+    const out = 1 - prog(t, 4.85, 5.35);
+    if (out <= 0) return;
+    const lift = inOutCubic(prog(t, 2.5, 3.4));
+    const scale = lerp(104, 48, lift);
+    const cx = W / 2, cy = lerp(500, 300, lift);
+    const rot = -0.15 + t * 0.06;
+    const cos = Math.cos(rot), sin = Math.sin(rot);
+    const pos = atoms.map((a) => {
+      const k = outCubic(prog(t, 0.15 + a.delay, 1.35 + a.delay));
+      const lx = a.p[0] * cos - a.p[1] * sin, ly = a.p[0] * sin + a.p[1] * cos;
+      return [cx + lerp(a.from[0], lx * scale, k), cy + lerp(a.from[1], ly * scale, k)];
+    });
+    ctx.save();
+    ctx.globalAlpha = out;
+    const zoom = 1 + (1 - out) * 0.06;
+    ctx.translate(W / 2, H / 2); ctx.scale(zoom, zoom); ctx.translate(-W / 2, -H / 2);
+    bonds.forEach(([i, j, order], n) => {
+      const k = outCubic(prog(t, 1.05 + n * 0.045, 1.55 + n * 0.045));
+      bond(pos[i], pos[j], k, 1, order || 1, "rgba(251,246,228,0.5)", lerp(4, 2.5, lift));
+    });
+    atoms.forEach((a, i) => {
+      const e = ELEM[a.e];
+      atom(pos[i][0], pos[i][1], e.r * lerp(1, 0.6, lift), e.c, clamp(prog(t, 0.05 + a.delay * 0.5, 0.5 + a.delay * 0.5)));
+    });
+
+    // Kicker, typed like a terminal line.
+    const kicker = "STANDARDIZING MOLECULAR & MATERIALS COMPUTATION";
+    const typed = Math.floor(kicker.length * prog(t, 0.35, 1.9));
+    const kAlpha = 1 - prog(t, 2.35, 2.75);
+    if (kAlpha > 0) {
+      ctx.save();
+      ctx.font = `500 26px ${MONO}`; ctx.letterSpacing = "7px";
+      const fullW = ctx.measureText(kicker).width;
+      ctx.restore();
+      const x0 = W / 2 - fullW / 2;
+      text(kicker.slice(0, typed), x0, 880, { font: `500 26px ${MONO}`, ls: "7px", align: "left", color: C.green, alpha: kAlpha });
+      ctx.save(); ctx.font = `500 26px ${MONO}`; ctx.letterSpacing = "7px";
+      const cw = ctx.measureText(kicker.slice(0, typed)).width; ctx.restore();
+      if (Math.floor(t * 3) % 2 === 0 || typed < kicker.length) {
+        ctx.save(); ctx.globalAlpha = kAlpha; ctx.fillStyle = C.spark; ctx.fillRect(x0 + cw + 4, 856, 14, 30); ctx.restore();
+      }
+    }
+
+    // Wordmark and promise.
+    const rev = outCubic(prog(t, 2.85, 3.6));
+    wordmark(W / 2, 590 - (1 - rev) * 30, 210, rev, rev, prog(t, 3.6, 4.5));
+    const sub = outCubic(prog(t, 3.65, 4.25));
+    text("Accelerate your R&D with AI-assisted scientific infrastructure.", W / 2, 770 + (1 - sub) * 18,
+      { font: `400 42px ${BRAND}`, color: "rgba(251,246,228,0.86)", alpha: sub, ls: "-0.3px" });
+    ctx.restore();
+  }
+
+  // Positions of the product ring at time t (it contracts into the hub after 11s).
+  const HUB = [W / 2, 640];
+  function ringNode(k, t) {
+    const R = 290 * (1 - inOutCubic(prog(t, 11.05, 11.85)));
+    const a = ((-90 + 60 * k) * Math.PI) / 180 + prog(t, 9.4, 12) * 0.35;
+    return [HUB[0] + Math.cos(a) * R, HUB[1] + Math.sin(a) * R * 0.86];
+  }
+  const nodeStart = (k) => 5.75 + k * 0.58;
+
+  // 5.2 – 12s: six products snap into a ring and bond into one stack.
+  function sceneStack(t) {
+    if (t < 5.2 || t > 12.2) return;
+    const inA = prog(t, 5.25, 5.75);
+    const headOut = 1 - prog(t, 10.9, 11.3);
+    text("Take one. Or take the stack.", W / 2, 128 - (1 - outCubic(inA)) * 20,
+      { font: `600 66px ${BRAND}`, ls: "-1.2px", alpha: inA * headOut });
+    const lead = outCubic(prog(t, 9.55, 10.1));
+    text("Built to work better together, designed to stand on their own.", W / 2, 186,
+      { font: `400 30px ${BRAND}`, color: C.muted, alpha: lead * headOut });
+
+    const pts = PRODUCTS.map((_, k) => ringNode(k, t));
+    const merge = prog(t, 11.05, 11.85);
+    // Ring bonds: each new product bonds to the previous one; the last closes the ring.
+    for (let k = 0; k < 6; k++) {
+      const j = (k + 1) % 6;
+      const s = j === 0 ? nodeStart(5) + 0.45 : nodeStart(j) - 0.05;
+      const kk = outCubic(prog(t, s, s + 0.4));
+      if (kk <= 0) continue;
+      ctx.save();
+      const g = ctx.createLinearGradient(pts[k][0], pts[k][1], pts[j][0], pts[j][1]);
+      g.addColorStop(0, PRODUCTS[k].color); g.addColorStop(1, PRODUCTS[j].color);
+      ctx.restore();
+      bond(pts[k], pts[j], kk, 0.75 * (1 - merge), 1, g, 4);
+    }
+    // Spokes to the hub.
+    for (let k = 0; k < 6; k++) {
+      const kk = outCubic(prog(t, 9.15 + k * 0.05, 9.6 + k * 0.05));
+      bond(HUB, pts[k], kk, 0.35 * (1 - merge), 1, "rgba(251,246,228,0.6)", 2);
+    }
+    // Pulses running around the closed ring.
+    const pulseA = prog(t, 9.6, 9.9) * (1 - merge);
+    if (pulseA > 0) {
+      for (let q = 0; q < 3; q++) {
+        const u = ((t - 9.6) * 0.55 + q / 3) % 1;
+        const seg = Math.floor(u * 6), f = u * 6 - seg;
+        const a = pts[seg], b = pts[(seg + 1) % 6];
+        atom(lerp(a[0], b[0], f), lerp(a[1], b[1], f), 6, C.spark, pulseA);
+      }
+    }
+    // Hub.
+    const hubIn = outBack(prog(t, 9.1, 9.6));
+    burrow(HUB[0], HUB[1], 62 * hubIn, clamp(hubIn) * (1 - prog(t, 11.9, 12.2)), prog(t, 9.3, 9.8));
+
+    // Product nodes and labels.
+    PRODUCTS.forEach((p, k) => {
+      const s = nodeStart(k);
+      const pop = prog(t, s, s + 0.45);
+      if (pop <= 0) return;
+      const [x, y] = pts[k];
+      const r = 30 * outBack(pop) * (1 - merge * 0.7);
+      ctx.save();
+      ctx.globalAlpha = 1 - merge;
+      ctx.strokeStyle = p.color; ctx.lineWidth = 2;
+      ctx.globalAlpha *= 0.5 * (1 - prog(t, s + 0.2, s + 0.9));
+      ctx.beginPath(); ctx.arc(x, y, r * (1 + prog(t, s + 0.2, s + 0.9) * 1.6), 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+      atom(x, y, r, p.color, 1 - merge);
+
+      const la = outCubic(prog(t, s + 0.12, s + 0.5)) * (1 - prog(t, 10.85, 11.2));
+      if (la <= 0) return;
+      let ax = "center", lx = x, ly = y, dy = 0;
+      if (k === 0) { ly = y - 104; }
+      else if (k === 3) { ly = y + 74; }
+      else if (k === 1 || k === 2) { ax = "left"; lx = x + 56; ly = y - 12; }
+      else { ax = "right"; lx = x - 56; ly = y - 12; }
+      const slide = (1 - la) * (ax === "left" ? -16 : ax === "right" ? 16 : 0);
+      text(p.name, lx + slide, ly + 10 + dy, { font: `600 40px ${BRAND}`, align: ax, ls: "-0.4px", alpha: la });
+      text(p.role.toUpperCase(), lx + slide, ly + 44 + dy, { font: `500 20px ${MONO}`, align: ax, ls: "3px", color: p.color, alpha: la });
+    });
+  }
+
+  // 11.6 – 13.5s: what the stack gives a lab.
+  function scenePromise(t) {
+    if (t < 11.4 || t > 13.6) return;
+    const out = 1 - prog(t, 13.1, 13.45);
+    const lines = [["Unified", " data."], ["Connected", " knowledge."], ["Replayable", " research."]];
+    lines.forEach(([a, b], i) => {
+      const k = outCubic(prog(t, 11.7 + i * 0.32, 12.15 + i * 0.32));
+      if (k <= 0) return;
+      const y = 420 + i * 120 + (1 - k) * 26;
+      ctx.save();
+      ctx.font = `600 84px ${BRAND}`; ctx.letterSpacing = "-2px";
+      const wa = ctx.measureText(a).width, wb = ctx.measureText(b).width;
+      ctx.restore();
+      const x0 = W / 2 - (wa + wb) / 2;
+      text(a, x0, y, { font: `600 84px ${BRAND}`, ls: "-2px", align: "left", color: C.green, alpha: k * out, glow: "rgba(142,207,160,0.35)", blur: 30 });
+      text(b, x0 + wa, y, { font: `600 84px ${BRAND}`, ls: "-2px", align: "left", alpha: k * out });
+    });
+    // Collapsed stack as a small spark above the lines.
+    const s = prog(t, 11.5, 11.9) * out;
+    atom(W / 2, 250, 10 + Math.sin(t * 8) * 1.5, C.spark, s);
+  }
+
+  // 13.4 – 15s: end card.
+  function sceneEnd(t) {
+    if (t < 13.35) return;
+    const k = prog(t, 13.4, 13.85);
+    burrow(W / 2, 360, 150 * outBack(k), clamp(k * 1.5), outBack(prog(t, 13.75, 14.25)));
+    const wm = outCubic(prog(t, 13.75, 14.25));
+    wordmark(W / 2, 640 - (1 - wm) * 24, 150, wm, 1, prog(t, 14.25, 14.95));
+    const u = outCubic(prog(t, 14.05, 14.5));
+    text("molcrafts.org", W / 2, 770, { font: `500 38px ${MONO}`, ls: "5px", color: C.cream, alpha: u });
+    if (u > 0) {
+      ctx.save();
+      ctx.font = `500 38px ${MONO}`; ctx.letterSpacing = "5px";
+      const w = ctx.measureText("molcrafts.org").width;
+      ctx.restore();
+      const g = ctx.createLinearGradient(W / 2 - w / 2, 0, W / 2 + w / 2, 0);
+      g.addColorStop(0, "rgba(31,192,241,0)"); g.addColorStop(0.5, C.spark); g.addColorStop(1, "rgba(31,192,241,0)");
+      ctx.save(); ctx.fillStyle = g; ctx.shadowColor = C.spark; ctx.shadowBlur = 14;
+      ctx.fillRect(W / 2 - (w / 2) * u, 798, w * u, 3); ctx.restore();
+    }
+  }
+
+  function render(t) {
+    t = clamp(t, 0, DURATION);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1;
+    background(t);
+    sceneBrand(t);
+    sceneStack(t);
+    scenePromise(t);
+    sceneEnd(t);
+    const fade = 1 - prog(t, 0, 0.35);
+    if (fade > 0) { ctx.globalAlpha = fade; ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+  }
+
+  // ---------- boot ----------
+  const ready = Promise.all([
+    moko.decode().catch(() => {}),
+    document.fonts.load(`650 100px ${BRAND}`), document.fonts.load(`400 40px ${BRAND}`),
+    document.fonts.load(`600 40px ${BRAND}`), document.fonts.load(`500 26px ${MONO}`),
+  ]).catch(() => {}).then(() => document.fonts.ready);
+
+  window.renderFrame = render;
+  window.teaserReady = ready;
+  if (capture) { ready.then(() => render(0)); return; }
+
+  const playBtn = document.getElementById("play"), replayBtn = document.getElementById("replay");
+  const scrub = document.getElementById("scrub"), timeEl = document.getElementById("time");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let playing = !reduce, t = reduce ? DURATION : 0, last = null;
+
+  function show() {
+    render(t);
+    scrub.value = Math.round(t * 1000);
+    timeEl.textContent = `${t.toFixed(1)} / ${DURATION.toFixed(1)}s`;
+    playBtn.textContent = playing ? "Pause" : "Play";
+  }
+  function frame(now) {
+    if (playing) {
+      if (last != null) t += (now - last) / 1000;
+      if (t >= DURATION + 1.5) t = 0; // hold the end card, then loop
+    }
+    last = now;
+    render(Math.min(t, DURATION));
+    scrub.value = Math.round(Math.min(t, DURATION) * 1000);
+    timeEl.textContent = `${Math.min(t, DURATION).toFixed(1)} / ${DURATION.toFixed(1)}s`;
+    requestAnimationFrame(frame);
+  }
+  playBtn.addEventListener("click", () => { playing = !playing; if (playing && t >= DURATION) t = 0; show(); });
+  replayBtn.addEventListener("click", () => { t = 0; playing = true; show(); });
+  scrub.addEventListener("input", () => { t = scrub.value / 1000; playing = false; show(); });
+  ready.then(() => { show(); requestAnimationFrame(frame); });
+})();
+</script>
