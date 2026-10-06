@@ -2,6 +2,7 @@ import { homeReveal } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useScreenMotion } from "./ScreenMotion";
 
 interface RevealProps {
   children: ReactNode;
@@ -11,21 +12,17 @@ interface RevealProps {
 }
 
 /**
- * Fades a block in the first time it reaches the viewport, and never again.
- *
- * The pager used to animate a whole screen on arrival, which only worked because
- * arrival was a discrete event. With continuous scroll the reader can stop
- * anywhere, so re-triggering on every pass would make the page twitch.
+ * Replays the shared focus-and-gather entrance when its screen is selected.
  */
 export function Reveal({ children, delay = 0, className }: RevealProps) {
+  const { visible, reduced } = useScreenMotion();
   return (
     <motion.div
       className={cn("min-w-0", className)}
       variants={homeReveal}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15, margin: "0px 0px -12% 0px" }}
-      transition={{ delay }}
+      initial={reduced ? false : "hidden"}
+      animate={reduced || visible ? "visible" : "hidden"}
+      transition={{ delay: reduced ? 0 : 0.3 + delay, duration: reduced ? 0 : 1.05 }}
     >
       {children}
     </motion.div>

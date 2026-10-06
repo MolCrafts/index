@@ -37,7 +37,7 @@ export const HOME_BAND = "py-16 sm:py-20";
  * hyphenation and its looser leading across every block on the page. This file owns
  * size, weight and measure; `typeStyles.ts` owns what changes per language.
  */
-const HEADING_BASE = `${TYPE_DISPLAY} font-display font-semibold text-foreground`;
+const HEADING_BASE = `${TYPE_DISPLAY} font-display font-semibold home-title`;
 
 /**
  * Headings sit in light rather than on a flat ground, the way the AI screen's
@@ -53,16 +53,16 @@ export const HOME_H2_STATEMENT = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.
 export const HOME_H2_SECTION = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.1rem,3.4vw,3.2rem)] leading-display tracking-[-0.03em]`;
 
 /** Sub-heading inside a block — pillar titles, path titles, supporter names. */
-export const HOME_H3 = `${TYPE_HEADING} font-display text-2xl font-semibold text-foreground md:text-[1.75rem]`;
+export const HOME_H3 = `${TYPE_HEADING} font-display text-2xl font-semibold home-subtitle md:text-[1.75rem]`;
 
 /** Lead size without a colour, so emphasis and muted leads share one rung. */
 export const HOME_LEAD_SIZE = `${TYPE_BODY} font-body text-base md:text-lg`;
 
 /** The paragraph that sits beside or under a heading. */
-export const HOME_LEAD = `${HOME_LEAD_SIZE} text-muted-foreground`;
+export const HOME_LEAD = `${HOME_LEAD_SIZE} text-foreground`;
 
 /** Supporting copy inside a column, card or list. */
-export const HOME_BODY = `${TYPE_BODY} font-body text-sm text-muted-foreground md:text-base`;
+export const HOME_BODY = `${TYPE_BODY} font-body text-sm text-foreground md:text-base`;
 
 /**
  * Prose set at heading size, for a block whose sentences *are* its display element.
@@ -73,13 +73,13 @@ export const HOME_BODY = `${TYPE_BODY} font-body text-sm text-muted-foreground m
  * the block reads as a spec sheet. This is the third rung, and it earns its place
  * by being the only one where body copy is the largest thing on screen.
  */
-export const HOME_STATEMENT = `${TYPE_BODY} font-body text-xl leading-relaxed text-foreground/85 md:text-2xl`;
+export const HOME_STATEMENT = `${TYPE_BODY} font-body text-xl leading-relaxed text-foreground md:text-2xl`;
 
 /**
- * AI screen sentences — the claims around the headline. White and large; they
+ * AI screen sentences — the claims around the headline. Green and large; they
  * are the reading, not captions on the constellation.
  */
-export const HOME_ASSIST_SENTENCE = `${TYPE_DISPLAY} font-display text-2xl font-semibold leading-snug tracking-tight text-foreground 2xl:text-3xl`;
+export const HOME_ASSIST_SENTENCE = `${TYPE_DISPLAY} font-display text-2xl font-semibold leading-snug tracking-tight home-subtitle 2xl:text-3xl`;
 
 /** The id a block's heading carries, stated in one place instead of seven. */
 export function sectionHeadingId(id: string): string {

@@ -49,6 +49,9 @@
   --color-canvas: hsl(var(--canvas));
   --color-brand-kicker: color-mix(in oklab, hsl(var(--primary)) 70%, hsl(var(--foreground)));
   /* Homepage type roles: green keywords, blue emphasis sentences. */
+  --color-home-blue: var(--home-blue);
+  --color-home-green: var(--home-green);
+  --color-home-white: var(--home-white);
   --color-home-keyword: var(--home-keyword);
   --color-home-emphasis: var(--home-emphasis);
 
@@ -63,8 +66,8 @@
   --color-code-repo: #0d1117;
 
   /* Hero subtitle sheen — a specular sweep, not a brand ramp. */
-  --color-sheen-core: rgb(255 255 255 / 0.98);
-  --color-sheen-edge: rgb(189 240 255 / 0.92);
+  --color-sheen-core: var(--home-white);
+  --color-sheen-edge: var(--home-blue-tint);
 
   /*
    * Depth shadows. Black, so they read the same on every surface, and named so a
@@ -80,15 +83,11 @@
   /* Narrative home type stack. CJK fallbacks keep mixed-script lines on one family. */
   --font-brand: "Geist Variable", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
-    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-brand);
   --font-body: "DM Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
     ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-sans: var(--font-body);
-  /* Product-page faces. Every landing page shares these two. */
-  --font-outfit: "Outfit", "PingFang SC", "Hiragino Sans GB", ui-sans-serif, system-ui, sans-serif;
-  --font-playfair: "Playfair Display", ui-serif, Georgia, Cambria, serif;
 
   /*
    * Variable-font weights between the default 100-step ramp.
@@ -399,9 +398,9 @@
      * Wordmark: brand cyan ramp + sweep.
      *   #03a3d7 → #8ce4ff → #03a3d7  (historic index contract, not #3b82f6)
      */
-    --brand-primary-from: #03a3d7;
-    --brand-primary-via: #8ce4ff;
-    --brand-primary-to: #03a3d7;
+    --brand-primary-from: var(--home-blue);
+    --brand-primary-via: var(--home-blue-tint);
+    --brand-primary-to: var(--home-blue);
     --brand-secondary-from: var(--molcrafts-sand-strong);
     --brand-secondary-via: var(--molcrafts-sand);
     --brand-secondary-to: var(--molcrafts-sand-strong);
@@ -416,26 +415,13 @@
     --brand-molrec-to: var(--molcrafts-sand-strong);
 
     /*
-     * AI editorial screen — light cyan display ramps. Lighter than the wordmark
-     * ramp on purpose: that screen reads as luminous context, not as the mark.
-     * Ambient glows there reuse --accent-rgb / --primary instead of their own values.
-     */
-    --brand-assist-from: #86ddf4;
-    --brand-assist-via: #c4f2ff;
-    --brand-assist-to: #61c7df;
-    --brand-assist-subject-from: #20bde9;
-    --brand-assist-subject-via: #b8f1ff;
-    --brand-assist-subject-to: #2ab6d9;
-    --brand-assist-concept: var(--molcrafts-forest-soft);
-
-    /*
      * Homepage type roles. Light paper needs a deeper blue than display cyan
      * so emphasis sentences and the wordmark still clear WCAG on cream.
      */
     --home-keyword: var(--molcrafts-forest-light);
-    --home-emphasis: #0a6f96;
-    --home-wordmark-from: #0a6f96;
-    --home-wordmark-via: #1488b3;
+    --home-emphasis: color-mix(in srgb, var(--home-blue) 66%, black);
+    --home-wordmark-from: var(--home-emphasis);
+    --home-wordmark-via: var(--home-blue);
   }
 
   .dark {
@@ -472,10 +458,10 @@
 
     --canvas: 130 18% 7%;
     --background-rgb: 16, 24, 17;
-    --home-keyword: var(--molcrafts-forest-soft);
+    --home-keyword: var(--home-green);
     --home-emphasis: rgb(var(--accent-rgb));
-    --home-wordmark-from: #03a3d7;
-    --home-wordmark-via: #8ce4ff;
+    --home-wordmark-from: var(--home-blue);
+    --home-wordmark-via: var(--home-blue-tint);
   }
 }
 
@@ -508,4 +494,218 @@
   h3 {
     @apply break-words text-balance;
   }
+}
+
+/* Three homepage source colours; ramps derive from these, never separate swatches. */
+:root {
+  --home-blue: #03a3d7;
+  --home-green: #8ecfa0;
+  --home-white: #ffffff;
+  --home-blue-tint: color-mix(in srgb, var(--home-blue) 45%, var(--home-white));
+  --home-green-shade: color-mix(in srgb, var(--home-green) 75%, black);
+  --home-green-tint: color-mix(in srgb, var(--home-green) 70%, var(--home-white));
+  --home-title-ramp: linear-gradient(
+    90deg,
+    var(--home-blue),
+    var(--home-blue-tint) 50%,
+    var(--home-blue)
+  );
+  --home-subtitle-ramp: linear-gradient(
+    90deg,
+    var(--home-green-shade),
+    var(--home-green-tint) 50%,
+    var(--home-green-shade)
+  );
+}
+
+/* Typography and colour roles. Component composition owns the layout. */
+.home-title,
+.home-subtitle {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.home-title {
+  background-image: var(--home-title-ramp);
+}
+.home-subtitle {
+  background-image: var(--home-subtitle-ramp);
+}
+.dark [data-home-pager] {
+  --color-foreground: var(--home-white);
+  --color-muted-foreground: color-mix(in srgb, var(--home-white) 70%, transparent);
+}
+.foundation-composition {
+  display: grid;
+  gap: 4rem;
+}
+.foundation-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.12;
+}
+.foundation-title-line {
+  display: block;
+}
+.foundation-subtitle {
+  margin-top: 1.75rem;
+  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+}
+.foundation-strata {
+  position: relative;
+}
+.foundation-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+  padding-left: 2.5rem;
+}
+.foundation-list li {
+  position: relative;
+}
+.foundation-list li:nth-child(2) {
+  margin-left: 2rem;
+}
+.foundation-guide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.capabilities-stations {
+  position: relative;
+  padding-left: 2rem;
+}
+.capabilities-stations li:nth-child(2) {
+  margin-left: 1rem;
+}
+[data-home-pager] :lang(zh) :is(h2, h3, .assist-mission) {
+  letter-spacing: 0;
+}
+[data-home-pager] :lang(zh) p {
+  line-height: 1.65;
+}
+.assist-composition:lang(sv) .assist-title {
+  font-size: clamp(2.25rem, 4.5vw, 4.75rem);
+}
+.capabilities-header p {
+  color: var(--home-keyword);
+  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+}
+@media (min-width: 1024px) {
+  .foundation-composition {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: 5rem;
+    align-items: center;
+    min-height: 36rem;
+  }
+  .foundation-list {
+    gap: 5.5rem;
+  }
+  .foundation-title {
+    font-size: clamp(2rem, 3.65vw, 3.5rem);
+  }
+  .foundation-title:lang(sv) {
+    font-size: clamp(1.75rem, 3vw, 3rem);
+  }
+  .foundation-title-line {
+    white-space: nowrap;
+  }
+  .foundation-list li:nth-child(2) h3 {
+    white-space: nowrap;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+  }
+  .capabilities-header h2 {
+    font-size: clamp(3rem, 5.4vw, 4.875rem);
+    max-width: 44rem;
+  }
+  .capabilities-stations {
+    position: relative;
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+    padding-top: 8.75rem;
+    padding-left: 0;
+    flex-direction: row;
+  }
+  .capabilities-stations li {
+    flex: 1;
+    min-width: 0;
+  }
+  .capabilities-stations li:nth-child(2) {
+    flex: 1.15;
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+  .capabilities-stations li:nth-child(3) {
+    margin-top: .75rem;
+  }
+  .capabilities-stations p {
+    font-size: 1.1875rem;
+    line-height: 1.5;
+    max-width: 19rem;
+  }
+}
+
+/* The pager requests smooth scroll explicitly; initial links and resizing stay instant. */
+html:has([data-home-pager]) {
+  scroll-padding-top: 0;
+  scroll-behavior: auto;
+  overscroll-behavior-y: none;
+}
+
+@keyframes home-guide-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    filter: drop-shadow(0 0 2px rgb(var(--accent-rgb)));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgb(var(--accent-rgb)));
+  }
+}
+@keyframes home-aura-breathe {
+  0%,
+  100% {
+    filter: blur(30px) brightness(0.8);
+  }
+  50% {
+    filter: blur(30px) brightness(1.4);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-home-pager] .home-title {
+    background-size: 200% auto;
+    animation: assist-sweep 12s linear infinite;
+  }
+  .home-guide-node {
+    animation: home-guide-pulse 3.8s ease-in-out infinite;
+  }
+  .home-aura {
+    animation: home-aura-breathe 8s ease-in-out infinite;
+  }
+}
+html.force-full-motion [data-home-pager] .home-title {
+  background-size: 200% auto;
+  animation: assist-sweep 12s linear infinite;
+}
+html.force-full-motion .home-guide-node {
+  animation: home-guide-pulse 3.8s ease-in-out infinite;
+}
+html.force-full-motion .home-aura {
+  animation: home-aura-breathe 8s ease-in-out infinite;
+}
+[data-home-visible="false"] :is(.home-title, .home-guide-node, .home-aura) {
+  animation-play-state: paused !important;
+}
+
+[data-home-pager] svg g:nth-of-type(2) .home-guide-node {
+  animation-delay: .6s;
+}
+[data-home-pager] svg g:nth-of-type(3) .home-guide-node {
+  animation-delay: 1.2s;
 }

@@ -11,7 +11,7 @@ interface Atom {
   x: number;
   y: number;
   z: number;
-  /** 0 forest · 1 cyan · 2 sand */
+  /** 0 green · 1 blue · 2 white */
   kind: 0 | 1 | 2;
   r: number;
 }
@@ -33,10 +33,9 @@ interface Instance {
 }
 
 interface Palette {
-  forest: [number, number, number];
-  cyan: [number, number, number];
-  spark: [number, number, number];
-  sand: [number, number, number];
+  green: [number, number, number];
+  blue: [number, number, number];
+  white: [number, number, number];
   isDark: boolean;
 }
 
@@ -63,22 +62,6 @@ function hexRgb(hex: string): [number, number, number] | null {
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
 
-function hslChannelsToRgb(channels: string): [number, number, number] | null {
-  const parts = channels.trim().split(/\s+/);
-  if (parts.length < 3) return null;
-  const h = Number.parseFloat(parts[0]);
-  const s = Number.parseFloat(parts[1].replace("%", "")) / 100;
-  const l = Number.parseFloat(parts[2].replace("%", "")) / 100;
-  if (Number.isNaN(h) || Number.isNaN(s) || Number.isNaN(l)) return null;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) => {
-    const k = (n + h / 30) % 12;
-    const c = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * c);
-  };
-  return [f(0), f(8), f(4)];
-}
-
 /**
  * Reads the canvas palette straight off the design tokens. Returns null until the
  * stylesheet has applied, so the field simply does not paint rather than inventing
@@ -86,16 +69,14 @@ function hslChannelsToRgb(channels: string): [number, number, number] | null {
  */
 function readPalette(): Palette | null {
   const root = getComputedStyle(document.documentElement);
-  const forest = hslChannelsToRgb(root.getPropertyValue("--molcrafts-forest-hsl"));
-  const cyan = hexRgb(root.getPropertyValue("--brand-primary-from"));
-  const spark = hexRgb(root.getPropertyValue("--molcrafts-cyan-spark-soft"));
-  const sand = hexRgb(root.getPropertyValue("--molcrafts-sand"));
-  if (!forest || !cyan || !spark || !sand) return null;
+  const green = hexRgb(root.getPropertyValue("--home-green"));
+  const blue = hexRgb(root.getPropertyValue("--home-blue"));
+  const white = hexRgb(root.getPropertyValue("--home-white"));
+  if (!green || !blue || !white) return null;
   return {
-    forest,
-    cyan,
-    spark,
-    sand,
+    green,
+    blue,
+    white,
     isDark: document.documentElement.classList.contains("dark"),
   };
 }
@@ -424,9 +405,9 @@ export function MoleculeField({
       const gy = h * (0.4 + (ptr.active && !reduced ? (ptr.y - 0.5) * 0.05 : 0));
       const wellA = (pal.isDark ? 0.22 : 0.1) * inten;
       const well = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(w, h) * 0.55);
-      well.addColorStop(0, rgba(pal.forest, wellA));
-      well.addColorStop(0.55, rgba(pal.forest, wellA * 0.25));
-      well.addColorStop(1, rgba(pal.forest, 0));
+      well.addColorStop(0, rgba(pal.green, wellA));
+      well.addColorStop(0.55, rgba(pal.green, wellA * 0.25));
+      well.addColorStop(1, rgba(pal.green, 0));
       ctx.fillStyle = well;
       ctx.fillRect(0, 0, w, h);
 
@@ -468,7 +449,7 @@ export function MoleculeField({
           if (!a || !b || !atomA || !atomB) continue;
           const depth = (a.z + b.z) * 0.5;
           const fade = clamp(0.55 + depth * 0.08, 0.28, 0.85) * inten;
-          ctx.strokeStyle = rgba(pal.forest, fade * (pal.isDark ? 0.7 : 0.5));
+          ctx.strokeStyle = rgba(pal.green, fade * (pal.isDark ? 0.7 : 0.5));
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
@@ -485,7 +466,7 @@ export function MoleculeField({
           const p = projected[i];
           const atom = tmpl.atoms[i];
           if (!p || !atom) continue;
-          const col = atom.kind === 1 ? pal.cyan : atom.kind === 2 ? pal.sand : pal.forest;
+          const col = atom.kind === 1 ? pal.blue : atom.kind === 2 ? pal.white : pal.green;
           const depthFade = clamp(0.55 + p.z * 0.1, 0.35, 1) * inten;
           const radius = atom.r * scale * 0.55;
           const pulse = reduced ? 1 : 0.92 + Math.sin(elapsed * 1.6 + inst.phase + i) * 0.08;
@@ -508,7 +489,7 @@ export function MoleculeField({
 
           // Specular highlight
           ctx.beginPath();
-          ctx.fillStyle = rgba(pal.spark, depthFade * 0.35);
+          ctx.fillStyle = rgba(pal.white, depthFade * 0.35);
           ctx.arc(p.x - radius * 0.28, p.y - radius * 0.28, radius * 0.28, 0, Math.PI * 2);
           ctx.fill();
         }

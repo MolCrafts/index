@@ -48,6 +48,7 @@ export function SectionHeader({
       className={cn(
         HOME_HEADER_GRID,
         "w-full min-w-0",
+        sectionId === "trust" && "lg:block",
         /* The shared lead track is capped at its `fr` share, so an unbroken line
            overflows it and lands on the heading. A line sizes its own track and
            the heading takes what is left. */
@@ -55,7 +56,10 @@ export function SectionHeader({
         className,
       )}
     >
-      <h2 id={sectionHeadingId(sectionId)} className={cn(SCALE[scale], "min-w-0")}>
+      <h2
+        id={sectionHeadingId(sectionId)}
+        className={cn(SCALE[scale], "min-w-0", sectionId === "trust" && "lg:text-[2.1875rem]")}
+      >
         {title}
       </h2>
       {lead ? (
@@ -63,7 +67,8 @@ export function SectionHeader({
           className={cn(
             HOME_LEAD,
             "md:justify-self-end",
-            leadShape === "line" ? "lg:whitespace-nowrap" : "max-w-xl",
+            sectionId === "trust" && "lg:mt-6 lg:max-w-[35rem] lg:whitespace-normal",
+            leadShape === "line" && sectionId !== "trust" ? "lg:whitespace-nowrap" : "max-w-xl",
           )}
         >
           {lead}

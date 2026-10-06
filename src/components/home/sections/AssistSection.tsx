@@ -7,6 +7,7 @@ import {
   assistSublineReveal,
   assistWordFillReveal,
   assistWordOutlineReveal,
+  knowledgeStationWake,
   prefersReducedMotion,
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
@@ -15,7 +16,6 @@ import { cn } from "@/lib/utils";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { HomeSection } from "../HomeSection";
-import { SectionMarker } from "../SectionMarker";
 
 /*
  * Six sentences on a hexagon around the headline. The ellipse is tighter than
@@ -87,9 +87,8 @@ export function AssistSection() {
   const { assist } = useHomeCopy();
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = prefersReducedMotion();
-  /* The constellation gathers once, the first time the screen is properly in view —
-     not on every pass, which continuous scrolling would otherwise cause. */
-  const hasEntered = useInView(stageRef, { once: true, amount: 0.45 });
+  /* Gather again on each discrete screen arrival. */
+  const hasEntered = useInView(stageRef, { amount: 0.45 });
   /* A live signal, unlike `hasEntered`. The drift and sweep loops are infinite, so
      left ungated they cost the main thread continuously for a screen that is
      usually thousands of pixels away. */
@@ -103,12 +102,8 @@ export function AssistSection() {
 
   return (
     <HomeSection id="assist" aria-labelledby="assist-heading" className="overflow-hidden">
-      <SectionMarker sectionId="assist" />
       <div ref={stageRef} className="flex w-full flex-1 items-center justify-center">
-        <div
-          lang="en"
-          className="relative isolate mx-auto h-svh w-full max-w-[110rem] overflow-hidden font-brand"
-        >
+        <div className="assist-composition relative isolate mx-auto h-svh w-full max-w-[110rem] overflow-hidden font-brand">
           <motion.div
             className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[min(34vw,32rem)] w-[min(78vw,76rem)] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.16)_0%,rgba(var(--accent-rgb),0.08)_38%,hsl(var(--primary)/0.055)_56%,transparent_74%)] blur-[26px]"
             aria-hidden="true"
@@ -135,7 +130,7 @@ export function AssistSection() {
               >
                 <span
                   className={cn(
-                    "block whitespace-nowrap font-brand text-[clamp(0.85rem,0.95vw,1.05rem)] font-label leading-none tracking-[0.055em] text-[var(--brand-assist-concept)] [text-shadow:0_0_22px_rgba(var(--accent-rgb),0.2)]",
+                    "block whitespace-nowrap font-brand text-[clamp(0.85rem,0.95vw,1.05rem)] font-label leading-none tracking-[0.055em] text-[var(--home-keyword)] [text-shadow:0_0_22px_rgba(var(--accent-rgb),0.2)]",
                     index % 2 === 0 ? IDLE_DRIFT : IDLE_DRIFT_ALT,
                     idle,
                   )}
@@ -158,7 +153,7 @@ export function AssistSection() {
               >
                 <span
                   className={cn(
-                    "block whitespace-nowrap font-brand text-[clamp(1.1rem,1.45vw,1.6rem)] font-wordmark leading-none tracking-[-0.01em] text-[var(--brand-assist-from)] [text-shadow:0_0_26px_rgba(var(--accent-rgb),0.24)]",
+                    "block whitespace-nowrap font-brand text-[clamp(1.1rem,1.45vw,1.6rem)] font-wordmark leading-none tracking-[-0.01em] text-[var(--home-blue)] [text-shadow:0_0_26px_rgba(var(--accent-rgb),0.24)]",
                     index % 2 === 0 ? IDLE_DRIFT_ALT : IDLE_DRIFT,
                     idle,
                   )}
@@ -178,7 +173,7 @@ export function AssistSection() {
               >
                 <span
                   className={cn(
-                    "block size-[0.38rem] rounded-full border border-[color-mix(in_oklab,var(--brand-assist-from)_70%,transparent)] shadow-[0_0_18px_rgba(var(--accent-rgb),0.38)]",
+                    "block size-[0.38rem] rounded-full border border-[color-mix(in_oklab,var(--home-blue)_70%,transparent)] shadow-[0_0_18px_rgba(var(--accent-rgb),0.38)]",
                     IDLE_NODE,
                     idle,
                   )}
@@ -209,7 +204,7 @@ export function AssistSection() {
                 )}
               >
                 <motion.p
-                  className={cn(HOME_ASSIST_SENTENCE, "max-w-[12ch] text-center")}
+                  className={cn(HOME_ASSIST_SENTENCE, "assist-mission max-w-[12ch] text-center")}
                   variants={assistMicroStatementReveal}
                 >
                   {statement}
@@ -219,10 +214,10 @@ export function AssistSection() {
           </motion.div>
 
           <div className="absolute inset-x-6 top-[39%] z-10 -translate-y-1/2 text-center sm:inset-x-10 sm:top-[42%] md:inset-x-12 xl:inset-x-0 xl:top-1/2">
-            <div className="relative inline-grid">
+            <div className="relative inline-grid max-w-full">
               <motion.span
                 aria-hidden="true"
-                className="col-start-1 row-start-1 whitespace-nowrap pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [-webkit-text-stroke:1px_color-mix(in_oklab,var(--brand-assist-from)_72%,transparent)] [text-shadow:0_0_42px_rgba(var(--accent-rgb),0.18)] max-sm:whitespace-normal max-sm:leading-wordmark-wrap"
+                className="assist-title col-start-1 row-start-1 whitespace-nowrap pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [-webkit-text-stroke:1px_color-mix(in_oklab,var(--home-blue)_72%,transparent)] [text-shadow:0_0_42px_rgba(var(--accent-rgb),0.18)] max-sm:whitespace-normal max-sm:leading-wordmark-wrap"
                 initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistWordOutlineReveal}
@@ -238,7 +233,7 @@ export function AssistSection() {
                 id="assist-heading"
                 className={cn(
                   idle,
-                  "col-start-1 row-start-1 animate-assist-sweep whitespace-nowrap bg-[linear-gradient(112deg,var(--brand-assist-from)_0%,var(--brand-assist-via)_28%,var(--brand-assist-to)_52%,var(--brand-assist-via)_76%,var(--brand-assist-from)_100%)] bg-[length:200%_auto] bg-clip-text pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [text-shadow:0_24px_88px_rgba(var(--accent-rgb),0.2)] motion-reduce:animate-none max-sm:whitespace-normal max-sm:leading-wordmark-wrap force-motion:animate-assist-sweep",
+                  "assist-title col-start-1 row-start-1 home-title whitespace-nowrap pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [text-shadow:0_24px_88px_rgba(var(--accent-rgb),0.2)] motion-reduce:animate-none max-sm:whitespace-normal max-sm:leading-wordmark-wrap",
                 )}
                 initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
@@ -247,7 +242,7 @@ export function AssistSection() {
                 <span
                   className={cn(
                     idle,
-                    "inline-block animate-assist-sweep bg-[linear-gradient(112deg,var(--brand-assist-subject-from)_0%,var(--brand-assist-subject-via)_30%,var(--brand-assist-subject-to)_55%,var(--brand-assist-subject-via)_78%,var(--brand-assist-subject-from)_100%)] bg-[length:200%_auto] bg-clip-text text-[1.18em] font-heavy tracking-[-0.04em] text-transparent drop-shadow-[0_18px_42px_rgba(var(--accent-rgb),0.22)] motion-reduce:animate-none max-sm:block force-motion:animate-assist-sweep",
+                    "inline-block text-[1.18em] font-heavy tracking-[-0.04em] drop-shadow-[0_18px_42px_rgba(var(--accent-rgb),0.22)] max-sm:block",
                   )}
                 >
                   {assist.title.subject}
@@ -258,7 +253,7 @@ export function AssistSection() {
               </motion.h2>
             </div>
             <motion.p
-              className="mt-[clamp(0.8rem,1.5vw,1.4rem)] whitespace-nowrap text-[clamp(1.65rem,2.4vw,2.35rem)] font-normal leading-[1.45] tracking-normal text-[color-mix(in_oklab,var(--brand-assist-concept)_78%,transparent)]"
+              className="mt-[clamp(0.8rem,1.5vw,1.4rem)] max-w-[36rem] mx-auto text-balance text-[clamp(1.125rem,1.8vw,1.75rem)] font-normal leading-[1.45] tracking-normal home-subtitle font-display"
               initial={reduceMotion ? "settled" : "dormant"}
               animate={motionState}
               variants={assistSublineReveal}
@@ -267,8 +262,25 @@ export function AssistSection() {
             </motion.p>
           </div>
 
+          <motion.ul
+            className="absolute inset-x-6 top-[65%] grid grid-cols-2 gap-x-6 gap-y-5 lg:hidden"
+            initial={reduceMotion ? "settled" : "dormant"}
+            animate={motionState}
+          >
+            {assist.statements.map((statement, index) => (
+              <motion.li
+                key={statement}
+                variants={knowledgeStationWake}
+                custom={{ delay: 0.85 + index * 0.12 }}
+                className="home-subtitle font-display text-balance text-center text-sm font-semibold leading-relaxed sm:text-base"
+              >
+                {statement}
+              </motion.li>
+            ))}
+          </motion.ul>
+
           <motion.div
-            className="pointer-events-none absolute inset-x-6 top-[56%] z-20 flex flex-wrap justify-center gap-x-[0.85rem] gap-y-[0.35rem] text-chip font-strong leading-[1.2] tracking-[-0.005em] text-[color-mix(in_oklab,var(--brand-assist-from)_76%,transparent)] lg:hidden"
+            className="pointer-events-none absolute inset-x-6 top-[56%] z-20 flex flex-wrap justify-center gap-x-[0.85rem] gap-y-[0.35rem] text-chip font-strong leading-[1.2] tracking-[-0.005em] text-home-blue opacity-75 lg:hidden"
             aria-hidden="true"
             initial={reduceMotion ? "settled" : "dormant"}
             animate={motionState}

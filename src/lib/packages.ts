@@ -44,10 +44,16 @@ export const PACKAGE_INSTALL: Record<string, PackageInstall> = {
     note: "In development — not yet published.",
     repo: "molnex",
   },
-  molexp: {
+  molab: {
     command: null,
     note: "In development — not yet published.",
-    repo: "molexp",
+    repo: "molab",
+  },
+  /** Former name of MolAb. Old `/molexp` links still resolve. */
+  molexp: {
+    command: null,
+    note: "Renamed to MolAb.",
+    repo: "molab",
   },
   molrec: {
     command: null,

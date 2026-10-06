@@ -26,10 +26,37 @@ function walk(dir: string, exts: string[]): string[] {
 
 const codeFiles = walk(SRC, [".ts", ".tsx"]).filter((f) => !f.endsWith(".d.ts"));
 const cssText = readFileSync(TAILWIND_CSS, "utf8") + readFileSync(BRAND_TOKENS_CSS, "utf8");
-const declaredVars = new Set(
-  [...cssText.matchAll(/^\s*(--[a-z0-9-]+)\s*:/gim)].map((m) => m[1]),
-);
+const declaredVars = new Set([...cssText.matchAll(/^\s*(--[a-z0-9-]+)\s*:/gim)].map((m) => m[1]));
 const rel = (f: string) => relative(ROOT, f);
+
+describe("website visual vocabulary", () => {
+  it("bundles only the three approved font families", () => {
+    const entry = readFileSync(join(SRC, "main.tsx"), "utf8");
+    const fonts = new Set(
+      [...entry.matchAll(/@fontsource(?:-variable)?\/([^/]+)\//g)].map((match) => match[1]),
+    );
+    expect([...fonts].sort()).toEqual(["dm-sans", "geist", "jetbrains-mono"]);
+    expect(cssText).not.toMatch(/Space Grotesk|Playfair Display|"Outfit"/);
+    const declaredFamilies = [...cssText.matchAll(/--font-(?!weight-)[a-z-]+:\s*"([^"]+)"/g)].map(
+      (match) => match[1],
+    );
+    expect(declaredFamilies.sort()).toEqual(["DM Sans", "Geist Variable", "JetBrains Mono"]);
+  });
+
+  it("derives homepage ramps from three source colours", () => {
+    const homeStyles = readFileSync(TAILWIND_CSS, "utf8").split(
+      "/* Three homepage source colours;",
+    )[1];
+    expect(homeStyles).toBeDefined();
+    const swatches = [...homeStyles.matchAll(/(--home-[a-z-]+):\s*#[0-9a-f]{6}/gi)].map(
+      (match) => match[1],
+    );
+    expect(swatches.sort()).toEqual(["--home-blue", "--home-green", "--home-white"]);
+    expect([...homeStyles.matchAll(/#[0-9a-f]{6}\b/gi)]).toHaveLength(3);
+    const field = readFileSync(join(SRC, "components/home/MoleculeField.tsx"), "utf8");
+    expect(field).not.toMatch(/--molcrafts-sand|--molcrafts-cyan-spark|--brand-assist/);
+  });
+});
 
 describe("no hardcoded colours", () => {
   it("writes every colour as a token, never as a hex or rgb literal", () => {

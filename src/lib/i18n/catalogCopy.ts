@@ -23,20 +23,19 @@ interface CatalogGroupCopy {
 /** Keyed by the canonical English `title` in ecosystem.ts. */
 const ITEMS: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, CatalogItemCopy>>>> = {
   zh: {
-    MolPy: { role: "分子工具包", description: "构建、定型并导出分子体系。" },
+    MolPy: { role: "分子工具包", description: "构建分子体系、分配原子类型并导出。" },
     MolPack: { role: "填充工具", description: "把分子填充进模拟盒。" },
-    MolNex: { role: "机器学习框架", description: "训练并组合原子间势。" },
-    MolExp: { role: "工作流平台", description: "运行实验并追踪每一个产物。" },
+    MolNex: {
+      role: "机器学习框架",
+      description: "用于原子间势、生成模型与性质预测的机器学习框架。",
+    },
+    MolAb: { role: "工作流平台", description: "运行实验并追踪每一个产物。" },
     MolVis: { role: "3D 查看器", description: "在浏览器、VS Code 与 Jupyter 中查看、测量、回放。" },
     MolPlot: { role: "绘图库", description: "一份图表定义，同时用于网页与出版。" },
     Atomiverse: { role: "模拟引擎", description: "分子动力学与电子结构，支持 CPU 与 GPU。" },
     MolRs: { role: "计算内核", description: "MolPy 底层的数据结构、文件 I/O 与计算内核。" },
     MolQ: { role: "作业队列", description: "一个提交 API，通用于本地、SLURM、PBS 与 LSF。" },
-    MolCfg: { role: "配置层", description: "每个配置值都可追溯来源。" },
-    MolLog: { role: "日志层", description: "开箱即用的结构化日志。" },
-    MolMCP: { role: "agent 接口", description: "让 AI agent 结构化访问 MolCrafts 的包与文档。" },
     MolHub: { role: "数据集访问", description: "下载基准数据集，上传你自己的。" },
-    MolRec: { role: "记录规范", description: "一种格式，让工具互读彼此的输出。" },
   },
   sv: {
     MolPy: {
@@ -44,8 +43,12 @@ const ITEMS: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, Cata
       description: "Bygger, typar och exporterar molekylära system.",
     },
     MolPack: { role: "packningsverktyg", description: "Packar molekyler i en simuleringsbox." },
-    MolNex: { role: "ML-ramverk", description: "Tränar och komponerar interatomära potentialer." },
-    MolExp: {
+    MolNex: {
+      role: "ML-ramverk",
+      description:
+        "ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion.",
+    },
+    MolAb: {
       role: "arbetsflödesplattform",
       description: "Kör experiment och spårar varje artefakt.",
     },
@@ -66,22 +69,9 @@ const ITEMS: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, Cata
       description: "Datastrukturer, fil-I/O och beräkningskärnor under MolPy.",
     },
     MolQ: { role: "jobbkö", description: "Ett inlämnings-API för lokalt, SLURM, PBS och LSF." },
-    MolCfg: { role: "konfigurationslager", description: "Varje värde spårar var det kom ifrån." },
-    MolLog: {
-      role: "logglager",
-      description: "Strukturerad loggning, redo att användas.",
-    },
-    MolMCP: {
-      role: "agent-API:er",
-      description: "Ger AI-agenter strukturerad åtkomst till MolCrafts paket och dokumentation.",
-    },
     MolHub: {
       role: "datasetåtkomst",
       description: "Ladda ner referensdataset, ladda upp dina egna.",
-    },
-    MolRec: {
-      role: "postkontrakt",
-      description: "Ett format, så att verktyg läser varandras utdata.",
     },
   },
 };

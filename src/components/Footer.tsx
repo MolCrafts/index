@@ -79,7 +79,7 @@ function FooterNavLink({ link }: { link: FooterLink }) {
  * only caller instead of behind a shared module nobody else imports.
  */
 const sectionContainer = "container relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-10";
-const sectionSubLabel = cn(TYPE_LABEL, "font-outfit text-xs font-bold text-primary");
+const sectionSubLabel = cn(TYPE_LABEL, "font-display text-xs font-bold text-primary");
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -109,7 +109,7 @@ export const Footer = () => {
             <span className={BRAND_GRADIENT_TEXT}>MolCrafts</span>
           </a>
           <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-base">
-            We build AI-assisted infra for molecular science.
+            AI-assisted infrastructure for molecular science.
           </p>
           <a
             href="https://github.com/MolCrafts"

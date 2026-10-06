@@ -81,17 +81,17 @@ export const buttonHover = {
 };
 
 /**
- * Homepage block reveal. The page scrolls continuously, so a block is often only
- * part-way into view when it starts — the travel stays short and the fade does the
- * work, otherwise every block visibly lurches as the reader scrolls past it.
+ * Homepage focus-and-gather entrance, sharing the AI screen's soft focus,
+ * slight scale and longer settle. The pager gives each screen a discrete arrival.
  */
 export const homeReveal: Variants = {
-  hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 28, scale: 0.975, filter: "blur(14px)" },
   visible: {
     opacity: 1,
     y: 0,
+    scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 0.62, ease: MOTION_EASE },
+    transition: { duration: 1.05, ease: MOTION_EASE },
   },
 };
 
@@ -101,11 +101,11 @@ export const homeReveal: Variants = {
  * crescendo rather than the only lit thing on the page.
  */
 export const blockAuraReveal: Variants = {
-  hidden: { opacity: 0, scale: 0.86 },
+  hidden: { opacity: 0.05, scale: 0.72 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 1.35, ease: MOTION_EASE },
+    transition: { duration: 1.8, ease: MOTION_EASE },
   },
 };
 
@@ -165,12 +165,12 @@ export interface ApproachBuildMotion {
  * keyframed object below without leaving these elements unreadable.
  */
 export const approachRise: Variants = {
-  dormant: { opacity: 0, y: 22, filter: "blur(6px)" },
+  dormant: { opacity: 0, y: 28, filter: "blur(10px)" },
   illuminated: ({ delay }: ApproachBuildMotion) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay, duration: 0.48, ease: MOTION_EASE },
+    transition: { delay, duration: 0.9, ease: MOTION_EASE },
   }),
   settled: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
@@ -239,13 +239,14 @@ export const approachSignalJoin: Variants = {
  * carried it never fades back out.
  */
 export const knowledgeThreadDraw: Variants = {
+  settled: { pathLength: 1, opacity: 0.65 },
   dormant: { pathLength: 0, opacity: 0 },
   illuminated: {
     pathLength: 1,
     opacity: 0.65,
     transition: {
-      pathLength: { delay: 0.3, duration: 1.7, ease: [0.33, 0, 0.2, 1] },
-      opacity: { delay: 0.3, duration: 0.4, ease: "linear" },
+      pathLength: { delay: 0.55, duration: 1.45, ease: [0.33, 0, 0.2, 1] },
+      opacity: { delay: 0.55, duration: 0.35, ease: "linear" },
     },
   },
 };
@@ -265,23 +266,25 @@ export interface KnowledgeStationMotion {
  * them in the order the work flows.
  */
 export const knowledgeStationWake: Variants = {
-  dormant: { opacity: 0.14, y: 18, filter: "blur(5px)" },
+  settled: { opacity: 1, y: 0, filter: "blur(0px)" },
+  dormant: { opacity: 0, y: 18, filter: "blur(6px)" },
   illuminated: ({ delay }: KnowledgeStationMotion) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay, duration: 0.7, ease: MOTION_EASE },
+    transition: { delay, duration: 0.72, ease: MOTION_EASE },
   }),
 };
 
 /** The screen's opening, in the two-state grammar the cascade below it drives. */
 export const knowledgeHeaderReveal: Variants = {
-  dormant: { opacity: 0, y: 24, filter: "blur(6px)" },
+  settled: { opacity: 1, y: 0, filter: "blur(0px)" },
+  dormant: { opacity: 0, y: 24, filter: "blur(8px)" },
   illuminated: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.62, ease: MOTION_EASE },
+    transition: { delay: 0.22, duration: 0.8, ease: MOTION_EASE },
   },
 };
 

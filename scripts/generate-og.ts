@@ -10,34 +10,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
 
-const outfitDir = path.join(projectRoot, "node_modules/@fontsource/outfit/files");
-const playfairDir = path.join(projectRoot, "node_modules/@fontsource/playfair-display/files");
+const bodyDir = path.join(projectRoot, "node_modules/@fontsource/dm-sans/files");
 
 const loadFont = (file: string) => fs.readFileSync(path.join(file));
 
 const fonts = [
   {
-    name: "Outfit",
-    data: loadFont(path.join(outfitDir, "outfit-latin-400-normal.woff")),
+    name: "DM Sans",
+    data: loadFont(path.join(bodyDir, "dm-sans-latin-400-normal.woff")),
     weight: 400 as const,
     style: "normal" as const,
   },
   {
-    name: "Outfit",
-    data: loadFont(path.join(outfitDir, "outfit-latin-600-normal.woff")),
+    name: "DM Sans",
+    data: loadFont(path.join(bodyDir, "dm-sans-latin-600-normal.woff")),
     weight: 600 as const,
     style: "normal" as const,
   },
   {
-    name: "Outfit",
-    data: loadFont(path.join(outfitDir, "outfit-latin-700-normal.woff")),
+    name: "DM Sans",
+    data: loadFont(path.join(bodyDir, "dm-sans-latin-700-normal.woff")),
     weight: 700 as const,
     style: "normal" as const,
   },
   {
-    name: "Playfair Display",
-    data: loadFont(path.join(playfairDir, "playfair-display-latin-500-italic.woff")),
-    weight: 500 as const,
+    name: "DM Sans",
+    data: loadFont(path.join(bodyDir, "dm-sans-latin-400-italic.woff")),
+    weight: 400 as const,
     style: "italic" as const,
   },
 ];

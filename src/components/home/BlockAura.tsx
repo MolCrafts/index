@@ -1,6 +1,7 @@
 import { blockAuraReveal } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useScreenMotion } from "./ScreenMotion";
 
 /**
  * The soft light a block's header sits in.
@@ -14,16 +15,17 @@ import { motion } from "framer-motion";
  * readers who asked for less motion.
  */
 export function BlockAura({ className }: { className?: string }) {
+  const { visible, reduced } = useScreenMotion();
   return (
     <motion.div
       aria-hidden="true"
       variants={blockAuraReveal}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      initial={reduced ? false : "hidden"}
+      animate={reduced || visible ? "visible" : "hidden"}
+      transition={reduced ? { duration: 0 } : undefined}
       className={cn(
         "pointer-events-none absolute left-0 top-1/4 -z-10 h-[min(30vw,26rem)] w-[min(64vw,60rem)] -translate-y-1/3 rounded-full blur-[30px]",
-        "bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.09)_0%,rgba(var(--accent-rgb),0.045)_38%,hsl(var(--primary)/0.035)_56%,transparent_74%)]",
+        "home-aura bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.16)_0%,rgba(var(--accent-rgb),0.08)_38%,hsl(var(--primary)/0.055)_56%,transparent_74%)]",
         className,
       )}
     />

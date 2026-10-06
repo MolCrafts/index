@@ -15,9 +15,9 @@ export const en: HomeCopy = {
     trust: "Support",
   },
   brandHero: {
-    kicker: "Shaping Molecular Simulation for the AI Era",
+    kicker: "Standardizing Molecular & Materials Computation",
     title: "MolCrafts",
-    subtitle: "We build AI-assisted infrastructure for molecular science.",
+    subtitle: "Accelerate your R&D with AI-assisted scientific infrastructure.",
   },
   hero: {
     title: "A modern, open-source ecosystem",
@@ -31,19 +31,20 @@ export const en: HomeCopy = {
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
     title: "Knowledge carries forward.",
-    lead: "MolCrafts gives molecular R&D a shared foundation for data, knowledge, and reproducible workflows — turning every project into assets the next one can build on.",
+    titleLines: ["Knowledge", "carries forward."],
+    lead: "Build on every discovery.",
     pillars: [
       {
-        title: "One data foundation",
-        body: "Keep molecules, datasets, models, simulations, and results in one unified data layer, with their provenance and relationships preserved.",
+        title: "Unified data",
+        body: "Molecules, models and results — connected to their origins.",
       },
       {
-        title: "Knowledge that stays connected",
-        body: "Keep methods, assumptions, decisions, and findings attached to the science, giving projects and teams a shared research context.",
+        title: "Connected knowledge",
+        body: "Link methods and findings to the data they explain.",
       },
       {
-        title: "Research you can replay",
-        body: "Capture how computational work was done, not just what it produced. Replay, adapt, and extend it without rebuilding from scratch.",
+        title: "Replayable research",
+        body: "Rerun, adapt and extend workflows.",
       },
     ],
   },
@@ -68,10 +69,10 @@ export const en: HomeCopy = {
         short: "Inspect structures and trajectories",
         long: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
       },
-      molexp: {
+      molab: {
         applicationTitle: "Experiment tracking",
         short: "Run and track experiments",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molexp,
+        long: APPLICATION_GITHUB_DESCRIPTIONS.molab,
       },
       molnex: {
         applicationTitle: "Potential training",
@@ -88,10 +89,10 @@ export const en: HomeCopy = {
   participate: APPROVED_COLLABORATION_COPY,
   sponsors: {
     title: "Our sponsors",
-    lead: "With thanks to the open-source programs travelling with MolCrafts.",
+    lead: "Thanks to the programs supporting our open-source work.",
   },
   footer: {
-    tagline: "Scientific computing made to enter real molecular and materials R&D.",
+    tagline: "Accelerate your R&D with AI-assisted scientific infrastructure.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Back to top",

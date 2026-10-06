@@ -89,7 +89,7 @@ export const APPLICATIONS: readonly ApplicationMeta[] = [
   { key: "molpy", product: "MolPy" },
   { key: "molpack", product: "MolPack" },
   { key: "molvis", product: "MolVis" },
-  { key: "molexp", product: "MolExp" },
+  { key: "molab", product: "MolAb" },
   { key: "molnex", product: "MolNex" },
   { key: "atomiverse", product: "Atomiverse" },
 ] as const;

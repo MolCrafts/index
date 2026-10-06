@@ -183,7 +183,7 @@ const RIGHT_MOTION = {
 };
 
 const HINT_CLASSES =
-  "absolute left-1/2 top-full -translate-x-1/2 mt-3 whitespace-nowrap text-xs md:text-sm font-outfit tracking-[0.2em] uppercase text-zinc-300/85 group-hover:text-fuchsia-300 transition-colors";
+  "absolute left-1/2 top-full -translate-x-1/2 mt-3 whitespace-nowrap text-xs md:text-sm font-display tracking-[0.2em] uppercase text-zinc-300/85 group-hover:text-fuchsia-300 transition-colors";
 
 interface MoleculeOverlayProps {
   href?: string;

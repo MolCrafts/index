@@ -72,10 +72,9 @@ const rootContent = () => {
     `<p>${escapeHtml(homeCopy.brandHero.kicker)}</p>`,
     `<p>${escapeHtml(homeCopy.brandHero.subtitle)}</p>`,
     `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a></p>`,
-    `<h2>${escapeHtml(homeCopy.approach.title)} ${escapeHtml(homeCopy.approach.accent)}</h2>`,
+    `<h2>${escapeHtml(homeCopy.approach.title)}</h2>`,
     `<p>${escapeHtml(homeCopy.approach.lead)}</p>`,
-    `<ul>${homeCopy.approach.statements.map((statement) => `<li>${escapeHtml(statement.line)}</li>`).join("")}</ul>`,
-    `<p>${escapeHtml(homeCopy.approach.vision)}</p>`,
+    `<div>${homeCopy.approach.strata.map((s) => `<span><strong>${escapeHtml(s.title)}</strong>: ${escapeHtml(s.detail)}</span>`).join(" ")}</div>`,
     `<h2>${escapeHtml(homeCopy.whatWeDo.title)}</h2>`,
     `<p>${escapeHtml(homeCopy.whatWeDo.lead)}</p>`,
     `<ul>${homeCopy.whatWeDo.pillars

@@ -7,40 +7,82 @@ import type { HomeCopy } from "./types";
  * legacy-free, and the common-ground metaphor.
  */
 export const APPROVED_FOUNDATION_COPY = {
-  title: "An open-source ecosystem",
-  accent: "for molecular science.",
-  lead: "A shared scientific foundation where scientists, builders, and AI agents work together.",
-  statements: [
-    { line: "Built from the ground up.", emphasis: "from the ground up" },
-    { line: "Designed for sustainable research.", emphasis: "sustainable research" },
-    { line: "AI-assisted throughout.", emphasis: "AI-assisted" },
+  kicker: "The Foundation",
+  title: "Open infrastructure for molecular science.",
+  titleLines: ["Open infrastructure", "for molecular science."],
+  lead: "Connect data, computation and research.",
+  strata: [
+    {
+      id: "physics-data",
+      tag: "01 // Physics & Data",
+      title: "Scientific data",
+      detail: "Physical models, trajectories and topologies in one searchable data layer.",
+    },
+    {
+      id: "workflows",
+      tag: "02 // Sustainable Compute",
+      title: "Connected workflows",
+      detail: "Compose calculations and reuse methods across runs.",
+    },
+    {
+      id: "collaboration",
+      tag: "03 // Autonomous Agents",
+      title: "AI-assisted research",
+      detail: "Give AI access to research context, tools and validation.",
+    },
   ],
-  vision:
-    "Our vision is for MolCrafts to become the foundation for building, sharing, and advancing molecular and materials science — by people and AI.",
 } as const satisfies HomeCopy["approach"];
 
 export const APPROVED_FOUNDATION_COPY_ZH = {
-  title: "一个开源生态系统",
-  accent: "面向分子科学。",
-  lead: "共享的科学根基，让科学家、构建者与 AI 智能体一同工作。",
-  statements: [
-    { line: "从根基建起。", emphasis: "根基" },
-    { line: "为可持续研究而设计。", emphasis: "可持续研究" },
-    { line: "全程 AI 辅助。", emphasis: "AI 辅助" },
+  kicker: "科学根基",
+  title: "面向分子科学的开放基础设施。",
+  titleLines: ["面向分子科学的", "开放基础设施。"],
+  lead: "连接数据、计算与研究。",
+  strata: [
+    {
+      id: "physics-data",
+      tag: "01 // 物理与数据基底",
+      title: "科学数据",
+      detail: "在统一的数据层中检索物理模型、模拟轨迹与分子拓扑。",
+    },
+    {
+      id: "workflows",
+      tag: "02 // 可持续计算体系",
+      title: "计算工作流",
+      detail: "组合计算步骤，在不同任务中复用方法。",
+    },
+    {
+      id: "collaboration",
+      tag: "03 // 人机智能体协同",
+      title: "AI 辅助研究",
+      detail: "让 AI 使用研究上下文、工具与验证方法。",
+    },
   ],
-  vision:
-    "我们的愿景，是让 MolCrafts 成为构建、共享并推进分子与材料科学的根基 —— 由人与 AI 共同完成。",
 } as const satisfies HomeCopy["approach"];
 
 export const APPROVED_FOUNDATION_COPY_SV = {
-  title: "Ett open source-ekosystem",
-  accent: "för molekylär vetenskap.",
-  lead: "En gemensam vetenskaplig grund där forskare, utvecklare och AI-agenter arbetar tillsammans.",
-  statements: [
-    { line: "Byggt från grunden.", emphasis: "från grunden" },
-    { line: "Utformat för hållbar forskning.", emphasis: "hållbar forskning" },
-    { line: "AI-assisterat genomgående.", emphasis: "AI-assisterat" },
+  kicker: "Vetenskaplig grund",
+  title: "Öppen infrastruktur för molekylär vetenskap.",
+  titleLines: ["Öppen infrastruktur", "för molekylär vetenskap."],
+  lead: "Koppla samman data, beräkningar och forskning.",
+  strata: [
+    {
+      id: "physics-data",
+      tag: "01 // Fysik & data",
+      title: "Vetenskapliga data",
+      detail: "Fysikaliska modeller, trajektorier och topologier i ett sökbart datalager.",
+    },
+    {
+      id: "workflows",
+      tag: "02 // Hållbar beräkning",
+      title: "Beräkningsflöden",
+      detail: "Kombinera beräkningar och återanvänd metoder mellan körningar.",
+    },
+    {
+      id: "collaboration",
+      tag: "03 // Autonoma agenter",
+      title: "AI-stödd forskning",
+      detail: "Ge AI tillgång till forskningskontext, verktyg och validering.",
+    },
   ],
-  vision:
-    "Vår vision är att MolCrafts ska bli grunden för att bygga, dela och föra fram molekyl- och materialvetenskap — av människor och AI.",
 } as const satisfies HomeCopy["approach"];

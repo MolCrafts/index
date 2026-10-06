@@ -36,12 +36,12 @@ export const PRODUCT_HERO_SECTION =
   "relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-16 md:px-8 md:py-20 lg:px-16 lg:py-24";
 
 /**
- * Product-page display heading — the uppercase Outfit line used for the hero
+ * Product-page display heading — the uppercase display line used for the hero
  * subhead and every section heading. Combine with `GRADIENT_TEXT` and the
  * product's accent stops from `productAccents.ts`.
  */
 export const PRODUCT_DISPLAY_HEADING =
-  "mx-auto w-full max-w-4xl font-outfit text-lg font-semibold uppercase tracking-[0.2em] sm:text-xl md:text-2xl";
+  "mx-auto w-full max-w-4xl font-display text-lg font-semibold uppercase tracking-[0.2em] sm:text-xl md:text-2xl";
 
 export const PRODUCT_SECTION_AURA =
   "relative before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(circle_at_30%_30%,hsl(var(--primary)/0.04),transparent_60%),radial-gradient(circle_at_70%_70%,hsl(var(--primary)/0.03),transparent_50%)] before:opacity-30 before:blur-[40px]";

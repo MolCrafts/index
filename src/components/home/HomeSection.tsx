@@ -1,7 +1,9 @@
 import type { HomeSectionId } from "@/lib/home/data";
 import { sectionHeadingId } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import { useInView } from "framer-motion";
+import { type ReactNode, useRef } from "react";
+import { ScreenMotionContext } from "./ScreenMotion";
 
 interface HomeSectionProps {
   id: HomeSectionId;
@@ -18,14 +20,8 @@ interface HomeSectionProps {
 }
 
 /**
- * One block of the homepage argument: a screen tall, in normal document flow.
- *
- * `min-h-svh` is a floor, not an equality. On a desktop viewport every block lands
- * on exactly one screen and the page keeps a steady beat; where content genuinely
- * outgrows a short viewport the block extends rather than clipping, so heights are
- * equal in practice but never guaranteed. Nothing snaps — the reader controls the
- * distance, and the shared background behind them (`HomeAtmosphere`) never moves,
- * so the blocks read as one space rather than eight.
+ * A screen remains in document flow so long mobile content stays accessible.
+ * The pager switches between its stops; visibility drives each entrance anew.
  */
 export function HomeSection({
   id,
@@ -35,19 +31,24 @@ export function HomeSection({
   className,
   children,
 }: HomeSectionProps) {
+  const ref = useRef<HTMLElement>(null);
+  const visible = useInView(ref, { amount: 0.25 });
   return (
     <section
+      ref={ref}
       id={id}
       data-section-id={id}
+      data-home-stop={height === "screen" ? id : undefined}
+      data-home-visible={visible}
       aria-labelledby={ariaLabelledby ?? sectionHeadingId(id)}
       aria-label={ariaLabel}
       className={cn(
-        "relative flex w-full min-w-0 scroll-mt-28 flex-col justify-center",
+        "relative flex w-full min-w-0 flex-col justify-center",
         height === "screen" && "min-h-svh",
         className,
       )}
     >
-      {children}
+      <ScreenMotionContext.Provider value={visible}>{children}</ScreenMotionContext.Provider>
     </section>
   );
 }

@@ -12,8 +12,8 @@ interface SectionDotsProps {
 }
 
 /**
- * Section rail. Now a scroll-spy over ordinary anchors: the browser owns the
- * scrolling (`scroll-smooth` on `html`) and this only reports where the reader is.
+ * Screen navigation and scroll-spy. The homepage pager handles these anchors
+ * with the same direct transition as wheel, touch and keyboard input.
  */
 export function SectionDots({ labels, className }: SectionDotsProps) {
   const chrome = useChromeCopy();

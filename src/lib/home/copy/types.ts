@@ -33,15 +33,11 @@ export interface ParticipatePathCopy {
   readonly line: string;
 }
 
-/**
- * One held claim on the foundation screen.
- *
- * `line` is the full sentence; `emphasis` is the keyword or phrase inside it
- * that takes the blue. The rest of the line stays in the display ink.
- */
-export interface ApproachStatementCopy {
-  readonly line: string;
-  readonly emphasis: string;
+export interface ApproachStrataItem {
+  readonly id: string;
+  readonly tag: string;
+  readonly title: string;
+  readonly detail: string;
 }
 
 export interface HomeCopy {
@@ -60,26 +56,19 @@ export interface HomeCopy {
     readonly scrollHint: string;
   };
   readonly approach: {
+    /** Micro section indicator / category kicker. */
+    readonly kicker: string;
     /** Dominant headline, first line. */
     readonly title: string;
-    /** Headline second line — the field the ecosystem is for. */
-    readonly accent: string;
-    /** What the ecosystem means: people and AI on the same scientific context. */
+    readonly titleLines: readonly [string, string];
+    /** Short description of what the infrastructure connects. */
     readonly lead: string;
-    /**
-     * Three claims that arrive in sequence and then remain. Blue is only on
-     * `emphasis`; the rest of each line is display ink.
-     */
-    readonly statements: readonly [
-      ApproachStatementCopy,
-      ApproachStatementCopy,
-      ApproachStatementCopy,
-    ];
-    /** What MolCrafts is to become — the screen's quiet, weighted ending. */
-    readonly vision: string;
+    /** Three foundational strata layers of the scientific bedrock. */
+    readonly strata: readonly [ApproachStrataItem, ApproachStrataItem, ApproachStrataItem];
   };
   readonly whatWeDo: {
     readonly title: string;
+    readonly titleLines: readonly [string, string];
     readonly lead: string;
     readonly pillars: readonly PillarCopy[];
   };
@@ -104,7 +93,7 @@ export interface HomeCopy {
       readonly molpy: ApplicationCopy;
       readonly molpack: ApplicationCopy;
       readonly molvis: ApplicationCopy;
-      readonly molexp: ApplicationCopy;
+      readonly molab: ApplicationCopy;
       readonly molnex: ApplicationCopy;
       readonly atomiverse: ApplicationCopy;
     };
