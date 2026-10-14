@@ -3,7 +3,6 @@ import { useHomeCopy } from "@/lib/home/copy";
 import type { ApplicationKey } from "@/lib/home/copy/types";
 import { APPLICATIONS } from "@/lib/home/data";
 import { HOME_BODY, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
-import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -51,21 +50,14 @@ function EntryDetail({
   const app = APPLICATIONS.find((entry) => entry.key === applicationKey);
   const copy = projects.items[applicationKey];
   if (!app) return null;
-  const bodyStep = heading ? 2 : 0;
+  const bodyStep = heading ? 1 : 0;
 
   return (
     <>
       {heading ? (
-        <>
-          <Layer step={0}>
-            <h3 className={cn(HOME_H3, compact && "text-xl md:text-xl")}>{app.product}</h3>
-          </Layer>
-          <Layer step={1}>
-            <span className={cn("mt-1.5 block font-body text-sm", HOME_KEYWORD)}>
-              {copy.applicationTitle}
-            </span>
-          </Layer>
-        </>
+        <Layer step={0}>
+          <h3 className={cn(HOME_H3, compact && "text-xl md:text-xl")}>{app.product}</h3>
+        </Layer>
       ) : null}
       <Layer step={bodyStep}>
         {/* Standing alone the column is supporting copy; on the stage, where the
@@ -78,7 +70,7 @@ function EntryDetail({
               : cn(HOME_LEAD, "lg:text-[clamp(1.125rem,1.67vw,1.5rem)]"),
           )}
         >
-          {copy.long}
+          {copy.description}
         </p>
       </Layer>
     </>
@@ -150,7 +142,7 @@ export function ApplicationStage() {
 
               <button
                 type="button"
-                aria-label={`${app.product} — ${copy.applicationTitle}`}
+                aria-label={`${app.product} — ${copy.description}`}
                 aria-pressed={active}
                 onClick={() => setActiveKey(app.key)}
                 /* `move`, not `enter`: while the rack slides during a morph, a
@@ -187,10 +179,7 @@ export function ApplicationStage() {
                       transition={{ duration: 0.28, ease: MOTION_EASE }}
                     >
                       <div className="min-h-0 py-2">
-                        <ProductMark
-                          product={app.product}
-                          applicationTitle={copy.applicationTitle}
-                        />
+                        <ProductMark product={app.product} />
                       </div>
                       <div className="flex min-w-0 max-w-lg flex-col justify-center pr-6">
                         <EntryDetail applicationKey={app.key} heading={false} />
@@ -270,11 +259,7 @@ export function ApplicationStage() {
           transition={{ duration: 0.42, ease: MOTION_EASE }}
         >
           <div className="h-40 p-3">
-            <ProductMark
-              product={app.product}
-              applicationTitle={projects.items[app.key].applicationTitle}
-              className="px-6"
-            />
+            <ProductMark product={app.product} className="px-6" />
           </div>
           <div className="border-t border-border/60 p-5">
             <EntryDetail applicationKey={app.key} compact heading={false} />
@@ -282,8 +267,7 @@ export function ApplicationStage() {
         </motion.div>
       ))}
 
-      {/* The headline asks the reader to weigh one against the stack, so the whole
-            roster stays legible here even though only one entry is expanded. */}
+      {/* The whole roster stays legible even when only one entry is expanded. */}
       <ul className="mt-6 border-t border-border/60">
         {APPLICATIONS.map((app) => (
           <li
@@ -294,7 +278,7 @@ export function ApplicationStage() {
               {app.product}
             </span>
             <span className="text-right font-body text-sm text-muted-foreground">
-              {projects.items[app.key].short}
+              {projects.items[app.key].short ?? projects.items[app.key].description}
             </span>
           </li>
         ))}

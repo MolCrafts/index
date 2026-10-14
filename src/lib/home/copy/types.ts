@@ -10,15 +10,12 @@ export interface PillarCopy {
 /**
  * One entry in the application stage.
  *
- * `short` is what the compact band shows; `long` is what the expanded stage adds.
- * Both are held to a steady length across the roster so the band reads as one row
- * and the expanded panel never jumps height when the reader moves between entries.
+ * English uses one description across the expanded stage and mobile roster.
+ * Existing compact translations remain available until their copy is reviewed.
  */
 export interface ApplicationCopy {
-  /** What you do with it, as a noun phrase — distinct from the product name. */
-  readonly applicationTitle: string;
-  readonly short: string;
-  readonly long: string;
+  readonly description: string;
+  readonly short?: string;
 }
 
 /**

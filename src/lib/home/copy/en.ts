@@ -17,7 +17,7 @@ export const en: HomeCopy = {
   brandHero: {
     kicker: "Standardizing Molecular & Materials Computation",
     title: "MolCrafts",
-    subtitle: "Accelerate your R&D with AI-assisted scientific infrastructure.",
+    subtitle: "Scientific infrastructure for AI-assisted research.",
   },
   hero: {
     title: "A modern, open-source ecosystem",
@@ -36,15 +36,15 @@ export const en: HomeCopy = {
     pillars: [
       {
         title: "Unified data",
-        body: "Molecules, models and results — connected to their origins.",
+        body: "Scientific data, in context.",
       },
       {
         title: "Connected knowledge",
-        body: "Link methods and findings to the data they explain.",
+        body: "Cumulative scientific knowledge.",
       },
       {
         title: "Replayable research",
-        body: "Rerun, adapt and extend workflows.",
+        body: "Research beyond a single run.",
       },
     ],
   },
@@ -55,34 +55,22 @@ export const en: HomeCopy = {
     stageLabel: "MolCrafts applications",
     items: {
       molpy: {
-        applicationTitle: "System construction",
-        short: "Build and type molecular systems",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
       },
       molpack: {
-        applicationTitle: "Box preparation",
-        short: "Pack molecules into a box",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
       },
       molvis: {
-        applicationTitle: "Visual inspection",
-        short: "Inspect structures and trajectories",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
       },
       molab: {
-        applicationTitle: "Experiment tracking",
-        short: "Run and track experiments",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molab,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molab,
       },
       molnex: {
-        applicationTitle: "Potential training",
-        short: "Train and compose potentials",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
       },
       atomiverse: {
-        applicationTitle: "Simulation runs",
-        short: "Run dynamics and electronic structure",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
       },
     },
   },
@@ -92,7 +80,7 @@ export const en: HomeCopy = {
     lead: "Thanks to the programs supporting our open-source work.",
   },
   footer: {
-    tagline: "Accelerate your R&D with AI-assisted scientific infrastructure.",
+    tagline: "Scientific infrastructure for AI-assisted research.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Back to top",

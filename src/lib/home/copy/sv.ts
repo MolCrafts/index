@@ -55,34 +55,29 @@ export const sv: HomeCopy = {
     stageLabel: "MolCrafts tillämpningar",
     items: {
       molpy: {
-        applicationTitle: "Systemuppbyggnad",
         short: "Bygg och typa molekylära system",
-        long: "En komponerbar verktygslåda för molekylmodellering",
+        description: "En komponerbar verktygslåda för molekylmodellering",
       },
       molpack: {
-        applicationTitle: "Boxpreparation",
         short: "Packa molekyler i en box",
-        long: "Utökningsbar molekylpackning för att skapa startkonfigurationer",
+        description: "Utökningsbar molekylpackning för att skapa startkonfigurationer",
       },
       molvis: {
-        applicationTitle: "Visuell granskning",
         short: "Granska strukturer och trajektorier",
-        long: "Bibliotek för interaktiv molekylvisualisering",
+        description: "Bibliotek för interaktiv molekylvisualisering",
       },
       molab: {
-        applicationTitle: "Experimentspårning",
         short: "Kör och spåra experiment",
-        long: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
+        description: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
       },
       molnex: {
-        applicationTitle: "Potentialträning",
         short: "Träna och kombinera potentialer",
-        long: "Ett ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
+        description:
+          "Ett ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
       },
       atomiverse: {
-        applicationTitle: "Simuleringskörningar",
         short: "Kör dynamik och elektronstruktur",
-        long: "En motor för molekylsimulering på flera skalor",
+        description: "En motor för molekylsimulering på flera skalor",
       },
     },
   },

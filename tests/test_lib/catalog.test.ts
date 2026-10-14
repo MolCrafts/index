@@ -91,9 +91,10 @@ describe("homepage application stage", () => {
   it("gives every entry the copy the stage renders", () => {
     for (const app of APPLICATIONS) {
       const copy = en.projects.items[app.key];
-      expect(copy.applicationTitle.length).toBeGreaterThan(0);
-      expect(copy.short.length).toBeGreaterThan(0);
-      expect(copy.long.length).toBeGreaterThan(0);
+      expect(copy.description.length).toBeGreaterThan(0);
+      expect(copy.short).toBeUndefined();
+      const catalogEntry = ecosystemItems.find((item) => item.href === applicationHref(app.key));
+      expect(copy.description).toBe(catalogEntry?.description);
     }
   });
 

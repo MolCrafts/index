@@ -38,13 +38,12 @@ export const routes: OgRoute[] = [
   {
     path: "/",
     slug: "index",
-    kicker: "Molecular and materials R&D",
+    kicker: "Standardizing Molecular & Materials Computation",
     title: "MolCrafts",
-    subtitle: "Scientific computing, AI applications, and research collaboration",
+    subtitle: "Scientific infrastructure for AI-assisted research.",
     gradient: [OG_PALETTE.blue, mix(OG_PALETTE.blue, OG_PALETTE.white, 0.55), OG_PALETTE.blue],
     subGradient: [OG_PALETTE.green, mix(OG_PALETTE.green, OG_PALETTE.white, 0.3), OG_PALETTE.green],
-    ogTitle: "MolCrafts – Molecular and materials R&D",
-    ogDescription:
-      "Open-source tools for molecular modeling, simulation, machine learning, and AI-assisted research workflows.",
+    ogTitle: "MolCrafts — Standardizing Molecular & Materials Computation",
+    ogDescription: "Open infrastructure for molecular and materials computation.",
   },
 ];

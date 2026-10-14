@@ -6,20 +6,19 @@ export const APPROVED_COLLABORATION_COPY = {
     plain: "Open to start.",
     accent: "Tailored to fit.",
   },
-  supporting:
-    "Use the open-source tools, work with our team, or deploy on your own infrastructure.",
+  supporting: "Open tools. Shared expertise. Your infrastructure.",
   paths: {
     startOpen: {
       statement: "Start open.",
-      line: "Use MolCrafts directly. Explore, extend, and build on the open-source ecosystem.",
+      line: "Open-source tools. Independent research.",
     },
     buildTogether: {
       statement: "Build together.",
-      line: "Bring a scientific challenge. We develop methods, software, and infrastructure alongside your team.",
+      line: "Scientific challenges. Shared expertise.",
     },
     deployInHouse: {
       statement: "Deploy in-house.",
-      line: "Integrate MolCrafts into your own infrastructure for R&D within your organization.",
+      line: "MolCrafts, on your infrastructure.",
     },
   },
 } as const satisfies HomeCopy["participate"];

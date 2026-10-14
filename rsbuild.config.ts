@@ -53,7 +53,7 @@ export default defineConfig({
     /* No `lang` option here — rsbuild has none. The <html lang> attribute is added
        in scripts/prerender-html.ts, which already rewrites the HTML per route. */
     favicon: "./src/assets/moko.svg",
-    title: "MolCrafts – Molecular and materials R&D",
+    title: "MolCrafts — Standardizing Molecular & Materials Computation",
     tags: [
       ...analyticsTags,
       /* Fonts are bundled locally via @fontsource imports in src/main.tsx.
@@ -64,15 +64,14 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:title",
-          content: "MolCrafts – Molecular and materials R&D",
+          content: "MolCrafts — Standardizing Molecular & Materials Computation",
         },
       },
       {
         tag: "meta",
         attrs: {
           property: "og:description",
-          content:
-            "Open-source tools for molecular modeling, simulation, machine learning, and AI-assisted research workflows.",
+          content: "Open infrastructure for molecular and materials computation.",
         },
       },
       { tag: "meta", attrs: { property: "og:type", content: "website" } },
@@ -88,7 +87,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:image:alt",
-          content: "MolCrafts – Molecular and materials R&D",
+          content: "MolCrafts — Standardizing Molecular & Materials Computation",
         },
       },
     ],
@@ -98,15 +97,13 @@ export default defineConfig({
          description on this site contains an em dash. */
       charset: { charset: "UTF-8" },
       viewport: "width=device-width, initial-scale=1.0",
-      description:
-        "Open-source tools for molecular modeling, simulation, machine learning, and AI-assisted research workflows.",
+      description: "Open infrastructure for molecular and materials computation.",
       keywords:
         "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, reproducible research",
       author: "MolCrafts",
       "twitter:card": "summary_large_image",
-      "twitter:title": "MolCrafts – Molecular and materials R&D",
-      "twitter:description":
-        "Scientific computing, AI applications, and research collaboration for molecular and materials R&D.",
+      "twitter:title": "MolCrafts — Standardizing Molecular & Materials Computation",
+      "twitter:description": "Open infrastructure for molecular and materials computation.",
       "twitter:image": "https://molcrafts.org/og/index.png",
     },
   },

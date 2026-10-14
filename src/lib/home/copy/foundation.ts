@@ -10,25 +10,25 @@ export const APPROVED_FOUNDATION_COPY = {
   kicker: "The Foundation",
   title: "Open infrastructure for molecular science.",
   titleLines: ["Open infrastructure", "for molecular science."],
-  lead: "Connect data, computation and research.",
+  lead: "Open by design. Built to integrate and extend.",
   strata: [
     {
       id: "physics-data",
       tag: "01 // Physics & Data",
-      title: "Scientific data",
-      detail: "Physical models, trajectories and topologies in one searchable data layer.",
+      title: "Open source",
+      detail: "Open to inspection, modification and contribution.",
     },
     {
       id: "workflows",
       tag: "02 // Sustainable Compute",
-      title: "Connected workflows",
-      detail: "Compose calculations and reuse methods across runs.",
+      title: "Interoperability",
+      detail: "Designed for integration across scientific software.",
     },
     {
       id: "collaboration",
       tag: "03 // Autonomous Agents",
-      title: "AI-assisted research",
-      detail: "Give AI access to research context, tools and validation.",
+      title: "Extensibility",
+      detail: "Architecture open to new methods and applications.",
     },
   ],
 } as const satisfies HomeCopy["approach"];

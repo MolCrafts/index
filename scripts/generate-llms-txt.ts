@@ -23,9 +23,8 @@ export const generateLlmsTxt = (distDir: string) => {
   const lines: string[] = [
     "# MolCrafts",
     "",
-    "> We build AI-assisted infra for molecular science: open-source packages for building",
-    "> and running molecular simulations, training models, and keeping every result",
-    "> traceable by people and agents alike.",
+    "> Standardizing Molecular & Materials Computation",
+    "> Open infrastructure for molecular and materials computation.",
     "",
     "Each package installs and runs on its own — taking one does not pull in the rest.",
     "They agree on one record format, so one tool's output is readable by the next.",

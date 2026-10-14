@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { en as homeCopy } from "../src/lib/home/copy/en.ts";
+import { APPLICATIONS } from "../src/lib/home/data.ts";
 import { type OgRoute, routes } from "./og-meta.ts";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -85,12 +86,10 @@ const rootContent = () => {
       .join("")}</ul>`,
     `<h2>${escapeHtml(homeCopy.projects.title)}</h2>`,
     `<p>${escapeHtml(homeCopy.projects.lead)}</p>`,
-    `<ul>${Object.values(homeCopy.projects.items)
-      .map(
-        (application) =>
-          `<li><strong>${escapeHtml(application.applicationTitle)}</strong> — ${escapeHtml(application.long)}</li>`,
-      )
-      .join("")}</ul>`,
+    `<ul>${APPLICATIONS.map(
+      (application) =>
+        `<li><strong>${escapeHtml(application.product)}</strong> — ${escapeHtml(homeCopy.projects.items[application.key].description)}</li>`,
+    ).join("")}</ul>`,
     `<h2>${escapeHtml(`${homeCopy.participate.title.plain} ${homeCopy.participate.title.accent}`)}</h2>`,
     `<p>${escapeHtml(homeCopy.participate.supporting)}</p>`,
     `<ul>${Object.values(homeCopy.participate.paths)
