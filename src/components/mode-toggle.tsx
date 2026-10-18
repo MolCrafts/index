@@ -1,7 +1,7 @@
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { useChromeCopy } from "@/lib/i18n/chromeCopy";
-import { Moon, Sun } from "lucide-react";
 
 export function ModeToggle() {
   const { toggleTheme: toggleThemeLabel } = useChromeCopy();

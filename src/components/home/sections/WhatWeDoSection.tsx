@@ -1,3 +1,5 @@
+import { motion, useInView } from "framer-motion";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   type KnowledgeStationMotion,
   knowledgeHeaderReveal,
@@ -7,11 +9,9 @@ import {
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import { HOME_BLOCK, HOME_CONTAINER, HOME_STATEMENT } from "@/lib/home/stage";
-
+import { smoothThread } from "@/lib/home/thread";
 import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
 import { HomeSection } from "../HomeSection";
 import { MonoLabel } from "../MonoLabel";
 import { SectionHeader } from "../SectionHeader";
@@ -28,7 +28,7 @@ const STATIONS: ReadonlyArray<KnowledgeStationMotion> = [
 const THREAD_FRAME = { overshoot: 32 } as const;
 
 /**
- * Capabilities — one statement and a thread of light through three stations.
+ * Continuity — one statement and a thread of light through three stations.
  *
  * The pillars used to be a numbered run down a single measure: honest, but a
  * list — the reader had to read all three to get the screen, and the right half
@@ -57,8 +57,8 @@ export function WhatWeDoSection() {
     points: { x: number; y: number }[];
   } | null>(null);
 
-  /* Measure the resting layout: the curve stays in a dedicated band above
-     the copy, with horizontal tangents at every join. */
+  /* Measure the resting layout. The curve stays in a band above the copy and
+     passes through each station on a shared tangent. */
   useLayoutEffect(() => {
     const field = fieldRef.current;
     const list = listRef.current;
@@ -75,18 +75,7 @@ export function WhatWeDoSection() {
         points,
         width: field.offsetWidth,
         height: field.offsetHeight,
-        d: points
-          .map((point, index) => {
-            if (!index) return `M ${point.x} ${point.y}`;
-            const prev = points[index - 1];
-            if (vertical) {
-              const mid = (prev.y + point.y) / 2;
-              return `C ${prev.x} ${mid}, ${point.x} ${mid}, ${point.x} ${point.y}`;
-            }
-            const mid = (prev.x + point.x) / 2;
-            return `C ${mid} ${prev.y}, ${mid} ${point.y}, ${point.x} ${point.y}`;
-          })
-          .join(" "),
+        d: smoothThread(points),
       });
     };
 

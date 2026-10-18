@@ -18,7 +18,7 @@ export function SponsorsSection() {
   return (
     <HomeBlock id="trust" title={sponsors.title} lead={sponsors.lead} height="band">
       <Reveal delay={0.08}>
-        <ul className="flex flex-wrap items-start gap-x-12 gap-y-8">
+        <ul className="mt-8 flex flex-wrap items-start gap-x-12 gap-y-8">
           {sponsorItems.map((sponsor) => (
             <li key={sponsor.name}>
               {/* Mark over name, both inside the one link: a logo never stands on the
@@ -30,9 +30,7 @@ export function SponsorsSection() {
                 rel="noreferrer noopener"
                 className={cn(
                   HOME_BODY,
-                  /* Centred, not flush left: the mark sits over the middle of the
-                     name it belongs to, so the pair reads as one credit. */
-                  "group flex flex-col items-center gap-3 lg:flex-row lg:gap-6 no-underline outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary",
+                  "group inline-flex flex-row items-center gap-4 no-underline outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary",
                 )}
               >
                 {/* Masked, not drawn: the mark takes the page's own ink, so a

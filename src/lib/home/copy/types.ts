@@ -10,15 +10,10 @@ export interface PillarCopy {
 /**
  * One entry in the application stage.
  *
- * `short` is what the compact band shows; `long` is what the expanded stage adds.
- * Both are held to a steady length across the roster so the band reads as one row
- * and the expanded panel never jumps height when the reader moves between entries.
+ * One description per product, shared by the desktop and mobile stage.
  */
 export interface ApplicationCopy {
-  /** What you do with it, as a noun phrase — distinct from the product name. */
-  readonly applicationTitle: string;
-  readonly short: string;
-  readonly long: string;
+  readonly description: string;
 }
 
 /**
@@ -73,20 +68,15 @@ export interface HomeCopy {
     readonly pillars: readonly PillarCopy[];
   };
   readonly assist: {
-    readonly title: {
-      readonly subject: string;
-      readonly action: string;
-    };
+    readonly title: { readonly subject: string; readonly action: string };
     readonly subline: string;
     readonly statements: readonly [string, string, string, string, string, string];
-    readonly concepts: readonly [string, string, string, string];
+    readonly concepts: readonly string[];
     readonly products: readonly [string, string, string, string, string];
   };
   readonly projects: {
     readonly title: string;
     readonly lead: string;
-    /** Link label on the expanded panel. */
-    readonly cta: string;
     /** Accessible name for the applications band. */
     readonly stageLabel: string;
     readonly items: {

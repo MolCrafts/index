@@ -1,8 +1,8 @@
+import { useInView } from "framer-motion";
+import { type ReactNode, useRef } from "react";
 import type { HomeSectionId } from "@/lib/home/data";
 import { sectionHeadingId } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
-import { useInView } from "framer-motion";
-import { type ReactNode, useRef } from "react";
 import { ScreenMotionContext } from "./ScreenMotion";
 
 interface HomeSectionProps {

@@ -1,3 +1,5 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import {
   assistAuraReveal,
   assistContextGather,
@@ -11,11 +13,10 @@ import {
   prefersReducedMotion,
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
-import { HOME_ASSIST_SENTENCE } from "@/lib/home/stage";
+import { HOME_ASSIST_SENTENCE, HOME_H2_STATEMENT, HOME_SECTION_LEAD } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { HomeSection } from "../HomeSection";
+import { SectionMarker } from "../SectionMarker";
 
 /*
  * Six sentences on a hexagon around the headline. The ellipse is tighter than
@@ -102,6 +103,7 @@ export function AssistSection() {
 
   return (
     <HomeSection id="assist" aria-labelledby="assist-heading" className="overflow-hidden">
+      <SectionMarker sectionId="assist" />
       <div ref={stageRef} className="flex w-full flex-1 items-center justify-center">
         <div className="assist-composition relative isolate mx-auto h-svh w-full max-w-[110rem] overflow-hidden font-brand">
           <motion.div
@@ -217,43 +219,39 @@ export function AssistSection() {
             <div className="relative inline-grid max-w-full">
               <motion.span
                 aria-hidden="true"
-                className="assist-title col-start-1 row-start-1 whitespace-nowrap pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [-webkit-text-stroke:1px_color-mix(in_oklab,var(--home-blue)_72%,transparent)] [text-shadow:0_0_42px_rgba(var(--accent-rgb),0.18)] max-sm:whitespace-normal max-sm:leading-wordmark-wrap"
+                className={cn(
+                  HOME_H2_STATEMENT,
+                  "assist-title col-start-1 row-start-1 whitespace-nowrap pr-[0.08em] !bg-none text-transparent [font-kerning:normal] [-webkit-text-stroke:1px_color-mix(in_oklab,var(--home-blue)_72%,transparent)] max-sm:whitespace-normal",
+                )}
                 initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistWordOutlineReveal}
               >
-                <span className="inline-block text-[1.18em] font-heavy tracking-[-0.04em] max-sm:block">
-                  {assist.title.subject}
-                </span>{" "}
-                <span className="inline-block font-titling max-sm:mt-[0.12em] max-sm:block">
+                <span className="inline-block max-sm:block">{assist.title.subject}</span>{" "}
+                <span className="inline-block max-sm:mt-[0.12em] max-sm:block">
                   {assist.title.action}
                 </span>
               </motion.span>
               <motion.h2
                 id="assist-heading"
                 className={cn(
-                  idle,
-                  "assist-title col-start-1 row-start-1 home-title whitespace-nowrap pr-[0.08em] text-[clamp(2.5rem,6vw,6rem)] font-titling leading-wordmark tracking-[-0.035em] text-transparent [font-kerning:normal] [text-shadow:0_24px_88px_rgba(var(--accent-rgb),0.2)] motion-reduce:animate-none max-sm:whitespace-normal max-sm:leading-wordmark-wrap",
+                  HOME_H2_STATEMENT,
+                  "assist-title col-start-1 row-start-1 whitespace-nowrap pr-[0.08em] [font-kerning:normal] max-sm:whitespace-normal",
                 )}
                 initial={reduceMotion ? "settled" : "dormant"}
                 animate={motionState}
                 variants={assistWordFillReveal}
               >
-                <span
-                  className={cn(
-                    idle,
-                    "inline-block text-[1.18em] font-heavy tracking-[-0.04em] drop-shadow-[0_18px_42px_rgba(var(--accent-rgb),0.22)] max-sm:block",
-                  )}
-                >
+                <span className={cn(idle, "inline-block max-sm:block")}>
                   {assist.title.subject}
                 </span>{" "}
-                <span className="inline-block font-titling opacity-90 max-sm:mt-[0.12em] max-sm:block">
+                <span className="inline-block max-sm:mt-[0.12em] max-sm:block">
                   {assist.title.action}
                 </span>
               </motion.h2>
             </div>
             <motion.p
-              className="mt-[clamp(0.8rem,1.5vw,1.4rem)] max-w-[36rem] mx-auto text-balance text-[clamp(1.125rem,1.8vw,1.75rem)] font-normal leading-[1.45] tracking-normal home-subtitle font-display"
+              className={cn(HOME_SECTION_LEAD, "mx-auto mt-7 max-w-xl text-balance")}
               initial={reduceMotion ? "settled" : "dormant"}
               animate={motionState}
               variants={assistSublineReveal}

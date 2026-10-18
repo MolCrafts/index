@@ -1,9 +1,8 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { GITHUB_ORG_HREF } from "../lib/home/data";
 import { useLocalizedEcosystem } from "../lib/i18n/catalogCopy";
 import { useChromeCopy } from "../lib/i18n/chromeCopy";
@@ -108,8 +107,12 @@ export const Navbar = () => {
           </motion.a>
         </div>
 
-        <nav className="hidden h-full min-w-0 items-center md:flex">
-          <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <nav
+          className="hidden h-full min-w-0 items-center md:flex"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="relative">
             <Button
               type="button"
               variant="ghost"

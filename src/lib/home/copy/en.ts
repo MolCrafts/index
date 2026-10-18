@@ -8,16 +8,16 @@ export const en: HomeCopy = {
   sectionLabels: {
     hero: "Home",
     about: "Foundation",
-    solutions: "Capabilities",
+    solutions: "Continuity",
     assist: "AI",
     applications: "Applications",
     collaboration: "Collaboration",
     trust: "Support",
   },
   brandHero: {
-    kicker: "Standardizing Molecular & Materials Computation",
+    kicker: "Standardizing Materials R&D",
     title: "MolCrafts",
-    subtitle: "Accelerate your R&D with AI-assisted scientific infrastructure.",
+    subtitle: "for the AI Era.",
   },
   hero: {
     title: "A modern, open-source ecosystem",
@@ -30,59 +30,37 @@ export const en: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
-    title: "Knowledge carries forward.",
-    titleLines: ["Knowledge", "carries forward."],
+    title: "Knowledge, standardized.",
+    titleLines: ["Knowledge,", "standardized."],
     lead: "Build on every discovery.",
     pillars: [
-      {
-        title: "Unified data",
-        body: "Molecules, models and results — connected to their origins.",
-      },
-      {
-        title: "Connected knowledge",
-        body: "Link methods and findings to the data they explain.",
-      },
-      {
-        title: "Replayable research",
-        body: "Rerun, adapt and extend workflows.",
-      },
+      { title: "UNIFIED DATA", body: "Structured inputs, models and results." },
+      { title: "CONNECTED KNOWLEDGE", body: "Methods linked to findings." },
+      { title: "REUSABLE WORKFLOWS", body: "Methods reused across projects." },
     ],
   },
   assist: APPROVED_ASSIST_COPY,
   projects: {
     ...APPROVED_APPLICATIONS_HEADING,
-    cta: "Explore",
     stageLabel: "MolCrafts applications",
     items: {
       molpy: {
-        applicationTitle: "System construction",
-        short: "Build and type molecular systems",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
       },
       molpack: {
-        applicationTitle: "Box preparation",
-        short: "Pack molecules into a box",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
       },
       molvis: {
-        applicationTitle: "Visual inspection",
-        short: "Inspect structures and trajectories",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
       },
       molab: {
-        applicationTitle: "Experiment tracking",
-        short: "Run and track experiments",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molab,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molab,
       },
       molnex: {
-        applicationTitle: "Potential training",
-        short: "Train and compose potentials",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
       },
       atomiverse: {
-        applicationTitle: "Simulation runs",
-        short: "Run dynamics and electronic structure",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
       },
     },
   },
@@ -92,7 +70,7 @@ export const en: HomeCopy = {
     lead: "Thanks to the programs supporting our open-source work.",
   },
   footer: {
-    tagline: "Accelerate your R&D with AI-assisted scientific infrastructure.",
+    tagline: "Scientific infrastructure for AI-assisted research.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Back to top",

@@ -8,16 +8,16 @@ export const sv: HomeCopy = {
   sectionLabels: {
     hero: "Hem",
     about: "Grund",
-    solutions: "Förmågor",
+    solutions: "Kontinuitet",
     assist: "AI",
     applications: "Tillämpningar",
     collaboration: "Samarbete",
     trust: "Stöd",
   },
   brandHero: {
-    kicker: "Standardisering av molekyl- och materialberäkning",
+    kicker: "Standardiserar materialforskning och utveckling",
     title: "MolCrafts",
-    subtitle: "Accelerera din FoU med AI-assisterad vetenskaplig infrastruktur.",
+    subtitle: "för AI-eran.",
   },
   hero: {
     title: "Molekylär forskning,",
@@ -30,59 +30,38 @@ export const sv: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {
-    title: "Kunskap lever vidare.",
-    titleLines: ["Kunskap", "lever vidare."],
+    title: "Kunskap, standardiserad.",
+    titleLines: ["Kunskap,", "standardiserad."],
     lead: "Bygg vidare på varje upptäckt.",
     pillars: [
-      {
-        title: "Samlad data",
-        body: "Molekyler, modeller och resultat med spårbara källor.",
-      },
-      {
-        title: "Sammanlänkad kunskap",
-        body: "Koppla metoder och resultat till de data de förklarar.",
-      },
-      {
-        title: "Reproducerbar forskning",
-        body: "Kör om, anpassa och utöka arbetsflöden.",
-      },
+      { title: "ENHETLIGA DATA", body: "Strukturerade indata, modeller och resultat." },
+      { title: "SAMMANLÄNKAD KUNSKAP", body: "Metoder kopplade till resultat." },
+      { title: "ÅTERANVÄNDBARA ARBETSFLÖDEN", body: "Metoder som återanvänds mellan projekt." },
     ],
   },
   assist: ASSIST_COPY_SV,
   projects: {
     ...APPLICATIONS_HEADING_SV,
-    cta: "Utforska",
     stageLabel: "MolCrafts tillämpningar",
     items: {
       molpy: {
-        applicationTitle: "Systemuppbyggnad",
-        short: "Bygg och typa molekylära system",
-        long: "En komponerbar verktygslåda för molekylmodellering",
+        description: "Komponerbar verktygslåda för molekylmodellering",
       },
       molpack: {
-        applicationTitle: "Boxpreparation",
-        short: "Packa molekyler i en box",
-        long: "Utökningsbar molekylpackning för att skapa startkonfigurationer",
+        description: "Utbyggbar generering av startkonfigurationer för molekylsimulering",
       },
       molvis: {
-        applicationTitle: "Visuell granskning",
-        short: "Granska strukturer och trajektorier",
-        long: "Bibliotek för interaktiv molekylvisualisering",
+        description: "Bibliotek för interaktiv molekylvisualisering",
       },
       molab: {
-        applicationTitle: "Experimentspårning",
-        short: "Kör och spåra experiment",
-        long: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
+        description: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
       },
       molnex: {
-        applicationTitle: "Potentialträning",
-        short: "Träna och kombinera potentialer",
-        long: "Ett ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
+        description:
+          "Enhetligt ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
       },
       atomiverse: {
-        applicationTitle: "Simuleringskörningar",
-        short: "Kör dynamik och elektronstruktur",
-        long: "En motor för molekylsimulering på flera skalor",
+        description: "Motor för molekylsimulering i flera skalor",
       },
     },
   },
@@ -92,7 +71,7 @@ export const sv: HomeCopy = {
     lead: "Tack till programmen som stödjer vårt arbete med öppen källkod.",
   },
   footer: {
-    tagline: "Accelerera din FoU med AI-assisterad vetenskaplig infrastruktur.",
+    tagline: "Vetenskaplig infrastruktur för AI-stödd forskning.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Till toppen",

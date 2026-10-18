@@ -22,3 +22,6 @@ declare module "*.webp" {
   const value: string;
   export default value;
 }
+
+/** Side-effect CSS imports (Tailwind entry, @fontsource). */
+declare module "*.css" {}

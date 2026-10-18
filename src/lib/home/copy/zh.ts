@@ -9,16 +9,16 @@ export const zh: HomeCopy = {
   sectionLabels: {
     hero: "首页",
     about: "根基",
-    solutions: "能力",
+    solutions: "知识延续",
     assist: "AI",
     applications: "应用",
     collaboration: "合作",
     trust: "支持",
   },
   brandHero: {
-    kicker: "标准化分子与材料计算",
+    kicker: "标准化材料研发，",
     title: "MolCrafts",
-    subtitle: "用 AI 辅助的科学基础设施，加速你的研发。",
+    subtitle: "面向 AI 时代。",
   },
   hero: {
     title: "让复杂分子研究",
@@ -31,59 +31,37 @@ export const zh: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY_ZH,
   whatWeDo: {
-    title: "让研究知识不断积累。",
-    titleLines: ["让研究知识", "不断积累。"],
-    lead: "在已有发现之上继续研究。",
+    title: "知识，标准化。",
+    titleLines: ["知识，", "标准化。"],
+    lead: "在每一次发现之上继续前进。",
     pillars: [
-      {
-        title: "统一数据",
-        body: "连接分子、模型与结果，保留数据来源。",
-      },
-      {
-        title: "关联知识",
-        body: "将方法和发现与相关数据关联。",
-      },
-      {
-        title: "可复现研究",
-        body: "重新运行、调整和扩展工作流。",
-      },
+      { title: "统一数据", body: "结构化输入、模型与结果。" },
+      { title: "关联知识", body: "关联方法与研究发现。" },
+      { title: "可复用工作流", body: "跨项目复用研究方法。" },
     ],
   },
   assist: ASSIST_COPY_ZH,
   projects: {
     ...APPLICATIONS_HEADING_ZH,
-    cta: "了解详情",
     stageLabel: "MolCrafts 应用",
     items: {
       molpy: {
-        applicationTitle: "体系构建",
-        short: "构建分子体系并分配原子类型",
-        long: "用于分子建模的可组合工具包",
+        description: "用于分子建模的可组合工具包",
       },
       molpack: {
-        applicationTitle: "装填准备",
-        short: "把分子装进模拟盒",
-        long: "可扩展的分子装填工具，用于生成初始构型",
+        description: "可扩展的分子模拟初始构型生成",
       },
       molvis: {
-        applicationTitle: "可视检查",
-        short: "查看结构与轨迹",
-        long: "交互式分子可视化库",
+        description: "交互式分子可视化库",
       },
       molab: {
-        applicationTitle: "实验追踪",
-        short: "运行并追踪实验",
-        long: "面向计算研究的 AI 辅助工作流管理与知识系统",
+        description: "面向计算研究的 AI 辅助工作流与知识管理",
       },
       molnex: {
-        applicationTitle: "势函数训练",
-        short: "训练并组合势函数",
-        long: "统一的机器学习框架，用于原子间势、生成模型与性质预测",
+        description: "统一机器学习框架，用于原子间势、生成模型与性质预测",
       },
       atomiverse: {
-        applicationTitle: "模拟运行",
-        short: "运行分子动力学与电子结构计算",
-        long: "多尺度分子模拟引擎",
+        description: "多尺度分子模拟引擎",
       },
     },
   },
@@ -93,7 +71,7 @@ export const zh: HomeCopy = {
     lead: "感谢支持我们开源工作的计划。",
   },
   footer: {
-    tagline: "用 AI 辅助的科学基础设施，加速你的研发。",
+    tagline: "面向 AI 辅助研究的科学基础设施。",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "回到顶部",

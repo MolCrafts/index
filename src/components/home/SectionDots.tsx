@@ -1,10 +1,10 @@
+import { useMemo } from "react";
 import { BrandCopy } from "@/components/BrandName";
 import { Button } from "@/components/ui/button";
 import { useActiveSection } from "@/lib/home/useActiveSection";
 import { useChromeCopy } from "@/lib/i18n/chromeCopy";
 import { TYPE_LABEL } from "@/lib/typeStyles";
 import { cn } from "@/lib/utils";
-import { useMemo } from "react";
 
 interface SectionDotsProps {
   labels: readonly { id: string; label: string }[];

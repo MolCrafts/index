@@ -29,7 +29,7 @@ export function ParticipateSection() {
             const copy = participate.paths[path.key];
             return (
               <li key={path.key} className="border-t border-primary/20">
-                <Reveal delay={0.65 + index * 0.3}>
+                <Reveal delay={0.08 + index * 0.08}>
                   <a
                     href={path.href}
                     target={path.external ? "_blank" : undefined}

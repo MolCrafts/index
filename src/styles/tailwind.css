@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "./brand-tokens.css";
 
-/* Re-enable v3-style class-based dark mode under v4. */
+/* Class dark mode: the theme provider toggles `.dark` on the document. */
 @custom-variant dark (&:is(.dark *));
 @custom-variant force-motion (html.force-full-motion &);
 
@@ -81,11 +81,13 @@
   --shadow-panel-lifted: 0 25px 50px -12px rgb(0 0 0 / 0.7);
 
   /* Narrative home type stack. CJK fallbacks keep mixed-script lines on one family. */
-  --font-brand: "Geist Variable", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-brand);
-  --font-body: "DM Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+  --font-brand:
+    "Geist Variable", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-brand);
+  --font-body:
+    "DM Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif,
+    system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-sans: var(--font-body);
 
@@ -154,7 +156,7 @@
    * faint plumb line under the subtitle, over and over. Arrows are banned by
    * the design contract, so gravity is carried by motion alone.
    */
-  --animate-hero-descent: hero-descent 2.6s ease-in-out infinite;
+  --animate-hero-descent: hero-descent 3.6s ease-in-out infinite;
 
   @keyframes accordion-down {
     from {
@@ -322,7 +324,7 @@
   }
 }
 
-/* Restore v3 container shape (centered, 1.5rem padding, 1400px cap at 2xl). */
+/* Centered page column: 1.5rem gutter, 1400px cap from 1400px up. */
 @utility container {
   margin-inline: auto;
   padding-inline: 1.5rem;
@@ -344,7 +346,6 @@
  */
 @utility mask-sponsor-claude {
   mask: url("../assets/claude.svg") center / contain no-repeat;
-  -webkit-mask: url("../assets/claude.svg") center / contain no-repeat;
 }
 
 /*
@@ -421,7 +422,9 @@
     --home-keyword: var(--molcrafts-forest-light);
     --home-emphasis: color-mix(in srgb, var(--home-blue) 66%, black);
     --home-wordmark-from: var(--home-emphasis);
-    --home-wordmark-via: var(--home-blue);
+    /* Via stays in the deepened blue. Display cyan (#03a3d7) is the dark-theme
+       ramp; on cream it falls under 3:1. */
+    --home-wordmark-via: color-mix(in srgb, var(--home-emphasis) 55%, var(--molcrafts-ink));
   }
 
   .dark {
@@ -472,7 +475,8 @@
 
   body {
     @apply relative m-0 min-h-screen w-full max-w-full overflow-x-hidden bg-background p-0 text-foreground;
-    background-image: radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.05), transparent 70%),
+    background-image:
+      radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.05), transparent 70%),
       radial-gradient(circle at 50% 100%, hsl(var(--primary) / 0.05), transparent 70%);
   }
 
@@ -504,33 +508,64 @@
   --home-blue-tint: color-mix(in srgb, var(--home-blue) 45%, var(--home-white));
   --home-green-shade: color-mix(in srgb, var(--home-green) 75%, black);
   --home-green-tint: color-mix(in srgb, var(--home-green) 70%, var(--home-white));
-  --home-title-ramp: linear-gradient(
-    90deg,
-    var(--home-blue),
-    var(--home-blue-tint) 50%,
-    var(--home-blue)
-  );
-  --home-subtitle-ramp: linear-gradient(
-    90deg,
-    var(--home-green-shade),
-    var(--home-green-tint) 50%,
-    var(--home-green-shade)
-  );
+  --home-title-ramp: linear-gradient(90deg, var(--home-blue), var(--home-blue-tint));
+  --home-subtitle-ramp: linear-gradient(90deg, var(--home-green-shade), var(--home-green-tint));
 }
 
 /* Typography and colour roles. Component composition owns the layout. */
 .home-title,
 .home-subtitle {
   background-clip: text;
-  -webkit-background-clip: text;
   color: transparent;
-  -webkit-text-fill-color: transparent;
 }
 .home-title {
   background-image: var(--home-title-ramp);
 }
 .home-subtitle {
   background-image: var(--home-subtitle-ramp);
+}
+/* Same left-to-right ramps on light paper, with deeper endpoints for contrast. */
+html:not(.dark) {
+  --home-title-ramp: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--home-emphasis) 70%, var(--molcrafts-ink)),
+    var(--home-emphasis)
+  );
+  --home-subtitle-ramp: linear-gradient(
+    90deg,
+    var(--molcrafts-forest),
+    var(--molcrafts-forest-light)
+  );
+}
+html:not(.dark) .home-rail {
+  color: var(--molcrafts-ink);
+}
+.dark .home-rail-index {
+  color: rgb(var(--accent-rgb));
+}
+html:not(.dark) .home-rail-index {
+  color: var(--molcrafts-forest);
+}
+html:not(.dark) .home-glow {
+  opacity: 0.35;
+}
+.hero-veil {
+  background: radial-gradient(
+    ellipse at 50% 46%,
+    hsl(var(--background) / 0.18) 0%,
+    hsl(var(--background) / 0.42) 38%,
+    hsl(var(--background) / 0.88) 76%
+  );
+}
+/* Molecules stay in the hero's empty upper/lower field, clear of the inscription.
+   Reading screens keep the same light without an image moving through the copy. */
+.home-molecules {
+  opacity: 0;
+  mask-image: linear-gradient(to bottom, black 18%, transparent 34%, transparent 67%, black 82%);
+  transition: opacity 0.45s ease-out;
+}
+[data-home-pager]:has(#hero[data-home-visible="true"]) .home-molecules {
+  opacity: 1;
 }
 .dark [data-home-pager] {
   --color-foreground: var(--home-white);
@@ -540,16 +575,8 @@
   display: grid;
   gap: 4rem;
 }
-.foundation-title {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  line-height: 1.12;
-}
 .foundation-title-line {
   display: block;
-}
-.foundation-subtitle {
-  margin-top: 1.75rem;
-  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
 }
 .foundation-strata {
   position: relative;
@@ -588,13 +615,6 @@
 [data-home-pager] :lang(zh) p {
   line-height: 1.65;
 }
-.assist-composition:lang(sv) .assist-title {
-  font-size: clamp(2.25rem, 4.5vw, 4.75rem);
-}
-.capabilities-header p {
-  color: var(--home-keyword);
-  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
-}
 @media (min-width: 1024px) {
   .foundation-composition {
     grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
@@ -605,21 +625,11 @@
   .foundation-list {
     gap: 5.5rem;
   }
-  .foundation-title {
-    font-size: clamp(2rem, 3.65vw, 3.5rem);
-  }
-  .foundation-title:lang(sv) {
-    font-size: clamp(1.75rem, 3vw, 3rem);
-  }
-  .foundation-title-line {
-    white-space: nowrap;
-  }
   .foundation-list li:nth-child(2) h3 {
     white-space: nowrap;
     font-size: clamp(1.25rem, 2vw, 1.75rem);
   }
   .capabilities-header h2 {
-    font-size: clamp(3rem, 5.4vw, 4.875rem);
     max-width: 44rem;
   }
   .capabilities-stations {
@@ -641,7 +651,7 @@
     margin-top: 2rem;
   }
   .capabilities-stations li:nth-child(3) {
-    margin-top: .75rem;
+    margin-top: 0.75rem;
   }
   .capabilities-stations p {
     font-size: 1.1875rem;
@@ -657,41 +667,37 @@ html:has([data-home-pager]) {
   overscroll-behavior-y: none;
 }
 
+/* Opacity only. Animating `filter` on these layers repaints a blurred bitmap
+   every frame, which is what made the page hitch under full motion. The glow
+   stays a static filter; the pulse is a fade. */
 @keyframes home-guide-pulse {
   0%,
   100% {
     opacity: 0.45;
-    filter: drop-shadow(0 0 2px rgb(var(--accent-rgb)));
   }
   50% {
     opacity: 1;
-    filter: drop-shadow(0 0 7px rgb(var(--accent-rgb)));
   }
+}
+.home-guide-node {
+  filter: drop-shadow(0 0 4px rgb(var(--accent-rgb)));
 }
 @keyframes home-aura-breathe {
   0%,
   100% {
-    filter: blur(30px) brightness(0.8);
+    opacity: 0.55;
   }
   50% {
-    filter: blur(30px) brightness(1.4);
+    opacity: 1;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  [data-home-pager] .home-title {
-    background-size: 200% auto;
-    animation: assist-sweep 12s linear infinite;
-  }
   .home-guide-node {
     animation: home-guide-pulse 3.8s ease-in-out infinite;
   }
   .home-aura {
     animation: home-aura-breathe 8s ease-in-out infinite;
   }
-}
-html.force-full-motion [data-home-pager] .home-title {
-  background-size: 200% auto;
-  animation: assist-sweep 12s linear infinite;
 }
 html.force-full-motion .home-guide-node {
   animation: home-guide-pulse 3.8s ease-in-out infinite;
@@ -700,11 +706,11 @@ html.force-full-motion .home-aura {
   animation: home-aura-breathe 8s ease-in-out infinite;
 }
 [data-home-visible="false"] :is(.home-title, .home-guide-node, .home-aura) {
-  animation-play-state: paused !important;
+  animation-play-state: paused;
 }
 
 [data-home-pager] svg g:nth-of-type(2) .home-guide-node {
-  animation-delay: .6s;
+  animation-delay: 0.6s;
 }
 [data-home-pager] svg g:nth-of-type(3) .home-guide-node {
   animation-delay: 1.2s;

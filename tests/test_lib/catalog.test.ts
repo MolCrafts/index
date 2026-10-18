@@ -1,12 +1,13 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { describe, expect, it } from "@rstest/core";
 import { ecosystemItems } from "@/lib/ecosystem";
 import { en } from "@/lib/home/copy/en";
-import { APPLICATIONS, applicationHref, resolveHomeHash } from "@/lib/home/data";
+import { APPLICATIONS, applicationHref, applicationStatus, resolveHomeHash } from "@/lib/home/data";
+import { localizeStatus } from "@/lib/i18n/catalogCopy";
 import { PACKAGE_INSTALL, packageGithubHref } from "@/lib/packages";
 import { PRODUCT_ACCENTS } from "@/lib/productAccents";
 import { PRODUCT_SLUGS } from "@/lib/routes";
-import { describe, expect, it } from "@rstest/core";
 import { routes as ogRoutes } from "../../scripts/og-meta";
 
 /**
@@ -88,12 +89,23 @@ describe("homepage application stage", () => {
     }
   });
 
+  it("opens each stage entry on its repository and keeps registry status", () => {
+    const stage = read("src/components/home/applications/ApplicationStage.tsx");
+    expect(stage).toContain("applicationHref");
+    expect(applicationStatus("molpy")).toBeUndefined();
+    expect(applicationStatus("molab")).toBe("In development");
+    expect(applicationStatus("molnex")).toBe("In development");
+    expect(applicationStatus("atomiverse")).toBe("Preparing release");
+    expect(localizeStatus("In development", "zh")).toBe("开发中");
+    expect(localizeStatus("Preparing release", "sv")).toBe("Förbereder release");
+  });
+
   it("gives every entry the copy the stage renders", () => {
     for (const app of APPLICATIONS) {
       const copy = en.projects.items[app.key];
-      expect(copy.applicationTitle.length).toBeGreaterThan(0);
-      expect(copy.short.length).toBeGreaterThan(0);
-      expect(copy.long.length).toBeGreaterThan(0);
+      expect(copy.description.length).toBeGreaterThan(0);
+      const catalogEntry = ecosystemItems.find((item) => item.href === applicationHref(app.key));
+      expect(copy.description).toBe(catalogEntry?.description);
     }
   });
 

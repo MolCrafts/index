@@ -29,6 +29,8 @@ interface SlotState {
   imgIdx: number;
   top: string;
   left: string;
+  /** 0 uses the primary edge, 1 the alternate. The pair overlay ignores this. */
+  side: 0 | 1;
 }
 
 function useSlot(
@@ -40,6 +42,8 @@ function useSlot(
   periodMs: number,
   initialDelayMs: number,
   excludeImgIdxRef?: { current: number },
+  /** When set, each appearance picks this edge or the primary one at random. */
+  altRange?: readonly [number, number, number, number],
 ): SlotState {
   const [state, setState] = useState<SlotState>({
     visible: false,
@@ -47,14 +51,17 @@ function useSlot(
     imgIdx: 0,
     top: "50%",
     left: "10%",
+    side: 0,
   });
 
   // Track the hide-timer so it can be cleared on unmount
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const show = useCallback(() => {
-    const top = `${rand(yMin, yMax).toFixed(1)}%`;
-    const left = `${rand(xMin, xMax).toFixed(1)}%`;
+    const useAlt = altRange !== undefined && Math.random() < 0.5;
+    const [x0, x1, y0, y1] = useAlt ? altRange : [xMin, xMax, yMin, yMax];
+    const top = `${rand(y0, y1).toFixed(1)}%`;
+    const left = `${rand(x0, x1).toFixed(1)}%`;
     const exclude = excludeImgIdxRef?.current ?? -1;
     let imgIdx: number;
     if (exclude >= 0 && MOLECULES.length > 1) {
@@ -63,10 +70,17 @@ function useSlot(
     } else {
       imgIdx = Math.floor(Math.random() * MOLECULES.length);
     }
-    setState((s) => ({ visible: true, uid: s.uid + 1, imgIdx, top, left }));
+    setState((s) => ({
+      visible: true,
+      uid: s.uid + 1,
+      imgIdx,
+      top,
+      left,
+      side: useAlt ? 1 : 0,
+    }));
     if (hideTimerRef.current !== null) clearTimeout(hideTimerRef.current);
     hideTimerRef.current = setTimeout(() => setState((s) => ({ ...s, visible: false })), showMs);
-  }, [xMin, xMax, yMin, yMax, showMs, excludeImgIdxRef]);
+  }, [xMin, xMax, yMin, yMax, showMs, excludeImgIdxRef, altRange]);
 
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -185,17 +199,81 @@ const RIGHT_MOTION = {
 const HINT_CLASSES =
   "absolute left-1/2 top-full -translate-x-1/2 mt-3 whitespace-nowrap text-xs md:text-sm font-display tracking-[0.2em] uppercase text-zinc-300/85 group-hover:text-fuchsia-300 transition-colors";
 
+/** Homepage opacity. The 404 pair stays at the motion presets' own values. */
+const SINGLE_OPACITY = 0.4;
+
 interface MoleculeOverlayProps {
   href?: string;
   hintLabel?: string;
   placement?: Placement;
+  /**
+   * One molecule at a time, on either edge. The next picture is chosen from
+   * the set that excludes the one just shown. The 404 page leaves this off.
+   */
+  single?: boolean;
 }
 
-export const MoleculeOverlay = ({
+function OneMolecule({ placement }: { placement: Placement }) {
+  const preset = PLACEMENTS[placement];
+  const [lx1, lx2, ly1, ly2] = preset.left.range;
+  const lastImg = useRef(-1);
+  const slot = useSlot(
+    lx1,
+    lx2,
+    ly1,
+    ly2,
+    preset.left.showMs,
+    preset.left.periodMs,
+    preset.left.initialDelayMs,
+    lastImg,
+    preset.right.range,
+  );
+  if (slot.visible) lastImg.current = slot.imgIdx;
+
+  const pose = slot.side === 1 ? RIGHT_MOTION : LEFT_MOTION;
+  const sizeClass = slot.side === 1 ? preset.right.sizeClass : preset.left.sizeClass;
+  const frame = {
+    top: slot.top,
+    left: slot.left,
+    transform: "translate(-50%, -50%)",
+  };
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <AnimatePresence>
+        {slot.visible ? (
+          <motion.img
+            key={slot.uid}
+            src={MOLECULES[slot.imgIdx]}
+            alt=""
+            draggable={false}
+            className={cn(
+              MOLECULE_IMAGE_GLOW,
+              "pointer-events-none absolute z-10 object-contain",
+              sizeClass,
+            )}
+            style={frame}
+            initial={pose.initial}
+            animate={{ ...pose.animate, opacity: SINGLE_OPACITY }}
+            exit={pose.exit}
+            transition={pose.transition}
+          />
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export const MoleculeOverlay = (props: MoleculeOverlayProps = {}) => {
+  if (props.single) return <OneMolecule placement={props.placement ?? "edges"} />;
+  return <MoleculePair {...props} />;
+};
+
+function MoleculePair({
   href,
   hintLabel = "Open live demo ↗",
   placement = "edges",
-}: MoleculeOverlayProps = {}) => {
+}: MoleculeOverlayProps = {}) {
   const preset = PLACEMENTS[placement];
   const [lx1, lx2, ly1, ly2] = preset.left.range;
   const [rx1, rx2, ry1, ry2] = preset.right.range;
@@ -324,6 +402,6 @@ export const MoleculeOverlay = ({
       </AnimatePresence>
     </div>
   );
-};
+}
 
 export default MoleculeOverlay;

@@ -1,7 +1,7 @@
+import { useMemo } from "react";
 import { useHomeCopy } from "@/lib/home/copy";
 import { HOME_SECTION_IDS } from "@/lib/home/data";
 import { useHomePaging } from "@/lib/home/useHomePaging";
-import { useMemo } from "react";
 import { HomeAtmosphere } from "./HomeAtmosphere";
 import { HomeFooter } from "./HomeFooter";
 import { SectionDots } from "./SectionDots";

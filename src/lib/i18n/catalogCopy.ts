@@ -5,8 +5,8 @@
  * at render time, falling back to English for anything missing.
  */
 
-import { type EcosystemCategory, type EcosystemItem, ecosystemCategories } from "@/lib/ecosystem";
 import { useMemo } from "react";
+import { type EcosystemCategory, type EcosystemItem, ecosystemCategories } from "@/lib/ecosystem";
 import { useLocale } from "./LocaleProvider";
 import type { Locale } from "./locale";
 
@@ -23,16 +23,16 @@ interface CatalogGroupCopy {
 /** Keyed by the canonical English `title` in ecosystem.ts. */
 const ITEMS: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, CatalogItemCopy>>>> = {
   zh: {
-    MolPy: { role: "分子工具包", description: "构建分子体系、分配原子类型并导出。" },
-    MolPack: { role: "填充工具", description: "把分子填充进模拟盒。" },
+    MolPy: { role: "分子工具包", description: "用于分子建模的可组合工具包" },
+    MolPack: { role: "构型生成工具", description: "可扩展的分子模拟初始构型生成" },
     MolNex: {
       role: "机器学习框架",
-      description: "用于原子间势、生成模型与性质预测的机器学习框架。",
+      description: "统一机器学习框架，用于原子间势、生成模型与性质预测",
     },
-    MolAb: { role: "工作流平台", description: "运行实验并追踪每一个产物。" },
-    MolVis: { role: "3D 查看器", description: "在浏览器、VS Code 与 Jupyter 中查看、测量、回放。" },
+    MolAb: { role: "工作流平台", description: "面向计算研究的 AI 辅助工作流与知识管理" },
+    MolVis: { role: "可视化库", description: "交互式分子可视化库" },
     MolPlot: { role: "绘图库", description: "一份图表定义，同时用于网页与出版。" },
-    Atomiverse: { role: "模拟引擎", description: "分子动力学与电子结构，支持 CPU 与 GPU。" },
+    Atomiverse: { role: "模拟引擎", description: "多尺度分子模拟引擎" },
     MolRs: { role: "计算内核", description: "MolPy 底层的数据结构、文件 I/O 与计算内核。" },
     MolQ: { role: "作业队列", description: "一个提交 API，通用于本地、SLURM、PBS 与 LSF。" },
     MolHub: { role: "数据集访问", description: "下载基准数据集，上传你自己的。" },
@@ -40,21 +40,24 @@ const ITEMS: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, Cata
   sv: {
     MolPy: {
       role: "molekylverktygslåda",
-      description: "Bygger, typar och exporterar molekylära system.",
+      description: "Komponerbar verktygslåda för molekylmodellering",
     },
-    MolPack: { role: "packningsverktyg", description: "Packar molekyler i en simuleringsbox." },
+    MolPack: {
+      role: "konfigurationsgenerator",
+      description: "Utbyggbar generering av startkonfigurationer för molekylsimulering",
+    },
     MolNex: {
       role: "ML-ramverk",
       description:
-        "ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion.",
+        "Enhetligt ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
     },
     MolAb: {
       role: "arbetsflödesplattform",
-      description: "Kör experiment och spårar varje artefakt.",
+      description: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
     },
     MolVis: {
-      role: "3D-visare",
-      description: "Inspektera, mät och spela upp i webbläsaren, VS Code och Jupyter.",
+      role: "visualiseringsbibliotek",
+      description: "Bibliotek för interaktiv molekylvisualisering",
     },
     MolPlot: {
       role: "diagrambibliotek",
@@ -62,7 +65,7 @@ const ITEMS: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, Cata
     },
     Atomiverse: {
       role: "simuleringsmotor",
-      description: "Molekyldynamik och elektronstruktur, på CPU och GPU.",
+      description: "Motor för molekylsimulering i flera skalor",
     },
     MolRs: {
       role: "beräkningskärna",
@@ -103,10 +106,16 @@ const STATUSES: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, s
   },
 };
 
+/** Catalog status in the active locale. English strings stay canonical. */
+export function localizeStatus(status: string, locale: Locale): string {
+  if (locale === "en") return status;
+  return STATUSES[locale][status] ?? status;
+}
+
 function localizeItem(item: EcosystemItem, locale: Locale): EcosystemItem {
   if (locale === "en") return item;
   const copy = ITEMS[locale][item.title];
-  const status = item.status ? (STATUSES[locale][item.status] ?? item.status) : undefined;
+  const status = item.status ? localizeStatus(item.status, locale) : undefined;
   return {
     ...item,
     role: copy?.role ?? item.role,

@@ -1,3 +1,5 @@
+import { motion, useInView } from "framer-motion";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   approachRise,
   assistSublineReveal,
@@ -12,11 +14,11 @@ import {
   HOME_CONTAINER,
   HOME_H2_STATEMENT,
   HOME_H3,
+  HOME_SECTION_LEAD,
 } from "@/lib/home/stage";
+import { smoothThread } from "@/lib/home/thread";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
 import { BlockAura } from "../BlockAura";
 import { HomeSection } from "../HomeSection";
 import { SectionMarker } from "../SectionMarker";
@@ -26,7 +28,7 @@ export function ApproachSection() {
   const { locale } = useLocale();
   const reduceMotion = prefersReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLOListElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const [guide, setGuide] = useState({
     path: "",
     width: 1,
@@ -44,15 +46,12 @@ export function ApproachSection() {
         const node = item as HTMLElement;
         return { x: node.offsetLeft - 28, y: node.offsetTop + 18 };
       });
-      const path = points
-        .map((p, i) => {
-          if (!i) return `M ${p.x} ${p.y}`;
-          const prev = points[i - 1];
-          const mid = (prev.y + p.y) / 2;
-          return `C ${prev.x} ${mid}, ${p.x} ${mid}, ${p.x} ${p.y}`;
-        })
-        .join(" ");
-      setGuide({ points, path, width: list.offsetWidth, height: list.offsetHeight });
+      setGuide({
+        points,
+        path: smoothThread(points),
+        width: list.offsetWidth,
+        height: list.offsetHeight,
+      });
     };
     const observer = new ResizeObserver(measure);
     observer.observe(list);
@@ -85,12 +84,14 @@ export function ApproachSection() {
                 </span>
               ))}
             </motion.h2>
-            <motion.p
-              variants={assistSublineReveal}
-              className="foundation-subtitle home-subtitle font-display"
-            >
-              {approach.lead}
-            </motion.p>
+            {approach.lead && (
+              <motion.p
+                variants={assistSublineReveal}
+                className={cn(HOME_SECTION_LEAD, "mt-7 max-w-xl")}
+              >
+                {approach.lead}
+              </motion.p>
+            )}
           </div>
           <div className="foundation-strata">
             <svg
@@ -122,7 +123,7 @@ export function ApproachSection() {
                 </motion.g>
               ))}
             </svg>
-            <ol ref={listRef} className="foundation-list">
+            <ul ref={listRef} className="foundation-list">
               {approach.strata.map((stratum, index) => (
                 <motion.li
                   key={stratum.id}
@@ -133,7 +134,7 @@ export function ApproachSection() {
                   <p className={cn(HOME_BODY, "mt-3 max-w-sm")}>{stratum.detail}</p>
                 </motion.li>
               ))}
-            </ol>
+            </ul>
           </div>
         </motion.div>
       </div>
