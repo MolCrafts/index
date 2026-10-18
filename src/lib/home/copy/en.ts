@@ -32,11 +32,11 @@ export const en: HomeCopy = {
   whatWeDo: {
     title: "Knowledge, standardized.",
     titleLines: ["Knowledge,", "standardized."],
-    lead: "Turn isolated runs into lasting capability.",
+    lead: "Build on every discovery.",
     pillars: [
-      { title: "UNIFIED DATA", body: "Structured records, never isolated." },
-      { title: "CONNECTED KNOWLEDGE", body: "Shared intelligence across campaigns." },
-      { title: "REUSABLE WORKFLOWS", body: "Methodology that outlives the project." },
+      { title: "UNIFIED DATA", body: "Structured inputs, models and results." },
+      { title: "CONNECTED KNOWLEDGE", body: "Methods linked to findings." },
+      { title: "REUSABLE WORKFLOWS", body: "Methods reused across projects." },
     ],
   },
   assist: APPROVED_ASSIST_COPY,

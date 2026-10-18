@@ -15,7 +15,7 @@ export const sv: HomeCopy = {
     trust: "Stöd",
   },
   brandHero: {
-    kicker: "Standardisering av molekyl- och materialberäkning",
+    kicker: "Standardiserar materialforskning och utveckling",
     title: "MolCrafts",
     subtitle: "för AI-eran.",
   },
@@ -32,11 +32,11 @@ export const sv: HomeCopy = {
   whatWeDo: {
     title: "Kunskap, standardiserad.",
     titleLines: ["Kunskap,", "standardiserad."],
-    lead: "Omvandla isolerade körningar till varaktig förmåga.",
+    lead: "Bygg vidare på varje upptäckt.",
     pillars: [
-      { title: "ENHETLIGA DATA", body: "Strukturerade poster, aldrig isolerade." },
-      { title: "SAMMANLÄNKAD KUNSKAP", body: "Gemensam kunskap över forskningskampanjer." },
-      { title: "ÅTERANVÄNDBARA ARBETSFLÖDEN", body: "Metodik som lever vidare efter projektet." },
+      { title: "ENHETLIGA DATA", body: "Strukturerade indata, modeller och resultat." },
+      { title: "SAMMANLÄNKAD KUNSKAP", body: "Metoder kopplade till resultat." },
+      { title: "ÅTERANVÄNDBARA ARBETSFLÖDEN", body: "Metoder som återanvänds mellan projekt." },
     ],
   },
   assist: ASSIST_COPY_SV,
@@ -45,29 +45,23 @@ export const sv: HomeCopy = {
     stageLabel: "MolCrafts tillämpningar",
     items: {
       molpy: {
-        short: "Bygg och typa molekylära system",
-        description: "En komponerbar verktygslåda för molekylmodellering",
+        description: "Komponerbar verktygslåda för molekylmodellering",
       },
       molpack: {
-        short: "Packa molekyler i en box",
-        description: "Utökningsbar molekylpackning för att skapa startkonfigurationer",
+        description: "Utbyggbar generering av startkonfigurationer för molekylsimulering",
       },
       molvis: {
-        short: "Granska strukturer och trajektorier",
         description: "Bibliotek för interaktiv molekylvisualisering",
       },
       molab: {
-        short: "Kör och spåra experiment",
         description: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
       },
       molnex: {
-        short: "Träna och kombinera potentialer",
         description:
-          "Ett ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
+          "Enhetligt ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
       },
       atomiverse: {
-        short: "Kör dynamik och elektronstruktur",
-        description: "En motor för molekylsimulering på flera skalor",
+        description: "Motor för molekylsimulering i flera skalor",
       },
     },
   },
@@ -77,7 +71,7 @@ export const sv: HomeCopy = {
     lead: "Tack till programmen som stödjer vårt arbete med öppen källkod.",
   },
   footer: {
-    tagline: "Accelerera din FoU med AI-assisterad vetenskaplig infrastruktur.",
+    tagline: "Vetenskaplig infrastruktur för AI-stödd forskning.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Till toppen",

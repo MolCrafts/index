@@ -104,7 +104,6 @@ describe("homepage application stage", () => {
     for (const app of APPLICATIONS) {
       const copy = en.projects.items[app.key];
       expect(copy.description.length).toBeGreaterThan(0);
-      expect(copy.short).toBeUndefined();
       const catalogEntry = ecosystemItems.find((item) => item.href === applicationHref(app.key));
       expect(copy.description).toBe(catalogEntry?.description);
     }

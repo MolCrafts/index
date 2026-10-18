@@ -1,5 +1,6 @@
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import { BrandName } from "@/components/BrandName";
 import { FORCE_FULL_MOTION, MOTION_EASE } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -17,7 +18,7 @@ export function HeroSection() {
 
   return (
     <HomeSection id="hero" aria-labelledby="main-heading" className="overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-background/85" />
+      <div aria-hidden="true" className="hero-veil pointer-events-none absolute inset-0" />
       <motion.header
         ref={stageRef}
         lang={locale}
@@ -29,15 +30,15 @@ export function HeroSection() {
         <h1
           id="main-heading"
           lang="en"
-          className="home-title max-w-full whitespace-nowrap text-[clamp(2.1rem,7.2vw,6.6rem)] font-medium leading-[1.05] tracking-[-0.025em] [font-kerning:normal]"
+          className="max-w-full whitespace-nowrap text-[clamp(2.1rem,7.2vw,6.6rem)] font-medium leading-[1.05] tracking-[-0.025em] [font-kerning:normal]"
         >
-          {brandHero.title}
+          <BrandName
+            glow="hero"
+            className={onScreen ? undefined : "[animation-play-state:paused]"}
+          />
         </h1>
-        <p className="mt-7 max-w-[72rem] text-balance text-[clamp(1.125rem,2.5vw,2.75rem)] font-book leading-copy tracking-[-0.015em] sm:mt-8">
-          <span className="block text-foreground/85">{brandHero.kicker}</span>{" "}
-          <span className="home-subtitle mx-auto mt-1 block w-fit font-normal sm:mt-2">
-            {brandHero.subtitle}
-          </span>
+        <p className="mt-7 max-w-[72rem] text-balance text-[clamp(1.125rem,2.5vw,2.75rem)] font-book leading-copy tracking-[-0.015em] text-foreground/85 sm:mt-8">
+          {brandHero.kicker} {brandHero.subtitle}
         </p>
       </motion.header>
 

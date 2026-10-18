@@ -1,16 +1,16 @@
 import type { HomeCopy } from "./types";
 
-/** Original six principles and Squire metaphor; retain the existing orbit layout. */
+/** Scientific roles and assistance scope, within the existing orbit layout. */
 export const APPROVED_ASSIST_COPY = {
   title: { subject: "AI,", action: "here to assist." },
-  subline: "A squire for science. The scientist leads. AI assists.",
+  subline: "A squire for science. AI-assisted workflows and knowledge management.",
   statements: [
-    "Science gives AI context.",
-    "Data stays traceable.",
-    "Knowledge stays connected.",
-    "Tools make action possible.",
-    "Workflows remain reproducible.",
-    "Judgment stays human.",
+    "Scientific context.",
+    "Traceable data.",
+    "Connected knowledge.",
+    "Scientific tool access.",
+    "Reproducible workflows.",
+    "Human judgment.",
   ],
   concepts: [],
   products: ["MolPy", "MolAb", "MolVis", "MolPack", "Atomiverse"],
@@ -19,27 +19,27 @@ export const APPROVED_ASSIST_COPY = {
 export const ASSIST_COPY_ZH = {
   ...APPROVED_ASSIST_COPY,
   title: { subject: "AI，", action: "辅助你的研究。" },
-  subline: "科学家的侍从。科学家引领，AI 辅助。",
+  subline: "科学家的侍从。AI 辅助工作流与知识管理。",
   statements: [
-    "科学为 AI 提供上下文。",
-    "数据始终可追溯。",
-    "知识始终相互关联。",
-    "工具让行动成为可能。",
-    "工作流始终可复现。",
-    "判断始终由人作出。",
+    "科学上下文。",
+    "可追溯数据。",
+    "关联知识。",
+    "科学工具访问。",
+    "可复现工作流。",
+    "研究者判断。",
   ],
 } as const satisfies HomeCopy["assist"];
 
 export const ASSIST_COPY_SV = {
   ...APPROVED_ASSIST_COPY,
   title: { subject: "AI,", action: "som stöd i forskningen." },
-  subline: "En väpnare för vetenskapen. Forskaren leder. AI hjälper till.",
+  subline: "En väpnare för vetenskapen. AI-stödda arbetsflöden och kunskapshantering.",
   statements: [
-    "Vetenskap ger AI kontext.",
-    "Data förblir spårbara.",
-    "Kunskap förblir sammanlänkad.",
-    "Verktyg gör handling möjlig.",
-    "Arbetsflöden förblir reproducerbara.",
-    "Människan står för omdömet.",
+    "Vetenskaplig kontext.",
+    "Spårbara data.",
+    "Sammanlänkad kunskap.",
+    "Tillgång till forskningsverktyg.",
+    "Reproducerbara arbetsflöden.",
+    "Mänskligt omdöme.",
   ],
 } as const satisfies HomeCopy["assist"];

@@ -5,7 +5,7 @@ export const APPROVED_FOUNDATION_COPY = {
   kicker: "The Foundation",
   title: "Open infrastructure for molecular science.",
   titleLines: ["Open infrastructure", "for molecular science."],
-  lead: "Open source. Interoperable. Extensible.",
+  lead: "Shared standards for scientific software.",
   strata: [
     {
       id: "physics-data",
@@ -30,54 +30,54 @@ export const APPROVED_FOUNDATION_COPY = {
 
 export const APPROVED_FOUNDATION_COPY_ZH = {
   kicker: "科学根基",
-  title: "确定性的科学，规模化运行。",
-  titleLines: ["确定性的科学，", "规模化运行。"],
-  lead: "将孤立的计算转化为组织持久的科研能力。",
+  title: "面向分子科学的开放基础设施。",
+  titleLines: ["面向分子科学的", "开放基础设施。"],
+  lead: "科学软件的共同标准。",
   strata: [
     {
       id: "physics-data",
       tag: "CONTINUITY",
-      title: "专业经验体系化",
-      detail: "将领域直觉转化为可复用的方法。",
+      title: "开源",
+      detail: "开放审阅、修改与贡献。",
     },
     {
       id: "workflows",
       tag: "PROVENANCE",
-      title: "完整溯源",
-      detail: "让每一份科学记录都有连续、完整的溯源链。",
+      title: "互操作",
+      detail: "支持不同科学软件之间的集成。",
     },
     {
       id: "collaboration",
       tag: "SCALE",
-      title: "弹性吞吐",
-      detail: "从单个体系扩展到大规模科学发现。",
+      title: "可扩展",
+      detail: "支持新方法与新应用的开放架构。",
     },
   ],
 } as const satisfies HomeCopy["approach"];
 
 export const APPROVED_FOUNDATION_COPY_SV = {
   kicker: "Vetenskaplig grund",
-  title: "Deterministisk vetenskap i stor skala.",
-  titleLines: ["Deterministisk vetenskap", "i stor skala."],
-  lead: "Omvandla isolerade beräkningar till varaktig forskningsförmåga i organisationen.",
+  title: "Öppen infrastruktur för molekylär vetenskap.",
+  titleLines: ["Öppen infrastruktur", "för molekylär vetenskap."],
+  lead: "Gemensamma standarder för vetenskaplig programvara.",
   strata: [
     {
       id: "physics-data",
       tag: "CONTINUITY",
-      title: "Kodifierad expertis",
-      detail: "Omvandla domänintuition till återanvändbar metodik.",
+      title: "Öppen källkod",
+      detail: "Öppen för granskning, ändringar och bidrag.",
     },
     {
       id: "workflows",
       tag: "PROVENANCE",
-      title: "Fullständig proveniens",
-      detail: "Obruten spårbarhet genom varje vetenskaplig post.",
+      title: "Interoperabilitet",
+      detail: "Utformad för integration mellan vetenskapliga program.",
     },
     {
       id: "collaboration",
       tag: "SCALE",
-      title: "Elastisk kapacitet",
-      detail: "Skala från enskilda system till storskalig upptäckt.",
+      title: "Utbyggbarhet",
+      detail: "Öppen arkitektur för nya metoder och tillämpningar.",
     },
   ],
 } as const satisfies HomeCopy["approach"];

@@ -70,6 +70,7 @@ export const OgCard = (route: OgRoute) => {
           justifyContent: "center",
           flex: 1,
           width: "100%",
+          boxSizing: "border-box",
           padding: "0 80px",
         }}
       >
@@ -127,6 +128,7 @@ export const OgCard = (route: OgRoute) => {
           alignItems: "center",
           padding: "0 60px 44px",
           width: "100%",
+          boxSizing: "border-box",
         }}
       >
         <div

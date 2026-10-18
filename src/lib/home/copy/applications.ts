@@ -12,8 +12,7 @@ export const APPROVED_APPLICATIONS_HEADING = {
  * phrase, no trailing period. MolPack covers initial configuration generation
  * across algorithms; packing is one method rather than the product boundary.
  *
- * English only; other locales keep their approved translations until the
- * operator re-approves wording against this record.
+ * Other locales preserve the same scope in their translated descriptions.
  */
 export const APPLICATION_GITHUB_DESCRIPTIONS: Record<ApplicationKey, string> = {
   molpy: "Composable toolkit for molecular modeling",
@@ -26,11 +25,11 @@ export const APPLICATION_GITHUB_DESCRIPTIONS: Record<ApplicationKey, string> = {
 };
 
 export const APPLICATIONS_HEADING_ZH = {
-  title: "单独使用，或组合成技术栈。",
-  lead: "各自独立可用，也能相互配合。",
+  title: "面向分子计算的软件。",
+  lead: "建模、模拟与机器学习。",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
 
 export const APPLICATIONS_HEADING_SV = {
-  title: "Välj ett verktyg. Eller hela stacken.",
-  lead: "Verktygen fungerar både tillsammans och var för sig.",
+  title: "Programvara för molekylära beräkningar.",
+  lead: "Modellering. Simulering. Maskininlärning.",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;

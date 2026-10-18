@@ -10,12 +10,10 @@ export interface PillarCopy {
 /**
  * One entry in the application stage.
  *
- * English uses one description across the expanded stage and mobile roster.
- * Existing compact translations remain available until their copy is reviewed.
+ * One description per product, shared by the desktop and mobile stage.
  */
 export interface ApplicationCopy {
   readonly description: string;
-  readonly short?: string;
 }
 
 /**

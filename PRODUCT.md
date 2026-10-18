@@ -26,7 +26,7 @@ The page holds both jobs at once: choosing a tool, and seeing a path into collab
 
 ## Positioning
 
-Published claim, from the approved homepage copy: "Standardizing Molecular & Materials Computation." The foundation line is "Open infrastructure for molecular science."
+Published claim, from the approved homepage copy: "Standardizing Materials R&D for the AI Era." The foundation line is "Open infrastructure for molecular science."
 
 The mechanism a neighboring catalog could not copy is the stack plus the three confirmed ways in: use the open-source tools, build together, or deploy in-house. Contact for the commercial paths is hello@molcrafts.org.
 
@@ -42,7 +42,9 @@ The site is a React / TypeScript client. Rsbuild serves a generated HTML shell; 
 
 Locales: English, Chinese, Swedish. English stays the source.
 
-Foundation copy lives in `src/lib/home/copy/foundation.ts`. The approved revision uses Codified Expertise, Complete Provenance, and Elastic Throughput, with no pillar numbering or pillar labels. The section marker remains 01 / FOUNDATION.
+Foundation copy lives in `src/lib/home/copy/foundation.ts`. It describes Open source, Interoperability, and Extensibility, with no pillar numbering or pillar labels. The section marker remains 01 / FOUNDATION.
+
+The homepage presents the company's software, computational R&D, methods and integration services across molecular and materials research. Keep this company-wide scope; do not add illustrative projects or industry-specific demonstrations. Each product has one description. Mobile uses product selectors and one active product panel, without a duplicate catalog below it.
 
 ## Brand Commitments
 

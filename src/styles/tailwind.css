@@ -549,6 +549,24 @@ html:not(.dark) .home-rail-index {
 html:not(.dark) .home-glow {
   opacity: 0.35;
 }
+.hero-veil {
+  background: radial-gradient(
+    ellipse at 50% 46%,
+    hsl(var(--background) / 0.18) 0%,
+    hsl(var(--background) / 0.42) 38%,
+    hsl(var(--background) / 0.88) 76%
+  );
+}
+/* Molecules stay in the hero's empty upper/lower field, clear of the inscription.
+   Reading screens keep the same light without an image moving through the copy. */
+.home-molecules {
+  opacity: 0;
+  mask-image: linear-gradient(to bottom, black 18%, transparent 34%, transparent 67%, black 82%);
+  transition: opacity 0.45s ease-out;
+}
+[data-home-pager]:has(#hero[data-home-visible="true"]) .home-molecules {
+  opacity: 1;
+}
 .dark [data-home-pager] {
   --color-foreground: var(--home-white);
   --color-muted-foreground: color-mix(in srgb, var(--home-white) 70%, transparent);

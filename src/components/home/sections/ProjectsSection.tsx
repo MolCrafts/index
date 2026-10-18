@@ -15,7 +15,7 @@ export function ProjectsSection() {
 
   return (
     <HomeBlock id="applications" title={projects.title} lead={projects.lead} scale="section">
-      <Reveal delay={0.65}>
+      <Reveal delay={0.1}>
         <ApplicationStage />
       </Reveal>
     </HomeBlock>

@@ -9,7 +9,6 @@ import { localizeStatus } from "@/lib/i18n/catalogCopy";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
-import { MonoLabel } from "../MonoLabel";
 import { ProductMark } from "./ProductMark";
 
 /** One shared timing, so expanding, compressing and the glow all move as one gesture. */
@@ -247,58 +246,38 @@ export function ApplicationStage() {
         })}
       </section>
 
-      {APPLICATIONS.filter((app) => app.key === activeKey).map((app) => (
-        <motion.div
-          key={app.key}
-          /* Announced politely: tapping a chip replaces this panel's whole contents,
+      {APPLICATIONS.filter((app) => app.key === activeKey).map((app) => {
+        const status = applicationStatus(app.key);
+        return (
+          <motion.div
+            key={app.key}
+            /* Announced politely: tapping a chip replaces this panel's whole contents,
                which a screen reader would otherwise pass over in silence. */
-          aria-live="polite"
-          className="mt-3 overflow-hidden rounded-2xl border border-[rgb(var(--accent-rgb))]/40 bg-foreground/[0.03]"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.42, ease: MOTION_EASE }}
-        >
-          <a href={applicationHref(app.key)} {...EXTERNAL_LINK} className={cn("block", FOCUS_RING)}>
-            <div className="h-40 p-3">
-              <ProductMark product={app.product} className="px-6" />
-            </div>
-            <div className="border-t border-border/60 p-5">
-              <EntryDetail applicationKey={app.key} compact heading={false} />
-            </div>
-          </a>
-        </motion.div>
-      ))}
-
-      {/* The whole roster stays legible even when only one entry is expanded. */}
-      <ul className="mt-6 border-t border-border/60">
-        {APPLICATIONS.map((app) => {
-          const status = applicationStatus(app.key);
-          return (
-            <li key={app.key} className="border-b border-border/60">
-              <a
-                href={applicationHref(app.key)}
-                {...EXTERNAL_LINK}
-                className={cn(
-                  "flex min-h-11 items-baseline justify-between gap-4 py-3",
-                  FOCUS_RING,
-                )}
-              >
-                <span className="font-display text-sm font-semibold text-foreground">
-                  {app.product}
-                  {status ? (
-                    <MonoLabel className="ml-2 whitespace-nowrap">
-                      {localizeStatus(status, locale)}
-                    </MonoLabel>
-                  ) : null}
-                </span>
-                <span className="text-right font-body text-sm text-muted-foreground">
-                  {projects.items[app.key].short ?? projects.items[app.key].description}
-                </span>
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+            aria-live="polite"
+            className="mt-3 overflow-hidden rounded-2xl border border-[rgb(var(--accent-rgb))]/40 bg-foreground/[0.03]"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, ease: MOTION_EASE }}
+          >
+            <a
+              href={applicationHref(app.key)}
+              {...EXTERNAL_LINK}
+              className={cn("block", FOCUS_RING)}
+            >
+              <div className="h-40 p-3">
+                <ProductMark
+                  product={app.product}
+                  status={status ? localizeStatus(status, locale) : undefined}
+                  className="px-6"
+                />
+              </div>
+              <div className="border-t border-border/60 p-5">
+                <EntryDetail applicationKey={app.key} compact heading={false} />
+              </div>
+            </a>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
