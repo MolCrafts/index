@@ -44,7 +44,7 @@ Locales: English, Chinese, Swedish. English stays the source.
 
 Foundation copy lives in `src/lib/home/copy/foundation.ts`. It describes Open source, Interoperability, and Extensibility, with no pillar numbering or pillar labels. The section marker remains 01 / FOUNDATION.
 
-The homepage presents the company's software, computational R&D, methods and integration services across molecular and materials research. Keep this company-wide scope; do not add illustrative projects or industry-specific demonstrations. Each product has one description. Mobile uses product selectors and one active product panel, without a duplicate catalog below it.
+The homepage presents the company's software, computational R&D, methods and integration services across molecular and materials research. Keep this company-wide scope; do not add illustrative projects or industry-specific demonstrations. Each product has one description. Mobile uses unboxed text selectors and one active product name, status and description, without a duplicate catalog below it. No pill selectors, filled panels, card borders or internal dividers.
 
 ## Brand Commitments
 

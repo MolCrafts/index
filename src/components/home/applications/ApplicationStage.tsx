@@ -233,11 +233,11 @@ export function ApplicationStage() {
               onClick={() => setActiveKey(app.key)}
               aria-pressed={active}
               className={cn(
-                "flex min-h-11 min-w-0 items-center justify-center rounded-full border px-2 font-display text-sm font-semibold transition-colors",
+                "flex min-h-11 min-w-0 items-center text-left font-display text-sm font-semibold underline-offset-8 transition-colors",
                 FOCUS_RING,
                 active
-                  ? "border-[rgb(var(--accent-rgb))]/60 bg-[rgb(var(--accent-rgb))]/10 text-foreground"
-                  : "border-border/70 text-muted-foreground",
+                  ? "text-foreground underline decoration-primary decoration-2"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {app.product}
@@ -251,10 +251,10 @@ export function ApplicationStage() {
         return (
           <motion.div
             key={app.key}
-            /* Announced politely: tapping a chip replaces this panel's whole contents,
+            /* Announced politely: selecting a product replaces this content,
                which a screen reader would otherwise pass over in silence. */
             aria-live="polite"
-            className="mt-6 overflow-hidden rounded-2xl border border-[rgb(var(--accent-rgb))]/40 bg-foreground/[0.03]"
+            className="mt-8"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: MOTION_EASE }}
@@ -262,18 +262,14 @@ export function ApplicationStage() {
             <a
               href={applicationHref(app.key)}
               {...EXTERNAL_LINK}
-              className={cn("block", FOCUS_RING)}
+              className={cn("block space-y-5 py-2", FOCUS_RING)}
             >
-              <div className="h-28">
-                <ProductMark
-                  product={app.product}
-                  status={status ? localizeStatus(status, locale) : undefined}
-                  className="px-5"
-                />
-              </div>
-              <div className="border-t border-border/60 p-5">
-                <EntryDetail applicationKey={app.key} compact heading={false} />
-              </div>
+              <ProductMark
+                product={app.product}
+                status={status ? localizeStatus(status, locale) : undefined}
+                className="h-auto px-0"
+              />
+              <EntryDetail applicationKey={app.key} compact heading={false} />
             </a>
           </motion.div>
         );
