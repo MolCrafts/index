@@ -8,7 +8,7 @@ export const sv: HomeCopy = {
   sectionLabels: {
     hero: "Hem",
     about: "Grund",
-    solutions: "Förmågor",
+    solutions: "Kontinuitet",
     assist: "AI",
     applications: "Tillämpningar",
     collaboration: "Samarbete",
@@ -17,7 +17,7 @@ export const sv: HomeCopy = {
   brandHero: {
     kicker: "Standardisering av molekyl- och materialberäkning",
     title: "MolCrafts",
-    subtitle: "Accelerera din FoU med AI-assisterad vetenskaplig infrastruktur.",
+    subtitle: "för AI-eran.",
   },
   hero: {
     title: "Molekylär forskning,",
@@ -30,28 +30,18 @@ export const sv: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {
-    title: "Kunskap lever vidare.",
-    titleLines: ["Kunskap", "lever vidare."],
-    lead: "Bygg vidare på varje upptäckt.",
+    title: "Kunskap, standardiserad.",
+    titleLines: ["Kunskap,", "standardiserad."],
+    lead: "Omvandla isolerade körningar till varaktig förmåga.",
     pillars: [
-      {
-        title: "Samlad data",
-        body: "Molekyler, modeller och resultat med spårbara källor.",
-      },
-      {
-        title: "Sammanlänkad kunskap",
-        body: "Koppla metoder och resultat till de data de förklarar.",
-      },
-      {
-        title: "Reproducerbar forskning",
-        body: "Kör om, anpassa och utöka arbetsflöden.",
-      },
+      { title: "ENHETLIGA DATA", body: "Strukturerade poster, aldrig isolerade." },
+      { title: "SAMMANLÄNKAD KUNSKAP", body: "Gemensam kunskap över forskningskampanjer." },
+      { title: "ÅTERANVÄNDBARA ARBETSFLÖDEN", body: "Metodik som lever vidare efter projektet." },
     ],
   },
   assist: ASSIST_COPY_SV,
   projects: {
     ...APPLICATIONS_HEADING_SV,
-    cta: "Utforska",
     stageLabel: "MolCrafts tillämpningar",
     items: {
       molpy: {

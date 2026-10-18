@@ -2,8 +2,8 @@ import type { ApplicationKey, HomeCopy } from "./types";
 
 /** Application stage headline, with equivalent translations below. */
 export const APPROVED_APPLICATIONS_HEADING = {
-  title: "Modular by design.",
-  lead: "The building blocks of molecular computation.",
+  title: "Software for molecular computation.",
+  lead: "Modeling. Simulation. Machine learning.",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
 
 /**

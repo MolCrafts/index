@@ -25,7 +25,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           "@type": "WebSite",
           "@id": "https://molcrafts.org/#website",
           url: "https://molcrafts.org",
-          name: "MolCrafts — Standardizing Molecular & Materials Computation",
+          name: "MolCrafts — Standardizing Materials R&D for the AI Era.",
           description: "Open infrastructure for molecular and materials computation.",
           publisher: {
             "@id": "https://molcrafts.org/#organization",
@@ -35,7 +35,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           "@type": "WebPage",
           "@id": "https://molcrafts.org/#webpage",
           url: "https://molcrafts.org",
-          name: "MolCrafts — Standardizing Molecular & Materials Computation",
+          name: "MolCrafts — Standardizing Materials R&D for the AI Era.",
           description: "Open infrastructure for molecular and materials computation.",
           isPartOf: {
             "@id": "https://molcrafts.org/#website",

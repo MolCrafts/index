@@ -9,7 +9,7 @@ export const zh: HomeCopy = {
   sectionLabels: {
     hero: "首页",
     about: "根基",
-    solutions: "能力",
+    solutions: "知识延续",
     assist: "AI",
     applications: "应用",
     collaboration: "合作",
@@ -18,7 +18,7 @@ export const zh: HomeCopy = {
   brandHero: {
     kicker: "标准化分子与材料计算",
     title: "MolCrafts",
-    subtitle: "用 AI 辅助的科学基础设施，加速你的研发。",
+    subtitle: "面向 AI 时代。",
   },
   hero: {
     title: "让复杂分子研究",
@@ -31,28 +31,18 @@ export const zh: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY_ZH,
   whatWeDo: {
-    title: "让研究知识不断积累。",
-    titleLines: ["让研究知识", "不断积累。"],
-    lead: "在已有发现之上继续研究。",
+    title: "知识，标准化。",
+    titleLines: ["知识，", "标准化。"],
+    lead: "将孤立的运行转化为持久的科研能力。",
     pillars: [
-      {
-        title: "统一数据",
-        body: "连接分子、模型与结果，保留数据来源。",
-      },
-      {
-        title: "关联知识",
-        body: "将方法和发现与相关数据关联。",
-      },
-      {
-        title: "可复现研究",
-        body: "重新运行、调整和扩展工作流。",
-      },
+      { title: "统一数据", body: "结构化记录，始终彼此关联。" },
+      { title: "关联知识", body: "跨研究计划共享知识与洞见。" },
+      { title: "可复用工作流", body: "让方法的价值延续至项目之外。" },
     ],
   },
   assist: ASSIST_COPY_ZH,
   projects: {
     ...APPLICATIONS_HEADING_ZH,
-    cta: "了解详情",
     stageLabel: "MolCrafts 应用",
     items: {
       molpy: {

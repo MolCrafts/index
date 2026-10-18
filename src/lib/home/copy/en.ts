@@ -8,16 +8,16 @@ export const en: HomeCopy = {
   sectionLabels: {
     hero: "Home",
     about: "Foundation",
-    solutions: "Capabilities",
+    solutions: "Continuity",
     assist: "AI",
     applications: "Applications",
     collaboration: "Collaboration",
     trust: "Support",
   },
   brandHero: {
-    kicker: "Standardizing Molecular & Materials Computation",
+    kicker: "Standardizing Materials R&D",
     title: "MolCrafts",
-    subtitle: "Scientific infrastructure for AI-assisted research.",
+    subtitle: "for the AI Era.",
   },
   hero: {
     title: "A modern, open-source ecosystem",
@@ -30,28 +30,18 @@ export const en: HomeCopy = {
   },
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
-    title: "Knowledge carries forward.",
-    titleLines: ["Knowledge", "carries forward."],
-    lead: "Build on every discovery.",
+    title: "Knowledge, standardized.",
+    titleLines: ["Knowledge,", "standardized."],
+    lead: "Turn isolated runs into lasting capability.",
     pillars: [
-      {
-        title: "Unified data",
-        body: "Scientific data, in context.",
-      },
-      {
-        title: "Connected knowledge",
-        body: "Cumulative scientific knowledge.",
-      },
-      {
-        title: "Replayable research",
-        body: "Research beyond a single run.",
-      },
+      { title: "UNIFIED DATA", body: "Structured records, never isolated." },
+      { title: "CONNECTED KNOWLEDGE", body: "Shared intelligence across campaigns." },
+      { title: "REUSABLE WORKFLOWS", body: "Methodology that outlives the project." },
     ],
   },
   assist: APPROVED_ASSIST_COPY,
   projects: {
     ...APPROVED_APPLICATIONS_HEADING,
-    cta: "Explore",
     stageLabel: "MolCrafts applications",
     items: {
       molpy: {

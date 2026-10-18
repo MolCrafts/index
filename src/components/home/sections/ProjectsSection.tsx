@@ -1,7 +1,7 @@
 import { useHomeCopy } from "@/lib/home/copy";
+import { ApplicationStage } from "../applications/ApplicationStage";
 import { HomeBlock } from "../HomeBlock";
 import { Reveal } from "../Reveal";
-import { ApplicationStage } from "../applications/ApplicationStage";
 
 /**
  * Applications — an interactive stage rather than a catalog.

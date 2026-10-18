@@ -6,7 +6,7 @@ export const APPROVED_COLLABORATION_COPY = {
     plain: "Open to start.",
     accent: "Tailored to fit.",
   },
-  supporting: "Open tools. Shared expertise. Your infrastructure.",
+  supporting: "Computational R&D. Method development. In-house integration.",
   paths: {
     startOpen: {
       statement: "Start open.",
@@ -14,11 +14,11 @@ export const APPROVED_COLLABORATION_COPY = {
     },
     buildTogether: {
       statement: "Build together.",
-      line: "Scientific challenges. Shared expertise.",
+      line: "Molecular modeling and method development.",
     },
     deployInHouse: {
       statement: "Deploy in-house.",
-      line: "MolCrafts, on your infrastructure.",
+      line: "Workflow integration for local and HPC systems.",
     },
   },
 } as const satisfies HomeCopy["participate"];

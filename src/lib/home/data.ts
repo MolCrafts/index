@@ -1,6 +1,7 @@
 /** Locale-independent homepage structure. Visitor-facing copy lives in `./copy/`. */
 
 import { contactHref } from "../contact";
+import { ecosystemItems } from "../ecosystem";
 import { GITHUB_ORG_HREF, packageGithubHref } from "../packages";
 import type { ProductSlug } from "../routes";
 import type { ApplicationKey, ParticipatePathKey } from "./copy/types";
@@ -97,6 +98,15 @@ export const APPLICATIONS: readonly ApplicationMeta[] = [
 /** Derived from the package registry, so a repo rename cannot leave a 404. */
 export function applicationHref(key: ApplicationMeta["key"]): string {
   return packageGithubHref(key);
+}
+
+/**
+ * Registry status for a stage entry, in the catalog's canonical English.
+ * Shipping packages omit it. Callers localize the string.
+ */
+export function applicationStatus(key: ApplicationMeta["key"]): string | undefined {
+  const href = applicationHref(key);
+  return ecosystemItems.find((item) => item.href === href)?.status;
 }
 
 export interface ParticipatePathMeta {

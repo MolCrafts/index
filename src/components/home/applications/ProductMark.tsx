@@ -1,8 +1,11 @@
 import { HOME_H2_SECTION } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
+import { MonoLabel } from "../MonoLabel";
 
 interface ProductMarkProps {
   product: string;
+  /** Registry status, when the catalog has one. Quiet, under the name. */
+  status?: string;
   className?: string;
 }
 
@@ -16,10 +19,10 @@ interface ProductMarkProps {
  * the image; nothing else in the stage has to change.
  *
  * It is not a box: the stage it opens inside is one continuous field, so the mark
- * floats in that field's own light — the product name — with no border
- * or fill of its own.
+ * floats in that field's own light — the product name, and a status only when
+ * the registry has one — with no border or fill of its own.
  */
-export function ProductMark({ product, className }: ProductMarkProps) {
+export function ProductMark({ product, status, className }: ProductMarkProps) {
   return (
     <div
       className={cn(
@@ -36,6 +39,7 @@ export function ProductMark({ product, className }: ProductMarkProps) {
       >
         {product}
       </span>
+      {status ? <MonoLabel className="relative mt-4">{status}</MonoLabel> : null}
     </div>
   );
 }

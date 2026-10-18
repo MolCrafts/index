@@ -1,6 +1,6 @@
-import { FORCE_FULL_MOTION } from "@/lib/animations";
 import { useReducedMotion } from "framer-motion";
 import { createContext, useContext } from "react";
+import { FORCE_FULL_MOTION } from "@/lib/animations";
 
 export const ScreenMotionContext = createContext(true);
 

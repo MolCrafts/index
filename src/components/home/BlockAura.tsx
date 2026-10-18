@@ -1,6 +1,6 @@
+import { motion } from "framer-motion";
 import { blockAuraReveal } from "@/lib/animations";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useScreenMotion } from "./ScreenMotion";
 
 /**
@@ -24,10 +24,13 @@ export function BlockAura({ className }: { className?: string }) {
       animate={reduced || visible ? "visible" : "hidden"}
       transition={reduced ? { duration: 0 } : undefined}
       className={cn(
-        "pointer-events-none absolute left-0 top-1/4 -z-10 h-[min(30vw,26rem)] w-[min(64vw,60rem)] -translate-y-1/3 rounded-full blur-[30px]",
-        "home-aura bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.16)_0%,rgba(var(--accent-rgb),0.08)_38%,hsl(var(--primary)/0.055)_56%,transparent_74%)]",
+        "pointer-events-none absolute left-0 top-1/4 -z-10 h-[min(30vw,26rem)] w-[min(64vw,60rem)] -translate-y-1/3",
         className,
       )}
-    />
+    >
+      {/* Blur stays on this child. The reveal above owns opacity, so the breathe
+          can fade this layer without fighting that inline style or re-blurring. */}
+      <div className="home-aura h-full w-full rounded-full bg-[radial-gradient(ellipse_at_center,rgba(var(--accent-rgb),0.16)_0%,rgba(var(--accent-rgb),0.08)_38%,hsl(var(--primary)/0.055)_56%,transparent_74%)] blur-[30px]" />
+    </motion.div>
   );
 }

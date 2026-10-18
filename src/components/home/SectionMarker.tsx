@@ -25,9 +25,7 @@ interface SectionMarkerProps {
  * adds no new copy, and it is hidden from assistive tech because the heading and
  * the section nav already carry the same name.
  *
- * It rides with the section dots as desktop chrome. Below `md` the screens fill
- * the viewport and read as a scrolling document already, and a fixed rail there
- * would land on the navbar and the first line of the heading.
+ * Mobile keeps the same marker just below the navbar; desktop uses the shared rail offset.
  */
 export function SectionMarker({ sectionId, className }: SectionMarkerProps) {
   const { sectionLabels } = useHomeCopy();
@@ -36,14 +34,14 @@ export function SectionMarker({ sectionId, className }: SectionMarkerProps) {
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-x-0 top-24 z-20 hidden md:block",
+        "pointer-events-none absolute inset-x-0 top-20 z-20 block md:top-24",
         HOME_CONTAINER,
         className,
       )}
       aria-hidden="true"
     >
-      <MonoLabel className="block">
-        <span className="text-[rgb(var(--accent-rgb))]">{String(step).padStart(2, "0")}</span>
+      <MonoLabel className="home-rail block">
+        <span className="home-rail-index">{String(step).padStart(2, "0")}</span>
         <span className="px-2 opacity-50">/</span>
         <BrandCopy text={sectionLabels[sectionId]} />
       </MonoLabel>

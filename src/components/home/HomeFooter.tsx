@@ -1,7 +1,7 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { BrandCopy, BrandName } from "@/components/BrandName";
 import { useHomeCopy } from "@/lib/home/copy";
 import { GITHUB_ORG_HREF } from "@/lib/home/data";
-import { Github } from "lucide-react";
 import { LogoIcon } from "../Icons";
 
 /**
@@ -38,7 +38,7 @@ export function HomeFooter() {
             rel="noreferrer noopener"
             className="inline-flex min-h-11 items-center gap-2 text-muted-foreground no-underline hover:text-foreground"
           >
-            <Github className="h-4 w-4" aria-hidden="true" />
+            <GitHubLogoIcon className="h-4 w-4" aria-hidden="true" />
             {footer.github}
           </a>
           <a

@@ -53,7 +53,7 @@ export default defineConfig({
     /* No `lang` option here — rsbuild has none. The <html lang> attribute is added
        in scripts/prerender-html.ts, which already rewrites the HTML per route. */
     favicon: "./src/assets/moko.svg",
-    title: "MolCrafts — Standardizing Molecular & Materials Computation",
+    title: "MolCrafts — Standardizing Materials R&D for the AI Era.",
     tags: [
       ...analyticsTags,
       /* Fonts are bundled locally via @fontsource imports in src/main.tsx.
@@ -64,7 +64,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:title",
-          content: "MolCrafts — Standardizing Molecular & Materials Computation",
+          content: "MolCrafts — Standardizing Materials R&D for the AI Era.",
         },
       },
       {
@@ -87,7 +87,7 @@ export default defineConfig({
         tag: "meta",
         attrs: {
           property: "og:image:alt",
-          content: "MolCrafts — Standardizing Molecular & Materials Computation",
+          content: "MolCrafts — Standardizing Materials R&D for the AI Era.",
         },
       },
     ],
@@ -102,7 +102,7 @@ export default defineConfig({
         "molcrafts, molecular simulation, computational chemistry, materials science, molecular dynamics, AI for science, agentic science, reproducible research",
       author: "MolCrafts",
       "twitter:card": "summary_large_image",
-      "twitter:title": "MolCrafts — Standardizing Molecular & Materials Computation",
+      "twitter:title": "MolCrafts — Standardizing Materials R&D for the AI Era.",
       "twitter:description": "Open infrastructure for molecular and materials computation.",
       "twitter:image": "https://molcrafts.org/og/index.png",
     },

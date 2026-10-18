@@ -1,7 +1,7 @@
+import type { ReactNode } from "react";
 import type { HomeNumberedSectionId } from "@/lib/home/data";
 import { HOME_BAND, HOME_BLOCK, HOME_CONTAINER, HOME_RULE } from "@/lib/home/stage";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
 import { BlockAura } from "./BlockAura";
 import { HomeSection } from "./HomeSection";
 import { Reveal } from "./Reveal";
@@ -37,15 +37,8 @@ export function HomeBlock({ id, title, lead, scale, height = "screen", children 
     <HomeSection id={id} height={height}>
       {/* A band has no centred screen for the rail to sit above, so the number rides
           in its top gutter rather than a third of the way down the block. */}
-      <SectionMarker sectionId={id} className={band ? "top-6" : undefined} />
-      <div
-        className={cn(
-          HOME_CONTAINER,
-          band ? HOME_BAND : HOME_BLOCK,
-          "relative isolate",
-          id === "trust" && "lg:grid lg:grid-cols-[1fr_auto] lg:items-center lg:gap-20 lg:py-20",
-        )}
-      >
+      <SectionMarker sectionId={id} className={band ? "top-6 md:top-6" : undefined} />
+      <div className={cn(HOME_CONTAINER, band ? HOME_BAND : HOME_BLOCK, "relative isolate")}>
         <BlockAura />
         <Reveal>
           {/* A band's lead is a credit line, not a paragraph: it stays unbroken. */}

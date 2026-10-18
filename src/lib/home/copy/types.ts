@@ -70,20 +70,15 @@ export interface HomeCopy {
     readonly pillars: readonly PillarCopy[];
   };
   readonly assist: {
-    readonly title: {
-      readonly subject: string;
-      readonly action: string;
-    };
+    readonly title: { readonly subject: string; readonly action: string };
     readonly subline: string;
     readonly statements: readonly [string, string, string, string, string, string];
-    readonly concepts: readonly [string, string, string, string];
+    readonly concepts: readonly string[];
     readonly products: readonly [string, string, string, string, string];
   };
   readonly projects: {
     readonly title: string;
     readonly lead: string;
-    /** Link label on the expanded panel. */
-    readonly cta: string;
     /** Accessible name for the applications band. */
     readonly stageLabel: string;
     readonly items: {

@@ -23,7 +23,7 @@ export const generateLlmsTxt = (distDir: string) => {
   const lines: string[] = [
     "# MolCrafts",
     "",
-    "> Standardizing Molecular & Materials Computation",
+    "> Standardizing Materials R&D for the AI Era.",
     "> Open infrastructure for molecular and materials computation.",
     "",
     "Each package installs and runs on its own — taking one does not pull in the rest.",

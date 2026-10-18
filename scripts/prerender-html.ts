@@ -70,8 +70,7 @@ const escapeHtml = (v: string) =>
 const rootContent = () => {
   const parts: string[] = [
     `<h1>${escapeHtml(homeCopy.brandHero.title)}</h1>`,
-    `<p>${escapeHtml(homeCopy.brandHero.kicker)}</p>`,
-    `<p>${escapeHtml(homeCopy.brandHero.subtitle)}</p>`,
+    `<p>${escapeHtml(`${homeCopy.brandHero.kicker} ${homeCopy.brandHero.subtitle}`)}</p>`,
     `<p><a href="/#applications">${escapeHtml(homeCopy.hero.primaryCta)}</a></p>`,
     `<h2>${escapeHtml(homeCopy.approach.title)}</h2>`,
     `<p>${escapeHtml(homeCopy.approach.lead)}</p>`,

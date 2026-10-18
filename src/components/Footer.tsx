@@ -25,7 +25,7 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
     title: "Explore",
     links: [
       { label: "Applications", href: "/#applications" },
-      { label: "Capabilities", href: "/#solutions" },
+      { label: "Continuity", href: "/#solutions" },
       { label: "Documentation", href: "https://docs.molcrafts.org/", external: true },
       { label: "GitHub", href: "https://github.com/MolCrafts", external: true },
     ],

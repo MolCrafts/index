@@ -1,12 +1,15 @@
-import { MOTION_EASE, homeReveal } from "@/lib/animations";
-import { useHomeCopy } from "@/lib/home/copy";
-import type { ApplicationKey } from "@/lib/home/copy/types";
-import { APPLICATIONS } from "@/lib/home/data";
-import { HOME_BODY, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
-import { useMediaQuery } from "@/lib/useMediaQuery";
-import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { type ReactNode, useState } from "react";
+import { homeReveal, MOTION_EASE } from "@/lib/animations";
+import { useHomeCopy } from "@/lib/home/copy";
+import type { ApplicationKey } from "@/lib/home/copy/types";
+import { APPLICATIONS, applicationHref, applicationStatus } from "@/lib/home/data";
+import { HOME_BODY, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
+import { localizeStatus } from "@/lib/i18n/catalogCopy";
+import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { useMediaQuery } from "@/lib/useMediaQuery";
+import { cn } from "@/lib/utils";
+import { MonoLabel } from "../MonoLabel";
 import { ProductMark } from "./ProductMark";
 
 /** One shared timing, so expanding, compressing and the glow all move as one gesture. */
@@ -15,6 +18,11 @@ const MORPH = { duration: 0.52, ease: MOTION_EASE } as const;
 /** Focus ring shared by every control in the stage. */
 const FOCUS_RING =
   "outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[rgb(var(--accent-rgb))]";
+
+const EXTERNAL_LINK = {
+  target: "_blank",
+  rel: "noreferrer noopener",
+} as const;
 
 /** One line of the expanded panel, faded in on its own beat so the text arrives in order. */
 function Layer({ step, children }: { step: number; children: ReactNode }) {
@@ -91,13 +99,14 @@ function EntryDetail({
  * of light is a route the work can take — and the stage's glow travels to
  * whichever entry the reader brings forward.
  *
- * The band is the reader's only route from `/` to a product page, so it activates on
- * click and keyboard as well as hover, and the whole thing is gated on a fine
- * pointer: a touch tablet wide enough for the band would otherwise open a panel on
- * tap and close it again on the very next touch.
+ * Hover brings an entry forward. The whole column is the link to that product's
+ * repository — there is no separate control. The band is gated on a fine pointer:
+ * a touch tablet wide enough for it would otherwise open a panel on tap and close
+ * it again on the next touch.
  */
 export function ApplicationStage() {
   const { projects } = useHomeCopy();
+  const { locale } = useLocale();
   const [activeKey, setActiveKey] = useState<ApplicationKey>(APPLICATIONS[0].key);
   /* Only one branch is rendered. Shipping both and hiding one left the unused tree
      mounted — and on a touch tablet wide enough for the band, a tap would open a
@@ -113,8 +122,8 @@ export function ApplicationStage() {
         aria-label={projects.stageLabel}
       >
         {APPLICATIONS.map((app) => {
-          const copy = projects.items[app.key];
           const active = app.key === activeKey;
+          const status = applicationStatus(app.key);
           /* One class, not two: `cn` merges conflicting flex utilities and the last
              one wins, so an active item that also carried `flex-1` collapsed back to
              an even share and never took the stage. */
@@ -128,90 +137,81 @@ export function ApplicationStage() {
               className={cn("group relative min-w-0", width)}
             >
               {active && (
-                <motion.div
-                  layoutId="application-stage-glow"
-                  transition={{ layout: MORPH }}
-                  /* A blurred solid ellipse, not a radial gradient: a gradient's
-                     farthest-corner falloff gets clipped at the element edge and
-                     draws a seam, while blur feathers every edge equally — the
-                     light has no boundary anywhere. */
+                /* A blurred solid ellipse, not a radial gradient: a gradient's
+                   farthest-corner falloff gets clipped at the element edge and
+                   draws a seam, while blur feathers every edge equally. It does
+                   not travel with `layout`: moving a `blur-3xl` layer every frame
+                   is what made the morph hitch. */
+                <div
                   className="pointer-events-none absolute -inset-x-10 -inset-y-4 rounded-full bg-[rgb(var(--accent-rgb))]/12 blur-3xl"
                   aria-hidden="true"
                 />
               )}
 
-              <button
-                type="button"
-                aria-label={`${app.product} — ${copy.description}`}
-                aria-pressed={active}
-                onClick={() => setActiveKey(app.key)}
-                /* `move`, not `enter`: while the rack slides during a morph, a
-                   stationary cursor gets entered by whichever entry lands under
-                   it — activating that one restarts the morph and the two flip
-                   for ever. Only a pointer that is actually moving activates. */
+              {/* The column itself is the link. Hover still brings it forward;
+                  `move`, not `enter`, so a morph that slides a column under a
+                  still cursor cannot flip the active entry forever. */}
+              <a
+                href={applicationHref(app.key)}
+                {...EXTERNAL_LINK}
+                aria-current={active ? "true" : undefined}
                 onPointerMove={() => {
                   if (!active) setActiveKey(app.key);
                 }}
                 onFocus={() => setActiveKey(app.key)}
-                /* Stays mounted when this entry is forward so keyboard focus is
-                   not destroyed. Pointer events drop so Explore stays clickable. */
-                className={cn(
-                  "absolute inset-0 z-20 h-full w-full",
-                  FOCUS_RING,
-                  active ? "pointer-events-none" : "cursor-pointer",
-                )}
-              />
-
-              {/* Clips the reflow while a panel's width is mid-morph; the glow
+                className={cn("relative z-20 block h-full", FOCUS_RING)}
+              >
+                {/* Clips the reflow while a panel's width is mid-morph; the glow
                   stays outside it, so the light still bleeds past the entry. */}
-              <div className="h-full overflow-hidden">
-                <AnimatePresence mode="wait" initial={false}>
-                  {active ? (
-                    <motion.div
-                      key="expanded"
-                      /* Golden section: the mark takes the minor share, the
-                         body — the panel's main part — the
-                         major. */
-                      className="relative z-10 grid h-full min-h-0 grid-cols-[1fr_1.618fr] gap-6"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.28, ease: MOTION_EASE }}
-                    >
-                      <div className="min-h-0 py-2">
-                        <ProductMark product={app.product} />
-                      </div>
-                      <div className="flex min-w-0 max-w-lg flex-col justify-center pr-6">
-                        <EntryDetail applicationKey={app.key} heading={false} />
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="compact"
-                      className="relative z-10 flex h-full flex-col items-center"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.24, ease: MOTION_EASE }}
-                    >
-                      {/* The waiting entry is a column of light with the name as
+                <div className="h-full overflow-hidden">
+                  <AnimatePresence mode="wait" initial={false}>
+                    {active ? (
+                      <motion.div
+                        key="expanded"
+                        className="grid h-full min-h-0 grid-cols-[1fr_1.618fr] gap-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.28, ease: MOTION_EASE }}
+                      >
+                        <div className="min-h-0 py-2">
+                          <ProductMark
+                            product={app.product}
+                            status={status ? localizeStatus(status, locale) : undefined}
+                          />
+                        </div>
+                        <div className="flex min-w-0 max-w-lg flex-col justify-center pr-6">
+                          <EntryDetail applicationKey={app.key} heading={false} />
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="compact"
+                        className="relative z-10 flex h-full flex-col items-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.24, ease: MOTION_EASE }}
+                      >
+                        {/* The waiting entry is a column of light with the name as
                           its lit node: the line brightens toward the centre,
                           carries the name there, and falls away again. */}
-                      <span
-                        aria-hidden="true"
-                        className="w-px flex-1 bg-gradient-to-b from-transparent via-[rgb(var(--accent-rgb))]/12 to-[rgb(var(--accent-rgb))]/35"
-                      />
-                      <span className="waiting-product my-5 font-display text-xl font-semibold tracking-tight text-home-keyword transition-opacity duration-300 [writing-mode:vertical-rl] group-hover:opacity-80">
-                        {app.product}
-                      </span>
-                      <span
-                        aria-hidden="true"
-                        className="w-px flex-1 bg-gradient-to-b from-[rgb(var(--accent-rgb))]/35 via-[rgb(var(--accent-rgb))]/12 to-transparent"
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                        <span
+                          aria-hidden="true"
+                          className="w-px flex-1 bg-gradient-to-b from-transparent via-[rgb(var(--accent-rgb))]/12 to-[rgb(var(--accent-rgb))]/35"
+                        />
+                        <span className="waiting-product my-5 font-display text-xl font-semibold tracking-tight text-home-keyword transition-opacity duration-300 [writing-mode:vertical-rl] group-hover:opacity-80">
+                          {app.product}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="w-px flex-1 bg-gradient-to-b from-[rgb(var(--accent-rgb))]/35 via-[rgb(var(--accent-rgb))]/12 to-transparent"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </a>
             </motion.div>
           );
         })}
@@ -222,7 +222,7 @@ export function ApplicationStage() {
   return (
     <div>
       <section
-        className="-mx-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="-mx-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-6 pb-3 [scrollbar-width:none]"
         aria-label={projects.stageLabel}
       >
         {APPLICATIONS.map((app) => {
@@ -258,30 +258,46 @@ export function ApplicationStage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.42, ease: MOTION_EASE }}
         >
-          <div className="h-40 p-3">
-            <ProductMark product={app.product} className="px-6" />
-          </div>
-          <div className="border-t border-border/60 p-5">
-            <EntryDetail applicationKey={app.key} compact heading={false} />
-          </div>
+          <a href={applicationHref(app.key)} {...EXTERNAL_LINK} className={cn("block", FOCUS_RING)}>
+            <div className="h-40 p-3">
+              <ProductMark product={app.product} className="px-6" />
+            </div>
+            <div className="border-t border-border/60 p-5">
+              <EntryDetail applicationKey={app.key} compact heading={false} />
+            </div>
+          </a>
         </motion.div>
       ))}
 
       {/* The whole roster stays legible even when only one entry is expanded. */}
       <ul className="mt-6 border-t border-border/60">
-        {APPLICATIONS.map((app) => (
-          <li
-            key={app.key}
-            className="flex items-baseline justify-between gap-4 border-b border-border/60 py-3"
-          >
-            <span className="font-display text-sm font-semibold text-foreground">
-              {app.product}
-            </span>
-            <span className="text-right font-body text-sm text-muted-foreground">
-              {projects.items[app.key].short ?? projects.items[app.key].description}
-            </span>
-          </li>
-        ))}
+        {APPLICATIONS.map((app) => {
+          const status = applicationStatus(app.key);
+          return (
+            <li key={app.key} className="border-b border-border/60">
+              <a
+                href={applicationHref(app.key)}
+                {...EXTERNAL_LINK}
+                className={cn(
+                  "flex min-h-11 items-baseline justify-between gap-4 py-3",
+                  FOCUS_RING,
+                )}
+              >
+                <span className="font-display text-sm font-semibold text-foreground">
+                  {app.product}
+                  {status ? (
+                    <MonoLabel className="ml-2 whitespace-nowrap">
+                      {localizeStatus(status, locale)}
+                    </MonoLabel>
+                  ) : null}
+                </span>
+                <span className="text-right font-body text-sm text-muted-foreground">
+                  {projects.items[app.key].short ?? projects.items[app.key].description}
+                </span>
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

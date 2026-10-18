@@ -1,7 +1,7 @@
+import { Fragment } from "react";
 import { BrandMark } from "@/lib/brandMark";
 import { HOME_BRAND_GRADIENT, HOME_WORDMARK, HOME_WORDMARK_SHEEN } from "@/lib/styleTokens";
 import { cn } from "@/lib/utils";
-import { Fragment } from "react";
 
 const BLOOM = {
   hero: "opacity-40 blur-[26px] text-[rgb(var(--accent-rgb))]",

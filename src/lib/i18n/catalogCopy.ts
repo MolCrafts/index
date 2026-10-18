@@ -5,8 +5,8 @@
  * at render time, falling back to English for anything missing.
  */
 
-import { type EcosystemCategory, type EcosystemItem, ecosystemCategories } from "@/lib/ecosystem";
 import { useMemo } from "react";
+import { type EcosystemCategory, type EcosystemItem, ecosystemCategories } from "@/lib/ecosystem";
 import { useLocale } from "./LocaleProvider";
 import type { Locale } from "./locale";
 
@@ -103,10 +103,16 @@ const STATUSES: Readonly<Record<Exclude<Locale, "en">, Readonly<Record<string, s
   },
 };
 
+/** Catalog status in the active locale. English strings stay canonical. */
+export function localizeStatus(status: string, locale: Locale): string {
+  if (locale === "en") return status;
+  return STATUSES[locale][status] ?? status;
+}
+
 function localizeItem(item: EcosystemItem, locale: Locale): EcosystemItem {
   if (locale === "en") return item;
   const copy = ITEMS[locale][item.title];
-  const status = item.status ? (STATUSES[locale][item.status] ?? item.status) : undefined;
+  const status = item.status ? localizeStatus(item.status, locale) : undefined;
   return {
     ...item,
     role: copy?.role ?? item.role,

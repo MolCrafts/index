@@ -1,7 +1,7 @@
-import { homeReveal } from "@/lib/animations";
-import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { homeReveal } from "@/lib/animations";
+import { cn } from "@/lib/utils";
 import { useScreenMotion } from "./ScreenMotion";
 
 interface RevealProps {
