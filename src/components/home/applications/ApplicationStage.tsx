@@ -219,9 +219,9 @@ export function ApplicationStage() {
   }
 
   return (
-    <div>
+    <div className="mt-6">
       <section
-        className="-mx-6 flex snap-x snap-mandatory gap-2 overflow-x-auto px-6 pb-3 [scrollbar-width:none]"
+        className="grid grid-cols-2 gap-2 min-[360px]:grid-cols-3"
         aria-label={projects.stageLabel}
       >
         {APPLICATIONS.map((app) => {
@@ -233,7 +233,7 @@ export function ApplicationStage() {
               onClick={() => setActiveKey(app.key)}
               aria-pressed={active}
               className={cn(
-                "flex min-h-11 shrink-0 snap-start items-center rounded-full border px-4 font-display text-sm font-semibold transition-colors",
+                "flex min-h-11 min-w-0 items-center justify-center rounded-full border px-2 font-display text-sm font-semibold transition-colors",
                 FOCUS_RING,
                 active
                   ? "border-[rgb(var(--accent-rgb))]/60 bg-[rgb(var(--accent-rgb))]/10 text-foreground"
@@ -254,7 +254,7 @@ export function ApplicationStage() {
             /* Announced politely: tapping a chip replaces this panel's whole contents,
                which a screen reader would otherwise pass over in silence. */
             aria-live="polite"
-            className="mt-3 overflow-hidden rounded-2xl border border-[rgb(var(--accent-rgb))]/40 bg-foreground/[0.03]"
+            className="mt-6 overflow-hidden rounded-2xl border border-[rgb(var(--accent-rgb))]/40 bg-foreground/[0.03]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: MOTION_EASE }}
@@ -264,11 +264,11 @@ export function ApplicationStage() {
               {...EXTERNAL_LINK}
               className={cn("block", FOCUS_RING)}
             >
-              <div className="h-40 p-3">
+              <div className="h-28">
                 <ProductMark
                   product={app.product}
                   status={status ? localizeStatus(status, locale) : undefined}
-                  className="px-6"
+                  className="px-5"
                 />
               </div>
               <div className="border-t border-border/60 p-5">

@@ -34,11 +34,22 @@ export function HomeBlock({ id, title, lead, scale, height = "screen", children 
   const band = height === "band";
 
   return (
-    <HomeSection id={id} height={height}>
+    <HomeSection
+      id={id}
+      height={height}
+      className={id === "applications" ? "justify-start lg:justify-center" : undefined}
+    >
       {/* A band has no centred screen for the rail to sit above, so the number rides
           in its top gutter rather than a third of the way down the block. */}
       <SectionMarker sectionId={id} className={band ? "top-6 md:top-6" : undefined} />
-      <div className={cn(HOME_CONTAINER, band ? HOME_BAND : HOME_BLOCK, "relative isolate")}>
+      <div
+        className={cn(
+          HOME_CONTAINER,
+          band ? HOME_BAND : HOME_BLOCK,
+          id === "applications" && "pt-32 sm:pt-36",
+          "relative isolate",
+        )}
+      >
         <BlockAura />
         <Reveal>
           {/* A band's lead is a credit line, not a paragraph: it stays unbroken. */}
