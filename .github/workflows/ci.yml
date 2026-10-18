@@ -1,6 +1,6 @@
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: ${{ !contains(fromJSON('["refs/heads/dev","refs/heads/master","refs/heads/main"]'), github.ref) && !startsWith(github.ref, 'refs/tags/') }}
+  cancel-in-progress: ${{ !contains(fromJSON('["refs/heads/dev","refs/heads/master"]'), github.ref) && !startsWith(github.ref, 'refs/tags/') }}
 name: ci
 
 'on':
@@ -18,7 +18,16 @@ jobs:
     permissions:
       contents: read
     name: ci / context
-    uses: MolCrafts/molcrafts-ci/.github/workflows/context.yml@master
+    runs-on: ubuntu-latest
+    outputs:
+      tier: ${{ steps.context.outputs.tier }}
+      upstream: ${{ steps.context.outputs.upstream }}
+      integration: ${{ steps.context.outputs.integration }}
+      skip-pr: ${{ steps.context.outputs.skip-pr }}
+      publish: ${{ steps.context.outputs.publish }}
+    steps:
+      - id: context
+        uses: MolCrafts/molcrafts-ci/actions/ci-context@4e5a51d0c60518e028ed118abbd1adb4a04d28ae
 
   check:
     if: needs.context.outputs.skip-pr != 'true'
@@ -48,4 +57,4 @@ jobs:
       contents: read
     steps:
     - uses: actions/checkout@v7
-    - uses: MolCrafts/molcrafts-ci/actions/check-workflows@master
+    - uses: MolCrafts/molcrafts-ci/actions/check-workflows@4e5a51d0c60518e028ed118abbd1adb4a04d28ae
