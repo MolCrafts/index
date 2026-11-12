@@ -74,6 +74,11 @@ client-side product redirects for the hosting layer.
   and shadcn.
 - Compose class names with `cn()` from `src/lib/utils.ts`.
 - Reuse motion variants from `src/lib/animations.ts`.
+- Homepage line art lives in `src/lib/home/art/` (geometry, tested) and
+  `src/components/home/art/` (drawing). A travelling light moves in the order
+  its screen is read and ends on what the reader should look at next; its pace
+  comes from `BREATH_SECONDS` in `src/lib/home/art/loop.ts`. See
+  `docs/homepage-visual-motion-spec.md`.
 - Keep unit tests under `tests/`; browser regressions belong under
   `regressions/`.
 - Keep build-time scripts in the TypeScript gate. They consume application
@@ -83,7 +88,9 @@ client-side product redirects for the hosting layer.
 
 ## Environment
 
-`PUBLIC_GA_ID` optionally enables Google Analytics. Copy `.env.example` to
+`PUBLIC_GA_ID` optionally enables Google Analytics. Motion runs in every build,
+whatever the system “reduce motion” setting; `PUBLIC_FORCE_FULL_MOTION=false`
+makes a build follow that setting instead. Copy `.env.example` to
 `.env` for local overrides. Every `PUBLIC_*` value is shipped to the browser
 and must not contain secrets.
 

@@ -26,18 +26,20 @@ The page holds both jobs at once: choosing a tool, and seeing a path into collab
 
 ## Positioning
 
-Category: open infrastructure for molecular and materials computation. In one line, as the hero says it: "An open-source stack for molecular modeling, simulation, machine learning and research workflows."
+MolCrafts is a company, and this is its commercial website, not the page of an open-source organization. Open source is how the software is built and how a visitor can start; it is not the category.
 
-Published claim, from the approved homepage copy: "Standardizing Materials R&D for the AI Era." The foundation line is "Open infrastructure for molecular science." The claim is the ambition; the one-line definition sits directly under it so the hero also says what the thing is.
+Published claim, from the approved homepage copy: "Standardizing Materials R&D for the AI Era." The foundation line is "Open infrastructure for molecular science." The hero carries the wordmark and the claim only.
+
+The hero is always centred on the MolCrafts wordmark. Nothing on that screen may pull attention from it: no product visualization, no buttons, no second focal point.
 
 Market and method are different words on purpose. The market is materials R&D. The method is molecular computation. The page uses "materials" for who it serves and "molecular" for what the software does.
 
-What the product line covers, in the order the Applications lead reads: model (MolPy, MolPack), simulate (Atomiverse), learn (MolNex), visualize (MolVis), manage (MolAb). MolRs, MolQ, MolHub and MolRec hold that line up: one compute core, one job API, one dataset hub, one record contract.
+Eight products appear on the homepage: MolPy, MolPack, MolVis, MolAb, MolNex, Atomiverse, MolQ and Tack. MolPy prepares models; MolPack generates initial configurations; MolVis supports inspection and editing; MolAb connects workflows, runs and findings; MolNex trains models; Atomiverse runs simulations; MolQ submits and tracks jobs; Tack helps people plan research and review findings with AI. This is a browsing order, not a required pipeline. MolRs, MolHub and MolRec support the product line.
 
 What a neighboring catalog could not copy, in three parts:
 
-1. One stack on shared standards. The tools share data structures and file formats, so one reads what another wrote. This is what "standardizing" means on this site.
-2. Built for AI assistance. An AI works with the same open tools the researcher does, and leaves a record. Researchers keep the judgment.
+1. Shared conventions connect supported research tools. This is what "standardizing" means on this site; it does not claim universal compatibility or industry adoption.
+2. Built for AI assistance. AI helps with research tasks; researchers keep the scientific judgment. Do not claim that every action is recorded or that AI verifies scientific conclusions.
 3. Three ways in: use the open-source tools, build together, or deploy in-house. Contact for the commercial paths is hello@molcrafts.org, written out on the Collaboration screen.
 
 The alternatives a visitor compares against are a patchwork of single-purpose tools joined by scripts, or a closed commercial suite. Do not name either on the page.
@@ -56,7 +58,7 @@ Locales: English, Chinese, Swedish. English stays the source.
 
 Foundation copy lives in `src/lib/home/copy/foundation.ts`. It describes Open source, Interoperability, and Extensibility, with no pillar numbering or pillar labels. The section marker remains 01 / FOUNDATION.
 
-The homepage presents the company's software, computational R&D, methods and integration services across molecular and materials research. Keep this company-wide scope; do not add illustrative projects or industry-specific demonstrations. Each product has one description. Mobile uses unboxed text selectors and one active product name, status and description, without a duplicate catalog below it. No pill selectors, filled panels, card borders or internal dividers.
+The homepage presents the company's software, computational R&D, methods and integration services across molecular and materials research. Keep this company-wide scope; do not add illustrative projects or industry-specific demonstrations. Each product has one short description. Preserve the original page density: English product descriptions use 5–8 words, each section lead is one short sentence or phrase, and statements remain short. Public copy names the task; implementation details and operational prerequisites stay in product documentation. Narrow a claim instead of adding long qualifications. Mobile uses unboxed text selectors and one active product name, status and description, without a duplicate catalog below it. No pill selectors, filled panels, card borders or internal dividers.
 
 ## Brand Commitments
 
@@ -65,6 +67,8 @@ Name: MolCrafts. Mark: `src/assets/moko.svg`.
 Personality, confirmed: precise, open, editorial. Quiet confidence. Researchers stay in control; AI assists.
 
 The public homepage is the product surface. Design there is the thing being shipped.
+
+Motion leads the eye, confirmed: every moving light travels in the order its screen is read and ends on what the reader should look at next. Details: `docs/homepage-visual-motion-spec.md`.
 
 Binding constraint, confirmed: no framed card dashboard. The Foundation screen stays open typography. Filled panels, bordered tiles, and card grids do not stand in for the argument.
 
@@ -85,6 +89,8 @@ Do not invent customers, quotes, benchmarks, pricing, or license claims beyond t
 
 ## Accessibility & Inclusion
 
-WCAG 2.2 AA. That covers text contrast, keyboard access, and a real reduced-motion path.
+WCAG 2.2 AA for text contrast and keyboard access.
+
+Motion always runs, decided 2026-11-12: it carries the reading order of each screen, so the site keeps it on under the system “reduce motion” setting. It stays slow and continuous, one light per line at a breathing pace, with no flashing.
 
 Ship English, Chinese, and Swedish with the same claims.
