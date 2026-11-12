@@ -5,10 +5,12 @@ import { useHomeCopy } from "@/lib/home/copy";
 import type { ApplicationKey } from "@/lib/home/copy/types";
 import { APPLICATIONS, applicationHref, applicationStatus } from "@/lib/home/data";
 import { HOME_BODY, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
-import { localizeStatus } from "@/lib/i18n/catalogCopy";
+import { localizeStatus, useLocalizedEcosystem } from "@/lib/i18n/catalogCopy";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
+import { MonoLabel } from "../MonoLabel";
 import { ProductMark } from "./ProductMark";
 
 /** One shared timing, so expanding, compressing and the glow all move as one gesture. */
@@ -56,8 +58,13 @@ function EntryDetail({
   const { projects } = useHomeCopy();
   const app = APPLICATIONS.find((entry) => entry.key === applicationKey);
   const copy = projects.items[applicationKey];
+  const catalog = useLocalizedEcosystem();
   if (!app) return null;
   const bodyStep = heading ? 1 : 0;
+  /* The catalog already names what each product is and where it lives; the stage
+     reads both from there rather than keeping a second copy. */
+  const href = applicationHref(app.key);
+  const role = catalog.flatMap((group) => group.items).find((item) => item.href === href)?.role;
 
   return (
     <>
@@ -80,6 +87,18 @@ function EntryDetail({
           {copy.description}
         </p>
       </Layer>
+      {heading ? null : (
+        <Layer step={bodyStep + 1}>
+          {/* What the entry is, and where the link goes: the whole entry is the
+              link, and without its destination written out it read as a caption. */}
+          <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {role ? <MonoLabel className={HOME_KEYWORD}>{role}</MonoLabel> : null}
+            <MonoLabel className="normal-case tracking-normal">
+              {href.replace("https://", "")} <span aria-hidden="true">↗</span>
+            </MonoLabel>
+          </p>
+        </Layer>
+      )}
     </>
   );
 }

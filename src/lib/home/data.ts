@@ -66,9 +66,14 @@ export const HOME_NUMBERED_SECTION_IDS: readonly HomeNumberedSectionId[] = HOME_
 
 export { GITHUB_ORG_HREF };
 
+/**
+ * The hero's two doors, at equal weight: the software, or a project. The second
+ * opens the collaboration screen rather than a mail client, because that screen
+ * is where the three ways of working together are told apart.
+ */
 export const heroLinks = {
   primaryHref: "#applications",
-  secondaryHref: contactHref("Homepage hero"),
+  secondaryHref: "#collaboration",
 } as const;
 
 export interface ApplicationMeta {

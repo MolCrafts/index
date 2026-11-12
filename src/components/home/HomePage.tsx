@@ -42,7 +42,10 @@ export function HomePage() {
         <AssistSection />
         <ProjectsSection />
         <ParticipateSection />
-        <div data-home-stop="trust">
+        {/* The closing stop takes a screen like every other: shorter than the
+            viewport, it could not pin, and the collaboration rows above it slid
+            under the navbar. The credit sits in the middle, the footer at the foot. */}
+        <div data-home-stop="trust" className="flex min-h-svh flex-col">
           <SponsorsSection />
           <HomeFooter />
         </div>

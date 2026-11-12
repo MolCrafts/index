@@ -3,7 +3,7 @@ import type { ApplicationKey, HomeCopy } from "./types";
 /** Application stage headline, with equivalent translations below. */
 export const APPROVED_APPLICATIONS_HEADING = {
   title: "Software for molecular computation.",
-  lead: "Modeling. Simulation. Machine learning.",
+  lead: "Model. Simulate. Learn. Visualize. Manage.",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
 
 /**
@@ -26,10 +26,10 @@ export const APPLICATION_GITHUB_DESCRIPTIONS: Record<ApplicationKey, string> = {
 
 export const APPLICATIONS_HEADING_ZH = {
   title: "面向分子计算的软件。",
-  lead: "建模、模拟与机器学习。",
+  lead: "建模、模拟、机器学习、可视化与工作流。",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
 
 export const APPLICATIONS_HEADING_SV = {
   title: "Programvara för molekylära beräkningar.",
-  lead: "Modellering. Simulering. Maskininlärning.",
+  lead: "Modellera. Simulera. Lära. Visualisera. Hantera.",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;

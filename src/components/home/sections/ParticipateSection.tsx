@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL, contactHref } from "@/lib/contact";
 import { useHomeCopy } from "@/lib/home/copy";
 import { PARTICIPATE_PATHS } from "@/lib/home/data";
 import { HOME_BODY, HOME_CONTAINER, HOME_H2_STATEMENT, HOME_H3, HOME_LEAD } from "@/lib/home/stage";
@@ -12,11 +13,11 @@ export function ParticipateSection() {
   return (
     <HomeSection id="collaboration">
       <SectionMarker sectionId="collaboration" />
-      <div className={cn(HOME_CONTAINER, "py-24 md:pb-20 md:pt-40")}>
+      <div className={cn(HOME_CONTAINER, "pb-16 pt-32 md:pb-20 md:pt-40")}>
         <Reveal className="text-center">
           <h2
             id="collaboration-heading"
-            className={cn(HOME_H2_STATEMENT, "lg:text-[clamp(3rem,5.4vw,4.875rem)]")}
+            className={cn(HOME_H2_STATEMENT, "mx-auto lg:text-[clamp(3rem,5.4vw,4.875rem)]")}
           >
             {participate.title.plain} {participate.title.accent}
           </h2>
@@ -47,6 +48,16 @@ export function ParticipateSection() {
             );
           })}
         </ul>
+        {/* The two commercial routes are mail links; the address is written out so
+            a reader without a mail handler still has something to copy. */}
+        <Reveal delay={0.32} className="border-t border-primary/20 pt-6 text-center md:text-right">
+          <a
+            href={contactHref("Collaboration")}
+            className="inline-flex min-h-11 items-center font-mono text-sm text-muted-foreground no-underline outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {CONTACT_EMAIL}
+          </a>
+        </Reveal>
       </div>
     </HomeSection>
   );

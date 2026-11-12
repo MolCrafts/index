@@ -20,13 +20,10 @@ export const sv: HomeCopy = {
     subtitle: "för AI-eran.",
   },
   hero: {
-    title: "Molekylär forskning,",
-    accent: "redo för nästa steg.",
     subtitle:
-      "MolCrafts för in vetenskaplig beräkning, AI och forskningserfarenhet i verklig molekyl- och materialutveckling – från egenskapsprognoser till långsiktigt samarbete.",
-    primaryCta: "Se tillämpningar",
+      "En öppen programvarustack för molekylmodellering, simulering, maskininlärning och forskningsarbetsflöden.",
+    primaryCta: "Utforska programvaran",
     secondaryCta: "Diskutera ett projekt",
-    scrollHint: "Fortsätt",
   },
   approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {
@@ -34,9 +31,15 @@ export const sv: HomeCopy = {
     titleLines: ["Kunskap,", "standardiserad."],
     lead: "Bygg vidare på varje upptäckt.",
     pillars: [
-      { title: "ENHETLIGA DATA", body: "Strukturerade indata, modeller och resultat." },
-      { title: "SAMMANLÄNKAD KUNSKAP", body: "Metoder kopplade till resultat." },
-      { title: "ÅTERANVÄNDBARA ARBETSFLÖDEN", body: "Metoder som återanvänds mellan projekt." },
+      {
+        title: "ENHETLIGA DATA",
+        body: "Strukturer, modeller och resultat i ett och samma postformat.",
+      },
+      { title: "SAMMANLÄNKAD KUNSKAP", body: "Varje resultat kopplat till metoden som gav det." },
+      {
+        title: "ÅTERANVÄNDBARA ARBETSFLÖDEN",
+        body: "Arbetsflöden som följer med till nästa projekt.",
+      },
     ],
   },
   assist: ASSIST_COPY_SV,
@@ -71,7 +74,7 @@ export const sv: HomeCopy = {
     lead: "Tack till programmen som stödjer vårt arbete med öppen källkod.",
   },
   footer: {
-    tagline: "Vetenskaplig infrastruktur för AI-stödd forskning.",
+    tagline: "Öppen infrastruktur för molekyl- och materialberäkningar.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Till toppen",

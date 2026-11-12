@@ -26,9 +26,21 @@ The page holds both jobs at once: choosing a tool, and seeing a path into collab
 
 ## Positioning
 
-Published claim, from the approved homepage copy: "Standardizing Materials R&D for the AI Era." The foundation line is "Open infrastructure for molecular science."
+Category: open infrastructure for molecular and materials computation. In one line, as the hero says it: "An open-source stack for molecular modeling, simulation, machine learning and research workflows."
 
-The mechanism a neighboring catalog could not copy is the stack plus the three confirmed ways in: use the open-source tools, build together, or deploy in-house. Contact for the commercial paths is hello@molcrafts.org.
+Published claim, from the approved homepage copy: "Standardizing Materials R&D for the AI Era." The foundation line is "Open infrastructure for molecular science." The claim is the ambition; the one-line definition sits directly under it so the hero also says what the thing is.
+
+Market and method are different words on purpose. The market is materials R&D. The method is molecular computation. The page uses "materials" for who it serves and "molecular" for what the software does.
+
+What the product line covers, in the order the Applications lead reads: model (MolPy, MolPack), simulate (Atomiverse), learn (MolNex), visualize (MolVis), manage (MolAb). MolRs, MolQ, MolHub and MolRec hold that line up: one compute core, one job API, one dataset hub, one record contract.
+
+What a neighboring catalog could not copy, in three parts:
+
+1. One stack on shared standards. The tools share data structures and file formats, so one reads what another wrote. This is what "standardizing" means on this site.
+2. Built for AI assistance. An AI works with the same open tools the researcher does, and leaves a record. Researchers keep the judgment.
+3. Three ways in: use the open-source tools, build together, or deploy in-house. Contact for the commercial paths is hello@molcrafts.org, written out on the Collaboration screen.
+
+The alternatives a visitor compares against are a patchwork of single-purpose tools joined by scripts, or a closed commercial suite. Do not name either on the page.
 
 ## Operating Context
 

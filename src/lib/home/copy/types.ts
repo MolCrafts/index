@@ -42,13 +42,11 @@ export interface HomeCopy {
     readonly title: string;
     readonly subtitle: string;
   };
+  /** Under the claim: what MolCrafts is, in one line, and the two ways on. */
   readonly hero: {
-    readonly title: string;
-    readonly accent: string;
     readonly subtitle: string;
     readonly primaryCta: string;
     readonly secondaryCta: string;
-    readonly scrollHint: string;
   };
   readonly approach: {
     /** Micro section indicator / category kicker. */

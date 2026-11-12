@@ -37,11 +37,13 @@ export function HomeBlock({ id, title, lead, scale, height = "screen", children 
     <HomeSection
       id={id}
       height={height}
-      className={id === "applications" ? "justify-start lg:justify-center" : undefined}
+      className={cn(
+        id === "applications" && "justify-start lg:justify-center",
+        /* A band sizes to its content, then takes whatever its stop has left. */
+        band && "flex-1",
+      )}
     >
-      {/* A band has no centred screen for the rail to sit above, so the number rides
-          in its top gutter rather than a third of the way down the block. */}
-      <SectionMarker sectionId={id} className={band ? "top-6 md:top-6" : undefined} />
+      <SectionMarker sectionId={id} />
       <div
         className={cn(
           HOME_CONTAINER,

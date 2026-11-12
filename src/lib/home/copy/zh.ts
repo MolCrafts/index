@@ -21,13 +21,9 @@ export const zh: HomeCopy = {
     subtitle: "面向 AI 时代。",
   },
   hero: {
-    title: "让复杂分子研究",
-    accent: "走向可用的答案。",
-    subtitle:
-      "MolCrafts 将科学计算、AI 与研发经验带进真实问题：从材料性质预测到模拟研究，再到长期技术合作。",
-    primaryCta: "查看应用",
+    subtitle: "面向分子建模、模拟、机器学习与研究工作流的开源软件栈。",
+    primaryCta: "查看软件",
     secondaryCta: "讨论合作",
-    scrollHint: "继续了解",
   },
   approach: APPROVED_FOUNDATION_COPY_ZH,
   whatWeDo: {
@@ -35,9 +31,9 @@ export const zh: HomeCopy = {
     titleLines: ["知识，", "标准化。"],
     lead: "在每一次发现之上继续前进。",
     pillars: [
-      { title: "统一数据", body: "结构化输入、模型与结果。" },
-      { title: "关联知识", body: "关联方法与研究发现。" },
-      { title: "可复用工作流", body: "跨项目复用研究方法。" },
+      { title: "统一数据", body: "结构、模型与结果，共用一种记录格式。" },
+      { title: "关联知识", body: "每项发现都关联到产生它的方法。" },
+      { title: "可复用工作流", body: "工作流可直接沿用到下一个项目。" },
     ],
   },
   assist: ASSIST_COPY_ZH,
@@ -71,7 +67,7 @@ export const zh: HomeCopy = {
     lead: "感谢支持我们开源工作的计划。",
   },
   footer: {
-    tagline: "面向 AI 辅助研究的科学基础设施。",
+    tagline: "面向分子与材料计算的开放基础设施。",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "回到顶部",

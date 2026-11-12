@@ -585,7 +585,8 @@ html:not(.dark) .home-glow {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4.5rem;
+  /* Three two-line details have to clear a phone fold; `lg` opens this back up. */
+  gap: 3.25rem;
   padding-left: 2.5rem;
 }
 .foundation-list li {

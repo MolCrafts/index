@@ -20,13 +20,10 @@ export const en: HomeCopy = {
     subtitle: "for the AI Era.",
   },
   hero: {
-    title: "A modern, open-source ecosystem",
-    accent: "for molecular science.",
     subtitle:
-      "MolCrafts brings scientific computing, AI, and research expertise into real molecular and materials R&D—from property prediction to long-term collaboration.",
-    primaryCta: "Explore",
+      "An open-source stack for molecular modeling, simulation, machine learning and research workflows.",
+    primaryCta: "Explore the software",
     secondaryCta: "Discuss a project",
-    scrollHint: "Continue",
   },
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
@@ -34,9 +31,12 @@ export const en: HomeCopy = {
     titleLines: ["Knowledge,", "standardized."],
     lead: "Build on every discovery.",
     pillars: [
-      { title: "UNIFIED DATA", body: "Structured inputs, models and results." },
-      { title: "CONNECTED KNOWLEDGE", body: "Methods linked to findings." },
-      { title: "REUSABLE WORKFLOWS", body: "Methods reused across projects." },
+      { title: "UNIFIED DATA", body: "Structures, models and results in one record format." },
+      {
+        title: "CONNECTED KNOWLEDGE",
+        body: "Every finding linked to the method that produced it.",
+      },
+      { title: "REUSABLE WORKFLOWS", body: "Workflows that carry over to the next project." },
     ],
   },
   assist: APPROVED_ASSIST_COPY,
@@ -70,7 +70,7 @@ export const en: HomeCopy = {
     lead: "Thanks to the programs supporting our open-source work.",
   },
   footer: {
-    tagline: "Scientific infrastructure for AI-assisted research.",
+    tagline: "Open infrastructure for molecular and materials computation.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Back to top",
