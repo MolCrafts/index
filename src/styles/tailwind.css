@@ -146,9 +146,6 @@
    * entrance wrappers: a CSS animation outranks an inline style, so sharing an
    * element would override the entrance from its first frame.
    */
-  --animate-assist-drift: assist-drift 13s ease-in-out infinite alternate;
-  --animate-assist-drift-alt: assist-drift-alt 17s ease-in-out infinite alternate;
-  --animate-assist-node: assist-node 7s ease-in-out infinite alternate;
   --animate-assist-sweep: assist-sweep 16s linear infinite;
 
   /*
@@ -265,35 +262,6 @@
     to {
       filter: drop-shadow(0 0 6px rgba(128, 255, 212, 0.45))
         drop-shadow(0 0 9px rgba(64, 164, 223, 0.25));
-    }
-  }
-
-  @keyframes assist-drift {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      transform: translate3d(7px, -8px, 0);
-    }
-  }
-
-  @keyframes assist-drift-alt {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      transform: translate3d(-8px, 6px, 0);
-    }
-  }
-
-  @keyframes assist-node {
-    from {
-      opacity: 0.45;
-      transform: scale(0.88);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1.18);
     }
   }
 
@@ -557,16 +525,6 @@ html:not(.dark) .home-glow {
     hsl(var(--background) / 0.88) 76%
   );
 }
-/* Molecules stay in the hero's empty upper/lower field, clear of the inscription.
-   Reading screens keep the same light without an image moving through the copy. */
-.home-molecules {
-  opacity: 0;
-  mask-image: linear-gradient(to bottom, black 18%, transparent 34%, transparent 67%, black 82%);
-  transition: opacity 0.45s ease-out;
-}
-[data-home-pager]:has(#hero[data-home-visible="true"]) .home-molecules {
-  opacity: 1;
-}
 .dark [data-home-pager] {
   --color-foreground: var(--home-white);
   --color-muted-foreground: color-mix(in srgb, var(--home-white) 70%, transparent);
@@ -592,6 +550,8 @@ html:not(.dark) .home-glow {
 .foundation-list li {
   position: relative;
 }
+/* The middle item steps forward, which bows the column: the arc drawn through
+   the three markers is the circle that bow defines. */
 .foundation-list li:nth-child(2) {
   margin-left: 2rem;
 }
@@ -610,6 +570,77 @@ html:not(.dark) .home-glow {
 .capabilities-stations li:nth-child(2) {
   margin-left: 1rem;
 }
+/* A drawing with labels pinned to it: one 16:10 frame, scaled uniformly to fit
+   the screen, so a label placed at a share of the frame stays on its mark. */
+.home-stage {
+  aspect-ratio: 16 / 10;
+  width: min(100%, 160svh);
+  container-type: inline-size;
+}
+/*
+ * Continuity's station labels are sized and set off their basins in shares of
+ * the stage (`cqw`), so on a shorter screen they shrink with the drawing and
+ * stay clear of the headline. The first block is the 1440px design in fixed
+ * units — 288px wide, 18px type — for a browser without container units; the
+ * second states the same values as shares of a 1440px stage.
+ */
+.continuity-label {
+  position: absolute;
+  width: 18rem;
+  text-align: center;
+}
+.continuity-label p {
+  font-size: 1.125rem;
+}
+/* Below the first basin. */
+.continuity-label[data-station="0"] {
+  left: -1.25rem;
+  top: 2.5rem;
+}
+/* Above the second, centred on it. */
+.continuity-label[data-station="1"] {
+  bottom: 3rem;
+  left: 0;
+  translate: -50% 0;
+}
+/* Below and inward of the third. */
+.continuity-label[data-station="2"] {
+  left: -15rem;
+  top: 2.75rem;
+}
+@supports (width: 1cqw) {
+  .continuity-label {
+    width: 20cqw;
+  }
+  .continuity-label p {
+    font-size: clamp(0.8125rem, 1.25cqw, 1.125rem);
+  }
+  .continuity-label[data-station="0"] {
+    left: -1.4cqw;
+    top: 2.8cqw;
+  }
+  .continuity-label[data-station="1"] {
+    bottom: 3.3cqw;
+  }
+  .continuity-label[data-station="2"] {
+    left: -16.7cqw;
+    top: 3cqw;
+  }
+}
+/* The surface fades out under the header and toward every edge of its frame. */
+.continuity-contours {
+  mask-image:
+    linear-gradient(to bottom, transparent 24%, black 52%, black 90%, transparent),
+    linear-gradient(to right, transparent, black 9%, black 91%, transparent);
+  mask-composite: intersect;
+}
+/* On a screen wider than the stage the trajectory would stop short of the
+   edges, so there it dissolves at both ends the way the surface does. */
+@media (min-aspect-ratio: 17 / 10) {
+  .continuity-path {
+    mask-image: linear-gradient(to right, transparent, black 9%, black 91%, transparent);
+  }
+}
 [data-home-pager] :lang(zh) :is(h2, h3, .assist-mission) {
   letter-spacing: 0;
 }
@@ -624,7 +655,11 @@ html:not(.dark) .home-glow {
     min-height: 36rem;
   }
   .foundation-list {
-    gap: 5.5rem;
+    /* Nine rem on a 900px screen, drawing in on a shorter one. */
+    gap: clamp(5rem, 16svh, 9rem);
+  }
+  .foundation-list li:nth-child(2) {
+    margin-left: 2.875rem;
   }
   .foundation-list li:nth-child(2) h3 {
     white-space: nowrap;
@@ -632,32 +667,6 @@ html:not(.dark) .home-glow {
   }
   .capabilities-header h2 {
     max-width: 44rem;
-  }
-  .capabilities-stations {
-    position: relative;
-    display: flex;
-    gap: 4rem;
-    align-items: flex-start;
-    padding-top: 8.75rem;
-    padding-left: 0;
-    flex-direction: row;
-  }
-  .capabilities-stations li {
-    flex: 1;
-    min-width: 0;
-  }
-  .capabilities-stations li:nth-child(2) {
-    flex: 1.15;
-    margin-left: 0;
-    margin-top: 2rem;
-  }
-  .capabilities-stations li:nth-child(3) {
-    margin-top: 0.75rem;
-  }
-  .capabilities-stations p {
-    font-size: 1.1875rem;
-    line-height: 1.5;
-    max-width: 19rem;
   }
 }
 
@@ -683,6 +692,19 @@ html:has([data-home-pager]) {
 .home-guide-node {
   filter: drop-shadow(0 0 4px rgb(var(--accent-rgb)));
 }
+/* A label the travelling light is passing stands at full strength; the rest wait
+   a step back. The change takes a third of a breath, so nothing flickers. */
+.home-lit {
+  transition: opacity 2.4s ease-in-out;
+}
+.home-lit[data-lit="false"] {
+  opacity: 0.7;
+}
+/* What the reader points at or has focused is never left dimmed. */
+:is(a:hover, a:focus-visible) .home-lit[data-lit="false"] {
+  opacity: 1;
+  transition-duration: 0.3s;
+}
 @keyframes home-aura-breathe {
   0%,
   100% {
@@ -706,7 +728,141 @@ html.force-full-motion .home-guide-node {
 html.force-full-motion .home-aura {
   animation: home-aura-breathe 8s ease-in-out infinite;
 }
-[data-home-visible="false"] :is(.home-title, .home-guide-node, .home-aura) {
+/*
+ * Applications: a light rises up each entry's line in turn, from the shared
+ * ground to the entry's name. The atom it leaves sends it off with one ring,
+ * and the name stands forward as the light arrives — the motion ends on the
+ * thing to read, and the entries are taken left to right, in reading order.
+ * One lap is 20s — eight entries, 2.5s apart — and each rise takes about a fifth
+ * of it, so two lights are on their way at any moment and none of them hurries.
+ * Transform and opacity only: nothing here repaints.
+ */
+@keyframes application-rise {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  3% {
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  24%,
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+/* Scale only: the ring is centred with the `translate` property, which a
+   `transform` in these frames leaves alone. */
+@keyframes application-send {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  2% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  17% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  18% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  33% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+/* Full strength as the light reaches the name, held, then back to rest. */
+@keyframes application-wake {
+  0%,
+  10%,
+  52%,
+  100% {
+    opacity: 0.7;
+  }
+  20%,
+  36% {
+    opacity: 1;
+  }
+}
+.application-rise {
+  opacity: 0;
+}
+/* The wake runs on an element that outlives the hover morph, so a name keeps
+   time with its own light. The entry on stage stands at full strength: an
+   important declaration outranks the animation without restarting it. */
+.application-wake[data-active="true"] {
+  /* biome-ignore lint/complexity/noImportantStyles: the only way to outrank a running animation without restarting it */
+  opacity: 1 !important;
+}
+.application-band > :nth-child(3) {
+  --application-delay: 2.5s;
+}
+.application-band > :nth-child(4) {
+  --application-delay: 5s;
+}
+.application-band > :nth-child(5) {
+  --application-delay: 7.5s;
+}
+.application-band > :nth-child(6) {
+  --application-delay: 10s;
+}
+.application-band > :nth-child(7) {
+  --application-delay: 12.5s;
+}
+.application-band > :nth-child(8) {
+  --application-delay: 15s;
+}
+.application-band > :nth-child(9) {
+  --application-delay: 17.5s;
+}
+/* The ground dissolves at its far edge and again before the screen ends. */
+.application-ground {
+  mask-image: linear-gradient(to bottom, transparent, black 30%, black 78%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .application-rise {
+    animation: application-rise 20s linear infinite backwards;
+    animation-delay: var(--application-delay, 0s);
+  }
+  .application-send {
+    animation: application-send 20s ease-out infinite backwards;
+    animation-delay: var(--application-delay, 0s);
+  }
+  .application-wake {
+    animation: application-wake 20s ease-in-out infinite backwards;
+    animation-delay: var(--application-delay, 0s);
+  }
+}
+html.force-full-motion .application-rise {
+  animation: application-rise 20s linear infinite backwards;
+  animation-delay: var(--application-delay, 0s);
+}
+html.force-full-motion .application-send {
+  animation: application-send 20s ease-out infinite backwards;
+  animation-delay: var(--application-delay, 0s);
+}
+html.force-full-motion .application-wake {
+  animation: application-wake 20s ease-in-out infinite backwards;
+  animation-delay: var(--application-delay, 0s);
+}
+[data-home-visible="false"]
+  :is(
+    .home-title,
+    .home-guide-node,
+    .home-aura,
+    .application-rise,
+    .application-send,
+    .application-wake
+  ) {
   animation-play-state: paused;
 }
 

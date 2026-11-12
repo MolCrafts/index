@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { HOME_DESCRIPTION } from "../src/lib/home/copy/en.ts";
 
 // Share previews read the same source swatches as the website.
 const styles = readFileSync(new URL("../src/styles/tailwind.css", import.meta.url), "utf8");
@@ -44,6 +45,6 @@ export const routes: OgRoute[] = [
     gradient: [OG_PALETTE.blue, mix(OG_PALETTE.blue, OG_PALETTE.white, 0.55), OG_PALETTE.blue],
     subGradient: [OG_PALETTE.green, mix(OG_PALETTE.green, OG_PALETTE.white, 0.3), OG_PALETTE.green],
     ogTitle: "MolCrafts — Standardizing Materials R&D for the AI Era.",
-    ogDescription: "Open infrastructure for molecular and materials computation.",
+    ogDescription: HOME_DESCRIPTION,
   },
 ];

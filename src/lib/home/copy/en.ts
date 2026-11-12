@@ -4,6 +4,8 @@ import { APPROVED_COLLABORATION_COPY } from "./collaboration";
 import { APPROVED_FOUNDATION_COPY } from "./foundation";
 import type { HomeCopy } from "./types";
 
+export const HOME_DESCRIPTION = "Molecular computation software and workflows for materials R&D.";
+
 export const en: HomeCopy = {
   sectionLabels: {
     hero: "Home",
@@ -20,22 +22,26 @@ export const en: HomeCopy = {
     subtitle: "for the AI Era.",
   },
   hero: {
-    subtitle:
-      "An open-source stack for molecular modeling, simulation, machine learning and research workflows.",
     primaryCta: "Explore the software",
   },
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
-    title: "Knowledge, standardized.",
-    titleLines: ["Knowledge,", "standardized."],
-    lead: "Build on every discovery.",
+    title: "Research that builds on itself.",
+    titleLines: ["Research that", "builds on itself."],
+    lead: "Carry each discovery forward.",
     pillars: [
-      { title: "UNIFIED DATA", body: "Structures, models and results in one record format." },
       {
-        title: "CONNECTED KNOWLEDGE",
-        body: "Every finding linked to the method that produced it.",
+        title: "CONNECTED DATA",
+        body: "Structures and results shared between supported tools.",
       },
-      { title: "REUSABLE WORKFLOWS", body: "Workflows that carry over to the next project." },
+      {
+        title: "FINDINGS WITH SOURCES",
+        body: "Findings linked to their methods and evidence.",
+      },
+      {
+        title: "REUSABLE WORKFLOWS",
+        body: "Workflows adapted to the next research question.",
+      },
     ],
   },
   assist: APPROVED_ASSIST_COPY,
@@ -61,6 +67,12 @@ export const en: HomeCopy = {
       atomiverse: {
         description: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
       },
+      molq: {
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molq,
+      },
+      tack: {
+        description: APPLICATION_GITHUB_DESCRIPTIONS.tack,
+      },
     },
   },
   participate: APPROVED_COLLABORATION_COPY,
@@ -69,7 +81,7 @@ export const en: HomeCopy = {
     lead: "Thanks to the programs supporting our open-source work.",
   },
   footer: {
-    tagline: "Open infrastructure for molecular and materials computation.",
+    tagline: "Software and research workflows for materials R&D.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Back to top",

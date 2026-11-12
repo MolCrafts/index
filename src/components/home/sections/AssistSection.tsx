@@ -2,10 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
   assistAuraReveal,
-  assistContextGather,
-  assistMicroStatementReveal,
   assistMobileProductsReveal,
-  assistStatementsReveal,
   assistSublineReveal,
   assistWordFillReveal,
   assistWordOutlineReveal,
@@ -13,86 +10,24 @@ import {
   prefersReducedMotion,
 } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
-import { HOME_ASSIST_SENTENCE, HOME_H2_STATEMENT, HOME_SECTION_LEAD } from "@/lib/home/stage";
+import { HOME_H2_STATEMENT, HOME_SECTION_LEAD } from "@/lib/home/stage";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
+import { AssistRing } from "../art/AssistRing";
 import { HomeSection } from "../HomeSection";
 import { SectionMarker } from "../SectionMarker";
-
-/*
- * Six sentences on a hexagon around the headline. The ellipse is tighter than
- * the old 38/44 ring: the sentences are now display size, so a wider orbit
- * clipped the left/right pair and dropped the bottom pair off the fold.
- *
- * Each sentence wraps inside a short measure instead of staying one line, which
- * is what keeps a 2xl claim from colliding with the title.
- *
- * Each entry positions the centre of the block; the wrapper carries the
- * -translate-x/y-1/2 because Framer writes an inline transform on the paragraph
- * itself, which would override the utility.
- */
-const STATEMENT_POSITIONS = [
-  "left-[84%] top-1/2", // 0°   — right
-  "left-[70%] top-[16%]", // 60°
-  "left-[30%] top-[16%]", // 120°
-  "left-[16%] top-1/2", // 180° — left
-  "left-[30%] top-[80%]", // 240°
-  "left-[70%] top-[80%]", // 300°
-] as const;
-
-/*
- * Two concentric ellipses around the headline. Positions are literal class strings
- * rather than computed styles so Tailwind's scanner can see them; each is the
- * centre of the label, hence the -translate-x/y-1/2 on the wrapper.
- *
- * Both rings clear the headline's horizontal band (roughly 46%–54% vertically,
- * and wide because the line does not wrap), so nothing lands on the type.
- * Type size grows from the inner ring outward.
- */
-const CONCEPT_CONTEXT = [
-  { className: "left-[38.5%] top-[35.3%]", delay: 0.22, x: -44, y: -30 },
-  { className: "left-[61.5%] top-[35.3%]", delay: 0.28, x: 44, y: -30 },
-  { className: "left-[61.5%] top-[64.7%]", delay: 0.34, x: 44, y: 30 },
-  { className: "left-[38.5%] top-[64.7%]", delay: 0.4, x: -44, y: 30 },
-] as const;
-
-const PRODUCT_CONTEXT = [
-  { className: "left-[31.5%] top-[31.9%]", delay: 0.18, x: -70, y: -52 },
-  { className: "left-[68.5%] top-[31.9%]", delay: 0.26, x: 70, y: -52 },
-  { className: "left-[78.8%] top-[56.3%]", delay: 0.34, x: 78, y: 18 },
-  { className: "left-1/2 top-[73%]", delay: 0.42, x: 0, y: 66 },
-  { className: "left-[21.2%] top-[56.3%]", delay: 0.5, x: -78, y: 18 },
-] as const;
-
-/** Faint markers on a third, wider ellipse — pure texture, no copy. */
-const CONTEXT_NODES = [
-  { className: "left-[24%] top-[42%]", delay: 0.18, x: -80, y: 24 },
-  { className: "left-[76%] top-[42%]", delay: 0.31, x: 80, y: 24 },
-  { className: "left-[68%] top-[72%]", delay: 0.37, x: 60, y: 48 },
-  { className: "left-[32%] top-[72%]", delay: 0.46, x: -60, y: 48 },
-] as const;
-
-/**
- * Idle drift, applied to a child of each Framer entrance wrapper so the two never
- * fight over the same element: a CSS animation outranks the inline style Framer
- * writes, and would otherwise flatten the entrance. Alternating the two drift
- * tracks by index keeps the field from moving in lockstep.
- */
-const IDLE_DRIFT =
-  "animate-assist-drift motion-reduce:animate-none force-motion:animate-assist-drift";
-const IDLE_DRIFT_ALT =
-  "animate-assist-drift-alt motion-reduce:animate-none force-motion:animate-assist-drift-alt";
-const IDLE_NODE = "animate-assist-node motion-reduce:animate-none force-motion:animate-assist-node";
 
 /** A single editorial image of contextual AI, deliberately unlike the adjacent grids. */
 export function AssistSection() {
   const { assist } = useHomeCopy();
+  const wide = useMediaQuery("(min-width: 64rem)");
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = prefersReducedMotion();
   /* Gather again on each discrete screen arrival. */
   const hasEntered = useInView(stageRef, { amount: 0.45 });
-  /* A live signal, unlike `hasEntered`. The drift and sweep loops are infinite, so
-     left ungated they cost the main thread continuously for a screen that is
-     usually thousands of pixels away. */
+  /* A live signal, unlike `hasEntered`. The orbit never stops, so left ungated
+     it would cost the main thread continuously for a screen that is usually
+     thousands of pixels away. */
   const onScreen = useInView(stageRef, { amount: 0.05 });
   const idle = onScreen ? undefined : "[animation-play-state:paused]";
 
@@ -114,108 +49,20 @@ export function AssistSection() {
             variants={assistAuraReveal}
           />
 
-          <div
-            className="pointer-events-none absolute inset-0 z-5 hidden lg:block"
-            aria-hidden="true"
-          >
-            {assist.concepts.map((label, index) => (
-              <motion.span
-                key={label}
-                className={cn(
-                  "absolute -translate-x-1/2 -translate-y-1/2",
-                  CONCEPT_CONTEXT[index].className,
-                )}
-                custom={{ ...CONCEPT_CONTEXT[index], peak: 0.76, settled: 0.56 }}
-                initial={reduceMotion ? "settled" : "dormant"}
-                animate={motionState}
-                variants={assistContextGather}
-              >
-                <span
-                  className={cn(
-                    "block whitespace-nowrap font-brand text-[clamp(0.85rem,0.95vw,1.05rem)] font-label leading-none tracking-[0.055em] text-[var(--home-keyword)] [text-shadow:0_0_22px_rgba(var(--accent-rgb),0.2)]",
-                    index % 2 === 0 ? IDLE_DRIFT : IDLE_DRIFT_ALT,
-                    idle,
-                  )}
-                >
-                  {label}
-                </span>
-              </motion.span>
-            ))}
-            {assist.products.map((label, index) => (
-              <motion.span
-                key={label}
-                className={cn(
-                  "absolute -translate-x-1/2 -translate-y-1/2",
-                  PRODUCT_CONTEXT[index].className,
-                )}
-                custom={{ ...PRODUCT_CONTEXT[index], peak: 0.92, settled: 0.74 }}
-                initial={reduceMotion ? "settled" : "dormant"}
-                animate={motionState}
-                variants={assistContextGather}
-              >
-                <span
-                  className={cn(
-                    "block whitespace-nowrap font-brand text-[clamp(1.1rem,1.45vw,1.6rem)] font-wordmark leading-none tracking-[-0.01em] text-[var(--home-blue)] [text-shadow:0_0_26px_rgba(var(--accent-rgb),0.24)]",
-                    index % 2 === 0 ? IDLE_DRIFT_ALT : IDLE_DRIFT,
-                    idle,
-                  )}
-                >
-                  {label}
-                </span>
-              </motion.span>
-            ))}
-            {CONTEXT_NODES.map((context) => (
-              <motion.span
-                key={context.className}
-                className={cn("absolute -translate-x-1/2 -translate-y-1/2", context.className)}
-                custom={{ ...context, peak: 0.58, settled: 0.32 }}
-                initial={reduceMotion ? "settled" : "dormant"}
-                animate={motionState}
-                variants={assistContextGather}
-              >
-                <span
-                  className={cn(
-                    "block size-[0.38rem] rounded-full border border-[color-mix(in_oklab,var(--home-blue)_70%,transparent)] shadow-[0_0_18px_rgba(var(--accent-rgb),0.38)]",
-                    IDLE_NODE,
-                    idle,
-                  )}
-                />
-              </motion.span>
-            ))}
-          </div>
+          {/* The ring only fits once there is width for it: below `lg` its outer
+              statements start off-canvas and the top pair overlap, so a narrow
+              screen lists the statements under the headline instead. The query
+              is the `lg` breakpoint, where the list hides itself. */}
+          {wide ? (
+            <AssistRing
+              statements={assist.statements}
+              state={motionState}
+              initial={reduceMotion ? "settled" : "dormant"}
+              travelling={onScreen && !reduceMotion}
+            />
+          ) : null}
 
-          {/* The ring only fits once there is width for it. Its vertices sit at
-              `left-[12%]`/`left-[88%]` with single-line labels, so below `lg` the
-              outer two started off-canvas, the top pair overlapped each other, and
-              `overflow-x-hidden` truncated the result silently. The concept and
-              product rings are gated the same way. */}
-          <motion.div
-            className="pointer-events-none absolute inset-0 z-20 hidden lg:block"
-            initial={reduceMotion ? "settled" : "dormant"}
-            animate={motionState}
-            variants={assistStatementsReveal}
-          >
-            {assist.statements.map((statement, index) => (
-              // The wrapper owns the placement; Framer only animates the paragraph,
-              // so its inline transform never fights the centring translate.
-              <motion.div
-                key={statement}
-                className={cn(
-                  "absolute -translate-x-1/2 -translate-y-1/2",
-                  STATEMENT_POSITIONS[index],
-                )}
-              >
-                <motion.p
-                  className={cn(HOME_ASSIST_SENTENCE, "assist-mission max-w-[12ch] text-center")}
-                  variants={assistMicroStatementReveal}
-                >
-                  {statement}
-                </motion.p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <div className="absolute inset-x-6 top-[39%] z-10 -translate-y-1/2 text-center sm:inset-x-10 sm:top-[42%] md:inset-x-12 xl:inset-x-0 xl:top-1/2">
+          <div className="absolute inset-x-6 top-[39%] z-10 -translate-y-1/2 text-center sm:inset-x-10 sm:top-[42%] md:inset-x-12 lg:top-1/2 xl:inset-x-0">
             <div className="relative inline-grid max-w-full">
               <motion.span
                 aria-hidden="true"
@@ -251,7 +98,7 @@ export function AssistSection() {
               </motion.h2>
             </div>
             <motion.p
-              className={cn(HOME_SECTION_LEAD, "mx-auto mt-7 max-w-xl text-balance")}
+              className={cn(HOME_SECTION_LEAD, "mx-auto mt-7 max-w-xl text-balance lg:max-w-sm")}
               initial={reduceMotion ? "settled" : "dormant"}
               animate={motionState}
               variants={assistSublineReveal}

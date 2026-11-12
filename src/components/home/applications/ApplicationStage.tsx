@@ -10,6 +10,7 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { HOME_KEYWORD } from "@/lib/styleTokens";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
+import { GroundNetwork } from "../art/GroundNetwork";
 import { MonoLabel } from "../MonoLabel";
 import { ProductMark } from "./ProductMark";
 
@@ -93,13 +94,40 @@ function EntryDetail({
               link, and without its destination written out it read as a caption. */}
           <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1">
             {role ? <MonoLabel className={HOME_KEYWORD}>{role}</MonoLabel> : null}
-            <MonoLabel className="normal-case tracking-normal">
+            <MonoLabel className="whitespace-nowrap normal-case tracking-normal">
               {href.replace("https://", "")} <span aria-hidden="true">↗</span>
             </MonoLabel>
           </p>
         </Layer>
       )}
     </>
+  );
+}
+
+/**
+ * How far above the band's foot each entry's line lands, in roster order.
+ * Uneven on purpose: the lines come down into a disordered sheet of atoms, and
+ * a row of equal lengths would read as a fence in front of it.
+ */
+const LANDINGS = ["mb-20", "mb-0", "mb-8", "mb-24", "mb-20", "mb-12", "mb-12", "mb-6"] as const;
+
+/**
+ * The line an entry stands on, down to an atom of the ground below. A light
+ * rises up it in turn — the first entry, then the next, one every few seconds
+ * (the delays are set per column in `styles/tailwind.css`) — so the motion
+ * runs toward the name it belongs to, and across the names in reading order.
+ */
+function StandingLine({ landing }: { landing: string }) {
+  return (
+    <span aria-hidden="true" className={cn("flex min-h-0 flex-1 flex-col", landing)}>
+      <span className="relative block w-px flex-1 overflow-hidden bg-gradient-to-b from-[rgb(var(--accent-rgb))]/15 to-[rgb(var(--accent-rgb))]/55">
+        <span className="application-rise absolute inset-0 bg-gradient-to-t from-transparent from-60% to-[var(--home-blue-tint)]" />
+      </span>
+      <span className="relative block h-0 w-px">
+        <span className="application-send absolute left-1/2 top-0 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgb(var(--accent-rgb))]/70" />
+        <span className="absolute left-1/2 top-0 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--home-blue-tint)]" />
+      </span>
+    </span>
   );
 }
 
@@ -111,11 +139,10 @@ function EntryDetail({
  * continuous morph rather than a close followed by an open — the point of the screen
  * is that the parts belong to the same stack, and a hard cut would argue otherwise.
  *
- * The band is one continuous field, not a panel: no container border or fill, and
- * it escapes the page measure to take the screen. Each waiting entry is a column
- * of light under its product's name — the page's light vocabulary, where a line
- * of light is a route the work can take — and the stage's glow travels to
- * whichever entry the reader brings forward.
+ * The band is one continuous field, not a panel: no container border or fill. Each
+ * entry is a product's name standing on a line from one shared sheet of atoms —
+ * eight tools, one system — with a light rising from the sheet to each name in
+ * turn, and the stage's glow travels to whichever entry the reader brings forward.
  *
  * Hover brings an entry forward. The whole column is the link to that product's
  * repository — there is no separate control. The band is gated on a fine pointer:
@@ -134,18 +161,19 @@ export function ApplicationStage() {
   if (useBand) {
     return (
       <section
-        /* The band only exists at `lg`, where the container's gutter is `px-16`,
-           so `-mx-16` sets the stage flush with the page measure's outer edge. */
-        className="application-band mt-16 flex h-[clamp(24rem,52vh,32rem)] gap-3"
+        className="application-band relative isolate mt-12 flex h-[clamp(26rem,58vh,36rem)] gap-3"
         aria-label={projects.stageLabel}
       >
-        {APPLICATIONS.map((app) => {
+        {/* The ground starts halfway down the band and runs on below it, across
+            the whole screen rather than the page measure. */}
+        <GroundNetwork className="absolute left-1/2 top-1/2 -z-10 h-3/4 w-screen -translate-x-1/2" />
+        {APPLICATIONS.map((app, index) => {
           const active = app.key === activeKey;
           const status = applicationStatus(app.key);
           /* One class, not two: `cn` merges conflicting flex utilities and the last
              one wins, so an active item that also carried `flex-1` collapsed back to
              an even share and never took the stage. */
-          const width = active ? "flex-[5.4]" : "flex-[0.42]";
+          const width = active ? "flex-[5] xl:flex-[4]" : "flex-[1]";
 
           return (
             <motion.div
@@ -161,7 +189,7 @@ export function ApplicationStage() {
                    not travel with `layout`: moving a `blur-3xl` layer every frame
                    is what made the morph hitch. */
                 <div
-                  className="pointer-events-none absolute -inset-x-10 -inset-y-4 rounded-full bg-[rgb(var(--accent-rgb))]/12 blur-3xl"
+                  className="pointer-events-none absolute -inset-x-10 -top-4 bottom-1/3 rounded-full bg-[rgb(var(--accent-rgb))]/12 blur-3xl"
                   aria-hidden="true"
                 />
               )}
@@ -177,58 +205,50 @@ export function ApplicationStage() {
                   if (!active) setActiveKey(app.key);
                 }}
                 onFocus={() => setActiveKey(app.key)}
-                className={cn("relative z-20 block h-full", FOCUS_RING)}
+                className={cn("relative z-20 flex h-full flex-col", FOCUS_RING)}
               >
-                {/* Clips the reflow while a panel's width is mid-morph; the glow
-                  stays outside it, so the light still bleeds past the entry. */}
-                <div className="h-full overflow-hidden">
+                {/* An expanded panel is clipped while its width is mid-morph; a
+                    waiting name is not, because the names sit on two rows and may
+                    run on past their own column. */}
+                <div
+                  className={cn("application-wake shrink-0", active && "overflow-hidden")}
+                  data-active={active}
+                >
                   <AnimatePresence mode="wait" initial={false}>
                     {active ? (
                       <motion.div
                         key="expanded"
-                        className="grid h-full min-h-0 grid-cols-[1fr_1.618fr] gap-6"
+                        className="max-w-md pb-5 pr-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.28, ease: MOTION_EASE }}
                       >
-                        <div className="min-h-0 py-2">
-                          <ProductMark
-                            product={app.product}
-                            status={status ? localizeStatus(status, locale) : undefined}
-                          />
-                        </div>
-                        <div className="flex min-w-0 max-w-lg flex-col justify-center pr-6">
-                          <EntryDetail applicationKey={app.key} heading={false} />
-                        </div>
+                        <ProductMark
+                          product={app.product}
+                          status={status ? localizeStatus(status, locale) : undefined}
+                          className="h-auto px-0 pb-4"
+                        />
+                        <EntryDetail applicationKey={app.key} heading={false} />
                       </motion.div>
                     ) : (
                       <motion.div
                         key="compact"
-                        className="relative z-10 flex h-full flex-col items-center"
+                        /* Two rows, alternating, so neighbouring names never meet. */
+                        className={cn("pb-3", index % 2 === 0 ? "pt-14" : "pt-1")}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.24, ease: MOTION_EASE }}
                       >
-                        {/* The waiting entry is a column of light with the name as
-                          its lit node: the line brightens toward the centre,
-                          carries the name there, and falls away again. */}
-                        <span
-                          aria-hidden="true"
-                          className="w-px flex-1 bg-gradient-to-b from-transparent via-[rgb(var(--accent-rgb))]/12 to-[rgb(var(--accent-rgb))]/35"
-                        />
-                        <span className="waiting-product my-5 font-display text-xl font-semibold tracking-tight text-home-keyword transition-opacity duration-300 [writing-mode:vertical-rl] group-hover:opacity-80">
+                        <span className="block whitespace-nowrap font-display text-xl font-semibold tracking-tight text-home-keyword">
                           {app.product}
                         </span>
-                        <span
-                          aria-hidden="true"
-                          className="w-px flex-1 bg-gradient-to-b from-[rgb(var(--accent-rgb))]/35 via-[rgb(var(--accent-rgb))]/12 to-transparent"
-                        />
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
+                <StandingLine landing={LANDINGS[index] ?? "mb-0"} />
               </a>
             </motion.div>
           );

@@ -17,6 +17,7 @@ export const PRODUCT_SLUGS = [
   "molcfg",
   "mollog",
   "atomiverse",
+  "tack",
 ] as const;
 
 export type ProductSlug = (typeof PRODUCT_SLUGS)[number];

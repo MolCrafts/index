@@ -83,6 +83,9 @@ const rootContent = () => {
           `<li><strong>${escapeHtml(pillar.title)}</strong> — ${escapeHtml(pillar.body)}</li>`,
       )
       .join("")}</ul>`,
+    `<h2>${escapeHtml(`${homeCopy.assist.title.subject} ${homeCopy.assist.title.action}`)}</h2>`,
+    `<p>${escapeHtml(homeCopy.assist.subline)}</p>`,
+    `<ul>${homeCopy.assist.statements.map((statement) => `<li>${escapeHtml(statement)}</li>`).join("")}</ul>`,
     `<h2>${escapeHtml(homeCopy.projects.title)}</h2>`,
     `<p>${escapeHtml(homeCopy.projects.lead)}</p>`,
     `<ul>${APPLICATIONS.map(

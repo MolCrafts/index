@@ -6,11 +6,11 @@ export const APPROVED_COLLABORATION_COPY = {
     plain: "Open to start.",
     accent: "Tailored to fit.",
   },
-  supporting: "Computational R&D. Method development. In-house integration.",
+  supporting: "Computational R&D. Methods. In-house deployment.",
   paths: {
     startOpen: {
       statement: "Start open.",
-      line: "Open-source software for molecular modeling and simulation.",
+      line: "Open tools for molecular research.",
     },
     buildTogether: {
       statement: "Build together.",
@@ -18,18 +18,18 @@ export const APPROVED_COLLABORATION_COPY = {
     },
     deployInHouse: {
       statement: "Deploy in-house.",
-      line: "Deployable workflows. Local and HPC integration.",
+      line: "Research workflows for your team's computing resources.",
     },
   },
 } as const satisfies HomeCopy["participate"];
 
 export const COLLABORATION_COPY_ZH = {
   title: { plain: "从开源开始。", accent: "按需定制。" },
-  supporting: "计算研发、方法开发与内部集成。",
+  supporting: "计算研发、方法开发与内部部署。",
   paths: {
     startOpen: {
       statement: "使用开源工具。",
-      line: "用于分子建模与模拟的开源软件。",
+      line: "用于分子研究的开源软件。",
     },
     buildTogether: {
       statement: "共同研发。",
@@ -37,18 +37,18 @@ export const COLLABORATION_COPY_ZH = {
     },
     deployInHouse: {
       statement: "内部部署。",
-      line: "可部署工作流，本地与 HPC 集成。",
+      line: "适配团队计算资源的研究工作流。",
     },
   },
 } as const satisfies HomeCopy["participate"];
 
 export const COLLABORATION_COPY_SV = {
   title: { plain: "Börja öppet.", accent: "Anpassa efter behov." },
-  supporting: "Beräkningsbaserad FoU. Metodutveckling. Intern integration.",
+  supporting: "Beräkningsbaserad FoU. Metoder. Intern driftsättning.",
   paths: {
     startOpen: {
       statement: "Börja öppet.",
-      line: "Programvara med öppen källkod för molekylmodellering och simulering.",
+      line: "Öppna verktyg för molekylär forskning.",
     },
     buildTogether: {
       statement: "Utveckla tillsammans.",
@@ -56,7 +56,7 @@ export const COLLABORATION_COPY_SV = {
     },
     deployInHouse: {
       statement: "Driftsätt internt.",
-      line: "Driftsättningsbara arbetsflöden. Lokal integration och HPC-integration.",
+      line: "Forskningsarbetsflöden för teamets beräkningsresurser.",
     },
   },
 } as const satisfies HomeCopy["participate"];

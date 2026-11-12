@@ -12,8 +12,10 @@ interface SectionDotsProps {
 }
 
 /**
- * Screen navigation and scroll-spy. The homepage pager handles these anchors
- * with the same direct transition as wheel, touch and keyboard input.
+ * Screen navigation and scroll-spy, drawn as the graduations of an instrument
+ * scale: one tick per screen, the current one long and lit. The homepage pager
+ * handles these anchors with the same direct transition as wheel, touch and
+ * keyboard input.
  */
 export function SectionDots({ labels, className }: SectionDotsProps) {
   const chrome = useChromeCopy();
@@ -39,7 +41,8 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
             variant="ghost"
             size="icon"
             className={cn(
-              /* The mark stays a dot; the control around it is the 44px target. */
+              /* The mark is one graduation of a scale; the control around it is
+                 the 44px target. */
               "pointer-events-auto group relative flex h-11 w-11 items-center justify-center rounded-full p-0 hover:bg-transparent",
               "outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent-rgb))] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             )}
@@ -47,15 +50,15 @@ export function SectionDots({ labels, className }: SectionDotsProps) {
             <a href={`#${id}`} aria-label={label} aria-current={active ? "true" : undefined}>
               <span
                 className={cn(
-                  "block rounded-full transition-all duration-200 ease-out",
+                  "ml-auto mr-3 block h-px transition-all duration-300 ease-out",
                   active
-                    ? "h-2.5 w-2.5 bg-[rgb(var(--accent-rgb))] shadow-[0_0_16px_rgba(var(--accent-rgb),0.75)]"
-                    : "h-1.5 w-1.5 bg-muted-foreground group-hover:h-2 group-hover:w-2",
+                    ? "w-5 bg-[rgb(var(--accent-rgb))] shadow-[0_0_12px_rgba(var(--accent-rgb),0.75)]"
+                    : "w-2 bg-muted-foreground group-hover:w-3.5",
                 )}
               />
               <span
                 className={cn(
-                  "pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 whitespace-nowrap",
+                  "pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 whitespace-nowrap",
                   TYPE_LABEL,
                   "bg-background/90 px-2 py-1 font-mono text-micro text-muted-foreground backdrop-blur-sm",
                   "opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100",

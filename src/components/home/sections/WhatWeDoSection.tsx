@@ -1,175 +1,116 @@
-import { motion, useInView } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
+import { motion, useInView, useTransform } from "framer-motion";
+import { useRef } from "react";
 import {
   type KnowledgeStationMotion,
   knowledgeHeaderReveal,
-  knowledgeStationWake,
-  knowledgeThreadDraw,
   prefersReducedMotion,
 } from "@/lib/animations";
+import { CONTINUITY_STOPS } from "@/lib/home/art/continuity";
+import { BREATH_SECONDS } from "@/lib/home/art/loop";
 import { useHomeCopy } from "@/lib/home/copy";
-import { HOME_BLOCK, HOME_CONTAINER, HOME_STATEMENT } from "@/lib/home/stage";
-import { smoothThread } from "@/lib/home/thread";
-import { HOME_KEYWORD } from "@/lib/styleTokens";
+import { HOME_BLOCK, HOME_CONTAINER } from "@/lib/home/stage";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
+import { ContinuityLandscape } from "../art/ContinuityLandscape";
+import { ContinuityThread } from "../art/ContinuityThread";
+import { useLoop, useStation } from "../art/useLoop";
 import { HomeSection } from "../HomeSection";
-import { MonoLabel } from "../MonoLabel";
 import { SectionHeader } from "../SectionHeader";
 import { SectionMarker } from "../SectionMarker";
 
-/** Each station wakes as the measured curve reaches it. */
+/** Each station wakes as the drawn line reaches it. */
 const STATIONS: ReadonlyArray<KnowledgeStationMotion> = [
   { delay: 0.7 },
   { delay: 1.1 },
   { delay: 1.55 },
 ];
 
-/** How far the thread stands off the text, and how far it runs past the ends. */
-const THREAD_FRAME = { overshoot: 32 } as const;
+/** The light's trail, as a share of the trajectory. */
+const TAIL = 0.07;
+/** The light crosses the surface in about four breaths, then the screen rests for one. */
+const LOOP_SECONDS = BREATH_SECONDS * 5;
+const SPAN = 1 + TAIL + 0.2;
+/** How near a basin the light has to be for its station to wake. */
+const WAKE = 0.07;
+/**
+ * Where the landscape has room: the stage and its labels scale with the screen,
+ * the headline above them does not, so a very short screen keeps the stations
+ * in a column like a narrow one.
+ */
+const LANDSCAPE_QUERY = "(min-width: 64rem) and (min-height: 40rem)";
 
 /**
- * Continuity — one statement and a thread of light through three stations.
+ * Continuity — one statement, and a line through three stations.
  *
- * The pillars used to be a numbered run down a single measure: honest, but a
- * list — the reader had to read all three to get the screen, and the right half
- * of the screen stood empty. The message ("what one project produces, the next
- * one stands on") is sequence and persistence, so the composition now *is* that
- * sequence: three stations stepping down and across the screen, each beginning
- * under the column where the previous one ends, with one drawn line of light
- * carrying the eye through them in reading order.
+ * The message ("what one project produces, the next one stands on") is sequence
+ * and persistence, so the composition is that sequence. On a wide screen it is
+ * drawn the way the field draws it: an energy surface, the three results as its
+ * basins, and the minimum-energy path between them, with a light travelling the
+ * path at a resting pace. A narrow screen keeps the three stations and the line.
  *
  * It composes the block's primitives directly rather than through `HomeBlock`,
- * because it wants the shared opening without the rule under it — the thread is
+ * because it wants the shared opening without the rule under it — the path is
  * this screen's line, and a second one across the top would compete with it.
  */
 export function WhatWeDoSection() {
   const { whatWeDo } = useHomeCopy();
   const reduceMotion = prefersReducedMotion();
+  const wide = useMediaQuery(LANDSCAPE_QUERY);
   const stageRef = useRef<HTMLDivElement>(null);
   const visible = useInView(stageRef, { amount: 0.25 });
   const motionState = reduceMotion ? "settled" : visible ? "illuminated" : "dormant";
-  const fieldRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLOListElement>(null);
-  const [thread, setThread] = useState<{
-    d: string;
-    width: number;
-    height: number;
-    points: { x: number; y: number }[];
-  } | null>(null);
 
-  /* Measure the resting layout. The curve stays in a band above the copy and
-     passes through each station on a shared tangent. */
-  useLayoutEffect(() => {
-    const field = fieldRef.current;
-    const list = listRef.current;
-    if (!field || !list) return;
-
-    const measure = () => {
-      const items = Array.from(list.children) as HTMLElement[];
-      const vertical = getComputedStyle(list).display !== "flex";
-      const points = items.map((item) => ({
-        x: vertical ? item.offsetLeft - 24 : item.offsetLeft + item.offsetWidth / 2,
-        y: vertical ? item.offsetTop + 10 : item.offsetTop - THREAD_FRAME.overshoot,
-      }));
-      setThread({
-        points,
-        width: field.offsetWidth,
-        height: field.offsetHeight,
-        d: smoothThread(points),
-      });
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(field);
-    for (const item of list.children) observer.observe(item);
-    return () => observer.disconnect();
-  }, []);
+  const travelling = wide && visible && !reduceMotion;
+  const progress = useLoop(LOOP_SECONDS, travelling);
+  const head = useTransform(progress, (value) => value * SPAN);
+  const station = useStation(head, CONTINUITY_STOPS, WAKE);
 
   return (
-    <HomeSection id="solutions">
+    <HomeSection id="solutions" className="overflow-hidden lg:justify-start">
       <SectionMarker sectionId="solutions" />
+      {/* No box of its own: it only hands the arrival state down to both layers. */}
       <motion.div
-        /* The tallest block on the page: a statement-scale header over three
-           statement-scale stations. It art-directs within the shared rungs by
-           tightening the block gutter — or a laptop-height viewport pushes the
-           third station past the fold and breaks the one-screen beat — and by
-           trading bottom padding for top on `md+`, where the content otherwise
-           rises into the numbered rail's band at `top-24`. */
-        className={cn(HOME_CONTAINER, HOME_BLOCK, "sm:py-16 md:pb-6 md:pt-36", "relative isolate")}
-        ref={stageRef}
+        className="contents"
         initial={reduceMotion ? "settled" : "dormant"}
         animate={motionState}
       >
-        <motion.div variants={knowledgeHeaderReveal}>
-          <SectionHeader
-            sectionId="solutions"
-            title={whatWeDo.titleLines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-            lead={whatWeDo.lead}
-            scale="statement"
-            className="capabilities-header"
-          />
-        </motion.div>
-
-        <div ref={fieldRef} className="capabilities-field relative isolate mt-12">
-          {thread ? (
-            <svg
-              className="pointer-events-none absolute inset-0 -z-10 h-full w-full overflow-visible"
-              viewBox={`0 0 ${thread.width} ${thread.height}`}
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient id="knowledge-thread" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--home-green)" />
-                  <stop offset="100%" stopColor="hsl(var(--primary))" />
-                </linearGradient>
-              </defs>
-              <motion.path
-                d={thread.d}
-                fill="none"
-                stroke="url(#knowledge-thread)"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-                className="opacity-75"
-                variants={knowledgeThreadDraw}
-              />
-              {thread.points.map((point, i) => (
-                <motion.g
-                  key={whatWeDo.pillars[i].title}
-                  variants={knowledgeStationWake}
-                  custom={STATIONS[i]}
-                >
-                  <circle
-                    className="home-guide-node"
-                    cx={point.x}
-                    cy={point.y}
-                    r="3"
-                    fill="var(--home-green)"
-                  />
-                </motion.g>
+        <div
+          ref={stageRef}
+          /* On `md+` the header trades bottom padding for top, or it rises into
+             the numbered rail's band at `top-24`. */
+          className={cn(
+            HOME_CONTAINER,
+            HOME_BLOCK,
+            "sm:py-16 md:pb-6 md:pt-36",
+            "relative isolate z-10",
+          )}
+        >
+          <motion.div variants={knowledgeHeaderReveal}>
+            <SectionHeader
+              sectionId="solutions"
+              title={whatWeDo.titleLines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
               ))}
-            </svg>
-          ) : null}
-
-          <ol ref={listRef} className="capabilities-stations grid gap-y-12">
-            {whatWeDo.pillars.map((pillar, index) => (
-              <motion.li
-                key={pillar.title}
-                custom={STATIONS[index]}
-                variants={knowledgeStationWake}
-              >
-                <MonoLabel className={cn("block", HOME_KEYWORD)}>{pillar.title}</MonoLabel>
-                {/* One size below the statement rung's ceiling: three of these
-                    at `2xl` are what pushed the block past a laptop fold. */}
-                <p className={cn(HOME_STATEMENT, "mt-3 max-w-xl md:text-xl")}>{pillar.body}</p>
-              </motion.li>
-            ))}
-          </ol>
+              lead={whatWeDo.lead}
+              scale="statement"
+              className="capabilities-header"
+            />
+          </motion.div>
+          {wide ? null : <ContinuityThread pillars={whatWeDo.pillars} wakes={STATIONS} />}
         </div>
+        {/* After the heading in the document, so the stations are read under it;
+            behind it on the screen, where the heading's layer sits above. */}
+        {wide ? (
+          <ContinuityLandscape
+            pillars={whatWeDo.pillars}
+            wakes={STATIONS}
+            station={travelling ? station : null}
+            head={travelling ? head : undefined}
+            tail={TAIL}
+          />
+        ) : null}
       </motion.div>
     </HomeSection>
   );

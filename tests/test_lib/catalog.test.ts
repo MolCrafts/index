@@ -93,6 +93,8 @@ describe("homepage application stage", () => {
     const stage = read("src/components/home/applications/ApplicationStage.tsx");
     expect(stage).toContain("applicationHref");
     expect(applicationStatus("molpy")).toBeUndefined();
+    expect(applicationStatus("molq")).toBeUndefined();
+    expect(applicationStatus("tack")).toBe("In development");
     expect(applicationStatus("molab")).toBe("In development");
     expect(applicationStatus("molnex")).toBe("In development");
     expect(applicationStatus("atomiverse")).toBe("Preparing release");
@@ -126,6 +128,8 @@ describe("homepage application stage", () => {
       "molab",
       "molnex",
       "atomiverse",
+      "molq",
+      "tack",
     ]);
   });
 });

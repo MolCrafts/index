@@ -21,18 +21,17 @@ export const zh: HomeCopy = {
     subtitle: "面向 AI 时代。",
   },
   hero: {
-    subtitle: "面向分子建模、模拟、机器学习与研究工作流的开源软件栈。",
     primaryCta: "查看软件",
   },
   approach: APPROVED_FOUNDATION_COPY_ZH,
   whatWeDo: {
-    title: "知识，标准化。",
-    titleLines: ["知识，", "标准化。"],
-    lead: "在每一次发现之上继续前进。",
+    title: "让研究持续积累。",
+    titleLines: ["让研究", "持续积累。"],
+    lead: "让每项发现成为下一步的起点。",
     pillars: [
-      { title: "统一数据", body: "结构、模型与结果，共用一种记录格式。" },
-      { title: "关联知识", body: "每项发现都关联到产生它的方法。" },
-      { title: "可复用工作流", body: "工作流可直接沿用到下一个项目。" },
+      { title: "衔接数据", body: "在支持互通的工具间传递结构与结果。" },
+      { title: "发现有据", body: "让发现关联到方法与证据。" },
+      { title: "复用流程", body: "沿用已有流程，研究下一个问题。" },
     ],
   },
   assist: ASSIST_COPY_ZH,
@@ -41,22 +40,28 @@ export const zh: HomeCopy = {
     stageLabel: "MolCrafts 应用",
     items: {
       molpy: {
-        description: "用于分子建模的可组合工具包",
+        description: "构建用于计算的分子模型",
       },
       molpack: {
-        description: "可扩展的分子模拟初始构型生成",
+        description: "生成分子模拟所需的初始构型",
       },
       molvis: {
-        description: "交互式分子可视化库",
+        description: "查看结构、编辑分子、检查轨迹",
       },
       molab: {
-        description: "面向计算研究的 AI 辅助工作流与知识管理",
+        description: "关联工作流、运行记录与研究发现",
       },
       molnex: {
-        description: "统一机器学习框架，用于原子间势、生成模型与性质预测",
+        description: "训练用于性质预测与模拟的模型",
       },
       atomiverse: {
-        description: "多尺度分子模拟引擎",
+        description: "模拟分子行为与材料性质",
+      },
+      molq: {
+        description: "提交并跟踪本地与集群计算任务",
+      },
+      tack: {
+        description: "与 AI 一起规划研究、梳理发现",
       },
     },
   },
@@ -66,7 +71,7 @@ export const zh: HomeCopy = {
     lead: "感谢支持我们开源工作的计划。",
   },
   footer: {
-    tagline: "面向分子与材料计算的开放基础设施。",
+    tagline: "面向材料研发的软件与研究工作流。",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "回到顶部",

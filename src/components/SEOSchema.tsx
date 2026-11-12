@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { HOME_DESCRIPTION } from "@/lib/home/copy/en";
 
 interface SEOSchemaProps {
   path: string;
@@ -18,7 +19,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           "@id": "https://molcrafts.org/#organization",
           name: "MolCrafts",
           url: "https://molcrafts.org",
-          description: "Open infrastructure for molecular and materials computation.",
+          description: HOME_DESCRIPTION,
           sameAs: ["https://github.com/MolCrafts"],
         },
         {
@@ -26,7 +27,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           "@id": "https://molcrafts.org/#website",
           url: "https://molcrafts.org",
           name: "MolCrafts — Standardizing Materials R&D for the AI Era.",
-          description: "Open infrastructure for molecular and materials computation.",
+          description: HOME_DESCRIPTION,
           publisher: {
             "@id": "https://molcrafts.org/#organization",
           },
@@ -36,7 +37,7 @@ export const SEOSchema = ({ path }: SEOSchemaProps) => {
           "@id": "https://molcrafts.org/#webpage",
           url: "https://molcrafts.org",
           name: "MolCrafts — Standardizing Materials R&D for the AI Era.",
-          description: "Open infrastructure for molecular and materials computation.",
+          description: HOME_DESCRIPTION,
           isPartOf: {
             "@id": "https://molcrafts.org/#website",
           },

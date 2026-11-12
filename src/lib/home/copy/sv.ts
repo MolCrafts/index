@@ -20,24 +20,25 @@ export const sv: HomeCopy = {
     subtitle: "för AI-eran.",
   },
   hero: {
-    subtitle:
-      "En öppen programvarustack för molekylmodellering, simulering, maskininlärning och forskningsarbetsflöden.",
     primaryCta: "Utforska programvaran",
   },
   approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {
-    title: "Kunskap, standardiserad.",
-    titleLines: ["Kunskap,", "standardiserad."],
+    title: "Forskning som bygger vidare.",
+    titleLines: ["Forskning som", "bygger vidare."],
     lead: "Bygg vidare på varje upptäckt.",
     pillars: [
       {
-        title: "ENHETLIGA DATA",
-        body: "Strukturer, modeller och resultat i ett och samma postformat.",
+        title: "SAMMANLÄNKADE DATA",
+        body: "Strukturer och resultat delas mellan verktyg som stöder utbytet.",
       },
-      { title: "SAMMANLÄNKAD KUNSKAP", body: "Varje resultat kopplat till metoden som gav det." },
+      {
+        title: "RESULTAT MED KÄLLOR",
+        body: "Forskningsresultat kopplade till metoder och evidens.",
+      },
       {
         title: "ÅTERANVÄNDBARA ARBETSFLÖDEN",
-        body: "Arbetsflöden som följer med till nästa projekt.",
+        body: "Arbetsflöden anpassade till nästa forskningsfråga.",
       },
     ],
   },
@@ -47,23 +48,28 @@ export const sv: HomeCopy = {
     stageLabel: "MolCrafts tillämpningar",
     items: {
       molpy: {
-        description: "Komponerbar verktygslåda för molekylmodellering",
+        description: "Bygg molekylmodeller för beräkningar",
       },
       molpack: {
-        description: "Utbyggbar generering av startkonfigurationer för molekylsimulering",
+        description: "Generera startkonfigurationer för molekylsimulering",
       },
       molvis: {
-        description: "Bibliotek för interaktiv molekylvisualisering",
+        description: "Granska strukturer, redigera molekyler och följ trajektorier",
       },
       molab: {
-        description: "AI-stödd hantering av arbetsflöden och kunskap för beräkningsforskning",
+        description: "Håll arbetsflöden, körningar och forskningsresultat sammanlänkade",
       },
       molnex: {
-        description:
-          "Enhetligt ML-ramverk för interatomära potentialer, generativa modeller och egenskapsprediktion",
+        description: "Träna modeller för molekylära egenskaper och simuleringar",
       },
       atomiverse: {
-        description: "Motor för molekylsimulering i flera skalor",
+        description: "Simulera molekylers beteende och materialegenskaper",
+      },
+      molq: {
+        description: "Skicka och följ lokala jobb och klusterjobb",
+      },
+      tack: {
+        description: "Planera forskning och granska forskningsresultat med AI",
       },
     },
   },
@@ -73,7 +79,7 @@ export const sv: HomeCopy = {
     lead: "Tack till programmen som stödjer vårt arbete med öppen källkod.",
   },
   footer: {
-    tagline: "Öppen infrastruktur för molekyl- och materialberäkningar.",
+    tagline: "Programvara och arbetsflöden för materialutveckling.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Till toppen",

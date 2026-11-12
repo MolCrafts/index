@@ -42,12 +42,8 @@ export interface HomeCopy {
     readonly title: string;
     readonly subtitle: string;
   };
-  /**
-   * Under the claim: what MolCrafts is, in one line. `primaryCta` is the link the
-   * prerendered HTML carries to the applications; the live hero has no buttons.
-   */
+  /** The link the prerendered HTML carries to the applications; the live hero has no buttons. */
   readonly hero: {
-    readonly subtitle: string;
     readonly primaryCta: string;
   };
   readonly approach: {
@@ -71,7 +67,6 @@ export interface HomeCopy {
     readonly title: { readonly subject: string; readonly action: string };
     readonly subline: string;
     readonly statements: readonly [string, string, string, string, string, string];
-    readonly concepts: readonly string[];
     readonly products: readonly [string, string, string, string, string];
   };
   readonly projects: {
@@ -86,6 +81,8 @@ export interface HomeCopy {
       readonly molab: ApplicationCopy;
       readonly molnex: ApplicationCopy;
       readonly atomiverse: ApplicationCopy;
+      readonly molq: ApplicationCopy;
+      readonly tack: ApplicationCopy;
     };
   };
   /**

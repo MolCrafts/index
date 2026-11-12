@@ -88,6 +88,8 @@ export const APPLICATIONS: readonly ApplicationMeta[] = [
   { key: "molab", product: "MolAb" },
   { key: "molnex", product: "MolNex" },
   { key: "atomiverse", product: "Atomiverse" },
+  { key: "molq", product: "MolQ" },
+  { key: "tack", product: "Tack" },
 ] as const;
 
 /** Derived from the package registry, so a repo rename cannot leave a 404. */

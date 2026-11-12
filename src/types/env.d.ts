@@ -8,7 +8,7 @@
 interface ImportMetaEnv {
   /** Google Analytics 4 measurement ID, e.g. `G-XXXXXXXXXX`. Unset disables tracking. */
   readonly PUBLIC_GA_ID?: string;
-  /** Development-only override that ignores the OS reduced-motion preference. */
+  /** Motion always runs; `"false"` makes the build follow the OS reduced-motion setting instead. */
   readonly PUBLIC_FORCE_FULL_MOTION?: string;
 }
 
