@@ -104,7 +104,7 @@ export function ApproachSection() {
                 d={guide.path}
                 fill="none"
                 stroke="var(--home-green)"
-                strokeOpacity=".35"
+                strokeOpacity=".55"
                 strokeWidth="1.25"
               />
               {guide.points.map((point, i) => (

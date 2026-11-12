@@ -29,19 +29,29 @@ export function ParticipateSection() {
           {PARTICIPATE_PATHS.map((path, index) => {
             const copy = participate.paths[path.key];
             return (
-              <li key={path.key} className="border-t border-primary/20">
+              <li
+                key={path.key}
+                className="border-t border-primary/20 transition-colors duration-300 hover:border-[rgb(var(--accent-rgb))]/60"
+              >
                 <Reveal delay={0.08 + index * 0.08}>
                   <a
                     href={path.href}
                     target={path.external ? "_blank" : undefined}
                     rel={path.external ? "noreferrer noopener" : undefined}
-                    className="group grid gap-4 py-7 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary md:grid-cols-[3rem_1fr_1fr] md:items-start md:gap-8 md:py-8"
+                    className="group grid gap-4 py-7 no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary md:grid-cols-[3rem_1fr_1fr_2rem] md:items-start md:gap-8 md:py-8"
                   >
                     <span className="home-subtitle font-mono text-xs md:pt-3">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <h3 className={cn(HOME_H3, "md:text-[2.625rem]")}>{copy.statement}</h3>
                     <p className={cn(HOME_BODY, "max-w-xl md:pt-2 md:text-lg")}>{copy.line}</p>
+                    {/* Each row is a link; the arrow is what says so before the hover. */}
+                    <span
+                      aria-hidden="true"
+                      className="hidden justify-self-end pt-2 font-body text-xl text-muted-foreground opacity-50 transition duration-300 group-hover:translate-x-1 group-hover:text-[rgb(var(--accent-rgb))] group-hover:opacity-100 group-focus-visible:opacity-100 md:block"
+                    >
+                      {path.external ? "↗" : "→"}
+                    </span>
                   </a>
                 </Reveal>
               </li>

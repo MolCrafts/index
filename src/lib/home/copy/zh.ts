@@ -23,7 +23,6 @@ export const zh: HomeCopy = {
   hero: {
     subtitle: "面向分子建模、模拟、机器学习与研究工作流的开源软件栈。",
     primaryCta: "查看软件",
-    secondaryCta: "讨论合作",
   },
   approach: APPROVED_FOUNDATION_COPY_ZH,
   whatWeDo: {

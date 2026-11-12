@@ -23,7 +23,6 @@ export const en: HomeCopy = {
     subtitle:
       "An open-source stack for molecular modeling, simulation, machine learning and research workflows.",
     primaryCta: "Explore the software",
-    secondaryCta: "Discuss a project",
   },
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {

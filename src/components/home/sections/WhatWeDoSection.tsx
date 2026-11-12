@@ -134,7 +134,7 @@ export function WhatWeDoSection() {
                 stroke="url(#knowledge-thread)"
                 strokeWidth="1.3"
                 strokeLinecap="round"
-                className="opacity-50"
+                className="opacity-75"
                 variants={knowledgeThreadDraw}
               />
               {thread.points.map((point, i) => (

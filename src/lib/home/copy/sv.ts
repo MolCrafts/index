@@ -23,7 +23,6 @@ export const sv: HomeCopy = {
     subtitle:
       "En öppen programvarustack för molekylmodellering, simulering, maskininlärning och forskningsarbetsflöden.",
     primaryCta: "Utforska programvaran",
-    secondaryCta: "Diskutera ett projekt",
   },
   approach: APPROVED_FOUNDATION_COPY_SV,
   whatWeDo: {

@@ -42,11 +42,13 @@ export interface HomeCopy {
     readonly title: string;
     readonly subtitle: string;
   };
-  /** Under the claim: what MolCrafts is, in one line, and the two ways on. */
+  /**
+   * Under the claim: what MolCrafts is, in one line. `primaryCta` is the link the
+   * prerendered HTML carries to the applications; the live hero has no buttons.
+   */
   readonly hero: {
     readonly subtitle: string;
     readonly primaryCta: string;
-    readonly secondaryCta: string;
   };
   readonly approach: {
     /** Micro section indicator / category kicker. */

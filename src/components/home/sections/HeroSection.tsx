@@ -3,22 +3,18 @@ import { useRef } from "react";
 import { BrandName } from "@/components/BrandName";
 import { FORCE_FULL_MOTION, MOTION_EASE } from "@/lib/animations";
 import { useHomeCopy } from "@/lib/home/copy";
-import { heroLinks } from "@/lib/home/data";
 import { HOME_LEAD_SIZE } from "@/lib/home/stage";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 import { HomeSection } from "../HomeSection";
 
-/** The two doors, set as type rather than buttons: a rule that lights on approach. */
-const HERO_DOOR =
-  "group inline-flex min-h-11 items-center gap-2 border-b border-[rgb(var(--accent-rgb))]/35 font-body text-base font-medium text-foreground no-underline outline-none transition-colors hover:border-[rgb(var(--accent-rgb))] focus-visible:ring-2 focus-visible:ring-primary md:text-lg";
-
 /**
  * A quiet brand inscription; the shared atmosphere stays beneath the surface.
  *
- * Three steps down in weight: the claim, what MolCrafts is in one line, and the
- * two ways on. Without the last two the screen named an ambition and left the
- * reader to find out, four screens later, what the thing is.
+ * Two steps down in weight: the claim, then what MolCrafts is in one line, with
+ * a short rule of light between them. Without the second the screen named an
+ * ambition and left the reader to find out, four screens later, what the thing
+ * is. There are no buttons here: the page itself is the way on.
  */
 export function HeroSection() {
   const { brandHero, hero } = useHomeCopy();
@@ -52,28 +48,18 @@ export function HeroSection() {
         <p className="mt-7 max-w-[72rem] text-balance text-[clamp(1.125rem,2.5vw,2.75rem)] font-book leading-copy tracking-[-0.015em] text-foreground/85 sm:mt-8">
           {brandHero.kicker} {brandHero.subtitle}
         </p>
+        <span
+          aria-hidden="true"
+          className="mt-8 block h-px w-16 bg-[linear-gradient(90deg,transparent,rgb(var(--accent-rgb)),transparent)] opacity-70 sm:mt-9"
+        />
         <p
           className={cn(
             HOME_LEAD_SIZE,
-            "mt-6 max-w-[44rem] text-balance text-muted-foreground md:text-xl",
+            "mt-8 max-w-[44rem] text-balance text-muted-foreground md:text-xl",
           )}
         >
           {hero.subtitle}
         </p>
-        <nav className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-2 sm:mt-12">
-          <a href={heroLinks.primaryHref} className={HERO_DOOR}>
-            {hero.primaryCta}
-            <span aria-hidden="true" className="transition-transform group-hover:translate-y-0.5">
-              ↓
-            </span>
-          </a>
-          <a href={heroLinks.secondaryHref} className={HERO_DOOR}>
-            {hero.secondaryCta}
-            <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
-          </a>
-        </nav>
       </motion.header>
 
       <div
