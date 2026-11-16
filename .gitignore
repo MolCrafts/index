@@ -30,6 +30,8 @@ dist-ssr
 .hallmark/
 .impeccable/
 .playwright-mcp/
+.github/hooks/
+docs/homepage-messaging-review.md
 AGENTS.md
 CLAUDE.md
 skills-lock.json
