@@ -1,7 +1,7 @@
+import { motion } from "framer-motion";
+import { lazy, Suspense, useMemo } from "react";
 import sadMoko from "@/assets/moko/sad.webp";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { Suspense, lazy, useMemo } from "react";
 import { fadeIn, slideUp } from "../lib/animations";
 import { FEATURED_LINKS } from "../lib/routes";
 import {

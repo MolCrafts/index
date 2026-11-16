@@ -1,14 +1,15 @@
 import type { Variants } from "framer-motion";
 
 /**
- * Site-wide motion switch.
+ * Site-wide motion switch: on in every build.
  *
- * `npm run dev` sets `PUBLIC_FORCE_FULL_MOTION=true`, so CSS, Framer Motion,
- * and JS helpers ignore the OS “Reduce motion” preference during visual work.
- * Production builds omit the variable and continue to honor the system setting.
- * Applied as `html.force-full-motion` at boot (see `main.tsx`).
+ * The motion is part of what the page says — each light leads the eye through a
+ * screen in reading order — so CSS, Framer Motion and the JS helpers all run it
+ * whatever the OS “Reduce motion” setting is. Building with
+ * `PUBLIC_FORCE_FULL_MOTION=false` is the one way to hand the choice back to
+ * the system setting. Applied as `html.force-full-motion` at boot (see `main.tsx`).
  */
-export const FORCE_FULL_MOTION = import.meta.env.PUBLIC_FORCE_FULL_MOTION === "true";
+export const FORCE_FULL_MOTION = import.meta.env.PUBLIC_FORCE_FULL_MOTION !== "false";
 
 /** Framer Motion `MotionConfig.reducedMotion` derived from {@link FORCE_FULL_MOTION}. */
 export const FRAMER_REDUCED_MOTION: "never" | "user" = FORCE_FULL_MOTION ? "never" : "user";
@@ -364,46 +365,6 @@ export const assistAuraReveal: Variants = {
   settled: { opacity: 0.52, scale: 1, x: "-50%", y: "-50%" },
 };
 
-/**
- * The payload `assistContextGather` requires on `custom`.
- *
- * `x`/`y` are the pixel offsets a label gathers in *from*; `peak` and `settled` are
- * opacity keyframes — the label overshoots to `peak` then rests at `settled`.
- * The variant destructures this, so a caller that omits `custom` throws at runtime.
- */
-export interface AssistContextMotion {
-  delay: number;
-  peak: number;
-  settled: number;
-  x: number;
-  y: number;
-}
-
-export const assistContextGather: Variants = {
-  dormant: ({ x, y }: AssistContextMotion) => ({
-    x,
-    y,
-    scale: 0.82,
-    filter: "blur(2px)",
-    opacity: 0.02,
-  }),
-  illuminated: ({ delay, peak, settled }: AssistContextMotion) => ({
-    x: 0,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    opacity: [0.02, peak, settled],
-    transition: { delay, duration: 1.45, ease: MOTION_EASE, times: [0, 0.56, 1] },
-  }),
-  settled: ({ settled }: AssistContextMotion) => ({
-    x: 0,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    opacity: settled,
-  }),
-};
-
 export const assistMobileProductsReveal: Variants = {
   dormant: { y: 12, filter: "blur(3px)", opacity: 0 },
   illuminated: {
@@ -413,4 +374,28 @@ export const assistMobileProductsReveal: Variants = {
     transition: { delay: 0.58, duration: 1.1, ease: MOTION_EASE },
   },
   settled: { y: 0, filter: "blur(0px)", opacity: 0.76 },
+};
+
+/**
+ * A screen's drawing arriving: the line that carries the eye draws itself, and
+ * the scale around it fades in once the line is down. Both share the AI screen's
+ * three states, so reduced motion renders `settled`.
+ */
+export const artLineDraw: Variants = {
+  settled: { pathLength: 1, opacity: 1 },
+  dormant: { pathLength: 0, opacity: 0 },
+  illuminated: {
+    pathLength: 1,
+    opacity: 1,
+    transition: {
+      pathLength: { delay: 0.5, duration: 1.8, ease: [0.33, 0, 0.2, 1] },
+      opacity: { delay: 0.5, duration: 0.4, ease: "linear" },
+    },
+  },
+};
+
+export const artFieldReveal: Variants = {
+  settled: { opacity: 1 },
+  dormant: { opacity: 0 },
+  illuminated: { opacity: 1, transition: { delay: 0.9, duration: 1.6, ease: "linear" } },
 };

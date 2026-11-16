@@ -1,7 +1,7 @@
 import { useHomeCopy } from "@/lib/home/copy";
+import { ApplicationStage } from "../applications/ApplicationStage";
 import { HomeBlock } from "../HomeBlock";
 import { Reveal } from "../Reveal";
-import { ApplicationStage } from "../applications/ApplicationStage";
 
 /**
  * Applications — an interactive stage rather than a catalog.
@@ -15,7 +15,7 @@ export function ProjectsSection() {
 
   return (
     <HomeBlock id="applications" title={projects.title} lead={projects.lead} scale="section">
-      <Reveal delay={0.65}>
+      <Reveal delay={0.1}>
         <ApplicationStage />
       </Reveal>
     </HomeBlock>

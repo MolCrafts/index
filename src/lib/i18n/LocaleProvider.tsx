@@ -1,5 +1,5 @@
-import { type ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
-import { type Locale, applyLocaleToDocument, detectLocale, persistLocale } from "./locale";
+import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { applyLocaleToDocument, detectLocale, type Locale, persistLocale } from "./locale";
 
 interface LocaleContextValue {
   locale: Locale;

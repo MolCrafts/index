@@ -1,9 +1,9 @@
-import { ThemeProvider } from "@/components/theme-provider.tsx";
-import { FORCE_FULL_MOTION, FRAMER_REDUCED_MOTION } from "@/lib/animations";
-import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { MotionConfig } from "framer-motion";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { ThemeProvider } from "@/components/theme-provider.tsx";
+import { FORCE_FULL_MOTION, FRAMER_REDUCED_MOTION } from "@/lib/animations";
+import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import App from "./App.tsx";
 /* Three local families: Geist for display, DM Sans for prose, JetBrains Mono for annotations. */
 import "@fontsource-variable/geist/wght.css";

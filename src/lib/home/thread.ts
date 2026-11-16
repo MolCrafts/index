@@ -1,72 +1,54 @@
 /**
- * Geometry of the capabilities screen's knowledge thread.
+ * A thread through measured stations.
  *
- * The section measures its stations and this module turns those boxes into an
- * SVG path: a vertical line down each station's leading edge, joined to the
- * next by two exact quarter-circle fillets around a horizontal run centred in
- * the row gap. Every radius is half the measured gap, so the shape is derived
- * from the layout rather than drawn by eye — resize, locale, and text wrap all
- * land on the same construction.
+ * The old guide was an axis-aligned midpoint cubic: each join arrived on a
+ * horizontal or vertical tangent, so the line stepped like a rounded elbow.
+ * This is a uniform Catmull–Rom spline written as cubic Béziers. It still
+ * passes through every measured point, and neighbouring spans share a tangent,
+ * so the line eases through the stations instead of cornering at them.
  */
 
-/** One station's box, in the pixel space the path is drawn in. */
-export interface ThreadStation {
-  /** Leading edge the line runs beside. */
-  left: number;
-  top: number;
-  bottom: number;
+export interface ThreadPoint {
+  x: number;
+  y: number;
 }
 
-export interface ThreadFrame {
-  /** Horizontal distance between the line and a station's leading edge. */
-  inset: number;
-  /** How far the line continues past the first and last station. */
-  overshoot: number;
+function coord(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
-/** Path numbers stay readable: two decimals, no trailing float noise. */
-function fmt(value: number): string {
-  return String(Math.round(value * 100) / 100);
+function reflected(anchor: ThreadPoint, other: ThreadPoint): ThreadPoint {
+  return { x: anchor.x * 2 - other.x, y: anchor.y * 2 - other.y };
 }
 
-/**
- * The thread as one continuous SVG path through the stations, in order.
- *
- * Between two stations the fillet radius is half the vertical gap, clamped to
- * half the horizontal travel — so the two arcs and the run between them always
- * fit, and when the gap is the binding constraint the run sits exactly on the
- * gap's centreline. A single station degenerates to one vertical line; no
- * stations, to an empty path.
- */
-export function threadPath(stations: readonly ThreadStation[], frame: ThreadFrame): string {
-  if (stations.length === 0) return "";
-  const edge = (station: ThreadStation) => station.left - frame.inset;
+/** SVG path data. Empty when there is nothing to draw. */
+export function smoothThread(points: readonly ThreadPoint[]): string {
+  if (points.length === 0) return "";
+  const first = points[0];
+  if (!first) return "";
+  if (points.length === 1) return `M ${coord(first.x)} ${coord(first.y)}`;
 
-  const first = stations[0];
-  const last = stations[stations.length - 1];
-  const parts = [`M ${fmt(edge(first))} ${fmt(first.top - frame.overshoot)}`];
+  const last = points[points.length - 1];
+  const next = points[1];
+  const prev = points[points.length - 2];
+  if (!last || !next || !prev) return `M ${coord(first.x)} ${coord(first.y)}`;
 
-  for (let i = 0; i < stations.length - 1; i += 1) {
-    const from = stations[i];
-    const to = stations[i + 1];
-    const xa = edge(from);
-    const xb = edge(to);
-    const gap = to.top - from.bottom;
-    const dx = xb - xa;
-    const r = Math.max(Math.min(gap / 2, Math.abs(dx) / 2), 0);
+  const padded = [reflected(first, next), ...points, reflected(last, prev)];
+  let path = `M ${coord(first.x)} ${coord(first.y)}`;
 
-    parts.push(`L ${fmt(xa)} ${fmt(from.bottom)}`);
-    if (r > 0) {
-      /* Turn direction follows the travel: stepping right sweeps 0 then 1,
-         stepping left mirrors both. */
-      const s = dx >= 0 ? 1 : -1;
-      const [out, back] = s === 1 ? [0, 1] : [1, 0];
-      parts.push(`A ${fmt(r)} ${fmt(r)} 0 0 ${out} ${fmt(xa + s * r)} ${fmt(from.bottom + r)}`);
-      parts.push(`L ${fmt(xb - s * r)} ${fmt(from.bottom + r)}`);
-      parts.push(`A ${fmt(r)} ${fmt(r)} 0 0 ${back} ${fmt(xb)} ${fmt(from.bottom + 2 * r)}`);
-    }
+  for (let index = 1; index < padded.length - 2; index++) {
+    const p0 = padded[index - 1];
+    const p1 = padded[index];
+    const p2 = padded[index + 1];
+    const p3 = padded[index + 2];
+    if (!p0 || !p1 || !p2 || !p3) continue;
+    /* Uniform Catmull–Rom, tension 1/6, converted to a cubic Bézier. */
+    const c1x = p1.x + (p2.x - p0.x) / 6;
+    const c1y = p1.y + (p2.y - p0.y) / 6;
+    const c2x = p2.x - (p3.x - p1.x) / 6;
+    const c2y = p2.y - (p3.y - p1.y) / 6;
+    path += ` C ${coord(c1x)} ${coord(c1y)}, ${coord(c2x)} ${coord(c2y)}, ${coord(p2.x)} ${coord(p2.y)}`;
   }
 
-  parts.push(`L ${fmt(edge(last))} ${fmt(last.bottom + frame.overshoot)}`);
-  return parts.join(" ");
+  return path;
 }

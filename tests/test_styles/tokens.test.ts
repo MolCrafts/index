@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { describe, expect, it } from "@rstest/core";
 
@@ -53,7 +53,7 @@ describe("website visual vocabulary", () => {
     );
     expect(swatches.sort()).toEqual(["--home-blue", "--home-green", "--home-white"]);
     expect([...homeStyles.matchAll(/#[0-9a-f]{6}\b/gi)]).toHaveLength(3);
-    const field = readFileSync(join(SRC, "components/home/MoleculeField.tsx"), "utf8");
+    const field = readFileSync(join(SRC, "components/MoleculeOverlay.tsx"), "utf8");
     expect(field).not.toMatch(/--molcrafts-sand|--molcrafts-cyan-spark|--brand-assist/);
   });
 });

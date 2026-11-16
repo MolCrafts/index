@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Footer } from "./components/Footer";
+import { HomePage } from "./components/home/HomePage";
 import { Navbar } from "./components/Navbar";
 import { SEOSchema } from "./components/SEOSchema";
-import { HomePage } from "./components/home/HomePage";
 import { trackPageView } from "./lib/analytics";
 import { packageGithubHref } from "./lib/packages";
 import { pathProductSlug } from "./lib/routes";
@@ -88,8 +88,9 @@ function App() {
   return (
     <>
       <SEOSchema path={currentPath} />
-      {/* The homepage owns its own chrome: `HomeAtmosphere` replaces this background,
-          `HomeFooter` replaces the shared footer, and `/` is dark regardless of theme. */}
+      {/* The homepage owns its own chrome: `HomeAtmosphere` replaces this background
+          and `HomeFooter` replaces the shared footer. It follows the document theme,
+          so the light theme can keep ink on cream. */}
       {!isHome && <div className={PAGE_ATMOSPHERE} aria-hidden="true" />}
 
       <AnimatePresence mode="wait">
@@ -107,7 +108,7 @@ function App() {
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               "relative z-1 flex flex-col",
-              isHome ? "dark min-h-screen min-w-0 bg-background text-foreground" : "min-h-screen",
+              isHome ? "min-h-screen min-w-0 bg-background text-foreground" : "min-h-screen",
             )}
           >
             <Navbar />

@@ -37,12 +37,12 @@ export interface EcosystemCategory {
  * MolExp was renamed to MolAb; `/molexp` still redirects to that repository.
  *
  * Copy rules for `description`:
- *   - lead with a concrete noun for what the thing IS, under ~12 words
+ *   - lead with the research task, under ~12 words
  *   - no third-party library names, algorithms, or force fields
  *   - no internal sub-package names as explanation
  *   - one format across the catalog: sentence case, no trailing period
  * Supported platforms (SLURM, Jupyter, VS Code…) are allowed — they say where it runs.
- * The six application descriptions come verbatim from
+ * The eight application descriptions come verbatim from
  * {@link APPLICATION_GITHUB_DESCRIPTIONS}, the operator-approved record the
  * GitHub About descriptions are aligned to.
  *
@@ -52,13 +52,13 @@ export interface EcosystemCategory {
 export const ecosystemCategories: EcosystemCategory[] = [
   {
     title: "Application",
-    blurb: "What you call directly.",
+    blurb: "Tools for your research tasks.",
     items: [
       {
         title: "MolPy",
         href: packageGithubHref("molpy"),
         external: true,
-        role: "molecular toolkit",
+        role: "model preparation",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
         color: PRODUCT_ACCENTS.molpy.chip.color,
         bg: PRODUCT_ACCENTS.molpy.chip.bg,
@@ -67,7 +67,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
         title: "MolPack",
         href: packageGithubHref("molpack"),
         external: true,
-        role: "packing tool",
+        role: "simulation setup",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
         color: PRODUCT_ACCENTS.molpack.chip.color,
         bg: PRODUCT_ACCENTS.molpack.chip.bg,
@@ -76,7 +76,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
         title: "MolNex",
         href: packageGithubHref("molnex"),
         external: true,
-        role: "ML framework",
+        role: "model training",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
         status: "In development",
         color: PRODUCT_ACCENTS.molnex.chip.color,
@@ -86,7 +86,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
         title: "MolAb",
         href: packageGithubHref("molab"),
         external: true,
-        role: "workflow platform",
+        role: "research records",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molab,
         status: "In development",
         color: PRODUCT_ACCENTS.molab.chip.color,
@@ -96,7 +96,7 @@ export const ecosystemCategories: EcosystemCategory[] = [
         title: "MolVis",
         href: packageGithubHref("molvis"),
         external: true,
-        role: "3D viewer",
+        role: "structure review",
         description: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
         color: PRODUCT_ACCENTS.molvis.chip.color,
         bg: PRODUCT_ACCENTS.molvis.chip.bg,
@@ -105,8 +105,8 @@ export const ecosystemCategories: EcosystemCategory[] = [
         title: "MolPlot",
         href: packageGithubHref("molplot"),
         external: true,
-        role: "charting library",
-        description: "One chart definition, for web and for print",
+        role: "research figures",
+        description: "Create figures for exploring and sharing research results",
         color: CHIP_ONLY_ACCENTS.molplot.color,
         bg: CHIP_ONLY_ACCENTS.molplot.bg,
       },
@@ -120,29 +120,39 @@ export const ecosystemCategories: EcosystemCategory[] = [
         color: PRODUCT_ACCENTS.atomiverse.chip.color,
         bg: PRODUCT_ACCENTS.atomiverse.chip.bg,
       },
+      {
+        title: "MolQ",
+        href: packageGithubHref("molq"),
+        external: true,
+        role: "job management",
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molq,
+        color: PRODUCT_ACCENTS.molq.chip.color,
+        bg: PRODUCT_ACCENTS.molq.chip.bg,
+      },
+      {
+        title: "Tack",
+        href: packageGithubHref("tack"),
+        external: true,
+        role: "AI research assistance",
+        description: APPLICATION_GITHUB_DESCRIPTIONS.tack,
+        status: "In development",
+        color: PRODUCT_ACCENTS.tack.chip.color,
+        bg: PRODUCT_ACCENTS.tack.chip.bg,
+      },
     ],
   },
   {
     title: "Infrastructure",
-    blurb: "What holds the stack up.",
+    blurb: "Support for working with research data.",
     items: [
       {
         title: "MolRs",
         href: packageGithubHref("molrs"),
         external: true,
-        role: "compute core",
-        description: "Data structures, file I/O, and compute kernels under MolPy",
+        role: "molecular data",
+        description: "Read and work with molecular structures and results",
         color: PRODUCT_ACCENTS.molrs.chip.color,
         bg: PRODUCT_ACCENTS.molrs.chip.bg,
-      },
-      {
-        title: "MolQ",
-        href: packageGithubHref("molq"),
-        external: true,
-        role: "job queue",
-        description: "One submission API for local, SLURM, PBS, and LSF",
-        color: PRODUCT_ACCENTS.molq.chip.color,
-        bg: PRODUCT_ACCENTS.molq.chip.bg,
       },
       {
         title: "MolHub",

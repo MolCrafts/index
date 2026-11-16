@@ -1,3 +1,4 @@
+import { Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -5,11 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { useChromeCopy } from "@/lib/i18n/chromeCopy";
-import { LOCALES, LOCALE_LABELS } from "@/lib/i18n/locale";
+import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { LOCALE_LABELS, LOCALES } from "@/lib/i18n/locale";
 import { cn } from "@/lib/utils";
-import { Languages } from "lucide-react";
 
 const COMPACT_LOCALE_LABELS = {
   en: "EN",

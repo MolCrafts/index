@@ -1,53 +1,40 @@
 import type { HomeCopy } from "./types";
 
 /**
- * Operator-approved English copy for the AI editorial screen.
- * Translations preserve the same research roles and claims.
+ * The research cycle the assistant works through, read counter-clockwise around
+ * the orbit from the right: literature to experience, and round again.
  */
 export const APPROVED_ASSIST_COPY = {
-  title: {
-    subject: "AI,",
-    action: "here to assist.",
-  },
-  subline: "Researchers stay in control.",
+  title: { subject: "AI,", action: "here to assist." },
+  subline: "Review research with AI. You decide the next step.",
   statements: [
-    "Science gives AI context.",
-    "Data stays traceable.",
-    "Knowledge stays connected.",
-    "Tools connect AI to research.",
-    "Workflows remain reproducible.",
-    "Researchers make the decisions.",
+    "Read the literature.",
+    "Reproduce results.",
+    "Plan the study.",
+    "Run the workflow.",
+    "Verify the evidence.",
+    "Build on experience.",
   ],
-  concepts: ["data", "knowledge", "tools", "workflows"],
-  products: ["MolPy", "MolAb", "MolVis", "MolPack", "Atomiverse"],
+  products: ["Tack", "MolAb", "MolVis", "MolPy", "MolPack"],
 } as const satisfies HomeCopy["assist"];
 
 export const ASSIST_COPY_ZH = {
   ...APPROVED_ASSIST_COPY,
   title: { subject: "AI，", action: "辅助你的研究。" },
-  subline: "研究者掌握主导权。",
-  statements: [
-    "科学为 AI 提供上下文。",
-    "数据来源可追溯。",
-    "研究知识相互关联。",
-    "工具让 AI 参与研究。",
-    "工作流可以复现。",
-    "研究者作出判断。",
-  ],
-  concepts: ["数据", "知识", "工具", "工作流"],
+  subline: "AI 辅助研究，科学判断由你掌握。",
+  statements: ["读文献。", "复现结果。", "规划研究。", "运行流程。", "核验证据。", "积累经验。"],
 } as const satisfies HomeCopy["assist"];
 
 export const ASSIST_COPY_SV = {
   ...APPROVED_ASSIST_COPY,
   title: { subject: "AI,", action: "som stöd i forskningen." },
-  subline: "Forskaren behåller kontrollen.",
+  subline: "Granska forskning med AI. Du bestämmer nästa steg.",
   statements: [
-    "Vetenskap ger AI kontext.",
-    "Data är spårbara.",
-    "Kunskap hänger samman.",
-    "Verktyg kopplar AI till forskning.",
-    "Arbetsflöden är reproducerbara.",
-    "Forskaren fattar besluten.",
+    "Läs litteraturen.",
+    "Reproducera resultat.",
+    "Planera studien.",
+    "Kör arbetsflödet.",
+    "Verifiera evidensen.",
+    "Bygg på erfarenhet.",
   ],
-  concepts: ["data", "kunskap", "verktyg", "arbetsflöden"],
 } as const satisfies HomeCopy["assist"];

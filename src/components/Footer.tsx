@@ -24,17 +24,17 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Explore",
     links: [
-      { label: "Projects", href: "/#applications" },
-      { label: "What we do", href: "/#solutions" },
+      { label: "Applications", href: "/#applications" },
+      { label: "Continuity", href: "/#solutions" },
       { label: "Documentation", href: "https://docs.molcrafts.org/", external: true },
       { label: "GitHub", href: "https://github.com/MolCrafts", external: true },
     ],
   },
   {
-    title: "Work with us",
+    title: "Collaboration",
     links: [
-      { label: "Consulting", href: contactHref("Consulting") },
-      { label: "Enterprise", href: contactHref("Enterprise") },
+      { label: "Build together", href: contactHref("Consulting") },
+      { label: "Deploy in-house", href: contactHref("Enterprise") },
     ],
   },
   {
@@ -109,7 +109,7 @@ export const Footer = () => {
             <span className={BRAND_GRADIENT_TEXT}>MolCrafts</span>
           </a>
           <p className="max-w-sm text-sm leading-relaxed text-muted-foreground md:text-base">
-            AI-assisted infrastructure for molecular science.
+            Scientific infrastructure for AI-assisted research.
           </p>
           <a
             href="https://github.com/MolCrafts"

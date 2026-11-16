@@ -37,7 +37,7 @@ export const HOME_BAND = "py-16 sm:py-20";
  * hyphenation and its looser leading across every block on the page. This file owns
  * size, weight and measure; `typeStyles.ts` owns what changes per language.
  */
-const HEADING_BASE = `${TYPE_DISPLAY} font-display font-semibold home-title`;
+const HEADING_BASE = `${TYPE_DISPLAY} font-display font-semibold home-title w-fit max-w-full`;
 
 /**
  * Headings sit in light rather than on a flat ground, the way the AI screen's
@@ -47,7 +47,7 @@ const HEADING_BASE = `${TYPE_DISPLAY} font-display font-semibold home-title`;
 const HEADING_GLOW = "[text-shadow:0_18px_60px_rgba(var(--accent-rgb),0.14)]";
 
 /** Blocks that make a claim: About, Collaboration. */
-export const HOME_H2_STATEMENT = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.6rem,4.6vw,4.4rem)] leading-display tracking-[-0.045em]`;
+export const HOME_H2_STATEMENT = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.6rem,4.6vw,4.4rem)] leading-display tracking-[-0.035em]`;
 
 /** Blocks that carry content beneath the heading: Capabilities, Applications, Support. */
 export const HOME_H2_SECTION = `${HEADING_BASE} ${HEADING_GLOW} text-[clamp(2.1rem,3.4vw,3.2rem)] leading-display tracking-[-0.03em]`;
@@ -60,6 +60,9 @@ export const HOME_LEAD_SIZE = `${TYPE_BODY} font-body text-base md:text-lg`;
 
 /** The paragraph that sits beside or under a heading. */
 export const HOME_LEAD = `${HOME_LEAD_SIZE} text-foreground`;
+
+/** Shared subtitle rung for the vision, continuity, and AI screens. */
+export const HOME_SECTION_LEAD = `${TYPE_BODY} font-display text-[clamp(1.125rem,1.8vw,1.625rem)] font-normal leading-[1.45] tracking-normal home-subtitle`;
 
 /** Supporting copy inside a column, card or list. */
 export const HOME_BODY = `${TYPE_BODY} font-body text-sm text-foreground md:text-base`;

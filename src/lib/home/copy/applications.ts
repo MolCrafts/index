@@ -2,38 +2,35 @@ import type { ApplicationKey, HomeCopy } from "./types";
 
 /** Application stage headline, with equivalent translations below. */
 export const APPROVED_APPLICATIONS_HEADING = {
-  title: "Take one. Or take the stack.",
-  lead: "Built to work better together, designed to stand on their own.",
+  title: "Tools for molecular research.",
+  lead: "Model. Simulate. Learn. Visualize. Manage.",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
 
 /**
- * Application descriptions — GitHub's About descriptions
- * (`github.com/MolCrafts/<repo>`), normalised by operator instruction on
- * 2026-08-15: `[WIP]` markers dropped, one format across the set (sentence
- * case, noun phrase, no trailing period), and molnex rewritten onto
- * potentials, generative models, and prediction. This record is now the
- * approved wording; align the GitHub About descriptions to it, not the other
- * way around.
+ * One operator-approved English description per application, shared by the
+ * homepage, catalog and generated product summaries. Sentence case, task-focused
+ * phrases, no trailing period. MolPack covers initial configuration generation
+ * across algorithms; packing is one method rather than the product boundary.
  *
- * English only; other locales keep their approved translations until the
- * operator re-approves wording against this record.
+ * Other locales preserve the same scope in their translated descriptions.
  */
 export const APPLICATION_GITHUB_DESCRIPTIONS: Record<ApplicationKey, string> = {
-  molpy: "A fast, clean, and composable toolkit for molecular modeling",
-  molpack: "Extensible molecule packing for initial configuration generation",
-  molvis: "Interactive molecule visualization library",
-  molab: "AI-assisted workflow management and knowledge system for computational research",
-  molnex:
-    "Unified ML framework for interatomic potentials, generative models, and property prediction",
-  atomiverse: "The multi-scale molecular simulation engine",
+  molpy: "Build molecular models for computation",
+  molpack: "Generate initial configurations for molecular simulation",
+  molvis: "Inspect structures, edit molecules and review trajectories",
+  molab: "Keep workflows, runs and findings connected",
+  molnex: "Train models for molecular properties and simulations",
+  atomiverse: "Simulate molecular behavior and material properties",
+  molq: "Submit and track local and cluster jobs",
+  tack: "Plan research and review findings with AI",
 };
 
 export const APPLICATIONS_HEADING_ZH = {
-  title: "单独使用，或组合成技术栈。",
-  lead: "各自独立可用，也能相互配合。",
+  title: "用于分子研究的软件。",
+  lead: "建模、模拟、学习、可视化与研究管理。",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;
 
 export const APPLICATIONS_HEADING_SV = {
-  title: "Välj ett verktyg. Eller hela stacken.",
-  lead: "Verktygen fungerar både tillsammans och var för sig.",
+  title: "Verktyg för molekylär forskning.",
+  lead: "Modellera. Simulera. Lär. Visualisera. Hantera.",
 } as const satisfies Pick<HomeCopy["projects"], "title" | "lead">;

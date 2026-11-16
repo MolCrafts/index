@@ -70,4 +70,9 @@ export const PACKAGE_INSTALL: Record<string, PackageInstall> = {
     note: "Preparing release — build from source for now.",
     repo: "Atomiverse",
   },
+  tack: {
+    command: null,
+    note: "In development — available from source.",
+    repo: "Tack",
+  },
 };

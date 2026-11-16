@@ -1,5 +1,5 @@
-import { prefersReducedMotion } from "@/lib/animations";
 import { useEffect } from "react";
+import { prefersReducedMotion } from "@/lib/animations";
 import { resolveHomeHash } from "./data";
 import { HomeWheelGesture, homeScrollStops, nextHomeStop } from "./paging";
 

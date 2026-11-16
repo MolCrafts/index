@@ -4,85 +4,74 @@ import { APPROVED_COLLABORATION_COPY } from "./collaboration";
 import { APPROVED_FOUNDATION_COPY } from "./foundation";
 import type { HomeCopy } from "./types";
 
+export const HOME_DESCRIPTION = "Molecular computation software and workflows for materials R&D.";
+
 export const en: HomeCopy = {
   sectionLabels: {
     hero: "Home",
     about: "Foundation",
-    solutions: "Capabilities",
+    solutions: "Continuity",
     assist: "AI",
     applications: "Applications",
     collaboration: "Collaboration",
     trust: "Support",
   },
   brandHero: {
-    kicker: "Standardizing Molecular & Materials Computation",
+    kicker: "Standardizing Materials R&D",
     title: "MolCrafts",
-    subtitle: "Accelerate your R&D with AI-assisted scientific infrastructure.",
+    subtitle: "for the AI Era.",
   },
   hero: {
-    title: "A modern, open-source ecosystem",
-    accent: "for molecular science.",
-    subtitle:
-      "MolCrafts brings scientific computing, AI, and research expertise into real molecular and materials R&D—from property prediction to long-term collaboration.",
-    primaryCta: "Explore",
-    secondaryCta: "Discuss a project",
-    scrollHint: "Continue",
+    primaryCta: "Explore the software",
   },
   approach: APPROVED_FOUNDATION_COPY,
   whatWeDo: {
-    title: "Knowledge carries forward.",
-    titleLines: ["Knowledge", "carries forward."],
-    lead: "Build on every discovery.",
+    title: "Research that builds on itself.",
+    titleLines: ["Research that", "builds on itself."],
+    lead: "Carry each discovery forward.",
     pillars: [
       {
-        title: "Unified data",
-        body: "Molecules, models and results — connected to their origins.",
+        title: "CONNECTED DATA",
+        body: "Structures and results shared between supported tools.",
       },
       {
-        title: "Connected knowledge",
-        body: "Link methods and findings to the data they explain.",
+        title: "FINDINGS WITH SOURCES",
+        body: "Findings linked to their methods and evidence.",
       },
       {
-        title: "Replayable research",
-        body: "Rerun, adapt and extend workflows.",
+        title: "REUSABLE WORKFLOWS",
+        body: "Workflows adapted to the next research question.",
       },
     ],
   },
   assist: APPROVED_ASSIST_COPY,
   projects: {
     ...APPROVED_APPLICATIONS_HEADING,
-    cta: "Explore",
     stageLabel: "MolCrafts applications",
     items: {
       molpy: {
-        applicationTitle: "System construction",
-        short: "Build and type molecular systems",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molpy,
       },
       molpack: {
-        applicationTitle: "Box preparation",
-        short: "Pack molecules into a box",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molpack,
       },
       molvis: {
-        applicationTitle: "Visual inspection",
-        short: "Inspect structures and trajectories",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molvis,
       },
       molab: {
-        applicationTitle: "Experiment tracking",
-        short: "Run and track experiments",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molab,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molab,
       },
       molnex: {
-        applicationTitle: "Potential training",
-        short: "Train and compose potentials",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molnex,
       },
       atomiverse: {
-        applicationTitle: "Simulation runs",
-        short: "Run dynamics and electronic structure",
-        long: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
+        description: APPLICATION_GITHUB_DESCRIPTIONS.atomiverse,
+      },
+      molq: {
+        description: APPLICATION_GITHUB_DESCRIPTIONS.molq,
+      },
+      tack: {
+        description: APPLICATION_GITHUB_DESCRIPTIONS.tack,
       },
     },
   },
@@ -92,7 +81,7 @@ export const en: HomeCopy = {
     lead: "Thanks to the programs supporting our open-source work.",
   },
   footer: {
-    tagline: "Accelerate your R&D with AI-assisted scientific infrastructure.",
+    tagline: "Software and research workflows for materials R&D.",
     github: "GitHub",
     credit: "Built with ❤️",
     backToTop: "Back to top",

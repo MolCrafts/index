@@ -193,6 +193,15 @@ export const PRODUCT_ACCENTS = {
     glowLine: "via-lime-500/20",
     chip: { color: "text-lime-500", bg: "hover:bg-lime-500/10" },
   },
+  tack: {
+    kicker: "from-teal-400 via-cyan-300 to-teal-400",
+    title: "from-teal-500 via-cyan-400 to-teal-500",
+    subhead: "from-teal-400 via-emerald-300 to-teal-400",
+    heading: "from-teal-400 via-cyan-400 to-teal-400",
+    icon: "text-teal-500",
+    iconHover: "group-hover:text-teal-400",
+    chip: { color: "text-teal-500", bg: "hover:bg-teal-500/10" },
+  },
 } satisfies Record<string, ProductAccent>;
 
 /**

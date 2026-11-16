@@ -1,7 +1,7 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { BrandCopy, BrandName } from "@/components/BrandName";
 import { useHomeCopy } from "@/lib/home/copy";
 import { GITHUB_ORG_HREF } from "@/lib/home/data";
-import { Github } from "lucide-react";
 import { LogoIcon } from "../Icons";
 
 /**
@@ -13,7 +13,7 @@ import { LogoIcon } from "../Icons";
  * `contentinfo` role, which left the page with no such landmark at all.
  */
 export function HomeFooter() {
-  const { footer, brandHero } = useHomeCopy();
+  const { footer } = useHomeCopy();
   const year = new Date().getFullYear();
 
   return (
@@ -24,7 +24,7 @@ export function HomeFooter() {
           <BrandName className="font-display text-xl font-semibold" />
         </div>
         <p className="max-w-lg font-body text-sm leading-6 text-muted-foreground md:text-right">
-          {brandHero.subtitle}
+          {footer.tagline}
         </p>
       </div>
       <div className="mx-auto mt-4 flex w-full max-w-[90rem] flex-wrap items-center justify-between gap-3 font-body text-xs text-muted-foreground">
@@ -38,7 +38,7 @@ export function HomeFooter() {
             rel="noreferrer noopener"
             className="inline-flex min-h-11 items-center gap-2 text-muted-foreground no-underline hover:text-foreground"
           >
-            <Github className="h-4 w-4" aria-hidden="true" />
+            <GitHubLogoIcon className="h-4 w-4" aria-hidden="true" />
             {footer.github}
           </a>
           <a

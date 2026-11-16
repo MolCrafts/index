@@ -7,20 +7,15 @@
 export const BRAND_GRADIENT_TEXT =
   "animate-brand-gradient bg-[linear-gradient(90deg,var(--brand-primary-from)_0%,var(--brand-primary-via)_40%,var(--brand-primary-to)_70%,var(--brand-primary-from)_100%)] bg-[length:200%_auto] bg-clip-text text-transparent motion-reduce:animate-none force-motion:animate-brand-gradient";
 
-/**
- * Homepage wordmark. Uses `--home-wordmark-*` so light paper can deepen the
- * blue without rewriting the product-page brand ramp.
- */
-export const HOME_BRAND_GRADIENT =
-  "animate-wordmark-drift bg-[linear-gradient(100deg,var(--home-wordmark-from)_0%,var(--home-wordmark-via)_45%,var(--home-wordmark-from)_100%)] bg-[length:220%_auto] bg-clip-text text-transparent motion-reduce:animate-none force-motion:animate-wordmark-drift";
+/** Homepage wordmark shares the blue ramp token with headings in both themes. */
+export const HOME_BRAND_GRADIENT = "home-title";
 
 /** Specular band that crosses the wordmark, then rests. */
 export const HOME_WORDMARK_SHEEN =
   "animate-wordmark-sheen bg-[linear-gradient(105deg,transparent_22%,var(--color-sheen-core)_46%,var(--color-sheen-edge)_54%,transparent_78%)] bg-[length:240%_100%] bg-clip-text text-transparent mix-blend-screen motion-reduce:animate-none force-motion:animate-wordmark-sheen";
 
 /** Static wordmark ramp for running copy, where a sweep would fight the sentence. */
-export const HOME_WORDMARK =
-  "bg-[linear-gradient(90deg,var(--home-wordmark-from),var(--home-wordmark-via))] bg-clip-text text-transparent";
+export const HOME_WORDMARK = "home-title";
 
 /** Emphasis sentences — secondary blue, never a gradient. */
 export const HOME_EMPHASIS = "text-home-emphasis";

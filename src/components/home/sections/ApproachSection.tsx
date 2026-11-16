@@ -1,10 +1,13 @@
+import { motion, useInView, useTransform } from "framer-motion";
+import { useMemo, useRef } from "react";
 import {
   approachRise,
   assistSublineReveal,
   assistWordFillReveal,
-  knowledgeThreadDraw,
   prefersReducedMotion,
 } from "@/lib/animations";
+import { foundationArt } from "@/lib/home/art/foundation";
+import { BREATH_SECONDS } from "@/lib/home/art/loop";
 import { useHomeCopy } from "@/lib/home/copy";
 import {
   HOME_BLOCK,
@@ -12,57 +15,63 @@ import {
   HOME_CONTAINER,
   HOME_H2_STATEMENT,
   HOME_H3,
+  HOME_SECTION_LEAD,
 } from "@/lib/home/stage";
+import type { ThreadPoint } from "@/lib/home/thread";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
+import { FoundationArcs } from "../art/FoundationArcs";
+import { useLoop, useStation } from "../art/useLoop";
+import { useMeasured } from "../art/useMeasured";
 import { BlockAura } from "../BlockAura";
 import { HomeSection } from "../HomeSection";
 import { SectionMarker } from "../SectionMarker";
+
+/** The light's trail, as a share of the arc. */
+const TAIL = 0.1;
+/** The light crosses the arc in about three breaths, then the screen rests for one. */
+const LOOP_SECONDS = BREATH_SECONDS * 4;
+const SPAN = 1 + TAIL + 0.25;
+/** How near a marker the light has to be for its item to wake. */
+const WAKE = 0.09;
+
+interface Guide {
+  readonly width: number;
+  readonly height: number;
+  /** Where each item's marker sits, in the list's own box. */
+  readonly points: readonly ThreadPoint[];
+}
+
+const NO_GUIDE: Guide = { width: 1, height: 1, points: [] };
+
+function readGuide(list: HTMLElement, items: readonly HTMLElement[]): Guide {
+  return {
+    width: list.offsetWidth,
+    height: list.offsetHeight,
+    points: items.map((item) => ({ x: item.offsetLeft - 28, y: item.offsetTop + 18 })),
+  };
+}
 
 export function ApproachSection() {
   const { approach } = useHomeCopy();
   const { locale } = useLocale();
   const reduceMotion = prefersReducedMotion();
+  const wide = useMediaQuery("(min-width: 64rem)");
   const stageRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLOListElement>(null);
-  const [guide, setGuide] = useState({
-    path: "",
-    width: 1,
-    height: 1,
-    points: [] as { x: number; y: number }[],
-  });
+  const listRef = useRef<HTMLUListElement>(null);
+  const guide = useMeasured(listRef, readGuide, NO_GUIDE);
   const hasEntered = useInView(stageRef, { amount: 0.28 });
   const motionState = reduceMotion ? "settled" : hasEntered ? "illuminated" : "dormant";
 
-  useLayoutEffect(() => {
-    const list = listRef.current;
-    if (!list) return;
-    const measure = () => {
-      const points = Array.from(list.children).map((item) => {
-        const node = item as HTMLElement;
-        return { x: node.offsetLeft - 28, y: node.offsetTop + 18 };
-      });
-      const path = points
-        .map((p, i) => {
-          if (!i) return `M ${p.x} ${p.y}`;
-          const prev = points[i - 1];
-          const mid = (prev.y + p.y) / 2;
-          return `C ${prev.x} ${mid}, ${p.x} ${mid}, ${p.x} ${p.y}`;
-        })
-        .join(" ");
-      setGuide({ points, path, width: list.offsetWidth, height: list.offsetHeight });
-    };
-    const observer = new ResizeObserver(measure);
-    observer.observe(list);
-    for (const item of list.children) observer.observe(item);
-    measure();
-    return () => observer.disconnect();
-  }, []);
+  const art = useMemo(() => foundationArt(guide.points, wide), [guide.points, wide]);
+  const travelling = hasEntered && !reduceMotion && art !== null;
+  const progress = useLoop(LOOP_SECONDS, travelling);
+  const head = useTransform(progress, (value) => value * SPAN);
+  const station = useStation(head, art?.stops ?? [], WAKE);
 
   return (
-    <HomeSection id="about">
+    <HomeSection id="about" className="overflow-hidden">
       <SectionMarker sectionId="about" />
       <div className={cn(HOME_CONTAINER, HOME_BLOCK, "relative isolate")}>
         <BlockAura />
@@ -85,55 +94,43 @@ export function ApproachSection() {
                 </span>
               ))}
             </motion.h2>
-            <motion.p
-              variants={assistSublineReveal}
-              className="foundation-subtitle home-subtitle font-display"
-            >
-              {approach.lead}
-            </motion.p>
+            {approach.lead && (
+              <motion.p
+                variants={assistSublineReveal}
+                className={cn(HOME_SECTION_LEAD, "mt-7 max-w-xl")}
+              >
+                {approach.lead}
+              </motion.p>
+            )}
           </div>
           <div className="foundation-strata">
-            <svg
-              aria-hidden="true"
-              className="foundation-guide"
-              viewBox={`0 0 ${guide.width} ${guide.height}`}
-            >
-              <motion.path
-                variants={knowledgeThreadDraw}
-                d={guide.path}
-                fill="none"
-                stroke="var(--home-green)"
-                strokeOpacity=".35"
-                strokeWidth="1.25"
+            {art ? (
+              <FoundationArcs
+                art={art}
+                points={guide.points}
+                width={guide.width}
+                height={guide.height}
+                wide={wide}
+                head={travelling ? head : undefined}
+                tail={TAIL}
               />
-              {guide.points.map((point, i) => (
-                <motion.g
-                  key={approach.strata[i].id}
-                  variants={approachRise}
-                  custom={{ delay: 0.9 + i * 0.4 }}
-                >
-                  <circle
-                    className="home-guide-node"
-                    cx={point.x}
-                    cy={point.y}
-                    r="3"
-                    fill="rgb(var(--accent-rgb))"
-                  />
-                </motion.g>
-              ))}
-            </svg>
-            <ol ref={listRef} className="foundation-list">
+            ) : null}
+            <ul ref={listRef} className="foundation-list">
               {approach.strata.map((stratum, index) => (
                 <motion.li
                   key={stratum.id}
                   custom={{ delay: 0.9 + index * 0.4 }}
                   variants={approachRise}
                 >
-                  <h3 className={HOME_H3}>{stratum.title}</h3>
-                  <p className={cn(HOME_BODY, "mt-3 max-w-sm")}>{stratum.detail}</p>
+                  {/* The item the light is passing stands at full strength; the
+                      others wait a step back. Still screens hold all three lit. */}
+                  <div className="home-lit" data-lit={!travelling || station === index}>
+                    <h3 className={HOME_H3}>{stratum.title}</h3>
+                    <p className={cn(HOME_BODY, "mt-3 max-w-sm")}>{stratum.detail}</p>
+                  </div>
                 </motion.li>
               ))}
-            </ol>
+            </ul>
           </div>
         </motion.div>
       </div>
